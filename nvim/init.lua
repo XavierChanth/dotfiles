@@ -1,4 +1,4 @@
--- set leader key to space 
+-- set leader key to space
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -38,7 +38,8 @@ require('lazy').setup({
   -- commenting
   'numToStr/Comment.nvim',
 
-
+  -- whitespace highlighting
+  'ntpeters/vim-better-whitespace',
 
 
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -450,9 +451,11 @@ cmp.setup {
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 
+
 vim.cmd([[ highlight NvimTreeIndentMarker guifg=#3FC5FF ]])
 
 require('nvim-tree').setup({
+  view = { adaptive_size = true },
   actions = {
     open_file = {
       window_picker = {
