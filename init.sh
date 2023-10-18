@@ -6,8 +6,16 @@ SCRIPT_DIRECTORY="$(dirname "$FULL_PATH_TO_SCRIPT")"
 # Symbolic link zsh config
 ln -s "$SCRIPT_DIRECTORY"/.zshrc  "$HOME"/.zshrc
 
+mkdir -p "$HOME"/.config/xavierchanth
 
-curl -fsSL git.io/antigen > "$SCRIPT_DIRECTORY"/xavierchanth/antigen.zsh
+curl -fsSL git.io/antigen > "$HOME"/.config/xavierchanth/antigen.zsh
 
-ln -s "$SCRIPT_DIRECTORY"/xavierchanth  "$HOME"/.config/xavierchanth
-ln -s "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
+# Checked in files
+ln -s "$SCRIPT_DIRECTORY"/xavierchanth/commands.sh  "$HOME"/.config/xavierchanth/commands.sh
+ln -s "$SCRIPT_DIRECTORY"/nvim/init.lua "$HOME"/.config/nvim/init.lua
+
+ln -s "$SCRIPT_DIRECTORY"/iterm2/switch_automatic.py "$HOME/Library/Application Support/iTerm2/Scripts/AutoLaunch"
+
+# Ignored files
+touch "$SCRIPT_DIRECTORY"/xavierchanth/secrets.sh
+ln -s "$SCRIPT_DIRECTORY"/xavierchanth/secrets.sh  "$HOME"/.config/xavierchanth/secrets.sh

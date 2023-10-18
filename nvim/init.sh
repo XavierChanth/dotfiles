@@ -1,0 +1,1 @@
+/Users/chant/src/xc/dotfiles/nvim/init.sh
