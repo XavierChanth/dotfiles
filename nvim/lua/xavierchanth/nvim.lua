@@ -3,11 +3,11 @@ require('xavierchanth.lazy-init')
 require('lazy').setup({
   require('xavierchanth.config.common'),
   require('xavierchanth.config.files'),
-  require('xavierchanth.config.theme'),
   require('xavierchanth.config.keybinds'),
-  require('xavierchanth.config.telescope'),
   require('xavierchanth.config.lsp'),
-
+  require('xavierchanth.config.telescope'),
+  require('xavierchanth.config.theme'),
+  require('xavierchanth.')
 }, {
   custom_keys = {
     ["<localleader>l"] = false,
