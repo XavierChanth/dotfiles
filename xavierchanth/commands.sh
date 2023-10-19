@@ -13,7 +13,7 @@ clone() {
 
 alias pub='dart pub'
 alias melos='dart run melos'
-
+alias code='codium'
 alias playpen="sshnp --config-file \"$HOME\"/.sshnp/config/playpen.env"
 alias playpen2="sshnp --config-file \"$HOME\"/.sshnp/config/playpen2.env"
 alias dump_cards='with_dc_pat ~/src/ac/dump_cards/dump_cards.py'
