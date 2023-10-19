@@ -7,7 +7,7 @@ require('lazy').setup({
   require('xavierchanth.config.lsp'),
   require('xavierchanth.config.telescope'),
   require('xavierchanth.config.theme'),
-  require('xavierchanth.')
+  require('xavierchanth.config.treesitter')
 }, {
   custom_keys = {
     ["<localleader>l"] = false,
@@ -56,6 +56,9 @@ vim.opt.splitbelow = true
 
 -- make '-' count as a word
 vim.opt.iskeyword:append("-")
+
+-- Keep cursor from being stuck on last line
+vim.opt.scrolloff = 8
 
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'

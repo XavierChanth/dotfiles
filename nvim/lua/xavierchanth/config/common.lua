@@ -1,5 +1,5 @@
 return {
-  { 'tpope/fugitive', },
+  { 'tpope/vim-fugitive', },
   { 'tpope/vim-sleuth', },
   { 'tpope/vim-surround', },
   { 'vim-scripts/ReplaceWithRegister', },
