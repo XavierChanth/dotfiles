@@ -1,6 +1,9 @@
 require('xavierchanth.lazy-init')
 
+local setup, configure = require('xavierchanth.config.lsp')
+
 require('lazy').setup({
+  require('xavierchanth.config.global'),
   require('xavierchanth.config.common'),
   require('xavierchanth.config.files'),
   require('xavierchanth.config.keybinds'),
@@ -14,6 +17,8 @@ require('lazy').setup({
     ["<localleader>t"] = false,
   }
 })
+
+require('xavierchanth.config.global')
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`

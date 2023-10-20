@@ -1,13 +1,12 @@
 return {
   { 'tpope/vim-fugitive', },
   { 'tpope/vim-sleuth', },
-  { 'tpope/vim-surround', },
   { 'vim-scripts/ReplaceWithRegister', },
-  { 'numToStr/Comment.nvim', },
   { 'ntpeters/vim-better-whitespace', },
   { 'christoomey/vim-tmux-navigator', },
   { 'szw/vim-maximizer' },
   { 'Pocco81/auto-save.nvim', },
+  { 'numToStr/Comment.nvim', },
   {
     'folke/trouble.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons', },
