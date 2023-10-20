@@ -16,44 +16,14 @@ return {
   },
   setup = function()
     -- Startup function for LSP and CMP
-    local lsp_zero = require('lsp-zero')
-
-    -- CMP
-    lsp_zero.extend_cmp()
-
-    require('copilot').setup({
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-    })
-    require('copilot_cmp').setup()
-
-    -- And you can configure cmp even more, if you want to.
-    local cmp = require('cmp')
-    local cmp_action = lsp_zero.cmp_action()
-    cmp.setup({
-      sources = {
-        { name = 'nvim_lsp' },
-        { name = 'buffer' },
-        { name = 'path' },
-        { name = 'calc' },
-        { name = 'copilot' },
-      },
-      mapping = cmp.mapping.preset.insert({
-        ['<CR>'] = cmp.mapping.confirm({
-          -- documentation says this is important.
-          -- I don't know why.
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = false,
-        })
-      })
-    })
+    local lsp = require('lsp-zero').preset({})
 
     -- LSP
-    lsp_zero.extend_lspconfig()
+    lsp.extend_lspconfig()
 
     -- on_attach
-    lsp_zero.on_attach = function(client, bufnr)
-      lsp_zero.default_keymaps({ buffer = bufnr })
+    lsp.on_attach = function(client, bufnr)
+      lsp.default_keymaps({ buffer = bufnr })
 
       local nmap = function(keys, func, desc)
         if desc then
@@ -117,19 +87,51 @@ return {
         'yamlls',
       },
       handlers = {
-        lsp_zero.default_setup,
+        lsp.default_setup,
         lua_ls = function()
-          local lua_opts = lsp_zero.nvim_lua_ls()
+          local lua_opts = lsp.nvim_lua_ls()
           require('lspconfig').lua_ls.setup(lua_opts)
         end,
       }
     })
 
+    local dart_lsp = lsp.build_options('dartls', {})
     -- flutter tools
     require('flutter-tools').setup({
       lsp = {
-        capabilities = lsp_zero.get_capabilities()
+        capabilities = dart_lsp.capabilities
       },
     })
+
+    -- CMP
+    lsp.extend_cmp()
+
+    require('copilot').setup({
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+    })
+    require('copilot_cmp').setup()
+
+    -- And you can configure cmp even more, if you want to.
+    local cmp = require('cmp')
+    local cmp_action = lsp.cmp_action()
+    cmp.setup({
+      sources = {
+        { name = 'nvim_lsp' },
+        { name = 'buffer' },
+        { name = 'path' },
+        { name = 'calc' },
+        { name = 'copilot' },
+      },
+      mapping = cmp.mapping.preset.insert({
+        ['<CR>'] = cmp.mapping.confirm({
+          -- documentation says this is important.
+          -- I don't know why.
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = false,
+        })
+      })
+    })
+
   end
 }
