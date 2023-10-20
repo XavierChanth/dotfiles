@@ -16,6 +16,11 @@ ln -s "$SCRIPT_DIRECTORY"/nvim/init.lua "$HOME"/.config/nvim/init.lua
 
 ln -s "$SCRIPT_DIRECTORY"/iterm2/switch_automatic.py "$HOME/Library/Application Support/iTerm2/Scripts/AutoLaunch"
 
+ln -s "$SCRIPT_DIRECTORY"/vscode/settings.json "$HOME/Library/Application Support/Code/User/"
+ln -s "$SCRIPT_DIRECTORY"/vscode/keybindings.json "$HOME/Library/Application Support/Code/User/"
+
 # Ignored files
 touch "$SCRIPT_DIRECTORY"/xavierchanth/secrets.sh
 ln -s "$SCRIPT_DIRECTORY"/xavierchanth/secrets.sh  "$HOME"/.config/xavierchanth/secrets.sh
+
+
