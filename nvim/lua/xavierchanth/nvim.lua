@@ -43,6 +43,7 @@ vim.opt.wrap = false
 -- search settings
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.hlsearch = false
 
 -- cursor line
 vim.opt.cursorline = true
@@ -54,17 +55,11 @@ vim.opt.backspace = "indent,eol,start"
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- make '-' count as a word
-vim.opt.iskeyword:append("-")
-
 -- Keep cursor from being stuck on last line
 vim.opt.scrolloff = 8
 
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
-
--- netrw line numbers
-vim.cmd([[let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro']])
 
 -- [[ Configure nvim-tree ]]
 vim.g.loaded = 1

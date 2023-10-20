@@ -15,23 +15,22 @@ return {
           vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
         end
 
-        nmap('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
+        nmap('<F2>', vim.lsp.buf.rename, '[C]ode [R]ename')
         nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-        nmap('<leader>ch', vim.lsp.buf.hover, '[C]ode [H]over')
-        nmap('<leader>cs', vim.lsp.buf.workspace_symbol, '[C]ode [S]ymbol')
+        -- nmap('<leader>ch', vim.lsp.buf.hover, '[C]ode [H]over')
+        -- nmap('<leader>cs', vim.lsp.buf.workspace_symbol, '[C]ode [S]ymbol')
 
         nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-        nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-        nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-        nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-        nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+        -- nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+        -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+        -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-        vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-          vim.lsp.buf.format()
-        end, { desc = 'Format current buffer with LSP' })
+        -- vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+        --   vim.lsp.buf.format()
+        -- end, { desc = 'Format current buffer with LSP' })
 
-        nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
+        -- nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
 
         -- Autoformat on save
         -- local auto_group = vim.api.nvim_create_augroup("LspAuGroup", { clear = true })
@@ -78,7 +77,7 @@ return {
           'yamlls',
         },
         handlers = {
-          require('lsp-zero').default_setup,
+          require('lsp-zero').default_setup(),
         }
       }
     end,
