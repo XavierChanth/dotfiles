@@ -1,16 +1,14 @@
 require('xavierchanth.lazy-init')
-
-local setup, configure = require('xavierchanth.config.lsp')
-
+local lsp  = require('xavierchanth.config.lsp')
 require('lazy').setup({
   require('xavierchanth.config.global'),
   require('xavierchanth.config.common'),
   require('xavierchanth.config.files'),
   require('xavierchanth.config.keybinds'),
-  require('xavierchanth.config.lsp'),
   require('xavierchanth.config.telescope'),
   require('xavierchanth.config.theme'),
-  require('xavierchanth.config.treesitter')
+  require('xavierchanth.config.treesitter'),
+  lsp.dependencies,
 }, {
   custom_keys = {
     ["<localleader>l"] = false,
@@ -18,6 +16,7 @@ require('lazy').setup({
   }
 })
 
+-- Shared settings between nvim and vscode-nvim
 require('xavierchanth.config.global')
 
 -- [[ Highlight on yank ]]
@@ -74,3 +73,6 @@ vim.cmd([[ highlight NvimTreeIndentMarker guifg=#3FC5FF ]])
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>") -- Toggle [E]xplorer
 
 require 'nvim-tree.view'.View.winopts.relativenumber = true
+
+-- Call the LSP setup function
+lsp.setup()
