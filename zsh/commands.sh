@@ -17,6 +17,7 @@ alias melos='dart run melos'
 alias playpen="sshnp --config-file \"$HOME\"/.sshnp/config/playpen.env"
 alias dump_cards='with_dc_pat ~/src/ac/dump_cards/dump_cards.py'
 alias vsce='with_vsce_pat vsce'
+alias glog='git log --oneline --decorate --graph'
 
 atDirectory() {
   head -n 1 < <(openssl s_client -connect root.atsign.org:64 -quiet -verify_quiet < <(echo "$1"; sleep 1; echo "@exit") 2>/dev/null)

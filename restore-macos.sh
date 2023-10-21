@@ -22,12 +22,10 @@ if [ ! -f "$SCRIPT_DIRECTORY/confirmed_overwrite" ]; then
     touch "$SCRIPT_DIRECTORY/confirmed_overwrite"
 fi
 
-mkdir -p "$HOME"/.config/zsh
-
 # zsh
-ln -s "$SCRIPT_DIRECTORY"/.zshrc  "$HOME"/.zshrc
+ln -sfh "$SCRIPT_DIRECTORY"/.zshrc  "$HOME"/.zshrc
 touch "$SCRIPT_DIRECTORY"/zsh/secrets.sh
-ln -sF "$SCRIPT_DIRECTORY"/zsh  "$HOME"/.config/zsh
+ln -sFh "$SCRIPT_DIRECTORY"/zsh  "$HOME"/.config/zsh
 
 # antigen
 curl -fsSL git.io/antigen > "$HOME"/.config/zsh/antigen.zsh
@@ -36,7 +34,7 @@ curl -fsSL git.io/antigen > "$HOME"/.config/zsh/antigen.zsh
 brew bundle --file="$SCRIPT_DIRECTORY"/brew/Brewfile
 
 # nvim
-ln -sF "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
+ln -sFh "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
 
 # iterm 2
 ln -sfh "$SCRIPT_DIRECTORY"/iterm2/switch_automatic.py "$HOME/Library/Application Support/iTerm2/Scripts/AutoLaunch"
