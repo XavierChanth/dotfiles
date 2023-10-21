@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+antigen bundles <<EOBUNDLES
+# Load bundles from external repos
+  zsh-users/zsh-completions
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-syntax-highlighting
+EOBUNDLES
+# Select theme
+THEME=spaceship-prompt/spaceship-prompt
+
+# Disable conda prompt
+export SPACESHIP_CONDA_SHOW=false
+
+if ! antigen list | grep $THEME;
+then
+  antigen theme $THEME
+fi
+
+# Tell Antigen that you're done
+antigen apply

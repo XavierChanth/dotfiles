@@ -1,0 +1,75 @@
+{
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "accessibility.verbosity.terminal": false,
+  "dart.runPubGetOnPubspecChanges": "never",
+  "editor.autoClosingBrackets": "beforeWhitespace",
+  "editor.autoClosingComments": "beforeWhitespace",
+  "editor.autoClosingQuotes": "beforeWhitespace",
+  "editor.cursorSurroundingLines": 8,
+  "editor.fontFamily": "'FiraCode Nerd Font Mono', 'Fira Code Retina', 'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.guides.highlightActiveIndentation": true,
+  "editor.lineNumbers": "relative",
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [80, 120],
+  "editor.tabSize": 2,
+  "explorer.incrementalNaming": "smart",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "files.autoSave": "afterDelay",
+  "files.exclude": {
+    "**/.git": false
+  },
+  "git-graph.dialog.addTag.pushToRemote": true,
+  "git.confirmSync": false,
+  "git.enableCommitSigning": true,
+  "git.inputValidationLength": 100,
+  "git.inputValidationSubjectLength": 100,
+  "git.openDiffOnClick": false,
+  "git.openRepositoryInParentFolders": "always",
+  "git.suggestSmartCommit": false,
+  "github.copilot.enable": {
+    "*": true,
+    "dart": true,
+    "markdown": false,
+    "plaintext": false,
+    "yaml": true
+  },
+  "scm.defaultViewMode": "tree",
+  "scm.diffDecorationsIgnoreTrimWhitespace": "true",
+  "telemetry.telemetryLevel": "off",
+  "terminal.integrated.cursorStyle": "line",
+  "window.autoDetectColorScheme": true,
+  "window.title": "${rootName}",
+  "workbench.colorTheme": "Atom One Dark",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.preferredDarkColorTheme": "Atom One Dark",
+  "workbench.preferredLightColorTheme": "Snazzy Light",
+  "workbench.productIconTheme": "bootstrap-product-icons",
+  "workbench.startupEditor": "none",
+  "workbench.tree.indent": 12,
+  "workbench.tree.renderIndentGuides": "always",
+  "vscode-neovim.highlightGroups.highlights": {
+    "IncSearch": {
+      "backgroundColor": "theme.editor.findMatchBackground",
+      "borderColor": "theme.editor.findMatchBorder"
+    },
+    "Search": {
+      "backgroundColor": "theme.editor.findMatchHighlightBackground",
+      "borderColor": "theme.editor.findMatchHighlightBorder"
+    },
+    "Visual": {
+      "backgroundColor": "theme.editor.selectionBackground"
+    }
+  },
+  "vscode-neovim.statusLineSeparator": "｜"
+}

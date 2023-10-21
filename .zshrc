@@ -1,5 +1,5 @@
 # general
-source "$HOME"/.config/xavierchanth/secrets.sh
+source "$HOME"/.config/zsh/secrets.sh
 
 alias la='ls -a'
 alias ll='la -l'
@@ -18,8 +18,8 @@ git config --global user.email xchanthavong@gmail.com
 
 # antigen
 ANTIGEN_MUTEX=false
-source $HOME/.config/xavierchanth/antigen.zsh
-antigen init ~/.antigenrc
+source $HOME/.config/zsh/antigen.zsh
+antigen init $HOME/.config/zsh/.antigenrc
 
 # brew
 HOMEBREW_NO_ENV_HINTS=true
@@ -41,12 +41,9 @@ export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# depot_tools
-# export PATH="$PATH:$HOME/dev/depot_tools"
 
 # Additional commands
-source $HOME/.config/xavierchanth/commands.sh
-
+source $HOME/.config/zsh/commands.sh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -64,7 +61,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 
-## [Completion] 
+## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/chant/.dart-cli-completion/zsh-config.zsh ]] && . /Users/chant/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
