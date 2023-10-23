@@ -50,7 +50,7 @@
   "terminal.integrated.cursorStyle": "line",
   "window.autoDetectColorScheme": true,
   "window.title": "${rootName}",
-  "workbench.colorTheme": "Atom One Dark",
+  "workbench.colorTheme": "Snazzy Light",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Atom One Dark",
   "workbench.preferredLightColorTheme": "Snazzy Light",
