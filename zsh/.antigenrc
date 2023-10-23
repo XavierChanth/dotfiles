@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+antigen use oh-my-zsh
+
 antigen bundles <<EOBUNDLES
 # Load bundles from external repos
   zsh-users/zsh-completions
