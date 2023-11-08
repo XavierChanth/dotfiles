@@ -71,5 +71,18 @@
       "backgroundColor": "theme.editor.selectionBackground"
     }
   },
-  "vscode-neovim.statusLineSeparator": "｜"
+  "vscode-neovim.statusLineSeparator": "｜",
+  "explorer.confirmDragAndDrop": false,
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+  "vscode-neovim.neovimInitVimPaths.darwin": "/home/chant/.config/nvim",
+  "editor.fontSize": 13,
+  "editor.minimap.enabled": false,
+  "explorer.confirmDelete": false,
+  "python.analysis.extraPaths": [
+    "/Users/chant/.vscode/extensions/continue.continue-0.2.0-darwin-arm64"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/Users/chant/.vscode/extensions/continue.continue-0.2.0-darwin-arm64"
+  ],
+  "diffEditor.codeLens": true
 }

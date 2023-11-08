@@ -13,6 +13,7 @@ THEME=spaceship-prompt/spaceship-prompt
 
 # Disable conda prompt
 export SPACESHIP_CONDA_SHOW=false
+export SPACESHIP_GCLOUD_SHOW=false
 
 if ! antigen list | grep $THEME;
 then

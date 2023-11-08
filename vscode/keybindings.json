@@ -318,5 +318,10 @@
     "key": "ctrl+w ctrl+w",
     "command": "-workbench.action.focusFirstEditorGroup",
     "when": "!editorTextFocus && !filesExplorerFocus && !inSearchEditor && !replaceInputBoxFocus && !searchViewletFocus && !terminalFocus"
+  },
+  {
+    "key": "escape escape",
+    "command": "-workbench.action.exitZenMode",
+    "when": "inZenMode"
   }
 ]

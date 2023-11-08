@@ -30,3 +30,11 @@ require 'nvim-tree.view'.View.winopts.relativenumber = true
 
 -- Call the LSP setup function
 lsp.setup()
+
+-- Reset cursor to preferred settings
+vim.cmd([[
+    augroup RestoreCursorShapeOnExit
+        autocmd!
+        autocmd VimLeave * set guicursor=a:ver1-blinkwait0-blinkon500-blinkoff500
+    augroup END
+]])

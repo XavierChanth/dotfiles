@@ -54,3 +54,4 @@ rollup() {
 
 alias getsshnp="bash -c \"\$(curl -fsSL https://getsshnp.noports.com)\" --"
 alias getsshnpd="bash -c \"\$(curl -fsSL https://getsshnpd.noports.com)\" --"
+
