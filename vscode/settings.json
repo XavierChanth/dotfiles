@@ -79,10 +79,26 @@
   "editor.minimap.enabled": false,
   "explorer.confirmDelete": false,
   "python.analysis.extraPaths": [
-    "/Users/chant/.vscode/extensions/continue.continue-0.2.0-darwin-arm64"
+    "/Users/chant/.vscode/extensions/continue.continue-0.2.0-darwin-arm64",
+    "/Users/chant/.vscode/extensions/continue.continue-0.5.0-darwin-arm64"
   ],
   "python.autoComplete.extraPaths": [
-    "/Users/chant/.vscode/extensions/continue.continue-0.2.0-darwin-arm64"
+    "/Users/chant/.vscode/extensions/continue.continue-0.2.0-darwin-arm64",
+    "/Users/chant/.vscode/extensions/continue.continue-0.5.0-darwin-arm64"
   ],
-  "diffEditor.codeLens": true
+  "diffEditor.codeLens": true,
+  "screencastMode.keyboardOptions": {
+    "showCommands": false
+  },
+  "screencastMode.verticalOffset": 5,
+  "screencastMode.fontSize": 24,
+  "zenMode.hideLineNumbers": false,
+  "customPresentationMode.overrides": {
+    "editor.fontWeight": "normal",
+    "window.zoomLevel": 3,
+    "window.autoDetectColorScheme": false,
+    "workbench.colorTheme": "Golden orange"
+  },
+  "editor.snippetSuggestions": "top",
+  "window.zoomLevel": 1
 }
