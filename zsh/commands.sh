@@ -12,6 +12,8 @@ clone() {
   git clone "$prefix$REPO" "$@"
 }
 
+alias vi='nvim'
+alias vim='nvim'
 alias pub='dart pub'
 alias melos='dart run melos'
 alias playpen="sshnp --config-file \"$HOME\"/.sshnp/config/playpen.env"
