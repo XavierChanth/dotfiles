@@ -21,6 +21,11 @@ ANTIGEN_MUTEX=false
 source $HOME/.config/zsh/antigen.zsh
 antigen init $HOME/.config/zsh/.antigenrc
 
+# iterm2
+if ! [ -f "$HOME"/.iterm2_shell_integration.zsh ]; then
+  curl -L https://iterm2.com/shell_integration/zsh -o "$HOME"/.iterm2_shell_integration.zsh
+fi
+
 # brew
 HOMEBREW_NO_ENV_HINTS=true
 
@@ -65,4 +70,7 @@ unset __conda_setup
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/chant/.dart-cli-completion/zsh-config.zsh ]] && . /Users/chant/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 

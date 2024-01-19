@@ -56,6 +56,3 @@ rollup() {
 
 alias getsshnp="bash -c \"\$(curl -fsSL https://getsshnp.noports.com)\" --"
 alias getsshnpd="bash -c \"\$(curl -fsSL https://getsshnpd.noports.com)\" --"
-alias compilesshnp="dart compile exe ~/src/af/sshnoports/packages/sshnoports/bin/sshnp.dart -o ~/.local/bin/sshnp"
-alias compilesshnpd="dart compile exe ~/src/af/sshnoports/packages/sshnoports/bin/sshnpd.dart -o ~/.local/bin/sshnpd"
-alias compilesshrv="dart compile exe ~/src/af/sshnoports/packages/sshnoports/bin/sshrv.dart -o ~/.local/bin/sshrv"

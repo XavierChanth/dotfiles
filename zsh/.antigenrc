@@ -7,6 +7,7 @@ antigen bundles <<EOBUNDLES
   zsh-users/zsh-completions
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-syntax-highlighting
+  supercrabtree/k
 EOBUNDLES
 # Select theme
 THEME=spaceship-prompt/spaceship-prompt
