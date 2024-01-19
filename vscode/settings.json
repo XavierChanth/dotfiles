@@ -11,7 +11,7 @@
   "editor.autoClosingComments": "beforeWhitespace",
   "editor.autoClosingQuotes": "beforeWhitespace",
   "editor.cursorSurroundingLines": 8,
-  "editor.fontFamily": "'Geist Mono', 'FiraCode Nerd Font Mono', 'Fira Code Retina', 'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontFamily": "'GeistMono Nerd Font', Menlo, Monaco, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": true,
@@ -117,6 +117,5 @@
   "explorer.compactFolders": false,
   "workbench.activityBar.location": "top",
   "editor.accessibilitySupport": "off",
-  "workbench.editor.editorActionsLocation": "titleBar",
-  "window.zoomLevel": 1
+  "workbench.editor.editorActionsLocation": "titleBar"
 }
