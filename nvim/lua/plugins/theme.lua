@@ -1,8 +1,5 @@
 return {
-  {
-    "joshdick/onedark.vim",
-  },
-
+  "joshdick/onedark.vim",
   {
     "LazyVim/LazyVim",
     opts = {
