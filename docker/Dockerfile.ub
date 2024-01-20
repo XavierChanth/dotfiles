@@ -1,4 +1,11 @@
 FROM ubuntu
 
-RUN apt update; \
-  apt install -y curl cron tmux;
+RUN apt-get update;
+RUN apt-get install -y git;
+RUN apt-get install -y sudo;
+RUN apt-get install -y curl;
+RUN apt-get install -y cron;
+RUN apt-get install -y tmux;
+RUN apt-get install -y ripgrep;
+RUN apt-get install -y vim;
+
