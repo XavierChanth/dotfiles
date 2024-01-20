@@ -1,37 +1,54 @@
 return {
-  "f-person/auto-dark-mode.nvim",
-  dependencies = {
-    'nvim-lualine/lualine.nvim',
-    'sainnhe/edge',
-    'joshdick/onedark.vim',
+  {
+    "joshdick/onedark.vim",
   },
-  config = {
-    update_interval = 1000,
-    set_dark_mode = function()
-      vim.o.termguicolors = true
-      vim.api.nvim_set_option("background", "dark")
-      vim.cmd("colorscheme onedark")
-      require('lualine').setup {
-        options = {
-          theme = 'onedark',
-          icons_enabled = true,
-          component_separators = '|',
-          section_separators = '',
+  {
+    "catppuccin/nvim",
+    lazy = true,
+    name = "catppuccin",
+    opts = {
+      integrations = {
+        aerial = true,
+        alpha = true,
+        cmp = true,
+        dashboard = true,
+        flash = true,
+        gitsigns = true,
+        headlines = true,
+        illuminate = true,
+        indent_blankline = { enabled = true },
+        leap = true,
+        lsp_trouble = true,
+        mason = true,
+        markdown = true,
+        mini = true,
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { "undercurl" },
+            hints = { "undercurl" },
+            warnings = { "undercurl" },
+            information = { "undercurl" },
+          },
         },
-      }
-    end,
-    set_light_mode = function()
-      vim.o.termguicolors = true
-      vim.api.nvim_set_option("background", "light")
-      vim.cmd("colorscheme edge")
-      require('lualine').setup {
-        options = {
-          theme = 'edge',
-          icons_enabled = true,
-          component_separators = '|',
-          section_separators = '',
-        },
-      }
-    end,
+        navic = { enabled = true, custom_bg = "lualine" },
+        neotest = true,
+        neotree = true,
+        noice = true,
+        notify = true,
+        semantic_tokens = true,
+        telescope = true,
+        treesitter = true,
+        treesitter_context = true,
+        which_key = true,
+      },
+    },
+
+    {
+      "LazyVim/LazyVim",
+      opts = {
+        colorscheme = "onedark",
+      },
+    },
   },
 }
