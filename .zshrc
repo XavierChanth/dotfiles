@@ -23,6 +23,7 @@ source $HOME/.config/zsh/antigen.zsh
 antigen use oh-my-zsh
 antigen bundles <<EOBUNDLES
 # Load bundles from external repos
+  git
   zsh-users/zsh-completions
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-syntax-highlighting
