@@ -19,7 +19,26 @@ git config --global user.email xchanthavong@gmail.com
 # antigen
 ANTIGEN_MUTEX=false
 source $HOME/.config/zsh/antigen.zsh
-antigen init $HOME/.config/zsh/.antigenrc
+
+antigen use oh-my-zsh
+antigen bundles <<EOBUNDLES
+# Load bundles from external repos
+  zsh-users/zsh-completions
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-syntax-highlighting
+  supercrabtree/k
+EOBUNDLES
+
+# Disable annoying prompts
+export SPACESHIP_CONDA_SHOW=false
+export SPACESHIP_GCLOUD_SHOW=false
+
+ANTIGEN_THEME=spaceship-prompt/spaceship-prompt
+if ! antigen list | grep $ANTIGEN_THEME; then
+  antigen theme $ANTIGEN_THEME
+fi
+
+antigen apply
 
 # iterm2
 if ! [ -f "$HOME"/.iterm2_shell_integration.zsh ]; then
