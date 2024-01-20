@@ -27,12 +27,6 @@ return {
           'node_modules/',
         }
       },
-      mappings = {
-        i = {
-          ['<C-u>'] = false,
-          ['<C-d>'] = false,
-        },
-      },
     },
     pickers = {
       live_grep = {

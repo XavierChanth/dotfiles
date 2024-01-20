@@ -3,23 +3,10 @@ return {
   config = function()
     require('which-key').register {
       ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-      -- ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-      -- ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
-      -- ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
       ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
-      -- ['<leader>j'] = { name = '[J]ump', _ = 'which_key_ignore' },
-      -- ['<leader>l'] = { name = 'Move [L]ine', _ = 'which_key_ignore' },
-      -- ['<leader>n'] = { name = '[N]av', _ = 'which_key_ignore' },
-      ['<leader>s'] = { name = '[S]plit', _ = 'which_key_ignore' },
-      -- ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+      ['<leader>j'] = { name = '[J]ump', _ = 'which_key_ignore' },
     }
     -- splits
-    vim.keymap.set('n', '<leader>sv', ':vsplit<cr>', { desc = '[S]plit [V]ertically' })
-    vim.keymap.set('n', '<leader>sh', ':split<cr>', { desc = '[S]plit [H]orizontally' })
-    vim.keymap.set('n', '<leader>se', ':wincmd =<cr>', { desc = '[S]plit [E]venly' })
-    vim.keymap.set('n', '<leader>sm', ':MaximizerToggle<cr>', { desc = 'Toggle [S]plit [M]aximize' })
-    vim.keymap.set('n', '<leader>w', ':close<cr>', { desc = 'Close Split [W]indow' })
-
     vim.keymap.set('n', '<leader><leader>', ':', { desc = 'Command Mode'} );
     vim.keymap.set('n', '<leader>p', require('telescope.builtin').find_files, { desc = 'File [P]alette' })
     vim.keymap.set('n', '<leader>F', require('telescope.builtin').live_grep, { desc = 'Global [F]ind' })

@@ -7,14 +7,6 @@ return {
   build = ':TSUpdate',
   config = function()
     vim.defer_fn(function()
-      -- local parser = require("nvim-treesitter.parsers").get_parser_configs()
-      -- parser.dart = {
-      --   install_info = {
-      --     url = "https://github.com/UserNobody14/tree-sitter-dart",
-      --     files = { "src/parser.c", "src/scanner.c" },
-      --     revision = "8aa8ab977647da2d4dcfb8c4726341bee26fbce4", -- The last commit before the snail speed
-      --   },
-      -- }
       require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
         ensure_installed = {
@@ -39,7 +31,7 @@ return {
         indent = {
           enable = true,
           disable = {
-            "dart"
+           -- "dart"
           },
         },
         textobjects = {
