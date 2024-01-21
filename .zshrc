@@ -1,10 +1,6 @@
 # general
 source "$HOME"/.config/zsh/secrets.sh
 
-alias la='ls -a'
-alias ll='la -l'
-alias vim='nvim'
-
 alias rose='arch -x86_64'
 alias act='act --container-architecture linux/amd64'
 
@@ -20,9 +16,9 @@ git config --global user.email xchanthavong@gmail.com
 ANTIGEN_MUTEX=false
 source $HOME/.config/zsh/antigen.zsh
 
+antigen use oh-my-zsh
 antigen bundles <<EOBUNDLES
 # Load bundles from external repos
-  git
   zsh-users/zsh-completions
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-syntax-highlighting
