@@ -20,7 +20,6 @@ git config --global user.email xchanthavong@gmail.com
 ANTIGEN_MUTEX=false
 source $HOME/.config/zsh/antigen.zsh
 
-antigen use oh-my-zsh
 antigen bundles <<EOBUNDLES
 # Load bundles from external repos
   git
