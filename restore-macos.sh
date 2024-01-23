@@ -39,7 +39,8 @@ ln -sFh "$SCRIPT_DIRECTORY"/lazygit "$HOME"/.config/lazygit
 ln -sFh "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
 
 # iterm2
-ln -sfh "$SCRIPT_DIRECTORY"/iterm2/com.googlecode.iterm2.plist "$HOME/Library/Preferences"
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$SCRIPT_DIRECTORY/iterm2"
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 ln -sfh "$SCRIPT_DIRECTORY"/iterm2/switch_automatic.py "$HOME/Library/Application Support/iTerm2/Scripts/AutoLaunch"
 
 # vscode
