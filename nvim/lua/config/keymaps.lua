@@ -1,11 +1,14 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
+local map = vim.keymap.set
+
+-- Shift + Space = Space in Terminal Mode
+map("t", "<S-Space>", "<Space>", { noremap = true })
 
 -- Neo-tree : Open & focus, or close if already focused
 -- vim.keymap.set("n", "<leader>fe", function()
 --   local renderer = require("neo-tree.ui.renderer")
---   local Util = require("lazyvim.util")
 --   local cmd = require("neo-tree.command")
 --   local state = require("neo-tree.sources.manager").get_state("filesystem")
 --   if renderer.window_exists(state) then
