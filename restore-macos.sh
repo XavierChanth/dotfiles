@@ -41,6 +41,9 @@ ln -sFh "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
 # tmux
 ln -Sfh "$SCRIPT_DIRECTORY"/tmux/tmux.conf "$HOME"/.tmux.conf
 
+# alacritty
+ln -sfh "$SCRIPT_DIRECTORY"/alacritty.toml "$HOME"/.config/alacritty.toml
+
 # iterm2
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$SCRIPT_DIRECTORY/iterm2"
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
