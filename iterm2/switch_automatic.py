@@ -23,4 +23,5 @@ async def main(connection):
                 profile = await partial.async_get_full_profile()
                 await profile.async_set_color_preset(preset)
 
-iterm2.run_forever(main)
+# Disable script by commenting
+# iterm2.run_forever(main)

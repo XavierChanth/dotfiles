@@ -22,7 +22,7 @@ if [ ! -f "$SCRIPT_DIRECTORY/confirmed_overwrite" ]; then
 fi
 
 # zsh
-ln -sfh "$SCRIPT_DIRECTORY"/.zshrc "$HOME"/.zshrc
+ln -sfh "$SCRIPT_DIRECTORY"/zsh/rc.sh "$HOME"/.zshrc
 touch "$SCRIPT_DIRECTORY"/zsh/secrets.sh
 ln -sFh "$SCRIPT_DIRECTORY"/zsh "$HOME"/.config/zsh
 
@@ -37,6 +37,9 @@ ln -sFh "$SCRIPT_DIRECTORY"/lazygit "$HOME"/.config/lazygit
 
 # nvim
 ln -sFh "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
+
+# tmux
+ln -Sfh "$SCRIPT_DIRECTORY"/tmux/tmux.conf "$HOME"/.tmux.conf
 
 # iterm2
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$SCRIPT_DIRECTORY/iterm2"

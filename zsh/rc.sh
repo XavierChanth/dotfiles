@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 # general
 source "$HOME"/.config/zsh/secrets.sh
 
@@ -11,6 +13,28 @@ export PATH="$HOME/.local/bin:$PATH"
 # git
 git config --global user.name xavierchanth
 git config --global user.email xchanthavong@gmail.com
+git config --global user.signingkey /Users/chant/.ssh/id_ed25519.pub
+git config --global filter.lfs.clean 'git-lfs clean -- %f'
+git config --global filter.lfs.smudge 'git-lfs smudge -- %f'
+git config --global filter.lfs.process 'git-lfs filter-process'
+git config --global filter.lfs.required true
+git config --global commit.gpgsign true
+git config --global gpg.format ssh
+git config --global alias.wt worktree
+alias glog='git log --oneline --decorate --graph'
+alias gloga='glog --all'
+clone() {
+  REPO=$1
+  shift;
+
+  if [[ $REPO =~ ^(git@github\.com:.*|https:\/\/github\.com\/.*)$ ]]; then
+    prefix=""
+  else
+    prefix="git@github.com:"
+  fi
+
+  git clone "$prefix$REPO" "$@"
+}
 
 # antigen
 ANTIGEN_MUTEX=false
@@ -61,9 +85,63 @@ export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
+#tmux
+t() {
+  tmux a || tmux
+}
 
-# Additional commands
-source $HOME/.config/zsh/commands.sh
+#cd
+alias xc='cd ~/src/xc'
+alias xcdf='cd ~/src/xc/dotfiles'
+alias af='cd ~/src/af'
+alias afnp='cd ~/src/af/noports'
+
+# vim
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+
+# dart/flutter
+alias pub='dart pub'
+alias melos='dart run melos'
+
+# devops
+alias dump_cards='with_dc_pat ~/src/ac/dump_cards/dump_cards.py'
+alias vsce='with_vsce_pat vsce'
+
+rollup() {
+  if [ $# -ne 2 ] ; then
+    echo "Usage rollup <BASE_PR> <LAST_PR>"
+    exit 1
+  fi
+  BASE_PR=$1
+  LAST_PR=$2
+  git pull
+  gh pr checkout "$BASE_PR"
+  for (( i=(($BASE_PR + 1)); i<=$LAST_PR; i++ ));
+  do
+    IS_CLOSED=$(gh pr view "$i" --json closed -q .closed || false);
+    if [ -n "$IS_CLOSED" ] && [ ! "$IS_CLOSED" ]; then
+      PR_BRANCH=$(gh pr view "$i" --json headRefName -q .headRefName);
+      git merge origin/"$PR_BRANCH" -m "build(deps): Rollup merge branch for #${i} ${PR_BRANCH}";
+    fi
+  done
+  git push
+}
+
+# atsign
+atDirectory() {
+  head -n 1 < <(openssl s_client -connect root.atsign.org:64 -quiet -verify_quiet < <(echo "$1"; sleep 1; echo "@exit") 2>/dev/null)
+}
+
+atServer() {
+  fqdn=$(atDirectory "$1" | tr -d '\r\n\t ')
+  openssl s_client -connect "${fqdn:1}"
+}
+
+pkam() {
+  at_pkam -p "$HOME/.atsign/keys/$1_key.atKeys" -r "$2"
+}
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
