@@ -3,8 +3,16 @@
 -- Add any additional keymaps here
 local map = vim.keymap.set
 
+require("which-key").register({
+  ["<leader>r"] = { name = "run" },
+})
+
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
+
+map("n", "<leader>rf", function()
+  require("telescope").extensions.flutter.commands()
+end, { desc = "Flutter Commands" })
 
 -- Neo-tree : Open & focus, or close if already focused
 -- vim.keymap.set("n", "<leader>fe", function()
