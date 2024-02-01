@@ -86,7 +86,7 @@ export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # clang
-export CPATH="/usr/local/include:/opt/homebrew/lib:/opt/homebrew/opt/llvm/include:$CPATH"
+export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
 
 #tmux
 t() {
