@@ -95,6 +95,7 @@ alias xc='cd ~/src/xc'
 alias xcdf='cd ~/src/xc/dotfiles'
 alias af='cd ~/src/af'
 alias afnp='cd ~/src/af/noports'
+alias afc='cd ~/src/af/at_c'
 
 # vim
 alias v='nvim'
