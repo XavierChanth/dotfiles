@@ -9,6 +9,7 @@ return {
           },
           cmd = {
             "clangd",
+            "--query-driver=/usr/bin/clang++",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=iwyu",
