@@ -20,137 +20,191 @@ local commands = {
   {
     id = "cmake-tools-generate",
     label = "Generate",
-    command = cmake_tools.generate,
+    command = function()
+      cmake_tools.generate({}, nil)
+    end,
   },
   {
     id = "cmake-tools-clean",
     label = "Clean",
-    command = cmake_tools.clean,
+    command = function()
+      cmake_tools.clean({})
+    end,
   },
   {
     id = "cmake-tools-build",
     label = "Build",
-    command = cmake_tools.build,
+    command = function()
+      cmake_tools.build({}, nil)
+    end,
   },
   {
     id = "cmake-tools-quick-build",
     label = "Quick Build",
-    command = cmake_tools.quick_build,
+    command = function()
+      cmake_tools.quick_build({}, nil)
+    end,
   },
   {
     id = "cmake-tools-install",
     label = "Install",
-    command = cmake_tools.install,
+    command = function()
+      cmake_tools.install({})
+    end,
   },
   {
     id = "cmake-tools-stop-executor",
     label = "Stop Executor",
-    command = cmake_tools.stop_executor,
+    command = function()
+      cmake_tools.stop_executor()
+    end,
   },
   {
     id = "cmake-tools-stop-runner",
     label = "Stop Runner",
-    command = cmake_tools.stop_runner,
+    command = function()
+      cmake_tools.stop_runner()
+    end,
   },
   {
     id = "cmake-tools-close-executor",
     label = "Close Executor",
-    command = cmake_tools.close_executor,
+    command = function()
+      cmake_tools.close_executor()
+    end,
   },
   {
     id = "cmake-tools-close-runner",
     label = "Close Runner",
-    command = cmake_tools.close_runner,
+    command = function()
+      cmake_tools.close_runner()
+    end,
   },
   {
     id = "cmake-tools-open-executor",
     label = "Open Executor",
-    command = cmake_tools.open_executor,
+    command = function()
+      cmake_tools.open_executor()
+    end,
   },
   {
     id = "cmake-tools-open-runner",
     label = "Open Runner",
-    command = cmake_tools.open_runner,
+    command = function()
+      cmake_tools.open_runner()
+    end,
   },
   {
     id = "cmake-tools-run",
     label = "Run",
-    command = cmake_tools.run,
+    command = function()
+      cmake_tools.run({})
+    end,
   },
   {
     id = "cmake-tools-quick-run",
     label = "Quick Run",
-    command = cmake_tools.quick_run,
+    command = function()
+      cmake_tools.quick_run({})
+    end,
   },
   {
     id = "cmake-tools-launch-args",
     label = "Launch Args",
-    command = cmake_tools.launch_args,
+    command = function()
+      cmake_tools.launch_args({})
+    end,
   },
   {
     id = "cmake-tools-debug",
     label = "Debug",
-    command = cmake_tools.debug,
+    command = function()
+      cmake_tools.debug({}, nil)
+    end,
   },
   {
     id = "cmake-tools-quick-debug",
     label = "Quick Debug",
-    command = cmake_tools.quick_debug,
+    command = function()
+      cmake_tools.quick_debug({}, nil)
+    end,
   },
   {
     id = "cmake-tools-select-build-type",
     label = "Select Build Type",
-    command = cmake_tools.select_build_type,
+    command = function()
+      cmake_tools.select_build_type({})
+    end,
   },
   {
     id = "cmake-tools-select-kit",
     label = "Select Kit",
-    command = cmake_tools.select_kit,
+    command = function()
+      cmake_tools.select_kit({})
+    end,
   },
   {
     id = "cmake-tools-select-configure-preset",
     label = "Select Configure Preset",
-    command = cmake_tools.select_configure_preset,
+    command = function()
+      cmake_tools.select_configure_preset({})
+    end,
   },
   {
     id = "cmake-tools-select-build-target",
     label = "Select Build Target",
-    command = cmake_tools.select_build_target,
+    command = function()
+      cmake_tools.select_build_target({}, nil)
+    end,
   },
   {
     id = "cmake-tools-select-launch-target",
     label = "Select Launch Target",
-    command = cmake_tools.select_launch_target,
+    command = function()
+      cmake_tools.select_launch_target({}, nil)
+    end,
   },
   {
     id = "cmake-tools-target-settings",
     label = "Target Settings",
-    command = cmake_tools.target_settings,
+    command = function()
+      cmake_tools.target_settings({})
+    end,
   },
   {
     id = "cmake-tools-settings",
     label = "Settings",
-    command = cmake_tools.settings,
+    command = function()
+      cmake_tools.settings()
+    end,
   },
   {
     id = "cmake-tools-show-target-files",
     label = "Show Target Files",
-    command = cmake_tools.show_target_files,
+    command = function()
+      cmake_tools.show_target_files({})
+    end,
   },
   {
     id = "cmake-tools-select-cwd",
     label = "Select CWD",
-    command = cmake_tools.select_cwd,
+    command = function()
+      cmake_tools.select_cwd({})
+    end,
   },
   {
     id = "cmake-tools-select-build-dir",
     label = "Select Build Dir",
-    command = cmake_tools.select_build_dir,
+    command = function()
+      cmake_tools.select_build_dir({})
+    end,
   },
   {
     id = "cmake-tools-run-test",
     label = "Run Test",
-    command = cmake_tools.run_test,
+    command = function()
+      cmake_tools.run_test({})
+    end,
   },
 }
 map("n", "<leader>rc", function()
