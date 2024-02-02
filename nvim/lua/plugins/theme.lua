@@ -1,9 +1,59 @@
 return {
-  "joshdick/onedark.vim",
+  -- {
+  --   "LazyVim/LazyVim",
+  --   opts = {
+  --     colorscheme = "onedark",
+  --   },
+  -- },
   {
-    "LazyVim/LazyVim",
+    "raddari/last-color.nvim",
+    lazy = false,
+    config = function()
+      local theme = require("last-color").recall() or "onedark"
+      vim.cmd(("colorscheme %s"):format(theme))
+    end,
+  },
+  { "joshdick/onedark.vim" },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
     opts = {
-      colorscheme = "onedark",
+      integrations = {
+        aerial = true,
+        alpha = true,
+        cmp = true,
+        dashboard = true,
+        flash = true,
+        gitsigns = true,
+        headlines = true,
+        illuminate = true,
+        indent_blankline = { enabled = true },
+        leap = true,
+        lsp_trouble = true,
+        mason = true,
+        markdown = true,
+        mini = true,
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { "undercurl" },
+            hints = { "undercurl" },
+            warnings = { "undercurl" },
+            information = { "undercurl" },
+          },
+        },
+        navic = { enabled = true, custom_bg = "lualine" },
+        neotest = true,
+        neotree = true,
+        noice = true,
+        notify = true,
+        semantic_tokens = true,
+        telescope = true,
+        treesitter = true,
+        treesitter_context = true,
+        which_key = true,
+      },
     },
   },
 }

@@ -476,6 +476,17 @@
 			<key>Version</key>
 			<integer>1</integer>
 		</dict>
+		<key>0x66-0x100000-0x3</key>
+		<dict>
+			<key>Action</key>
+			<integer>23</integer>
+			<key>Label</key>
+			<string></string>
+			<key>Text</key>
+			<string></string>
+			<key>Version</key>
+			<integer>1</integer>
+		</dict>
 		<key>0x68-0x100000-0x4</key>
 		<dict>
 			<key>Action</key>
