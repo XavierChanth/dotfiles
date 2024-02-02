@@ -90,7 +90,7 @@ export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/in
 
 #tmux
 t() {
-  tmux a || tmux
+  tmux -CC a || tmux -CC
 }
 
 #cd
