@@ -1,10 +1,4 @@
 return {
-  -- {
-  --   "LazyVim/LazyVim",
-  --   opts = {
-  --     colorscheme = "onedark",
-  --   },
-  -- },
   {
     "raddari/last-color.nvim",
     lazy = false,
@@ -13,7 +7,7 @@ return {
       vim.cmd(("colorscheme %s"):format(theme))
     end,
   },
-  { "joshdick/onedark.vim" },
+  { "joshdick/onedark.vim", lazy = false },
   {
     "catppuccin/nvim",
     name = "catppuccin",
