@@ -14,6 +14,3 @@ map("t", "<S-Space>", "<Space>", { noremap = true })
 map("n", "<leader>rf", function()
   require("telescope").extensions.flutter.commands()
 end, { desc = "Flutter Commands" })
-
--- CMake Command Picker
--- require("config.extras.cmake-picker").setup()
