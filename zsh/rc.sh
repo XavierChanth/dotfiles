@@ -3,6 +3,11 @@
 # general
 source "$HOME"/.config/zsh/secrets.sh
 
+# you probably think this is dumb right?
+# well... it actually does something really cool
+# it makes it so that you can use sudo with aliases
+alias sudo='sudo '
+
 alias rose='arch -x86_64'
 alias act='act --container-architecture linux/amd64'
 
@@ -84,6 +89,7 @@ export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
+
 
 # clang
 export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"

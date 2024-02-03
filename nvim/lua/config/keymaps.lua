@@ -16,4 +16,4 @@ map("n", "<leader>rf", function()
 end, { desc = "Flutter Commands" })
 
 -- CMake Command Picker
-require("config.extras.cmake-picker").setup()
+-- require("config.extras.cmake-picker").setup()
