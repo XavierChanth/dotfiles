@@ -12,7 +12,6 @@ return {
             -- require("neo-tree.sources.filesystem.commands").set_root(state)
             vim.cmd("cd " .. path)
             vim.print("cwd: " .. path)
-            require("cmake-tools").select_cwd(path)
           end,
           desc = "set working directory",
         },
