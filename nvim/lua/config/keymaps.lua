@@ -16,7 +16,6 @@ local tmux_session_command = function()
   session = session:match("([^/]+)$")
   session = session:gsub("%.", "-")
   session = session:gsub("%%", "_")
-  print("loading tmux session: " .. session)
   return { "tmux", "new-session", "-A", "-s", session }
 end
 
