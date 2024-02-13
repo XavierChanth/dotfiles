@@ -100,8 +100,15 @@ alias ctb='ctest --test-dir build'
 
 #tmux
 t() {
-  tmux a || tmux
+  if [ -z "$1" ]; then
+    tmux new-session -A -s main
+  else
+    tmux new-session -A -s $1
+  fi
 }
+# use fzf to select and kill tmux session
+alias tks="tmux ls | fzf | awk -F':' '{print $1}' | xargs -I{} tmux kill-session -t {}"
+alias vks="tmux ls | grep '^_' | fzf | awk -F':' '{print $1}' | xargs -I{} tmux kill-session -t {}"
 
 #cd
 alias xc='cd ~/src/xc'
@@ -114,6 +121,13 @@ alias afc='cd ~/src/af/at_c'
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
+vv() {
+  selected=$(find $HOME/src/af $HOME/src/ac $HOME/src/xc $HOME/src/sa -mindepth 1 -maxdepth 1 -type d | fzf)
+  if [ -z "$selected" ]; then
+    return
+  fi
+  cd $selected && nvim
+}
 
 # dart/flutter
 alias pub='dart pub'

@@ -9,7 +9,7 @@ return {
           return vim.loop.cwd()
         end,
         init_options = {
-          onlyAnalyzeProjectsWithOpenFiles = false,
+          -- onlyAnalyzeProjectsWithOpenFiles = false,
         },
         settings = {
           -- renameFilesWithClasses = "always",
