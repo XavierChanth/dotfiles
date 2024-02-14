@@ -5,13 +5,14 @@ source "$HOME"/.config/zsh/secrets.sh
 
 # you probably think this is dumb right?
 # well... it actually does something really cool
-# it makes it so that you can use sudo with aliases
+# it makes it so that you can use sudo with other aliases
 alias sudo='sudo '
 
 alias rose='arch -x86_64'
 alias act='act --container-architecture linux/amd64'
 
 alias ss='source $HOME/.zshrc'
+alias q='exit'
 
 export PATH="$HOME/.local/bin:$PATH"
 
