@@ -1,5 +1,8 @@
 return {
+  -- "georgeguimaraes/neo-tree.nvim",
+  -- branch = "gg-fix-multiple-saves",
   "nvim-neo-tree/neo-tree.nvim",
+  tag = "3.14",
   opts = {
     window = {
       mappings = {
