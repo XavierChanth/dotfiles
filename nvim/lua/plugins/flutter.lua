@@ -1,3 +1,5 @@
+-- at_mono is a BIG project, so we don't want to analyze the whole thing
+local onlyAnalyzeProjectsWithOpenFiles = true
 return {
   {
     "akinsho/flutter-tools.nvim",
@@ -9,12 +11,17 @@ return {
           return vim.loop.cwd()
         end,
         init_options = {
-          -- onlyAnalyzeProjectsWithOpenFiles = false,
+          onlyAnalyzeProjectsWithOpenFiles = onlyAnalyzeProjectsWithOpenFiles,
+          closingLabels = true,
         },
         settings = {
+          lineLength = 120,
           -- renameFilesWithClasses = "always",
         },
         on_attach = function()
+          local session = require("persistence").get_current()
+          local is_atmono, _ = session:find("at_mono")
+          onlyAnalyzeProjectsWithOpenFiles = (is_atmono > 0 and true or false)
           -- Lazy way to add workspace folder
           vim.lsp.buf.add_workspace_folder(vim.loop.cwd())
           -- Alternatively, add all root patterns as workspace folders

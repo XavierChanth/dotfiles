@@ -111,6 +111,7 @@ alias sxc='cd ~/src/xc'
 alias saf='cd ~/src/af'
 alias dd='cd ~/dev'
 alias dnp='cd ~/dev/noports'
+
 # vim
 alias v='nvim'
 alias vi='nvim'
