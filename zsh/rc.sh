@@ -108,8 +108,8 @@ t() {
   fi
 }
 # use fzf to select and kill tmux session
-alias tks="tmux ls | fzf | awk -F':' '{print $1}' | xargs -I{} tmux kill-session -t {}"
-alias vks="tmux ls | grep '^_' | fzf | awk -F':' '{print $1}' | xargs -I{} tmux kill-session -t {}"
+alias tks="tmux ls | fzf | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
+alias vks="tmux ls | grep '^_' | fzf | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
 
 #cd
 alias xc='cd ~/src/xc'
