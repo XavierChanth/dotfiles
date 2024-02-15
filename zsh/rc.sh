@@ -11,7 +11,7 @@ alias sudo='sudo '
 alias rose='arch -x86_64'
 alias act='act --container-architecture linux/amd64'
 
-alias ss='source $HOME/.zshrc'
+alias s='source $HOME/.zshrc'
 alias q='exit'
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -106,12 +106,11 @@ alias tks="tmux ls | fzf | awk -F':' '{print \$1}' | xargs -I{} tmux kill-sessio
 alias vks="tmux ls | grep '^_' | fzf | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
 
 #cd
-alias xc='cd ~/src/xc'
-alias xcdf='cd ~/src/xc/dotfiles'
-alias af='cd ~/src/af'
-alias afnp='cd ~/src/af/noports'
-alias afc='cd ~/src/af/at_c'
-
+alias ss='cd ~/src'
+alias sxc='cd ~/src/xc'
+alias saf='cd ~/src/af'
+alias dd='cd ~/dev'
+alias dnp='cd ~/dev/noports'
 # vim
 alias v='nvim'
 alias vi='nvim'
