@@ -10,12 +10,17 @@ require("which-key").register({
 
 local tmux_session_command = function()
   local session = require("persistence").get_current()
+  if vim.env.TMUX ~= nil then
+    return nil
+  end
+
   if session == nil then
     return "tmux"
   end
   session = session:match("([^/]+)$")
   session = session:gsub("%.", "-")
   session = session:gsub("%%", "_")
+
   return { "tmux", "new-session", "-A", "-s", session }
 end
 
