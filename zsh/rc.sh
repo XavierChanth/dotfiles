@@ -100,13 +100,7 @@ alias cmbt='cmake --build build --target'
 alias ctb='ctest --test-dir build'
 
 #tmux
-t() {
-  if [ -z "$1" ]; then
-    tmux new-session -A -s main
-  else
-    tmux new-session -A -s $1
-  fi
-}
+alias t='tmux' 
 # use fzf to select and kill tmux session
 alias tks="tmux ls | fzf | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
 alias vks="tmux ls | grep '^_' | fzf | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
