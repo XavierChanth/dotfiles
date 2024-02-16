@@ -121,7 +121,11 @@ vv() {
   if [ -z "$selected" ]; then
     return
   fi
-  cd $selected && nvim
+  cd $selected;
+  DISABLE_AUTO_TITLE="true"
+  echo -e "\033];nvim - $selected\007"
+  nvim;
+  DISABLE_AUTO_TITLE="false"
 }
 
 # dart/flutter
