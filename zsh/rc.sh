@@ -29,6 +29,7 @@ git config --global gpg.format ssh
 git config --global alias.wt worktree
 alias glog='git log --oneline --decorate --graph'
 alias gloga='glog --all'
+alias lg='lazygit'
 clone() {
   REPO=$1
   shift;
