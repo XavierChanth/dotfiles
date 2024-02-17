@@ -43,7 +43,6 @@ clone() {
 }
 
 # antigen
-ANTIGEN_MUTEX=false
 source $HOME/.config/zsh/antigen.zsh
 
 antigen use oh-my-zsh
@@ -194,3 +193,10 @@ unset __conda_setup
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
+# bun completions
+[ -s "/Users/chant/.bun/_bun" ] && source "/Users/chant/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

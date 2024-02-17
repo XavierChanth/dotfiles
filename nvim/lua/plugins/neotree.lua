@@ -1,8 +1,11 @@
 return {
+  "pysan3/neo-tree.nvim",
+  branch = "update-curpos-before-expand",
   -- "georgeguimaraes/neo-tree.nvim",
   -- branch = "gg-fix-multiple-saves",
-  "nvim-neo-tree/neo-tree.nvim",
-  tag = "3.14",
+  -- "nvim-neo-tree/neo-tree.nvim",
+  -- tag = "3.14",
+  version = false,
   opts = {
     window = {
       mappings = {
