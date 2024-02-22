@@ -97,7 +97,7 @@ export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/in
 alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 alias cmbb='cmake --build build'
 alias cmbt='cmake --build build --target'
-alias ctb='ctest --test-dir build'
+alias ctb='ctest --test-dir build --output-on-failure'
 
 #tmux
 alias t='tmux' 
