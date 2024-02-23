@@ -156,6 +156,10 @@ rollup() {
 }
 
 # atsign
+atdirectory() {
+  head -n 1 < <(openssl s_client -connect root.atsign.org:64 -quiet -verify_quiet < <(echo "$1"; sleep 1; echo "@exit") 2>/dev/null)
+}
+
 atserver() {
   pkam_command="at_pkam"
   atsign="$1"
@@ -169,7 +173,7 @@ atserver() {
   mkdir -p "/tmp/atserver"
   mkfifo "$pipe"
 
-  fqdn=$(atDirectory "${atsign:1}" | tr -d '\r\n\t ')
+  fqdn=$(atdirectory "${atsign:1}" | tr -d '\r\n\t ')
   if [ -f $atkeys ]; then
   # subshell to prevent the trap from leaking into the main shell
   (
