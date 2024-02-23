@@ -184,15 +184,14 @@ atserver() {
       fi
       is_done=1
       rm "$pipe" 2>&1 >/dev/null
-      kill "$tail_pid" 2>&1 >/dev/null
     }
     trap _cleanup INT TERM EXIT
     _pkam() {
       # Some sorcery to get the challenge to actually write to the openssl client
       # I think this tail flushes the pipe which is what allows us to write
+      echo "from:$atsign"
       (tail -f "$pipe" &)
       tail_pid=$!
-      echo "from:$atsign"
       challenge="$(head -n 1 $pipe)"
       echo "pkam:$($pkam_command -p $atkeys -r ${challenge:5})"
     }
