@@ -157,6 +157,7 @@ rollup() {
 
 # atsign
 atserver() {
+  pkam_command="at_pkam"
   atsign="$1"
   if [[ ${atsign:0:1} != "@" ]] ; then 
     atsign="@$atsign"
@@ -189,7 +190,7 @@ atserver() {
       tail_pid=$!
       echo "from:$atsign"
       challenge="$(head -n 1 $pipe)"
-      echo "pkam:$(at_pkam -p $atkeys -r ${challenge:5})"
+      echo "pkam:$($pkam_command -p $atkeys -r ${challenge:5})"
     }
 
     (_pkam && cat)  | (openssl s_client -brief -connect "${fqdn:1}") | tee "$pipe"
