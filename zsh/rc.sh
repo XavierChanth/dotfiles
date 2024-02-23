@@ -161,26 +161,26 @@ atserver() {
   if [[ ${atsign:0:1} != "@" ]] ; then 
     atsign="@$atsign"
   fi
-
+  atkeys="$HOME/.atsign/keys/${atsign}_key.atKeys"
   time=$(date +%s)
   pipe="/tmp/atserver/$atsign-$time"
 
   mkdir -p "/tmp/atserver"
   mkfifo "$pipe"
 
-  is_done=0
-  _cleanup() {
-    if [ $is_done -gt 0 ]; then
-      return
-    fi
-    is_done=1
-    rm "$pipe" 2>&1 >/dev/null
-    kill "$tail_pid" 2>&1 >/dev/null
-    unset _pkam
-    unset _cleanup
-    trap - INT TERM EXIT
-  }
+  fqdn=$(atDirectory "${atsign:1}" | tr -d '\r\n\t ')
+  if [ -f $atkeys ]; then
+  # subshell to prevent the trap from leaking into the main shell
   (
+    is_done=0
+    _cleanup() {
+      if [ $is_done -gt 0 ]; then
+        return
+      fi
+      is_done=1
+      rm "$pipe" 2>&1 >/dev/null
+      kill "$tail_pid" 2>&1 >/dev/null
+    }
     trap _cleanup INT TERM EXIT
     _pkam() {
       # Some sorcery to get the challenge to actually write to the openssl client
@@ -189,12 +189,15 @@ atserver() {
       tail_pid=$!
       echo "from:$atsign"
       challenge="$(head -n 1 $pipe)"
-      echo "pkam:$(at_pkam -p $HOME/.atsign/keys/${atsign}_key.atKeys -r ${challenge:5})"
+      echo "pkam:$(at_pkam -p $atkeys -r ${challenge:5})"
     }
 
-    fqdn=$(atDirectory "${atsign:1}" | tr -d '\r\n\t ')
     (_pkam && cat)  | (openssl s_client -brief -connect "${fqdn:1}") | tee "$pipe"
   )
+  else
+    # no atkeys file, don't try to pkam
+    openssl s_client -brief -connect "${fqdn:1}" 
+  fi
 }
 
 # >>> conda initialize >>>
