@@ -122,8 +122,7 @@ vv() {
     return
   fi
   cd $selected;
-  DISABLE_AUTO_TITLE="true"
-  echo -e "\033];nvim - $selected\007"
+  DISABLE_AUTO_TITLE="true" echo -e "\033];nvim - $selected\007"
   nvim;
   DISABLE_AUTO_TITLE="false"
 }
@@ -157,17 +156,45 @@ rollup() {
 }
 
 # atsign
-atDirectory() {
-  head -n 1 < <(openssl s_client -connect root.atsign.org:64 -quiet -verify_quiet < <(echo "$1"; sleep 1; echo "@exit") 2>/dev/null)
-}
+atserver() {
+  atsign="$1"
+  if [[ ${atsign:0:1} != "@" ]] ; then 
+    atsign="@$atsign"
+  fi
 
-atServer() {
-  fqdn=$(atDirectory "$1" | tr -d '\r\n\t ')
-  openssl s_client -connect "${fqdn:1}"
-}
+  time=$(date +%s)
+  pipe="/tmp/atserver/$atsign-$time"
 
-pkam() {
-  at_pkam -p "$HOME/.atsign/keys/$1_key.atKeys" -r "$2"
+  mkdir -p "/tmp/atserver"
+  mkfifo "$pipe"
+
+  is_done=0
+  _cleanup() {
+    if [ $is_done -gt 0 ]; then
+      return
+    fi
+    is_done=1
+    rm "$pipe" 2>&1 >/dev/null
+    kill "$tail_pid" 2>&1 >/dev/null
+    unset _pkam
+    unset _cleanup
+    trap - INT TERM EXIT
+  }
+  (
+    trap _cleanup INT TERM EXIT
+    _pkam() {
+      # Some sorcery to get the challenge to actually write to the openssl client
+      # I think this tail flushes the pipe which is what allows us to write
+      (tail -f "$pipe" &)
+      tail_pid=$!
+      echo "from:$atsign"
+      challenge="$(head -n 1 $pipe)"
+      echo "pkam:$(at_pkam -p $HOME/.atsign/keys/${atsign}_key.atKeys -r ${challenge:5})"
+    }
+
+    fqdn=$(atDirectory "${atsign:1}" | tr -d '\r\n\t ')
+    (_pkam && cat)  | (openssl s_client -brief -connect "${fqdn:1}") | tee "$pipe"
+  )
 }
 
 # >>> conda initialize >>>
