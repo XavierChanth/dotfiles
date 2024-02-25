@@ -1,0 +1,5 @@
+^/.git$
+^.DS_Store$
+^/.gitignore$
+^/backup-macos.sh$
+^/restore-macos.sh$

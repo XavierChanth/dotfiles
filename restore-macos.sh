@@ -9,46 +9,20 @@ if ! command -v brew &>/dev/null; then
 	echo "install brew from https://brew.sh/"
 	exit
 fi
+brew bundle --file="$SCRIPT_DIRECTORY"/.xavierchanth/brew/Brewfile
 
-if [ ! -f "$SCRIPT_DIRECTORY/confirmed_overwrite" ]; then
-	echo "This script could potentially overwrite your existing dotfiles."
-	echo "Are you sure you want to continue? (y/n)"
-	read -r response
-	if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-		echo "Exiting..."
-		exit
-	fi
-	touch "$SCRIPT_DIRECTORY/confirmed_overwrite"
+# zsh - setup non-committed files
+curl -fsSL git.io/antigen >"$SCRIPT_DIRECTORY"/.config/zsh/antigen.zsh
+touch "$SCRIPT_DIRECTORY"/.config/zsh/secrets.sh
+
+# stow
+if ! command -v stow &>/dev/null; then
+	echo "brew could not be found"
+	echo "install brew from https://brew.sh/"
+	exit
 fi
+stow -d "$SCRIPT_DIRECTORY" -t "$HOME" .
 
-# zsh
-ln -sfh "$SCRIPT_DIRECTORY"/zsh/rc.sh "$HOME"/.zshrc
-touch "$SCRIPT_DIRECTORY"/zsh/secrets.sh
-ln -sFh "$SCRIPT_DIRECTORY"/zsh "$HOME"/.config/zsh
-
-# antigen
-curl -fsSL git.io/antigen >"$HOME"/.config/zsh/antigen.zsh
-
-# install from brewfile
-brew bundle --file="$SCRIPT_DIRECTORY"/brew/Brewfile
-
-# lazygit
-ln -sFh "$SCRIPT_DIRECTORY"/lazygit "$HOME"/.config/lazygit
-
-# nvim
-ln -sFh "$SCRIPT_DIRECTORY"/nvim "$HOME"/.config/nvim
-
-# tmux
-ln -Sfh "$SCRIPT_DIRECTORY"/tmux/tmux.conf "$HOME"/.tmux.conf
-
-# alacritty
-ln -sfh "$SCRIPT_DIRECTORY"/alacritty.toml "$HOME"/.config/alacritty.toml
-
-# iterm2
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$SCRIPT_DIRECTORY/iterm2"
+# iterm2 - must use their weird way of loading config files
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.xavierchanth/iterm2"
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-ln -sfh "$SCRIPT_DIRECTORY"/iterm2/switch_automatic.py "$HOME/Library/Application Support/iTerm2/Scripts/AutoLaunch"
-
-# vscode
-ln -sfh "$SCRIPT_DIRECTORY"/vscode/settings.json "$HOME/Library/Application Support/Code/User"
-ln -sfh "$SCRIPT_DIRECTORY"/vscode/keybindings.json "$HOME/Library/Application Support/Code/User"
