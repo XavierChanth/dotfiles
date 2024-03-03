@@ -43,6 +43,6 @@ unset __conda_setup
 
 
 # syntax highlighting must be done last for it to work correctly
-if command -v brew; then
+if command -v brew &>/dev/null; then
   [[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
