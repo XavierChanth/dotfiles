@@ -1,0 +1,116 @@
+{
+  // Place your snippets for dart here. Each snippet is defined under a snippet name and has a prefix, body and
+  // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+  // same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "Debug print": {
+    "prefix": "debug",
+    "body": ["print('$1 => ${$1}');", "$2"],
+    "description": "Log output to console"
+  },
+  "AtClient": {
+    "prefix": "ac",
+    "body": ["AtClient atClient = AtClientManager.getInstance().atClient;"],
+    "description": "Get AtClient"
+  },
+  "args Command": {
+    "prefix": "command",
+    "body": [
+      "import 'package:args/command_runner.dart';",
+      "",
+      "const _name = '$3';",
+      "const _description = '$4';",
+      "",
+      "class $1 extends Command<$2> {",
+      "  @override",
+      "  String get name => _name;",
+      "",
+      "  @override",
+      "  String get description => _description;",
+      "",
+      "  @override",
+      "  Future<$2> run() async {",
+      "    $0",
+      "  }",
+      "}",
+    ],
+    "description": "A boilerplate for a command from args package."
+  },
+  "args CommandRunner": {
+    "prefix": "runner",
+    "body": [
+      "import 'dart:io';",
+      "",
+      "import 'package:args/args.dart' show ArgResults;",
+      "import 'package:args/command_runner.dart' show CommandRunner, UsageException;",
+      "import 'package:chalkdart/chalk.dart' show chalk;",
+      "import 'package:at_utils/at_logger.dart';",
+      "",
+      "const String name = '$2';",
+      "const String description = '$3';",
+      "",
+      "class AtCommandRunner extends CommandRunner<$1> {",
+      "",
+      "  AtCommandRunner() : super(name, description) {",
+      "    argParser.addFlag(",
+      "      'verbose',",
+      "      negatable: false,",
+      "      abbr: 'v',",
+      "      help: 'Verbose logging'",
+      "    );",
+      "    addCommand($0);",
+      "  }",
+      "",
+      "  @override",
+      "  Future<$1> run(Iterable<String> args) async {",
+      "    try {",
+      "      final _argResults = parse(args);",
+      "      return await runCommand(_argResults);",
+      "    } on FormatException catch (e) {",
+      "      stdout.writeAll([chalk.red(e.message), usage]);",
+      "    } on UsageException catch (e) {",
+      "      stdout.writeAll([chalk.red(e.message), e.usage]);",
+      "    }",
+      "    return false;",
+      "  }",
+      "",
+      "  @override",
+      "  Future<$1> runCommand(ArgResults topLevelResults) async {",
+      "    AtSignLogger.root_level = 'severe';",
+      "    if(topLevelResults.wasParsed('verbose')) {",
+      "      AtSignLogger.root_level = 'info';",
+      "    }",
+      "    return super.runCommand(topLevelResults) as Future<$1>;",
+      "  }",
+      "}"
+    ],
+    "description": "A boilerplate command runner for package args."
+  },
+  "test": {
+    "prefix": "test",
+    "body": [
+      "test('$1', () {",
+      "  $0"
+      "}); // test $1"
+    ],
+    "description": "dart:test - test boilerplate with postfixed comment"
+  },
+  "group": {
+    "prefix": "group",
+    "body": [
+      "group('$1', () {",
+      "  $0"
+      "}); // group $1"
+    ],
+    "description": "dart:test - group boilerplate with postfixed comment"
+  }
+}
