@@ -2,6 +2,8 @@
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/.local/bin:$PATH"
+export LANG="en_CA.UTF-8"
+export LC_ALL="en_CA.UTF-8"
 
 while read file; do source $HOME/.config/zsh/$file; done << EOFILES
 secrets.zsh
