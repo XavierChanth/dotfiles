@@ -13,8 +13,7 @@ return {
     "hrsh7th/nvim-cmp",
     opts = {
       completion = {
-        autocomplete = false, -- Only show cmp when explicitly invoked
-        -- completeopt = "menu,preview,menuone,noselect,noinsert",
+        completeopt = "menu,preview,menuone,noselect,noinsert",
       },
     },
   },
