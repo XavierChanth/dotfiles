@@ -1395,6 +1395,8 @@
 					<string></string>
 				</dict>
 			</dict>
+			<key>Left Option Key Changeable</key>
+			<false/>
 			<key>Link Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -1423,13 +1425,15 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<false/>
 			<key>Prompt Before Closing 2</key>
 			<false/>
+			<key>Right Option Key Changeable</key>
+			<false/>
 			<key>Right Option Key Sends</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>Rows</key>
 			<integer>40</integer>
 			<key>Screen</key>
