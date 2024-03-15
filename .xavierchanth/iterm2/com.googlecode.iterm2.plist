@@ -4167,7 +4167,7 @@
 	<key>QuitWhenAllWindowsClosed</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>Size Changes Affect Profile</key>
 	<false/>
 	<key>SmartPlacement</key>
