@@ -9,11 +9,11 @@ require("which-key").register({
 })
 
 local tmux_session_command = function()
-  local session = require("persistence").get_current()
   if vim.env.TMUX ~= nil then
     return nil
   end
 
+  local session = require("persistence").get_current()
   if session == nil then
     return "tmux"
   end
