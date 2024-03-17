@@ -1,3 +1,4 @@
 # never hurts to have this in two places
+antigen.zsh
 secrets.zsh
 secrets.sh
