@@ -3,7 +3,6 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 export LANG="en_CA.UTF-8"
-export LC_ALL="en_CA.UTF-8"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 
 while read file; do source $HOME/.config/zsh/$file; done << EOFILES
