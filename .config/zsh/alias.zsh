@@ -16,7 +16,9 @@ alias q='exit'
 #cd
 alias ss='cd ~/src'
 c() {
-  selected=$(find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d  | cat - <(echo $HOME/src $HOME/dev) | fzf)
+  # scheme path - to optimize fzf for directory paths
+  # tiebreak index - to sort by index when there are multiple matches of equal strength (i.e. search src first)
+  selected=$(find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d | fzf --scheme=path --tiebreak=index)
   if [ -z "$selected" ]; then
     return
   fi
