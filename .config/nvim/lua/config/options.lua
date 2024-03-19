@@ -3,3 +3,4 @@
 -- Add any additional options here
 
 vim.opt.colorcolumn = "81,121"
+vim.opt.ttimeout = false
