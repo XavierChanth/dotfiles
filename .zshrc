@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+set keyseq-timeout 0
+
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 export LANG="en_CA.UTF-8"
@@ -16,9 +18,6 @@ iterm2.zsh
 nvim.zsh
 prog.zsh
 EOFILES
-
-# brew
-export HOMEBREW_NO_ENV_HINTS=true
 
 # Below here is the stuff automatically added by install scripts
 

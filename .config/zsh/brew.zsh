@@ -14,3 +14,5 @@ FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 
 autoload -Uz compinit
 compinit
+
+export HOMEBREW_NO_ENV_HINTS=true
