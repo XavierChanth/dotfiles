@@ -20,9 +20,10 @@ c() {
   # tiebreak index - to sort by index when there are multiple matches of equal strength (i.e. search src first)
   selected=$(find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d | fzf --scheme=path --tiebreak=end,index)
   if [ -z "$selected" ]; then
-    return
+    return 1
   fi
   cd $selected;
+  return 0
 }
 
 # tmux
