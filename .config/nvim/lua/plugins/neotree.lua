@@ -61,6 +61,7 @@ return {
   },
   opts = {
     window = {
+      position = "float",
       mappings = {
         ["w"] = {
           function(state)
