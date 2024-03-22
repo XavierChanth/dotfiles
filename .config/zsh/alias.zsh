@@ -26,4 +26,5 @@ alias vks="tmux ls | grep '^_' | fzf -m | awk -F':' '{print \$1}' | xargs -I{} t
 alias fzf_projects="find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d | fzf --scheme=path --tiebreak=end,index"
 alias cc='selected=$(fzf_projects) || return 1 && cd $selected'
 alias vv='selected=$(fzf_projects) || return 1 && cd $selected; DISABLE_AUTO_TITLE="true" echo -e "\033];nvim - $selected\007";nvim;DISABLE_AUTO_TITLE="false";'
-alias tt='selected=$(fzf_projects) || return 1 && tmux switch-client -t $(tmux new -AdPc $selected -s $(basename $selected))'
+alias tt='selected=$(fzf_projects) || return 1 && tmux switch-client -t $(tmux new -Pdc $selected -s $(basename $selected) 2>/dev/null || basename $selected)'
+
