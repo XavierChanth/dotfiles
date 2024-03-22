@@ -13,24 +13,18 @@ alias x64='arch -x86_64'
 alias s='source $HOME/.zshrc'
 alias q='exit'
 
-#cd
-alias ss='cd ~/src'
-c() {
-  # scheme path - to optimize fzf for directory paths
-  # tiebreak index - to sort by index when there are multiple matches of equal strength (i.e. search src first)
-  selected=$(find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d | fzf --scheme=path --tiebreak=end,index)
-  if [ -z "$selected" ]; then
-    return 1
-  fi
-  cd $selected;
-  return 0
-}
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
 
 # tmux
-# TODO: replace this with some better sessionizer stuff maybe tmux-sessionx?
 alias t='tmux' 
 # use fzf to select and kill tmux session
 alias tks="tmux ls | fzf -m | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
 alias vks="tmux ls | grep '^_' | fzf -m | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
 
+# Sessionizers
+alias fzf_projects="find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d | fzf --scheme=path --tiebreak=end,index"
+alias c='selected=$(fzf_projects) || return 1 && cd $selected'
+alias vv='selected=$(fzf_projects) || return 1 && cd $selected; DISABLE_AUTO_TITLE="true" echo -e "\033];nvim - $selected\007";nvim;DISABLE_AUTO_TITLE="false";'
 

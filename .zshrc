@@ -7,6 +7,9 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 export LANG="en_CA.UTF-8"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 
+export EDITOR="nvim"
+export VISUAL="nvim"
+
 while read file; do source $HOME/.config/zsh/$file; done << EOFILES
 secrets.zsh
 alias.zsh
@@ -15,7 +18,6 @@ brew.zsh
 commands.zsh
 git.zsh
 iterm2.zsh
-nvim.zsh
 prog.zsh
 EOFILES
 
