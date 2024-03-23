@@ -3,8 +3,9 @@
 FULL_PATH_TO_SCRIPT="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIRECTORY="$(dirname "$FULL_PATH_TO_SCRIPT")"
 
-while getopts "b" opt; do
+while getopts "hb" opt; do
 	case $opt in
+	h) echo "Usage: $0 [-b]" && exit ;;
 	b)
 		brew=1
 		;;
