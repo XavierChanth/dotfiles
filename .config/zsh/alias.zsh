@@ -13,18 +13,16 @@ alias x64='arch -x86_64'
 alias s='source $HOME/.zshrc'
 alias q='exit'
 
+alias find_projects="find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d"
+alias fzf_projects='find_projects | fzf --scheme=path --tiebreak=end,index'
+alias cc='__cc_selected=$(fzf_projects) || return 1 && cd $__cc_selected'
+
 alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
+alias vv='cc; nvim'
 
-# tmux
 alias t='tmux' 
-alias tks="tmux ls | fzf -m | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
-alias vks="tmux ls | grep '^_' | fzf -m | awk -F':' '{print \$1}' | xargs -I{} tmux kill-session -t {}"
+alias tt='__tt_selected=$(fzf_projects) || return 1 && tmux switch-client -t $(basename $__tt_selected) ||\
+  tmux new-ses -AdPc $__tt_selected -s $(basename $__tt_selected) | xargs tmux switch-client -t'
 
-# Sessionizers
-alias fzf_projects="find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d | fzf --scheme=path --tiebreak=end,index"
-alias cc='selected=$(fzf_projects) || return 1 && cd $selected'
-alias vv='selected=$(fzf_projects) || return 1 && cd $selected; DISABLE_AUTO_TITLE="true" echo -e "\033];nvim - $selected\007";nvim;DISABLE_AUTO_TITLE="false";'
-alias tt='selected=$(fzf_projects) || return 1 && tmux switch-client -t $(tmux new -Pdc $selected -s $(basename $selected) 2>/dev/null || basename $selected)'
+alias net='open "x-apple.systempreferences:com.apple.preference.network"'
 
