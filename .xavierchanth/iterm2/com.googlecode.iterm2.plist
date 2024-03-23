@@ -1937,7 +1937,7 @@
 			<key>Use Custom Tab Title</key>
 			<false/>
 			<key>Use Custom Window Title</key>
-			<false/>
+			<true/>
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
