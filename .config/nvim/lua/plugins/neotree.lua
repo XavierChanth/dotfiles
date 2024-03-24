@@ -5,14 +5,14 @@ return {
     {
       "<leader>e",
       function()
-        require("neo-tree.command").execute({ toggle = true, dir = Util.root() })
+        require("neo-tree.command").execute({ toggle = true, reveal = true, dir = Util.root() })
       end,
       desc = "Explorer (root dir)",
     },
     {
       "<leader>E",
       function()
-        require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+        require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
       end,
       desc = "Explorer (cwd)",
     },
@@ -74,6 +74,14 @@ return {
             vim.print("cwd: " .. path)
           end,
           desc = "set working directory",
+        },
+        ["F"] = {
+          function(state)
+            local current_node = state.tree:get_node()
+            local path = current_node:get_id()
+
+            vim.cmd("!open -R " .. path)
+          end,
         },
       },
     },
