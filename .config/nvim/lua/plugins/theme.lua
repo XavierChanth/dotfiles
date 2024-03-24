@@ -3,7 +3,7 @@ return {
     "raddari/last-color.nvim",
     lazy = false,
     config = function()
-      local theme = require("last-color").recall() or "onedark"
+      local theme = require("last-color").recall() or "catppuccin-mocha"
       vim.cmd(("colorscheme %s"):format(theme))
     end,
   },
