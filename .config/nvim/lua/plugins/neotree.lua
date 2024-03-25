@@ -17,11 +17,18 @@ return {
       desc = "Explorer (cwd)",
     },
     {
-      "<leader>uec",
+      "<leader>fe",
       function()
-        require("neo-tree.command").execute({ toggle = false, position = "current" })
+        require("neo-tree.command").execute({ toggle = true, reveal = true, position = "current", dir = Util.root() })
       end,
-      desc = "Ui explorer (current)",
+      desc = "Fullscreen Explorer (root dir)",
+    },
+    {
+      "<leader>fE",
+      function()
+        require("neo-tree.command").execute({ toggle = true, reveal = true, position = "current", dir = vim.loop.cwd() })
+      end,
+      desc = "Fullscreen Explorer (cwd)",
     },
     {
       "<leader>uef",
