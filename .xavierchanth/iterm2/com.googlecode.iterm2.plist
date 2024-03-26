@@ -1827,7 +1827,7 @@
 				<real>0.53725490196078429</real>
 			</dict>
 			<key>Mouse Reporting</key>
-			<false/>
+			<true/>
 			<key>Name</key>
 			<string>Floating</string>
 			<key>Non Ascii Font</key>

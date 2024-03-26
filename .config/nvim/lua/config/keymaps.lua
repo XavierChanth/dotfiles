@@ -37,7 +37,21 @@ map("n", "<c-_>", lazyterm, { desc = "which_key_ignore", noremap = true })
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
 
--- Flutter Command Picker
+-- Telescope
 map("n", "<leader>rf", function()
   require("telescope").extensions.flutter.commands()
 end, { desc = "Flutter Commands" })
+map("n", "<leader>ss", function()
+  require("telescope.builtin").lsp_document_symbols({
+    symbols = require("lazyvim.config").get_kind_filter(),
+    symbol_width = 64,
+  })
+end, { desc = "Goto Symbol" })
+map("n", "<leader>sS", function()
+  require("telescope.builtin").lsp_dynamic_workspace_symbols({
+    symbols = require("lazyvim.config").get_kind_filter(),
+    symbol_width = 64,
+  })
+end, {
+  desc = "Goto Symbol (Workspace)",
+})
