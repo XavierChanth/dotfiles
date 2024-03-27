@@ -19,7 +19,7 @@ if ! command -v brew &>/dev/null; then
 	exit
 fi
 if [ "$brew" == 1 ]; then
-	brew bundle --file="$SCRIPT_DIRECTORY"/.xavierchanth/macos/Brewfile
+	brew bundle --file="$SCRIPT_DIRECTORY"/.xavierchanth/linux/Brewfile
 fi
 
 # zsh - setup non-committed files
@@ -32,10 +32,3 @@ if ! command -v stow &>/dev/null; then
 	exit
 fi
 stow -d "$SCRIPT_DIRECTORY" -t "$HOME" .
-
-# iterm2 - must use their weird way of loading config files
-if ! [ -f "$HOME"/.iterm2_shell_integration.zsh ]; then
-	curl -L https://iterm2.com/shell_integration/zsh -o "$HOME"/.iterm2_shell_integration.zsh
-fi
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.xavierchanth/iterm2"
-defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
