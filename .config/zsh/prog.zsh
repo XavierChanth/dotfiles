@@ -85,5 +85,5 @@ if $__zsh_hl && command -v brew &>/dev/null; then
 fi
 
 # append local path to PATH
-export __path="$__path:$PATH"
+export PATH="$__path:$PATH"
 
