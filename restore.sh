@@ -9,7 +9,7 @@ is_darwin() {
 
 while getopts "hb" opt; do
 	case $opt in
-	h) echo "Usage: $0 [-b]" && exit ;;
+	h) echo "Usage: $0 [-bh]" && exit ;;
 	b)
 		brew=1
 		;;

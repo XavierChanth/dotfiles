@@ -3,3 +3,4 @@
 ^/.gitignore$
 ^/backup-macos.sh$
 ^/restore-macos.sh$
+^/qmk_firmware
