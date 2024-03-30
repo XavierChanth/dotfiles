@@ -8,8 +8,7 @@ return {
         require("neo-tree.command").execute({ toggle = true, reveal = true, dir = Util.root() })
       end,
       desc = "Explorer (root dir)",
-    },
-    {
+      {},
       "<leader>E",
       function()
         require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
@@ -35,21 +34,21 @@ return {
       function()
         require("neo-tree.command").execute({ toggle = false, position = "float" })
       end,
-      desc = "Ui explorer (float)",
+      desc = "Explorer position (float)",
     },
     {
       "<leader>uel",
       function()
         require("neo-tree.command").execute({ toggle = false, position = "left" })
       end,
-      desc = "Ui explorer (left)",
+      desc = "Explorer position (left)",
     },
     {
       "<leader>uer",
       function()
         require("neo-tree.command").execute({ toggle = false, position = "right" })
       end,
-      desc = "Ui explorer (right)",
+      desc = "Explorer position (right)",
     },
     {
       "<leader>ge",
@@ -67,6 +66,14 @@ return {
     },
   },
   opts = {
+    event_handlers = {
+      {
+        event = "neo_tree_buffer_enter",
+        handler = function()
+          vim.opt_local.relativenumber = true
+        end,
+      },
+    },
     window = {
       position = "float",
       mappings = {

@@ -6,6 +6,8 @@ local Util = require("lazyvim.util")
 
 require("which-key").register({
   ["<leader>r"] = { name = "run" },
+  ["<leader>ue"] = { name = "Explorer position" },
+  ["<leader>t"] = { name = "tab stop" },
 })
 
 local tmux_session_command = function()
@@ -55,3 +57,20 @@ map("n", "<leader>sS", function()
 end, {
   desc = "Goto Symbol (Workspace)",
 })
+
+local tabstop = function(num)
+  vim.opt.tabstop = num
+  vim.opt.shiftwidth = num
+end
+-- Tab stops
+map("n", "<leader>t2", function()
+  tabstop(2)
+end, { desc = "2 spaces" })
+
+map("n", "<leader>t4", function()
+  tabstop(4)
+end, { desc = "4 spaces" })
+
+map("n", "<leader>t8", function()
+  tabstop(8)
+end, { desc = "4 spaces" })
