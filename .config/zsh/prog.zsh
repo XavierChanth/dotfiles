@@ -19,7 +19,7 @@ if $__flutter; then
   export FLUTTER_ROOT="$HOME/dev/flutter"
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
   # dart completions
-  [[ -f $HOME/.dart-cli-completion/zsh-config.zsh ]] && . $HOME/.dart-cli-completion/zsh-config.zsh || true
+  [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
   alias pub='dart pub'
   alias melos='dart run melos'
 fi

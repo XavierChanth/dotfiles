@@ -14,7 +14,6 @@ is_darwin() {
 	[ "$(uname)" = 'Darwin' ]
 }
 
-source $XDG_CONFIG_HOME/zsh/secrets.zsh
 source $XDG_CONFIG_HOME/zsh/alias.zsh
 source $XDG_CONFIG_HOME/zsh/atsign.zsh
 if is_darwin; then source $XDG_CONFIG_HOME/zsh/brew.zsh; fi

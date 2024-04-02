@@ -26,9 +26,6 @@ if [ "$brew" == 1 ]; then
 	brew bundle --file="$SCRIPT_DIRECTORY"/.xavierchanth/brew/Brewfile
 fi
 
-# zsh - setup non-committed files
-touch "$SCRIPT_DIRECTORY"/.config/zsh/secrets.zsh
-
 # stow
 if ! command -v stow &>/dev/null; then
 	echo "stow could not be found"
