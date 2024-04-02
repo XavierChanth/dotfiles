@@ -3,6 +3,7 @@ if ! command -v brew &>/dev/null; then
   echo "couldn't find brew"
   exit
 fi
+export PATH="/opt/homebrew/bin:$PATH"
 
 # PS1 theme
 source $(brew --prefix)/opt/spaceship/spaceship.zsh

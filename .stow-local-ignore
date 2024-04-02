@@ -1,3 +1,5 @@
+!^.zshenv$
+
 ^/.git$
 ^.DS_Store$
 ^/.gitignore$

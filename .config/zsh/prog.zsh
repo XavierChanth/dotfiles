@@ -7,7 +7,7 @@ __bun=true
 __rust=false
 __clang=true
 __java=true
-__conda=false
+__conda=true
 __zsh_hl=true
 
 # To avoid expanding $__path lots of times
@@ -47,6 +47,7 @@ fi
 
 # rust
 if $__rust; then
+  $HOME/.cargo/env
   __path="$HOME/.cargo/bin:$__path"
 fi
 
