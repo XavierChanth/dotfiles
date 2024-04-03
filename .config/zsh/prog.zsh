@@ -7,7 +7,6 @@ __bun=true
 __rust=false
 __clang=true
 __java=true
-__conda=true
 __zsh_hl=true
 
 # To avoid expanding $__path lots of times
@@ -64,20 +63,6 @@ fi
 if $__java; then
   export JAVA_HOME="/opt/homebrew/opt/openjdk"
   __path="/opt/homebrew/opt/openjdk/bin:$__path"
-fi
-
-if $__conda; then
-  __conda_setup="$('/opt/homebrew/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-  if [ $? -eq 0 ]; then
-      eval "$__conda_setup"
-  else
-      if [ -f "/opt/homebrew/anaconda3/etc/profile.d/conda.sh" ]; then
-          . "/opt/homebrew/anaconda3/etc/profile.d/conda.sh"
-      else
-          export __path="/opt/homebrew/anaconda3/bin:$__path"
-      fi
-  fi
-  unset __conda_setup
 fi
 
 # syntax highlighting must be done last for it to work correctly

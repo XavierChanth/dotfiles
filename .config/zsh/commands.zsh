@@ -1,9 +1,6 @@
 #!/bin/zsh
 # commands.zsh contains slightly more complex / use-case specific things than alias.zsh
 
-# requires secrets.zsh
-alias dump_cards='with_dc_pat ~/src/ac/dump_cards/dump_cards.py'
-alias vsce='with_vsce_pat vsce'
 
 # rollup a bunch of PRs into a single PR, useful for dealing with several dependabot PRs all at once
 rollup() {
