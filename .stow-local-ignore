@@ -3,6 +3,6 @@
 ^/.git$
 ^.DS_Store$
 ^/.gitignore$
-^/backup-macos.sh$
-^/restore-macos.sh$
+^/backup.sh$
+^/restore.sh$
 ^/qmk_firmware
