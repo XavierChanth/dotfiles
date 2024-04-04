@@ -8,7 +8,8 @@ return {
         require("neo-tree.command").execute({ toggle = true, reveal = true, dir = Util.root() })
       end,
       desc = "Explorer (root dir)",
-      {},
+    },
+    {
       "<leader>E",
       function()
         require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
