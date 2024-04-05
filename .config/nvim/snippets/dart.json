@@ -1,0 +1,10 @@
+{
+  "Debug print": {
+    "prefix": "debug",
+    "body": [
+      "print('$1 => ${$1}');",
+      "$2"
+    ],
+    "description": "Log output to console"
+  }
+}

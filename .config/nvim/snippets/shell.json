@@ -1,0 +1,15 @@
+{
+  "Script Directory": {
+    "prefix": "scriptdir",
+    "body": [
+      "script_dir=\"$(dirname -- \"$(readlink -f -- \"\\$0\")\")\""
+    ]
+  },
+  "Bash Script Directory": {
+    "prefix": "bashscriptdir",
+    "body": [
+      "FULL_PATH_TO_SCRIPT=\"$(realpath \"${BASH_SOURCE[0]}\")\"",
+      "SCRIPT_DIRECTORY=\"$(dirname \"$(realpath \"${BASH_SOURCE[0]}\")\")\""
+    ]
+  }
+}
