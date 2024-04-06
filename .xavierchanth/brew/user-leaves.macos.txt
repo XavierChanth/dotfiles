@@ -1,0 +1,13 @@
+coreutils
+gnu-sed
+gnupg
+grep
+neofetch
+nmap
+pinentry-mac
+qemu
+ripgrep
+rsync
+stow
+tree
+wget
