@@ -16,7 +16,7 @@ source $XDG_CONFIG_HOME/zsh/alias.zsh
 source $XDG_CONFIG_HOME/zsh/atsign.zsh
 source $XDG_CONFIG_HOME/zsh/commands.zsh
 
-if ! command -v git &> /dev/null; then
+if command -v git &> /dev/null; then
   source $XDG_CONFIG_HOME/zsh/git.zsh
 fi
 
