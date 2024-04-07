@@ -21,13 +21,17 @@ if command -v git &> /dev/null; then
 fi
 
 if is_darwin; then
-  source $XDG_CONFIG_HOME/zsh/brew.zsh;
   source $XDG_CONFIG_HOME/zsh/iterm2.zsh;
-  source $XDG_CONFIG_HOME/zsh/prog.zsh;
-  # syntax highlighting must be done last for it to work correctly
-  if command -v brew &>/dev/null; then
+  if command -v brew &> /dev/null; then
+    source $XDG_CONFIG_HOME/zsh/brew.zsh
     [[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  else 
+    echo "Brew not found"
   fi
+fi
+
+if command -v asdf &> /dev/null; then
+  source $XDG_CONFIG_HOME/zsh/asdf.zsh;
 fi
 
 export PATH="$HOME/.local/bin:$PATH"

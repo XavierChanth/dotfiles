@@ -6,12 +6,11 @@ __clang=true
 
 __path=""
 
-# asdf
-. "$(brew --prefix asdf)/libexec/asdf.sh"
 
 # flutter
 if $__flutter; then
   export PUB_CACHE="$HOME/.pub-cache"
+  export FLUTTER_ROOT="$(asdf where flutter)"
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
   # dart completions
   [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true

@@ -16,4 +16,6 @@ FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 autoload -Uz compinit
 compinit
 
+. "$(brew --prefix asdf)/libexec/asdf.sh"
+
 export HOMEBREW_NO_ENV_HINTS=true
