@@ -35,7 +35,3 @@ git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.14.0
 
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
-
-# install tpm
-mkdir -p "$HOME/.config/tmux/plugins"
-git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
