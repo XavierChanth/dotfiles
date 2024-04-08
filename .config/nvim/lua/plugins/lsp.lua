@@ -5,7 +5,7 @@ return {
     opts = {
       servers = {
         clangd = {
-          mason = not (uname.sysname == "Linux" and uname.machine == "arm64"),
+          mason = not (uname.sysname == "Linux" and uname.machine == "aarch64"),
           capabilities = {
             offsetEncoding = { "utf-16" },
           },
