@@ -15,7 +15,7 @@ RUN dnf install -y neovim
 RUN dnf install -y openssl
 RUN dnf install -y stow
 RUN dnf install -y 'dnf-command(copr)'
-RUN dnf copr enable atim/lazygit -y \
+RUN dnf copr enable -y atim/lazygit \
     dnf install -y lazygit
 
 # Add user "chant"
