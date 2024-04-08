@@ -9,8 +9,8 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
-export SPACESHIP_CONDA_SHOW=false
-export SPACESHIP_GCLOUD_SHOW=false
+SPACESHIP_GCLOUD_SHOW=false
+SPACESHIP_HOST_SHOW="always"
 
 is_darwin() {
 	[ "$(uname)" = 'Darwin' ]
