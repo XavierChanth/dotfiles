@@ -1,0 +1,29 @@
+FROM fedora:latest
+
+RUN dnf update -y
+
+# Install basic packages
+RUN dnf install -y git
+RUN dnf install -y sudo
+RUN dnf install -y curl
+RUN dnf install -y zsh
+RUN dnf install -y passwd
+RUN dnf install -y tmux
+RUN dnf install -y ripgrep
+RUN dnf install -y fzf
+RUN dnf install -y neovim
+RUN dnf install -y openssl
+
+# Add user "chant"
+RUN useradd -rm -d /home/chant -s /bin/zsh -g root -G wheel -u 501 -p foobar chant
+RUN passwd --expire chant
+USER chant
+WORKDIR /home/chant
+
+# Install dotfiles
+RUN git clone https://github.com/xavierchanth/dotfiles.git /home/chant/.dotfiles
+RUN /home/chant/.dotfiles/install.sh
+RUN /home/chant/.dotfiles/restore.sh
+
+
+

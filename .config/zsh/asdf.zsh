@@ -1,14 +1,16 @@
 #!/bin/zsh
 
+. "$HOME/.asdf/asdf.sh"
+FPATH="${ASDF_DIR}/completions:$FPATH"
+
 __flutter=true
 __android=true
 __clang=true
 
 __path=""
 
-
 # flutter
-if $__flutter; then
+if $__flutter && $(asdf where flutter &>/dev/null); then
   export PUB_CACHE="$HOME/.pub-cache"
   export FLUTTER_ROOT="$(asdf where flutter)"
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
@@ -26,7 +28,12 @@ fi
 
 # clang
 if $__clang; then
-  export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
+  if $is_darwin; then
+    export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
+  else 
+    export CPATH="/usr/local/include:$CPATH"
+  fi 
+
   alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
   alias cmbb='cmake --build build'
   alias cmbt='cmake --build build --target'

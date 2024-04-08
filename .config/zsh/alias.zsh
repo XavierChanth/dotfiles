@@ -26,5 +26,7 @@ alias tt='__tt_selected=$(fzf_projects) || return 1 &&
   tmux switch-client -t $(basename $__tt_selected) ||
   tmux new-ses -AdPc $__tt_selected -s $(basename $__tt_selected) | xargs tmux switch-client -t'
 
-alias net='open "x-apple.systempreferences:com.apple.preference.network"'
+if $is_darwin; then
+  alias net='open "x-apple.systempreferences:com.apple.preference.network"'
+fi
 

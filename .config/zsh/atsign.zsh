@@ -1,6 +1,11 @@
 #!/bin/zsh
 # atsign specific stuff
 
+if ! command -v openssl &>/dev/null; then
+  echo "openssl is required for atsign commands"
+  return
+fi
+
 atdirectory() {
   head -n 1 < <(openssl s_client -connect root.atsign.org:64 -quiet -verify_quiet < <(echo "$1"; sleep 1; echo "@exit") 2>/dev/null)
 }

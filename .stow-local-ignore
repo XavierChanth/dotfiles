@@ -1,8 +1,16 @@
-!^.zshenv$
-
+# Git stuff / essentials
 ^/.git$
 ^.DS_Store$
 ^/.gitignore$
+
+# Help scripts
 ^/backup.sh$
 ^/restore.sh$
+^/install.sh$
+^/check-env.sh$
+
+# Ignore things checked in but not needed by stow
 ^/qmk_firmware
+
+# Unignore things that are needed by stow but not checked in
+!^.zshenv$
