@@ -18,6 +18,7 @@ openssl
 asdf
 gh
 stow
+lazygit
 EOF
 
 for cmd in $commands; do

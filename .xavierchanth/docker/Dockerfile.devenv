@@ -14,6 +14,9 @@ RUN dnf install -y fzf
 RUN dnf install -y neovim
 RUN dnf install -y openssl
 RUN dnf install -y stow
+RUN dnf install -y 'dnf-command(copr)'
+RUN dnf copr enable atim/lazygit -y \
+    dnf install -y lazygit
 
 # Add user "chant"
 RUN useradd -rm -d /home/chant -s /bin/zsh -g root -G wheel -u 501 chant
