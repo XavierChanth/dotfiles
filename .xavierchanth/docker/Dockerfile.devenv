@@ -23,11 +23,13 @@ USER chant
 WORKDIR /home/chant
 
 # Install dotfiles
-RUN git clone https://github.com/xavierchanth/dotfiles.git /home/chant/.dotfiles
+RUN mkdir -p /home/chant/src/xc/
 RUN rm -rf /home/chant/.zshrc
-RUN chmod u+x /home/chant/.dotfiles/install.sh; \
-    /home/chant/.dotfiles/install.sh
-RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
-    /home/chant/.dotfiles/restore.sh
+ADD "https://api.github.com/repos/xavierchanth/dotfiles/commits?per_page=1" latest_commit
+RUN git clone https://github.com/xavierchanth/dotfiles.git /home/chant/src/xc/dotfiles
+RUN chmod u+x /home/chant/src/xc/dotfiles/install.sh; \
+    /home/chant/src/xc/dotfiles/install.sh
+RUN chmod u+x /home/chant/src/xc/dotfiles/restore.sh; \
+    /home/chant/src/xc/dotfiles/restore.sh
 
 CMD ["/bin/zsh"]

@@ -52,6 +52,7 @@ fi
 stow -d "$SCRIPT_DIRECTORY" -t "$HOME" .
 
 if is_darwin; then
+  stow -d "$SCRIPT_DIRECTORY/Library" -t "$HOME/Library" .
   # iterm2 - must use their weird way of loading config files
   defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.xavierchanth/iterm2"
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true

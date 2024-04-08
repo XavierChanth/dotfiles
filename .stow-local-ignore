@@ -9,6 +9,9 @@
 ^/install.sh$
 ^/check-env.sh$
 
+# Ignore things that should only be included with macos
+^/Library$
+
 # Ignore things checked in but not needed by stow
 ^/qmk_firmware
 
