@@ -1,9 +1,11 @@
+local uname = vim.loop.os_uname()
 return {
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         clangd = {
+          mason = not (uname.sysname == "Linux" and uname.machine == "arm64"),
           capabilities = {
             offsetEncoding = { "utf-16" },
           },
