@@ -10,7 +10,7 @@ alias ll='ls -lh'
 alias la='ls -lah'
 
 alias x64='arch -x86_64'
-alias s='source $HOME/.zshrc'
+alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias find_projects="find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d"
