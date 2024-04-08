@@ -17,6 +17,7 @@ nvim
 openssl
 asdf
 gh
+stow
 EOF
 
 for cmd in $commands; do
@@ -24,3 +25,5 @@ for cmd in $commands; do
     echo "Error: $cmd is not installed"
   fi
 done
+
+echo "Done checking environment"

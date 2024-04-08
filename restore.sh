@@ -53,10 +53,6 @@ stow -d "$SCRIPT_DIRECTORY" -t "$HOME" .
 
 if is_darwin; then
   # iterm2 - must use their weird way of loading config files
-  if ! [ -f "$HOME"/.iterm2_shell_integration.zsh ]; then
-    # install iterm2 shell integration
-    # curl -L https://iterm2.com/shell_integration/zsh -o "$HOME"/.iterm2_shell_integration.zsh
-  fi
   defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.xavierchanth/iterm2"
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi

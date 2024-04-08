@@ -13,17 +13,21 @@ RUN dnf install -y ripgrep
 RUN dnf install -y fzf
 RUN dnf install -y neovim
 RUN dnf install -y openssl
+RUN dnf install -y stow
 
 # Add user "chant"
-RUN useradd -rm -d /home/chant -s /bin/zsh -g root -G wheel -u 501 -p foobar chant
-RUN passwd --expire chant
+RUN useradd -rm -d /home/chant -s /bin/zsh -g root -G wheel -u 501 chant
+RUN passwd -d chant
+RUN chsh -s /bin/zsh chant
 USER chant
 WORKDIR /home/chant
 
 # Install dotfiles
 RUN git clone https://github.com/xavierchanth/dotfiles.git /home/chant/.dotfiles
-RUN /home/chant/.dotfiles/install.sh
-RUN /home/chant/.dotfiles/restore.sh
+RUN rm -rf /home/chant/.zshrc
+RUN chmod u+x /home/chant/.dotfiles/install.sh; \
+    /home/chant/.dotfiles/install.sh
+RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
+    /home/chant/.dotfiles/restore.sh
 
-
-
+CMD ["/bin/zsh"]
