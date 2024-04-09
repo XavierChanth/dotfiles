@@ -13,7 +13,7 @@ alias x64='arch -x86_64'
 alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
-alias find_projects="find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d"
+alias find_projects="{find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d; echo "$HOME/.dotfiles"}"
 alias fzf_projects='find_projects | fzf --scheme=path --tiebreak=end,index'
 alias cc='__cc_selected=$(fzf_projects) || return 1 && cd $__cc_selected'
 
