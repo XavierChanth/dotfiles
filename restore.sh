@@ -44,6 +44,18 @@ if [ "$brew" == 1 ]; then
   esac
 fi
 
+# configure git global settings
+git config --global user.name xavierchanth
+git config --global user.email xchanthavong@gmail.com
+git config --global user.signingkey $HOME/.ssh/id_ed25519.pub
+git config --global filter.lfs.clean 'git-lfs clean -- %f'
+git config --global filter.lfs.smudge 'git-lfs smudge -- %f'
+git config --global filter.lfs.process 'git-lfs filter-process'
+git config --global filter.lfs.required true
+git config --global commit.gpgsign true
+git config --global gpg.format ssh
+git config --global alias.wt worktree
+
 # stow
 if ! command -v stow &>/dev/null; then
   echo "stow could not be found"
