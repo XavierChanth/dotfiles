@@ -15,6 +15,7 @@ alias q='exit'
 
 alias find_projects="{find $HOME/src $HOME/dev -mindepth 0 -maxdepth 2 -type d; echo "$HOME/.dotfiles"}"
 alias fzf_projects='find_projects | fzf --scheme=path --tiebreak=end,index'
+alias fzf_project='fzf_projects' # idk why but cc is truncating the last char in docker-fedora-arm64 so...
 alias cc='__cc_selected=$(fzf_projects) || return 1 && cd $__cc_selected'
 
 alias v='nvim'
