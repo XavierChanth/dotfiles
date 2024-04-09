@@ -2,7 +2,7 @@
 
 git config --global user.name xavierchanth
 git config --global user.email xchanthavong@gmail.com
-git config --global user.signingkey /Users/chant/.ssh/id_ed25519.pub
+git config --global user.signingkey $HOME/.ssh/id_ed25519.pub
 git config --global filter.lfs.clean 'git-lfs clean -- %f'
 git config --global filter.lfs.smudge 'git-lfs smudge -- %f'
 git config --global filter.lfs.process 'git-lfs filter-process'
