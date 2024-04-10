@@ -2,12 +2,13 @@
 
 set keyseq-timeout 0
 
+# basic exports
 export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
-
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# prompt
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
 SPACESHIP_GCLOUD_SHOW=false
 SPACESHIP_HOST_SHOW="always"
@@ -17,6 +18,8 @@ is_darwin() {
 }
 is_darwin=$(is_darwin)
 
+# plugins
+source $XDG_CONFIG_HOME/zsh/vi-mode.zsh
 source $XDG_CONFIG_HOME/zsh/alias.zsh
 source $XDG_CONFIG_HOME/zsh/atsign.zsh
 source $XDG_CONFIG_HOME/zsh/commands.zsh
