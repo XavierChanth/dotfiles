@@ -36,7 +36,6 @@ RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
 
 # Additional setup steps
 RUN nvim --headless "+Lazy! sync" +qa
-RUN mkdir /home/chant/dev
 
 ENTRYPOINT ["tail"]
 CMD ["-f", "/dev/null"]

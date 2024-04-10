@@ -8,7 +8,7 @@ if ! $_home_zshenv_link; then
   if $_home_zshenv; then
     cp "$HOME"/.zshenv "$HOME"/.zshenv.bak
     echo "Made a backup of ~/.zshenv at $HOME/.zshenv.bak"
-    if ! _dot_zshenv; then
+    if ! $_dot_zshenv; then
       mv "$HOME"/.zshenv "$SCRIPT_DIRECTORY"/.zshenv
       echo "Moving existing ~/.zshenv from the home directory into the dotfiles repo"
     else
@@ -35,3 +35,12 @@ git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.14.0
 
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
+
+# Make folders and directories used but not "owned" by dotfiles
+if ! [ -d "$HOME/dev"]; then
+  mkdir -p "$HOME/dev"
+fi
+
+if ! [ -d "$HOME/src"]; then
+  mkdir -p "$HOME/src"
+fi

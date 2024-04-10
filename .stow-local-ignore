@@ -16,4 +16,4 @@
 ^/qmk_firmware
 
 # Unignore things that are needed by stow but not checked in
-!^.zshenv$
+!^/.zshenv$
