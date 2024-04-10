@@ -34,4 +34,5 @@ RUN chmod u+x /home/chant/.dotfiles/install.sh; \
 RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
     /home/chant/.dotfiles/restore.sh
 
-CMD ["/bin/zsh"]
+ENTRYPOINT ["tail"]
+CMD ["-f", "/dev/null"]
