@@ -31,7 +31,7 @@ alias td='__tt_selected=$(docker ps --all --format "table {{.Names}}" | fzf) || 
   docker start $__tt_selected &&
   [ -z $TMUX ] && tmux new-ses -Ac $__tt_selected -s $(basename $__tt_selected) ||
   tmux switch-client -t $(basename $__tt_selected) ||
-  tmux new-ses -AdPc $__tt_selected -s $(basename $__tt_selected) docker attach $(basename $__tt_selected) | xargs tmux switch-client -t'
+  tmux new-ses -AdPc $__tt_selected -s $(basename $__tt_selected) docker exec -it $(basename $__tt_selected) /bin/zsh | xargs tmux switch-client -t'
 
 if $is_darwin; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'

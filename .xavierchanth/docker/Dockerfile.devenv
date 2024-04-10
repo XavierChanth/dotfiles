@@ -34,5 +34,7 @@ RUN chmod u+x /home/chant/.dotfiles/install.sh; \
 RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
     /home/chant/.dotfiles/restore.sh
 
+RUN mkdir /home/chant/dev
+
 ENTRYPOINT ["tail"]
 CMD ["-f", "/dev/null"]
