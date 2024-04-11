@@ -3,6 +3,7 @@ FROM fedora:latest
 RUN dnf update -y
 
 # Install basic packages
+RUN dnf install -y man
 RUN dnf install -y procps
 RUN dnf install -y git
 RUN dnf install -y sudo
@@ -35,8 +36,15 @@ RUN chmod u+x /home/chant/.dotfiles/install.sh; \
 RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
     /home/chant/.dotfiles/restore.sh
 
+# Will have auth later, but not at build time
+WORKDIR /home/chant/.dotfiles
+RUN git remote set-url origin git@github.com:xavierchanth/dotfiles.git
+WORKDIR /home/chant
+
 # Additional setup steps
 RUN nvim --headless "+Lazy! sync" +qa
+RUN sudo dnf install -y clang-tools-extra cmake inotify-tools
 
+# Keep the container from exiting
 ENTRYPOINT ["tail"]
 CMD ["-f", "/dev/null"]
