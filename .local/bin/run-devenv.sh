@@ -1,6 +1,11 @@
 #!/bin/sh
 name="$1"
 
+if [ -z "$name" ]; then
+  echo "name is empty"
+  exit 1
+fi
+
 if $(docker ps --all | grep xavierchanth/devenv | grep -q "$name"); then
   echo "starting $name"
   docker start -ai "$name"
