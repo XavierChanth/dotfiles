@@ -2286,6 +2286,8 @@
 			<string>Default</string>
 			<key>Disable Window Resizing</key>
 			<true/>
+			<key>Draw Powerline Glyphs</key>
+			<true/>
 			<key>Flashing Bell</key>
 			<false/>
 			<key>Foreground Color</key>
@@ -2804,7 +2806,7 @@
 				<real>0.53725490196078429</real>
 			</dict>
 			<key>Mouse Reporting</key>
-			<false/>
+			<true/>
 			<key>Name</key>
 			<string>Normal</string>
 			<key>Non Ascii Font</key>
@@ -2818,7 +2820,7 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<false/>
 			<key>Prompt Before Closing 2</key>
@@ -3234,6 +3236,8 @@
 			<key>Description</key>
 			<string>Default</string>
 			<key>Disable Window Resizing</key>
+			<true/>
+			<key>Draw Powerline Glyphs</key>
 			<true/>
 			<key>Flashing Bell</key>
 			<false/>
@@ -3753,7 +3757,7 @@
 				<real>0.53725490196078429</real>
 			</dict>
 			<key>Mouse Reporting</key>
-			<false/>
+			<true/>
 			<key>Name</key>
 			<string>Default</string>
 			<key>Non Ascii Font</key>
@@ -3767,7 +3771,7 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<false/>
 			<key>Prompt Before Closing 2</key>
