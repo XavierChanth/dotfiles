@@ -1,0 +1,13 @@
+#!/bin/sh
+name="at-ve"
+image="atsigncompany/virtualenv"
+
+if docker ps --all | grep "$image" | grep -q "$name"; then
+  echo "starting $name"
+  docker start "$name"
+else
+  echo "creating new $name container"
+  docker run -d --name "$name" --hostname "$name" \
+    -p 127.0.0.1:6379:6379 -p 64:64 -p 127.0.0.1:9001:9001 -p 25000-25017:25000-25017 \
+    "$image":vip
+fi
