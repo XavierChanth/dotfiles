@@ -3,6 +3,7 @@ FROM fedora:latest
 RUN dnf update -y
 
 # Install basic packages
+RUN dnf install -y procps
 RUN dnf install -y git
 RUN dnf install -y sudo
 RUN dnf install -y curl

@@ -19,6 +19,7 @@ asdf
 gh
 stow
 lazygit
+ps
 EOF
 
 for cmd in $commands; do
