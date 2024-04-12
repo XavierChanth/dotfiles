@@ -8,6 +8,6 @@ if docker ps --all | grep "$image" | grep -q "$name"; then
 else
   echo "creating new $name container"
   docker run -d --name "$name" --hostname "$name" \
-    -p 127.0.0.1:6379:6379 -p 64:64 -p 127.0.0.1:9001:9001 -p 25000-25017:25000-25017 \
+    -p 127.0.0.1:6379:6379 -p 64:64 -p 127.0.0.1:9001:9001 -p 25000-25019:25000-25019 \
     "$image":vip
 fi
