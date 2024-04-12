@@ -3855,7 +3855,7 @@
 			<key>Send Code When Idle</key>
 			<false/>
 			<key>Shortcut</key>
-			<string></string>
+			<string>T</string>
 			<key>Show Mark Indicators</key>
 			<false/>
 			<key>Silence Bell</key>
