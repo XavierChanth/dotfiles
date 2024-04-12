@@ -5,7 +5,7 @@ return {
     event = "BufReadPre *.dart,pubspec.yaml",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = {
-      flutter_lookup_cmd = "$(asdf where flutter)/bin",
+      flutter_lookup_cmd = "asdf where flutter",
       lsp = {
         root_dir = function()
           return vim.loop.cwd()
