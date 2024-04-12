@@ -31,15 +31,13 @@ WORKDIR /home/chant
 RUN rm -rf /home/chant/.zshrc
 ADD "https://api.github.com/repos/xavierchanth/dotfiles/commits?per_page=1" latest_commit
 RUN git clone https://github.com/xavierchanth/dotfiles.git /home/chant/.dotfiles
+WORKDIR /home/chant/.dotfiles
+RUN git remote set-url --push origin git@github.com:xavierchanth/dotfiles.git
+WORKDIR /home/chant
 RUN chmod u+x /home/chant/.dotfiles/install.sh; \
     /home/chant/.dotfiles/install.sh
 RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
     /home/chant/.dotfiles/restore.sh
-
-# Will have auth later, but not at build time
-WORKDIR /home/chant/.dotfiles
-RUN git remote set-url origin git@github.com:xavierchanth/dotfiles.git
-WORKDIR /home/chant
 
 # Additional setup steps
 RUN nvim --headless "+Lazy! sync" +qa
