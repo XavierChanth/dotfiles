@@ -37,10 +37,10 @@ git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.14.0
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
 
 # Make folders and directories used but not "owned" by dotfiles
-if ! [ -d "$HOME/dev"]; then
+if ! [ -d "$HOME/dev" ]; then
   mkdir -p "$HOME/dev"
 fi
 
-if ! [ -d "$HOME/src"]; then
+if ! [ -d "$HOME/src" ]; then
   mkdir -p "$HOME/src"
 fi
