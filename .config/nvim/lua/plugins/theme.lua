@@ -50,4 +50,13 @@ return {
       },
     },
   },
+  {
+    "nvim-lualine/lualine.nvim",
+    config = {
+      options = {
+        theme = "catppuccin",
+        section_separators = { left = "", right = "" },
+      },
+    },
+  },
 }
