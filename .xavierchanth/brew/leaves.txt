@@ -1,11 +1,11 @@
 asciinema
+bash
 bitwarden-cli
 cmake
 coreutils
 ffmpeg
 fzf
 gh
-git-delta
 git-xargs
 gnu-sed
 gnupg
@@ -15,13 +15,9 @@ lazygit
 neofetch
 neovim
 nmap
-ollama
-pinentry-mac
-poetry
-qemu
+python@3.9
 ripgrep
 rsync
-spaceship
 sshuttle
 stow
 tmux
