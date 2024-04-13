@@ -6,6 +6,7 @@ coreutils
 ffmpeg
 fzf
 gh
+git-delta
 git-xargs
 gnu-sed
 gnupg
