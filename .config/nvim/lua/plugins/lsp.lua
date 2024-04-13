@@ -1,5 +1,21 @@
 local uname = vim.loop.os_uname()
+-- Note: dart & flutter configured in ./flutter.lua
 return {
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        -- lsp
+        "bash-language-server",
+        "clangd",
+        "lua-language-server",
+        -- formatter
+        "shfmt",
+        "gersemi",
+        "stylua",
+      },
+    },
+  },
   {
     "neovim/nvim-lspconfig",
     opts = {
@@ -36,12 +52,8 @@ return {
       },
       formatters = {
         injected = {},
-        shfmt = {
-          prepend_args = { "-i", "2", "-ci" },
-        },
-        gersemi = {
-          prepend_args = { "--indent", "2" },
-        },
+        shfmt = { prepend_args = { "-i", "2", "-ci" } },
+        gersemi = { prepend_args = { "--indent", "2" } },
       },
     },
   },

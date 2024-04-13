@@ -4,6 +4,15 @@ return {
     "akinsho/flutter-tools.nvim",
     event = "BufReadPre *.dart,pubspec.yaml",
     dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      {
+        "<leader>rf",
+        function()
+          require("telescope").extensions.flutter.commands()
+        end,
+        desc = "Flutter Commands",
+      },
+    },
     config = {
       flutter_lookup_cmd = "asdf where flutter",
       lsp = {

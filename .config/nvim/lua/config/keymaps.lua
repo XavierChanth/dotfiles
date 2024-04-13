@@ -41,9 +41,6 @@ map("n", "<c-_>", lazyterm, { desc = "which_key_ignore", noremap = true })
 map("t", "<S-Space>", "<Space>", { noremap = true })
 
 -- Telescope
-map("n", "<leader>rf", function()
-  require("telescope").extensions.flutter.commands()
-end, { desc = "Flutter Commands" })
 map("n", "<leader>ss", function()
   require("telescope.builtin").lsp_document_symbols({
     symbols = require("lazyvim.config").get_kind_filter(),
