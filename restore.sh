@@ -7,7 +7,7 @@ is_darwin() {
   [ "$(uname)" = 'Darwin' ]
 }
 
-brew = false
+brew=false
 while getopts "hb:" opt; do
   case $opt in
     h) echo "Usage: $0 [-bh]" && exit ;;
