@@ -781,7 +781,7 @@
 		</dict>
 	</dict>
 	<key>Default Bookmark Guid</key>
-	<string>C86A207B-2F9C-4D3F-84A8-ED8F85AA4C3D</string>
+	<string>F77E01B5-7370-43FB-8622-86E0AB7BA1E7</string>
 	<key>DisableFullscreenTransparency</key>
 	<false/>
 	<key>EnableAPIServer</key>
@@ -951,7 +951,7 @@
 	<key>HideMenuBarInFullscreen</key>
 	<false/>
 	<key>HideScrollbar</key>
-	<false/>
+	<true/>
 	<key>HideTab</key>
 	<true/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
@@ -1190,7 +1190,7 @@
 				<real>0.95294117647058818</real>
 			</dict>
 			<key>BM Growl</key>
-			<true/>
+			<false/>
 			<key>Background Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -1845,7 +1845,7 @@
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
-			<false/>
+			<true/>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Changeable</key>
@@ -2183,7 +2183,7 @@
 				<real>0.95294117647058818</real>
 			</dict>
 			<key>BM Growl</key>
-			<true/>
+			<false/>
 			<key>Background Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -2940,7 +2940,7 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>Working Directory</key>
 			<string>/Users/chant</string>
 		</dict>
@@ -3172,7 +3172,7 @@
 				<real>0.95294117647058818</real>
 			</dict>
 			<key>BM Growl</key>
-			<true/>
+			<false/>
 			<key>Background Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -4123,7 +4123,7 @@
 				<real>0.95294117647058818</real>
 			</dict>
 			<key>BM Growl</key>
-			<true/>
+			<false/>
 			<key>Background Color</key>
 			<dict>
 				<key>Alpha Component</key>
