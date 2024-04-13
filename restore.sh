@@ -7,11 +7,12 @@ is_darwin() {
   [ "$(uname)" = 'Darwin' ]
 }
 
+brew = false
 while getopts "hb:" opt; do
   case $opt in
     h) echo "Usage: $0 [-bh]" && exit ;;
     b)
-      brew=1
+      brew=true
       brew_file=$OPTARG
       case $brew_file in
         all | core | apps) ;;
@@ -25,7 +26,7 @@ while getopts "hb:" opt; do
   esac
 done
 
-if [ "$brew" == 1 ]; then
+if "$brew"; then
   if ! command -v brew &>/dev/null; then
     echo "brew could not be found"
     echo "install brew from https://brew.sh/"
