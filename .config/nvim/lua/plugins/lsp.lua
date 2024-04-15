@@ -1,4 +1,6 @@
 local uname = vim.loop.os_uname()
+local is_linux_arm64 = uname.sysname == "Linux" and uname.machine == "aarch64"
+local no_mason_linux_arm64 = { mason = not is_linux_arm64 }
 -- Note: dart & flutter configured in ./flutter.lua
 return {
   {
@@ -20,8 +22,12 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
+        gopls = no_mason_linux_arm64,
+        pyright = no_mason_linux_arm64,
+        dockerls = no_mason_linux_arm64,
+        docker_compose_language_service = no_mason_linux_arm64,
         clangd = {
-          mason = not (uname.sysname == "Linux" and uname.machine == "aarch64"),
+          mason = not is_linux_arm64,
           capabilities = {
             offsetEncoding = { "utf-16" },
           },
