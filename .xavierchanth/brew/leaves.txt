@@ -3,6 +3,7 @@ bash
 bitwarden-cli
 cmake
 coreutils
+felixkratz/formulae/borders
 ffmpeg
 fzf
 gh
