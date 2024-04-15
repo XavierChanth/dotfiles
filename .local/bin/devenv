@@ -1,12 +1,14 @@
 #!/bin/sh
 name="$1"
-image="xavierchanth/devenv"
 
 if [ -z "$name" ]; then
   echo "name is empty"
   exit 1
 fi
+
+# Because trying to install things in linux arm64 is painful, so just use rosetta (nvim mason will thank you for it)
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
+
 if docker ps --all | grep "$image" | grep -q "$name"; then
   echo "starting $name"
   docker exec -it "$name" /bin/zsh
@@ -16,5 +18,5 @@ else
     --mount type=bind,source="$HOME"/.ssh,target=/home/chant/.ssh \
     --mount type=bind,source="$HOME"/.atsign,target=/home/chant/.atsign \
     --mount type=bind,source="$HOME"/src,target=/home/chant/src \
-    "$image":latest
+    devenv:latest
 fi
