@@ -3,19 +3,9 @@ FROM fedora:latest
 RUN dnf update -y
 
 # Install basic packages
-RUN dnf install -y man
-RUN dnf install -y procps
-RUN dnf install -y git
-RUN dnf install -y sudo
-RUN dnf install -y curl
-RUN dnf install -y zsh
-RUN dnf install -y passwd
-RUN dnf install -y tmux
-RUN dnf install -y ripgrep
-RUN dnf install -y fzf
-RUN dnf install -y neovim
-RUN dnf install -y openssl
-RUN dnf install -y stow
+RUN dnf install -y man git sudo zsh passwd procps
+RUN dnf install -y curl wget iproute traceroute openssl
+RUN dnf install -y tmux ripgrep fzf neovim stow
 RUN dnf install -y 'dnf-command(copr)'
 RUN dnf copr enable -y atim/lazygit; \
     dnf install -y lazygit

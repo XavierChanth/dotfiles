@@ -6,7 +6,7 @@ if [ -z "$name" ]; then
   echo "name is empty"
   exit 1
 fi
-
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 if docker ps --all | grep "$image" | grep -q "$name"; then
   echo "starting $name"
   docker exec -it "$name" /bin/zsh
