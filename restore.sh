@@ -56,6 +56,7 @@ git config --global filter.lfs.required true
 git config --global commit.gpgsign true
 git config --global gpg.format ssh
 git config --global alias.wt worktree
+git config --global pull.ff only
 
 # stow
 if ! command -v stow &>/dev/null; then
