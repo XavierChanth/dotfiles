@@ -1,11 +1,5 @@
 #!/bin/zsh
 # commands.zsh contains slightly more complex / use-case specific things than alias.zsh
-apollo() {
-  if $(docker ps -a | grep xavierchanth:devenv | grep -q apollo); then
-    docker start apollo
-  fi
-  docker exec -it apollo /bin/zsh
-}
 
 # rollup a bunch of PRs into a single PR, useful for dealing with several dependabot PRs all at once
 rollup() {

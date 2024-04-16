@@ -9,8 +9,11 @@ fi
 # Because trying to install things in linux arm64 is painful, so just use rosetta (nvim mason will thank you for it)
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
-if docker ps --all | grep "$image" | grep -q "$name"; then
+if docker ps --all | grep -q "$name"; then
   echo "starting $name"
+  if ! docker ps | grep -q "$name"; then
+    docker start "$name"
+  fi
   docker exec -it "$name" /bin/zsh
 else
   echo "creating new $name container"
