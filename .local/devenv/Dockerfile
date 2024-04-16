@@ -5,10 +5,8 @@ RUN dnf update -y
 # Install basic packages
 RUN dnf install -y man git sudo zsh passwd procps
 RUN dnf install -y curl wget iproute traceroute openssl
-RUN dnf install -y tmux ripgrep fzf git-delta neovim stow
-RUN dnf install -y 'dnf-command(copr)'
-RUN dnf copr enable -y atim/lazygit; \
-    dnf install -y lazygit
+RUN dnf install -y stow
+RUN dnf install -y clang-tools-extra inotify-tools
 
 # Add user "chant"
 RUN useradd -rm -d /home/chant -s /bin/zsh -g root -G wheel -u 501 chant
@@ -26,12 +24,6 @@ RUN git remote set-url --push origin git@github.com:xavierchanth/dotfiles.git
 WORKDIR /home/chant
 RUN chmod u+x /home/chant/.dotfiles/install.sh; \
     /home/chant/.dotfiles/install.sh
-RUN chmod u+x /home/chant/.dotfiles/restore.sh; \
-    /home/chant/.dotfiles/restore.sh
-
-# Additional setup steps
-RUN nvim --headless "+Lazy! sync" +qa
-RUN sudo dnf install -y clang-tools-extra cmake inotify-tools
 
 # Keep the container from exiting
 ENTRYPOINT ["tail"]

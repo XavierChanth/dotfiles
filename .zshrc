@@ -1,36 +1,32 @@
-#!/bin/zsh
+#!/bin/bash
 
 set keyseq-timeout 0
 
 # basic exports
 export XDG_CONFIG_HOME="$HOME/.config"
+export ASDF_DIR="$HOME/.local/asdf"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
-export EDITOR="nvim"
-export VISUAL="nvim"
+
 
 # prompt
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
 SPACESHIP_GCLOUD_SHOW=false
 SPACESHIP_HOST_SHOW="always"
 
-is_darwin() {
-	[ "$(uname)" = 'Darwin' ]
-}
-is_darwin=$(is_darwin)
+  is_darwin=$([ "$(uname)" = 'Darwin' ]) 
 
 # plugins
-source $XDG_CONFIG_HOME/zsh/vi-mode.zsh
-source $XDG_CONFIG_HOME/zsh/alias.zsh
-source $XDG_CONFIG_HOME/zsh/atsign.zsh
-source $XDG_CONFIG_HOME/zsh/commands.zsh
+source $XDG_CONFIG_HOME/zsh/vi-mode.sh
+source $XDG_CONFIG_HOME/zsh/alias.sh
+source $XDG_CONFIG_HOME/zsh/atsign.sh
+source $XDG_CONFIG_HOME/zsh/commands.sh
 
 if command -v git &> /dev/null; then
-  source $XDG_CONFIG_HOME/zsh/git.zsh
+  source $XDG_CONFIG_HOME/zsh/git.sh
 fi
 
 if $is_darwin; then
-  source $XDG_CONFIG_HOME/zsh/iterm2.zsh;
-
+  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
   if command -v brew &> /dev/null; then
     export PATH="/opt/homebrew/bin:$PATH"
     export HOMEBREW_NO_ENV_HINTS=true
@@ -39,7 +35,7 @@ if $is_darwin; then
   fi
 fi
 
-source $XDG_CONFIG_HOME/zsh/asdf.zsh;
+source $XDG_CONFIG_HOME/zsh/asdf.sh;
 
 autoload -Uz compinit
 compinit

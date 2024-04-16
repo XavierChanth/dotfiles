@@ -1,6 +1,6 @@
-#!/bin/zsh
+#!/bin/bash
 
-. "$HOME/.asdf/asdf.sh"
+. "$HOME/.local/asdf/asdf.sh"
 FPATH="${ASDF_DIR}/completions:$FPATH"
 
 __flutter=true

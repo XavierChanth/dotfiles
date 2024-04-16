@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 alias glog='git log --oneline --decorate --graph'
 alias gloga='glog --all'

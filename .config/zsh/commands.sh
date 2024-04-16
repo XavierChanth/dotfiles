@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # commands.zsh contains slightly more complex / use-case specific things than alias.zsh
 
 # rollup a bunch of PRs into a single PR, useful for dealing with several dependabot PRs all at once

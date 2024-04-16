@@ -1,6 +1,8 @@
 #!/bin/sh
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+
 docker_build() {
-  docker build --tag devenv:latest -f Dockerfile.devenv .
+  docker build --tag devenv:latest -f Dockerfile "$script_dir"
   docker image tag devenv:latest xavierchanth/devenv:latest
 }
 

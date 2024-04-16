@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 command_exists() {
   command -v "$1" >/dev/null 2>&1
@@ -20,6 +20,7 @@ gh
 stow
 lazygit
 ps
+delta
 EOF
 
 for cmd in $commands; do

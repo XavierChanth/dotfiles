@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # atsign specific stuff
 
 if ! command -v openssl &>/dev/null; then
