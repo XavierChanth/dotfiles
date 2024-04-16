@@ -1,7 +1,8 @@
 #!/bin/bash
 
-. "$HOME/.local/asdf/asdf.sh"
-FPATH="${ASDF_DIR}/completions:$FPATH"
+export ASDF_DIR="$HOME/.asdf"
+. "$ASDF_DIR/asdf.sh"
+FPATH="$ASDF_DIR/completions:$FPATH"
 
 __flutter=true
 __android=true
@@ -30,9 +31,9 @@ fi
 if $__clang; then
   if $is_darwin; then
     export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
-  else 
+  else
     export CPATH="/usr/local/include:$CPATH"
-  fi 
+  fi
 
   alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
   alias cmbb='cmake --build build'
@@ -42,4 +43,3 @@ fi
 
 # append local path to PATH
 export PATH="$__path:$PATH"
-

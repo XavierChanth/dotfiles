@@ -5,7 +5,7 @@ RUN dnf update -y
 # Install basic packages
 RUN dnf install -y man git sudo zsh passwd procps
 RUN dnf install -y curl wget iproute traceroute openssl
-RUN dnf install -y stow
+RUN dnf install -y stow tmux
 RUN dnf install -y clang-tools-extra inotify-tools
 
 # Add user "chant"

@@ -4,9 +4,7 @@ set keyseq-timeout 0
 
 # basic exports
 export XDG_CONFIG_HOME="$HOME/.config"
-export ASDF_DIR="$HOME/.local/asdf"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
-
 
 # prompt
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh

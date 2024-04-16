@@ -40,7 +40,7 @@ if [ "$(uname)" = 'Darwin' ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
-  /opt/homebrew/bin/brew install stow
+  /opt/homebrew/bin/brew install stow tmux
   stow -d "$script_dir/Library" -t "$HOME/Library" .
   defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.xavierchanth/iterm2"
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
@@ -51,8 +51,13 @@ if ! command -v stow &>/dev/null; then
   exit 2
 fi
 
+if ! command -v tmux &>/dev/null; then
+  echo "tmux not found, install tmux before continuing..."
+  exit 3
+fi
+
 # install asdf
-asdf_path="$HOME/.local/asdf"
+asdf_path="$HOME/.asdf"
 git clone https://github.com/asdf-vm/asdf.git "$asdf_path" --branch v0.14.0
 . "$asdf_path/asdf.sh"
 
@@ -69,7 +74,6 @@ asdf_install() {
 
 asdf_install fzf
 asdf_install ripgrep
-asdf_install tmux
 asdf_install delta
 asdf_install lazygit
 asdf_install neovim stable
