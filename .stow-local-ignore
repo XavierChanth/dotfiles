@@ -13,7 +13,8 @@
 ^/Library$
 
 # Ignore things checked in but not needed by stow
-^/qmk_firmware
+^/qmk_firmware$
+^/nix$
 
 # Unignore things that are needed by stow but not checked in
 !^/.zshenv$
