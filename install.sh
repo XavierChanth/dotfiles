@@ -42,7 +42,7 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   /opt/homebrew/bin/brew install stow tmux
   stow -d "$script_dir/Library" -t "$HOME/Library" .
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.xavierchanth/iterm2"
+  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.local/iterm2"
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi
 
