@@ -1,4 +1,3 @@
-# Start AeroSpace at login
 start-at-login = true
 
 after-startup-command = [
@@ -18,13 +17,15 @@ outer.right =      8
 inherit-env-vars = true
 [exec.env-vars]
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
 [[on-window-detected]] # Don't tile the floating iterm2 window
 if.app-id = 'com.googlecode.iterm2'
 if.window-title-regex-substring = '^Floating Terminal$'
 run = "layout floating"
 
 [mode.main.binding]
-# alt-shift-r = 'reload-config'
+alt-shift-r = 'reload-config'
+alt-enter = ['exec-and-forget alacritty msg create-window || alacritty']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
