@@ -17,6 +17,11 @@ touch "$HOME/.local/.stowkeep"
 touch "$HOME/.local/bin/.stowkeep"
 touch "$HOME/.config/.stowkeep"
 
+# TODO function for command found
+# - then apply across file
+# - wrap asdf_install
+#   - add force option to asdf_install command as $2
+
 # ensure git is installed
 if ! command -v git &>/dev/null; then
   echo "git not found, install git before continuing..."

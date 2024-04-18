@@ -7,7 +7,7 @@ if [ -z "$name" ]; then
 fi
 
 # Because trying to install things in linux arm64 is painful, so just use rosetta (nvim mason will thank you for it)
-export DOCKER_DEFAULT_PLATFORM=linux/amd64
+# export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 if docker ps --all | grep -q "$name"; then
   echo "starting $name"
@@ -21,5 +21,5 @@ else
     --mount type=bind,source="$HOME"/.ssh,target=/home/chant/.ssh \
     --mount type=bind,source="$HOME"/.atsign,target=/home/chant/.atsign \
     --mount type=bind,source="$HOME"/src,target=/home/chant/src \
-    devenv:latest
+    xavierchanth/devenv:latest
 fi
