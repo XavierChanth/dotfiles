@@ -21,6 +21,7 @@ touch "$HOME/.config/.stowkeep"
 # - then apply across file
 # - wrap asdf_install
 #   - add force option to asdf_install command as $2
+# - Note: neovim installs on linux:arm64 but doesn't run... at least through docker + asdf-vm
 
 # ensure git is installed
 if ! command -v git &>/dev/null; then
