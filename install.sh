@@ -41,6 +41,11 @@ if [ "$(uname)" = 'Darwin' ]; then
   fi
 
   /opt/homebrew/bin/brew install stow tmux
+
+  # alacritty font patch
+  defaults -currentHost write -g AppleFontSmoothing -int 0
+
+  # iterm2
   stow -d "$script_dir/Library" -t "$HOME/Library" .
   defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.local/iterm2"
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
