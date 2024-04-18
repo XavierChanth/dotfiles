@@ -6,8 +6,16 @@ touch "$HOME"/.zshenv
 
 mkdir -p "$HOME/dev"
 mkdir -p "$HOME/src"
+mkdir -p "$HOME/.ssh"
 mkdir -p "$HOME/.local/bin"
 mkdir -p "$HOME/.local/asdf"
+mkdir -p "$HOME/.config"
+
+# Prevent stow from adopting certain folders, and instead only link the files
+touch "$HOME/.ssh/.stowkeep"
+touch "$HOME/.local/.stowkeep"
+touch "$HOME/.local/bin/.stowkeep"
+touch "$HOME/.config/.stowkeep"
 
 # ensure git is installed
 if ! command -v git &>/dev/null; then
