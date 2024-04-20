@@ -2,12 +2,11 @@
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
 docker_build() {
-  docker build --tag devenv:latest -f "$script_dir"/Dockerfile "$script_dir"
-  docker image tag devenv:latest xavierchanth/devenv:latest
+  docker build --tag $1 -f "$script_dir"/Dockerfile "$script_dir"
 }
 
-docker_build
+docker_build devenv-arm64:latest
 (
   export DOCKER_DEFAULT_PLATFORM=linux/amd64
-  docker_build
+  docker_build devenv-x64:latest
 )
