@@ -7,8 +7,7 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# create a here doc for commands list
-commands=(
+check_commands=(
   # core
   zsh
   git
@@ -41,7 +40,7 @@ commands=(
 )
 
 missing=""
-for cmd in ${commands[@]}; do
+for cmd in ${check_commands[@]}; do
   if ! command_exists "$cmd"; then
     missing="$cmd "
   fi
