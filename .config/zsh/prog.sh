@@ -39,7 +39,7 @@ alias cmbt='cmake --build build --target'
 alias ctb='ctest --test-dir build --output-on-failure'
 
 #golang
-if $command_exists go; then
+if command_exists go; then
   __path="$HOME/go/bin:$__path"
 fi
 

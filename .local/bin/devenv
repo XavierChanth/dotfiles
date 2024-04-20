@@ -6,13 +6,8 @@ if [ -z "$name" ]; then
   exit 1
 fi
 
-if docker ps --all | grep -q "$name"; then
-  echo "starting $name"
-  if ! docker ps | grep -q "$name"; then
-    docker start "$name"
-  fi
-  docker exec -it "$name" /bin/zsh
-else
+# create if needed
+if ! docker ps --all | grep -q "$name"; then
   echo "creating new $name container"
   docker run -d --name "$name" --hostname "$name" --network "host" \
     --mount type=bind,source="$HOME"/.ssh,target=/home/chant/.ssh \
@@ -20,3 +15,10 @@ else
     --mount type=bind,source="$HOME"/src,target=/home/chant/src \
     devenv:latest
 fi
+
+# start if needed
+if ! docker ps | grep -q "$name"; then
+  echo "starting $name"
+  docker start "$name"
+fi
+docker exec -it "$name" /bin/zsh
