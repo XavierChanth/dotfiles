@@ -21,7 +21,7 @@ alias cc='__cc_selected=$(fzf_projects) || return 1 && cd $__cc_selected'
 alias v='nvim'
 alias vv='cc; nvim'
 
-alias t='tmux' 
+alias t='tmux'
 alias tt='__tt_selected=$(fzf_projects) || return 1 &&
   [ -z $TMUX ] && tmux new-ses -Ac $__tt_selected -s $(basename $__tt_selected) ||
   tmux switch-client -t $(basename $__tt_selected) ||
@@ -33,7 +33,6 @@ alias td='__tt_selected=$(docker ps --all --format "table {{.Names}}" | fzf) || 
   tmux switch-client -t $(basename $__tt_selected) ||
   tmux new-ses -AdPc $__tt_selected -s $(basename $__tt_selected) docker exec -it $(basename $__tt_selected) /bin/zsh | xargs tmux switch-client -t'
 
-if $is_darwin; then
+if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
 fi
-

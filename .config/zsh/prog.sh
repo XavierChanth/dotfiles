@@ -5,15 +5,14 @@ eval "$(vfox activate zsh)"
 
 FPATH="$ASDF_DIR/completions:$FPATH"
 
-__flutter=true
-__android=true
-__clang=true
-__golang=true
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
 
 __path=""
 
 # flutter
-if $__flutter; then
+if command_exists flutter; then
   export PUB_CACHE="$HOME/.pub-cache"
   export FLUTTER_ROOT=$(dirname $(dirname $(which flutter))) # yikes
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
@@ -24,27 +23,23 @@ if $__flutter; then
 fi
 
 # android
-if $__android; then
-  export ANDROID_HOME="/Users/chant/Library/Android/sdk"
-  __path="$ANDROID_HOME/cmdline-tools/latest/bin:$__path"
-fi
+export ANDROID_HOME="/Users/chant/Library/Android/sdk"
+__path="$ANDROID_HOME/cmdline-tools/latest/bin:$__path"
 
 # clang
-if $__clang; then
-  if $is_darwin; then
-    export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
-  else
-    export CPATH="/usr/local/include:$CPATH"
-  fi
-
-  alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
-  alias cmbb='cmake --build build'
-  alias cmbt='cmake --build build --target'
-  alias ctb='ctest --test-dir build --output-on-failure'
+if [ "$(uname)" = 'Darwin' ]; then
+  export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
+else
+  export CPATH="/usr/local/include:$CPATH"
 fi
 
+alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+alias cmbb='cmake --build build'
+alias cmbt='cmake --build build --target'
+alias ctb='ctest --test-dir build --output-on-failure'
+
 #golang
-if $__golang; then
+if $command_exists go; then
   __path="$HOME/go/bin:$__path"
 fi
 

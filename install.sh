@@ -66,7 +66,7 @@ case "$(uname)" in
     # dev tools
     brew install alacritty tmux neovim ripgrep fzf git-delta stow
     # extra tools
-    brew install jq uv vfox
+    brew install gh jq uv vfox
 
     # alacritty font patch - super blurry without this
     defaults -currentHost write -g AppleFontSmoothing -int 0
@@ -83,7 +83,7 @@ case "$(uname)" in
       # dev tools
       sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
       # extra tools
-      sudo dnf install -y jq clang-tools-extra inotify-tools
+      sudo dnf install -y gh jq clang-tools-extra inotify-tools
     else
       echo "package manager not configured, configure and try again"
       exit 0

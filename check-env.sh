@@ -29,6 +29,7 @@ check_commands=(
   delta
   stow
   # bonus tools
+  gh
   jq
   uv
   vfox

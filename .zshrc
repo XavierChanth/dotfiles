@@ -11,8 +11,6 @@ source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
 SPACESHIP_GCLOUD_SHOW=false
 SPACESHIP_HOST_SHOW="always"
 
-is_darwin=$([ "$(uname)" = 'Darwin' ])
-
 # plugins
 source $XDG_CONFIG_HOME/zsh/vi-mode.sh
 source $XDG_CONFIG_HOME/zsh/alias.sh
@@ -23,7 +21,7 @@ if command -v git &> /dev/null; then
   source $XDG_CONFIG_HOME/zsh/git.sh
 fi
 
-if $is_darwin; then
+if [ "$(uname)" = 'Darwin' ]; then
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
   if command -v brew &> /dev/null; then
     export PATH="/opt/homebrew/bin:$PATH"
