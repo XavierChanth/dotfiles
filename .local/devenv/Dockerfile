@@ -5,7 +5,7 @@ FROM fedora:latest
 
 RUN dnf update -y
 # hadolint ignore=DL3041
-RUN dnf install -y zsh passwd; dnf clean all
+RUN dnf install -y zsh git passwd util-linux-user; dnf clean all
 
 # Add user "chant"
 RUN useradd -rm -d /home/chant -s /bin/zsh -g root -G wheel -u 501 chant
