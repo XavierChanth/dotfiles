@@ -3,25 +3,23 @@
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-set -o vi
+bindkey -v          # vi-mode in zsh
+export KEYTIMEOUT=1 # decrease the delay
 
-# credit: https://www.reddit.com/r/vim/comments/mxhcl4/setting_cursor_indicator_for_zshvi_mode_in/
-function zle-keymap-select () {
-case $KEYMAP in
-  vicmd) echo -ne '\e[1 q';; # block
-  viins|main) echo -ne '\e[5 q';; # beam
-esac
-}
+_block='\e[1 q'
+_beam='\e[5 q'
 
+# vi-mode init (start in insert mode with beam cursor)
 zle-line-init() {
   zle -K viins
-  echo -ne "\e[5 q"
+  echo -ne $_beam
 }
+zle -N zle-line-init # register init
 
-zle -N zle-keymap-select
-zle -N zle-line-init
-
-
-preexec() { echo -ne '\e[5 q' }
-
-
+function zle-keymap-select() { # change cursor when swapping keymaps
+  case $KEYMAP in
+    vicmd) echo -ne $_block ;;
+    viins | main) echo -ne $_beam ;;
+  esac
+}
+zle -N zle-keymap-select # register keymap select
