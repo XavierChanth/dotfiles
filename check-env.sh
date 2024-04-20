@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 echo "Verifying environment..."
 source "$HOME/.zshrc"
