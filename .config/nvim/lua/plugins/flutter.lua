@@ -1,4 +1,3 @@
-local onlyAnalyzeProjectsWithOpenFiles = false
 return {
   {
     "akinsho/flutter-tools.nvim",
@@ -14,17 +13,17 @@ return {
       },
     },
     config = {
-      flutter_lookup_cmd = "asdf where flutter",
+      -- flutter_path = require("os").getenv("FLUTTER_ROOT") .. "/bin/flutter",
       lsp = {
         root_dir = function()
           return vim.loop.cwd()
         end,
         init_options = {
-          onlyAnalyzeProjectsWithOpenFiles = onlyAnalyzeProjectsWithOpenFiles,
+          onlyAnalyzeProjectsWithOpenFiles = false,
           closingLabels = true,
         },
         settings = {
-          lineLength = 120,
+          lineLength = 80,
           -- renameFilesWithClasses = "always",
         },
       },

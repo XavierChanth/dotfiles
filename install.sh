@@ -17,14 +17,12 @@ touch "$HOME/.local/.stowkeep"
 touch "$HOME/.local/bin/.stowkeep"
 touch "$HOME/.config/.stowkeep"
 
-# TODO function for command found
-# - then apply across file
-# - wrap asdf_install
-#   - add force option to asdf_install command as $2
-# - Note: neovim installs on linux:arm64 but doesn't run... at least through docker + asdf-vm
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
 
 # ensure git is installed
-if ! command -v git &>/dev/null; then
+if ! command_exists git; then
   echo "git not found, install git before continuing..."
   echo "how did you even git this onto your machine?"
   exit 1
@@ -48,54 +46,67 @@ git config --global alias.wt worktree
 git config --global pull.ff only
 
 # install brew
-if [ "$(uname)" = 'Darwin' ]; then
-  if ! command -v brew &>/dev/null; then
-    echo "brew not found, installing it for you..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  fi
+case "$(uname)" in
+  Darwin)
+    if ! command_exists brew; then
+      echo "brew not found, installing it for you..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
 
-  /opt/homebrew/bin/brew install stow tmux
+    # core
+    brew install bash
+    brew install coreutils moreutils
+    brew install openssl wget
+    # dev
+    brew install alacritty tmux neovim ripgrep fzf git-delta stow
+    # tools
+    brew install jq uv vfox
 
-  # alacritty font patch
-  defaults -currentHost write -g AppleFontSmoothing -int 0
+    # alacritty font patch - super blurry without this
+    defaults -currentHost write -g AppleFontSmoothing -int 0
 
-  # iterm2
-  stow -d "$script_dir/Library" -t "$HOME/Library" .
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.local/iterm2"
-  defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-fi
+    ;;
+  Linux)
+    if command_exists dnf; then
+      echo "dnf package manager found, installing packages for dnf"
+      # core
+      sudo dnf install -y bash zsh man git sudo passwd procps
+      sudo dnf install -y coreutils moreutils
+      sudo dnf install -y openssl curl wget iproute traceroute
+      # dev
+      sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
+      # tools
+      sudo dnf install -y jq clang-tools-extra inotify-tools
+    else
+      echo "package manager not configured, configure and try again"
+      exit 0
+    fi
 
-if ! command -v stow &>/dev/null; then
+    # install uv
+    if ! command_exists uv; then
+      curl -fsSL https://astral.sh/uv/install.sh | sh
+    fi
+
+    # install vfox
+    if ! command_exists vfox; then
+      # Install vfox in a sub-shell & temp folder
+      tmp_dir_name=tmp-vfox-install
+      mkdir $tmp_dir_name
+      (
+        cd $tmp_dir_name
+        curl -sSL https://raw.githubusercontent.com/xavierchanth/vfox/main/install.sh | bash
+      )
+      rm -rf $tmp_dir_name
+    fi
+
+    # End of linux block
+    ;;
+esac
+
+if ! command_exists stow; then
   echo "stow not found, install gnu stow before continuing..."
   exit 2
 fi
-
-if ! command -v tmux &>/dev/null; then
-  echo "tmux not found, install tmux before continuing..."
-  exit 3
-fi
-
-# install asdf
-asdf_path="$HOME/.asdf"
-git clone https://github.com/asdf-vm/asdf.git "$asdf_path" --branch v0.14.0
-. "$asdf_path/asdf.sh"
-
-asdf_install() {
-  if [ -z "$2" ]; then
-    _version='latest'
-  else
-    _version="$2"
-  fi
-  "$asdf_path/bin/asdf" plugin add "$1"
-  "$asdf_path/bin/asdf" install "$1" "$_version"
-  "$asdf_path/bin/asdf" local "$1" "$_version"
-}
-
-asdf_install fzf
-asdf_install ripgrep
-asdf_install delta
-asdf_install lazygit
-asdf_install neovim stable
 
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
@@ -103,16 +114,28 @@ git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$H
 # sync dotfiles
 stow -d "$script_dir" -t "$HOME" .
 
-# additional programming languages worth installing
-asdf_install flutter
-asdf_install golang
-asdf_install jq
-asdf_install python
-asdf_install uv
-asdf_install cmake
-asdf_install nodejs
-
 # sync nvim
 nvim --headless "+Lazy! sync" +qa
 
+# Setup vfox & programming languages
+eval "$(vfox activate bash)" # bash is safer for this script, since zsh is compatible with it anyway
+vfox_install() {
+  vfox add "$1"
+  vfox install "$1@$2"
+  vfox use -g "$1@$2"
+}
+
+# Some programming languages that I commonly use
+vfox_install flutter 3.19.6
+vfox_install golang 1.22.2
+vfox_install cmake 3.29.2
+vfox_install nodejs 21.7.3
+vfox_install python 3.12.3
+
+# install lazygit directly from source
+if ! command_exists lazygit; then
+  go install github.com/jesseduffield/lazygit@latest
+fi
+
+# Do a healthcheck to ensure that everything I want is installed
 "$script_dir"/check-env.sh

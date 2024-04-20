@@ -1,32 +1,55 @@
 #!/bin/bash
 
+echo "Verifying environment..."
+source "$HOME/.zshrc"
+
 command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
 # create a here doc for commands list
-read -r commands <<EOF
-git
-sudo
-curl
-zsh
-tmux
-ripgrep
-fzf
-nvim
-openssl
-asdf
-gh
-stow
-lazygit
-ps
-delta
-EOF
+commands=(
+  # core
+  zsh
+  git
+  sudo
+  curl
+  wget
+  ps
+  openssl
+  parallel
+  # dev
+  stow
+  tmux
+  rg
+  fzf
+  nvim
+  lazygit
+  delta
+  # tools
+  jq
+  uv
+  vfox
+  # languages (installed with vfox)
+  flutter
+  dart
+  go
+  node
+  npm
+  cmake
+  python
+)
 
-for cmd in $commands; do
+missing=""
+for cmd in ${commands[@]}; do
   if ! command_exists "$cmd"; then
-    echo "Error: $cmd is not installed"
+    missing="$cmd "
   fi
 done
+
+if [ -n "$missing" ]; then
+  echo "Missing the following commands:"
+  echo "$missing" | xargs -I% echo %
+fi
 
 echo "Done checking environment"

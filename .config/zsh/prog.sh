@@ -1,19 +1,21 @@
 #!/bin/bash
 
-export ASDF_DIR="$HOME/.asdf"
-. "$ASDF_DIR/asdf.sh"
+# import vfox for zsh
+eval "$(vfox activate zsh)"
+
 FPATH="$ASDF_DIR/completions:$FPATH"
 
 __flutter=true
 __android=true
 __clang=true
+__golang=true
 
 __path=""
 
 # flutter
-if $__flutter && $(asdf where flutter &>/dev/null); then
+if $__flutter; then
   export PUB_CACHE="$HOME/.pub-cache"
-  export FLUTTER_ROOT="$(asdf where flutter)"
+  export FLUTTER_ROOT=$(dirname $(dirname $(which flutter))) # yikes
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
   # dart completions
   [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
@@ -39,6 +41,11 @@ if $__clang; then
   alias cmbb='cmake --build build'
   alias cmbt='cmake --build build --target'
   alias ctb='ctest --test-dir build --output-on-failure'
+fi
+
+#golang
+if $__golang; then
+  __path="$HOME/go/bin:$__path"
 fi
 
 # append local path to PATH

@@ -11,7 +11,7 @@ source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
 SPACESHIP_GCLOUD_SHOW=false
 SPACESHIP_HOST_SHOW="always"
 
-  is_darwin=$([ "$(uname)" = 'Darwin' ]) 
+is_darwin=$([ "$(uname)" = 'Darwin' ])
 
 # plugins
 source $XDG_CONFIG_HOME/zsh/vi-mode.sh
@@ -33,7 +33,7 @@ if $is_darwin; then
   fi
 fi
 
-source $XDG_CONFIG_HOME/zsh/asdf.sh;
+source $XDG_CONFIG_HOME/zsh/prog.sh;
 
 autoload -Uz compinit
 compinit
