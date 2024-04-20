@@ -18,5 +18,5 @@ else
     --mount type=bind,source="$HOME"/.ssh,target=/home/chant/.ssh \
     --mount type=bind,source="$HOME"/.atsign,target=/home/chant/.atsign \
     --mount type=bind,source="$HOME"/src,target=/home/chant/src \
-    devenv-arm64:latest
+    devenv:latest
 fi
