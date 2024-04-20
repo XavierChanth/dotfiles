@@ -8,24 +8,27 @@ command_exists() {
 }
 
 check_commands=(
-  # core
+  # shell essentials
   zsh
   git
   sudo
+  ps
+  # core tools
+  parallel
+  clang
+  # net tools
   curl
   wget
-  ps
   openssl
-  parallel
-  # dev
-  stow
+  # dev tools
   tmux
   rg
   fzf
   nvim
   lazygit
   delta
-  # tools
+  stow
+  # bonus tools
   jq
   uv
   vfox
@@ -42,7 +45,7 @@ check_commands=(
 missing=""
 for cmd in ${check_commands[@]}; do
   if ! command_exists "$cmd"; then
-    missing="$cmd "
+    missing="$missing $cmd "
   fi
 done
 

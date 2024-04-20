@@ -69,13 +69,15 @@ case "$(uname)" in
   Linux)
     if command_exists dnf; then
       echo "dnf package manager found, installing packages for dnf"
-      # core
+      # shell essentials
       sudo dnf install -y bash zsh man git sudo passwd procps
-      sudo dnf install -y coreutils moreutils
+      # core tools
+      sudo dnf install -y coreutils moreutils clang
+      # net tools
       sudo dnf install -y openssl curl wget iproute traceroute
-      # dev
+      # dev tools
       sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
-      # tools
+      # extra tools
       sudo dnf install -y jq clang-tools-extra inotify-tools
     else
       echo "package manager not configured, configure and try again"
