@@ -6,9 +6,6 @@ if [ -z "$name" ]; then
   exit 1
 fi
 
-# Because trying to install things in linux arm64 is painful, so just use rosetta (nvim mason will thank you for it)
-# export DOCKER_DEFAULT_PLATFORM=linux/amd64
-
 if docker ps --all | grep -q "$name"; then
   echo "starting $name"
   if ! docker ps | grep -q "$name"; then

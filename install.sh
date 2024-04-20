@@ -72,7 +72,7 @@ case "$(uname)" in
       # shell essentials
       sudo dnf install -y bash zsh man git sudo passwd procps
       # core tools
-      sudo dnf install -y coreutils moreutils clang
+      sudo dnf install -y coreutils moreutils clang parallel
       # net tools
       sudo dnf install -y openssl curl wget iproute traceroute
       # dev tools

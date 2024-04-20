@@ -7,6 +7,6 @@ docker_build() {
 
 docker_build devenv-arm64:latest
 (
-  export DOCKER_DEFAULT_PLATFORM=linux/amd64
+  DOCKER_DEFAULT_PLATFORM=linux/amd64
   docker_build devenv-x64:latest
 )
