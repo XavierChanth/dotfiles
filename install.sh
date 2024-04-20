@@ -53,18 +53,23 @@ case "$(uname)" in
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
-    # core
+    # desktop stuff
+    brew install --cask aerospace raycast
+    brew install felixkratz/formulae/borders bitwarden-cli
+
+    # shell essentials
     brew install bash
+    # core tools
     brew install coreutils moreutils
+    # net tools
     brew install openssl wget
-    # dev
+    # dev tools
     brew install alacritty tmux neovim ripgrep fzf git-delta stow
-    # tools
+    # extra tools
     brew install jq uv vfox
 
     # alacritty font patch - super blurry without this
     defaults -currentHost write -g AppleFontSmoothing -int 0
-
     ;;
   Linux)
     if command_exists dnf; then
@@ -125,17 +130,25 @@ vfox_install() {
   vfox add "$1"
   vfox install "$1@$2"
   vfox use -g "$1@$2"
+  return $?
 }
 
 # Some programming languages that I commonly use
 vfox_install flutter 3.19.6
 vfox_install golang 1.22.2
-vfox_install cmake 3.29.2
 vfox_install nodejs 21.7.3
-vfox_install python 3.12.3
+
+if ! vfox_install cmake 3.29.2; then
+  command_exists dnf && sudo dnf install -y cmake
+fi
+
+if ! vfox_install python 3.12.3; then
+  command_exists dnf && sudo dnf install -y python3
+fi
 
 # install lazygit directly from source
 if ! command_exists lazygit; then
+  eval "$(vfox activate bash)"
   go install github.com/jesseduffield/lazygit@latest
 fi
 
