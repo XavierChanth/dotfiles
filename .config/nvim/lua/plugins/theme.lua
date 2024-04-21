@@ -9,19 +9,7 @@ local logo = [[
 
 logo = string.rep("\n", 8) .. logo .. "\n\n"
 
-local telescope = require("lazyvim.util.telescope")
--- Intentional override of lazyvim's config_files to be the entire dotfiles repo
----@diagnostic disable-next-line: duplicate-set-field
-telescope.config_files = function()
-  return telescope("files", {
-    cwd = vim.fn.expand("$HOME/.dotfiles"),
-    show_untracked = true,
-    git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
-  })
-end
-
 return {
-
   {
     "nvimdev/dashboard-nvim",
     opts = {
@@ -31,15 +19,17 @@ return {
     },
   },
   {
-    "raddari/last-color.nvim",
-    lazy = false,
-    config = function()
-      local theme = require("last-color").recall() or "catppuccin-mocha"
-      vim.cmd(("colorscheme %s"):format(theme))
-    end,
+    "LazyVim/LazyVim",
+    dependencies = { "raddari/last-color.nvim" },
+    config = {
+      colorscheme = function()
+        local theme = require("last-color").recall() or "catppuccin"
+        vim.cmd(("colorscheme %s"):format(theme))
+      end,
+    },
   },
-  { "folke/tokyonight.nvim", lazy = true },
-  {
+  { "folke/tokyonight.nvim", enabled = false }, -- disable Lazyvim's default theme
+  { -- Setup catppuccin theme
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = false,
