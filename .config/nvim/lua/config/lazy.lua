@@ -13,7 +13,11 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
   spec = {
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    {
+      "LazyVim/LazyVim",
+      import = "lazyvim.plugins",
+      commit = "9e3af1070fc1932da322105708ebb32a2cd9572b", -- Pin LazyVim
+    },
     { import = "plugins" },
     { import = "lazyvim.plugins.extras.dap.core" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
