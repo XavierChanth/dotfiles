@@ -1,6 +1,6 @@
 {
   "Debug print": {
-    "prefix": "debug",
+    "prefix": "printvar",
     "body": [
       "print('$1 => ${$1}');",
       "$2"
