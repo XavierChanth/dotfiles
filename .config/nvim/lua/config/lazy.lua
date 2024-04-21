@@ -17,6 +17,13 @@ require("lazy").setup({
       "LazyVim/LazyVim",
       import = "lazyvim.plugins",
       commit = "9e3af1070fc1932da322105708ebb32a2cd9572b", -- Pin LazyVim
+      dependencies = { "raddari/last-color.nvim" },
+      config = {
+        colorscheme = function()
+          local theme = require("last-color").recall() or "catppuccin"
+          vim.cmd(("colorscheme %s"):format(theme))
+        end,
+      },
     },
     { import = "plugins" },
     { import = "lazyvim.plugins.extras.dap.core" },

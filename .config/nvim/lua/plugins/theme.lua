@@ -18,16 +18,6 @@ return {
       },
     },
   },
-  {
-    "LazyVim/LazyVim",
-    dependencies = { "raddari/last-color.nvim" },
-    config = {
-      colorscheme = function()
-        local theme = require("last-color").recall() or "catppuccin"
-        vim.cmd(("colorscheme %s"):format(theme))
-      end,
-    },
-  },
   { "folke/tokyonight.nvim", enabled = false }, -- disable Lazyvim's default theme
   { -- Setup catppuccin theme
     "catppuccin/nvim",
