@@ -12,7 +12,7 @@ require("which-key").register({
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
 
--- Allow up to 64 chars for symbol width
+-- LSP symbol_width
 map("n", "<leader>ss", function()
   require("telescope.builtin").lsp_document_symbols({
     symbols = require("lazyvim.config").get_kind_filter(),
