@@ -1,7 +1,9 @@
 return {
-  "folke/persistence.nvim",
-  lazy = false,
-  opts = {
-    save_empty = true,
+  {
+    "folke/persistence.nvim",
+    lazy = false,
+    opts = {
+      save_empty = true,
+    },
   },
 }

@@ -1,4 +1,35 @@
+local logo = [[
+██╗  ██╗ █████╗ ██╗   ██╗██╗███████╗██████╗  ██████╗██╗  ██╗ █████╗ ███╗   ██╗████████╗██╗  ██╗
+╚██╗██╔╝██╔══██╗██║   ██║██║██╔════╝██╔══██╗██╔════╝██║  ██║██╔══██╗████╗  ██║╚══██╔══╝██║  ██║
+ ╚███╔╝ ███████║██║   ██║██║█████╗  ██████╔╝██║     ███████║███████║██╔██╗ ██║   ██║   ███████║
+ ██╔██╗ ██╔══██║╚██╗ ██╔╝██║██╔══╝  ██╔══██╗██║     ██╔══██║██╔══██║██║╚██╗██║   ██║   ██╔══██║
+██╔╝ ██╗██║  ██║ ╚████╔╝ ██║███████╗██║  ██║╚██████╗██║  ██║██║  ██║██║ ╚████║   ██║   ██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝
+    ]]
+
+logo = string.rep("\n", 8) .. logo .. "\n\n"
+
+local telescope = require("lazyvim.util.telescope")
+-- Intentional override of lazyvim's config_files to be the entire dotfiles repo
+---@diagnostic disable-next-line: duplicate-set-field
+telescope.config_files = function()
+  return telescope("files", {
+    cwd = vim.fn.expand("$HOME/.dotfiles"),
+    show_untracked = true,
+    git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
+  })
+end
+
 return {
+
+  {
+    "nvimdev/dashboard-nvim",
+    opts = {
+      config = {
+        header = vim.split(logo, "\n"),
+      },
+    },
+  },
   {
     "raddari/last-color.nvim",
     lazy = false,
@@ -7,7 +38,7 @@ return {
       vim.cmd(("colorscheme %s"):format(theme))
     end,
   },
-  { "joshdick/onedark.vim", lazy = false },
+  { "folke/tokyonight.nvim", enabled = false },
   {
     "catppuccin/nvim",
     name = "catppuccin",
