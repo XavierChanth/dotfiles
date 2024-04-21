@@ -18,11 +18,10 @@ require("lazy").setup({
   },
   defaults = {
     lazy = true,
-    version = "*",
+    version = "*", -- use stable
+    -- version = false, -- use upstream
   },
-  ui = {
-    border = "rounded",
-  },
+  ui = { border = "rounded" },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
     rtp = {
