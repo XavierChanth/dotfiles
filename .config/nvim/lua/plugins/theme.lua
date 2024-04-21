@@ -38,7 +38,7 @@ return {
       vim.cmd(("colorscheme %s"):format(theme))
     end,
   },
-  { "folke/tokyonight.nvim", enabled = false },
+  { "folke/tokyonight.nvim", lazy = true },
   {
     "catppuccin/nvim",
     name = "catppuccin",
