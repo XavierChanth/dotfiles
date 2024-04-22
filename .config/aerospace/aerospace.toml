@@ -23,6 +23,11 @@ if.app-id = 'com.googlecode.iterm2'
 if.window-title-regex-substring = '^Floating Terminal$'
 run = "layout floating"
 
+[[on-window-detected]] # "Waiting for host" window on zoom
+if.app-id = 'us.zoom.xos'
+if.window-title-regex-substring = '^$' # good job, not implementing the accessibility APIs AND not giving the window a name zoom!
+run = "layout floating"
+
 [mode.main.binding]
 alt-shift-r = 'reload-config'
 alt-enter = ['exec-and-forget alacritty msg create-window || alacritty']
