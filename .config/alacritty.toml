@@ -16,8 +16,8 @@ decorations = "buttonless"
 option_as_alt = "OnlyLeft"
 
 [window.padding]
-x = 5
-y = 5
+x = 7
+y = 2
 
 # catppuccin mocha
 [colors.primary]
