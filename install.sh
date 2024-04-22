@@ -79,7 +79,7 @@ case "$(uname)" in
       # core tools
       sudo dnf install -y coreutils moreutils clang parallel
       # net tools
-      sudo dnf install -y openssl curl wget iproute traceroute
+      sudo dnf install -y openssl curl wget iproute traceroute hostname
       # dev tools
       sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
       # extra tools

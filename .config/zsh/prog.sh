@@ -33,10 +33,10 @@ else
   export CPATH="/usr/local/include:$CPATH"
 fi
 
-alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
-alias cmbb='cmake --build build'
-alias cmbt='cmake --build build --target'
-alias ctb='ctest --test-dir build --output-on-failure'
+alias cmbs='cmake -B build-$(hostname) -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+alias cmbb='cmake --build build-$(hostname)'
+alias cmbt='cmake --build build-$(hostname) --target'
+alias ctb='ctest --test-dir build-$(hostname) --output-on-failure'
 
 #golang
 if command_exists go; then
