@@ -137,6 +137,10 @@ return {
         theme = "catppuccin",
         section_separators = { left = "", right = "" },
       },
+      sections = {
+        lualine_a = { { "mode", separator = { left = "", right = "" } } },
+        lualine_z = { { separator = { right = "" } } },
+      },
     },
   },
 }
