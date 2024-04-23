@@ -17,7 +17,7 @@ option_as_alt = "OnlyLeft"
 
 [window.padding]
 x = 7
-y = 2
+y = 1
 
 # catppuccin mocha
 [colors.primary]
