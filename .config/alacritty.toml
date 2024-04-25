@@ -6,7 +6,7 @@ program = '/opt/homebrew/bin/tmux'
 args = ['new', '-A', '-s', 'main']
 
 [font]
-size = 17
+size = 24
 
 [font.normal]
 family = "JetBrainsMono NF"
