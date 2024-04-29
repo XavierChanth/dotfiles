@@ -99,7 +99,7 @@ sketchybar --add item clock right \
     update_freq=10 \
     script="$PLUGIN_DIR/clock.sh"
 
-if  ! is_laptop; then
+if is_laptop; then
 sketchybar --add item battery right \
     --set battery \
     icon.color=$color_pink \
