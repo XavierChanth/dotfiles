@@ -1,0 +1,114 @@
+#!/usr/bin/env zsh
+
+# Config starting point from https://github.com/neutonfoo/dotfiles/tree/main/.config/sketchybar
+# Thanks @neutonfoo!
+SKETCHYBAR_CONFIG="$HOME/.config/sketchybar"
+
+MAIN_DISPLAY=$(system_profiler SPDisplaysDataType | grep -B 3 'Main Display:' | awk '/Display Type/ {print $3}')
+
+is_laptop() {
+  [[ $MAIN_DISPLAY = "Built-in" ]]
+}
+
+#!/usr/bin/env zsh
+
+FONT_FACE="JetBrainsMono Nerd Font"
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+
+SPOTIFY_EVENT="com.spotify.client.PlaybackStateChanged"
+
+sketchybar --bar \
+    height=40 \
+    color=0x66494d64 \
+    margin=0 \
+    sticky=on \
+    padding_left=0 \
+    padding_right=0 \
+    notch_width=188 \
+    display=main
+
+sketchybar --default \
+    background.height=32 \
+    icon.color=0xff24273a \
+    icon.font="$FONT_FACE:Medium:20.0" \
+    icon.padding_left=5 \
+    icon.padding_right=5 \
+    label.color=0xff24273a \
+    label.font="$FONT_FACE:Medium:20.0" \
+    label.y_offset=1 \
+    label.padding_left=0 \
+    label.padding_right=5
+
+sketchybar --add event aerospace_workspace_change
+for sid in $(aerospace list-workspaces --all); do
+    sketchybar --add item space.$sid left \
+        --subscribe space.$sid aerospace_workspace_change \
+        --set space.$sid \
+        icon.drawing=no \
+        background.color=0xff89b4fa \
+        label.padding_left=8 \
+        label.padding_right=8 \
+        label.font="$FONT_FACE:Medium:20.0" \
+        label="$sid" \
+        click_script="aerospace workspace $sid" \
+        script="$CONFIG_DIR/plugins/aerospace.sh $sid"
+done
+
+sketchybar --add item front_app left \
+    --set front_app \
+    background.color=0xff89b4fa \
+    background.padding_left=0 \
+    background.padding_right=0 \
+    icon.y_offset=1 \
+    label.drawing=no \
+    script="$PLUGIN_DIR/front_app.sh" \
+    --add item front_app.separator left \
+    --set front_app.separator \
+    background.color=0x00000000 \
+    icon= \
+    icon.color=0xff89b4fa \
+    icon.font="$FONT_FACE:Bold:23.0" \
+    icon.padding_left=0 \
+    icon.padding_right=0 \
+    icon.y_offset=1 \
+    label.drawing=no \
+    --add item front_app.name left \
+    --set front_app.name \
+    background.color=0x00000000 \
+    icon.drawing=off \
+    label.font="$FONT_FACE:Medium:20.0" \
+    label.padding_left=5
+
+sketchybar --add bracket front_app_bracket \
+    front_app \
+    front_app.separator \
+    front_app.name \
+    --subscribe front_app front_app_switched
+
+sketchybar --add item clock right \
+    --set clock \
+    icon=󰃰 \
+    background.color=0xffcba6f7 \
+    update_freq=10 \
+    script="$PLUGIN_DIR/clock.sh"
+if is_laptop; then
+sketchybar --add item battery right \
+    --set battery \
+    update_freq=20 \
+    script="$PLUGIN_DIR/battery.sh"
+fi
+sketchybar --add event spotify_change $SPOTIFY_EVENT \
+    --add item spotify right \
+    --set spotify \
+    icon= \
+    icon.y_offset=1 \
+    label.drawing=off \
+    label.padding_left=3 \
+    script="$PLUGIN_DIR/spotify.sh" \
+    --subscribe spotify spotify_change mouse.clicked
+
+##### Finalizing Setup #####
+sketchybar --update
+sketchybar --trigger aerospace_workspace_change
+sketchybar --trigger front_app_switched
+

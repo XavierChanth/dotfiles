@@ -1,7 +1,12 @@
 start-at-login = true
 
 after-startup-command = [
-    'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color=0xffff5c35 inactive_color=0x00000000 style=round width=5.0 blur_radius=5.0'
+  'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color=0xffff5c35 inactive_color=0x00000000 style=round width=5.0 blur_radius=5.0',
+  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar'
+]
+
+exec-on-workspace-change = ['/bin/bash', '-c',
+  '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
 [gaps]
@@ -9,7 +14,7 @@ inner.horizontal = 8
 inner.vertical =   8
 outer.left =       8
 outer.bottom =     8
-outer.top =        8
+outer.top =        48
 outer.right =      8
 
 # See https://nikitabobko.github.io/AeroSpace/guide#exec-env-vars
@@ -29,7 +34,7 @@ if.window-title-regex-substring = '^$' # good job, not implementing the accessib
 run = "layout floating"
 
 [mode.main.binding]
-alt-shift-r = 'reload-config'
+alt-r = 'reload-config'
 alt-enter = ['exec-and-forget alacritty msg create-window || alacritty']
 
 # Layout movement
