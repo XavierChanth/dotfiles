@@ -1,7 +1,6 @@
 start-at-login = true
 
 after-startup-command = [
-  'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color=0xffff5c35 inactive_color=0x00000000 style=round width=5.0 blur_radius=5.0',
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar'
 ]
 

@@ -11,10 +11,17 @@ HALF_LENGTH=$(((MAX_LENGTH + 1) / 2))
 # Spotify JSON / $INFO comes in malformed, line below sanitizes it
 SPOTIFY_JSON="$INFO"
 
+color_surface0=0xff313244
+color_peach=0xfffab387
+color_yellow=0xfff9e2af
+color_green=0xffa6e3a1
+
 update_track() {
 
   if [[ -z $SPOTIFY_JSON ]]; then
-    sketchybar --set $NAME icon.color=0xffeed49f label.drawing=no
+    sketchybar --set $NAME label="" \
+                --set $NAME.icon background.color=$color_peach \
+                --set ${NAME}sepl icon.color=$color_peach 
     return
   fi
 
@@ -44,14 +51,20 @@ update_track() {
         ARTIST="${ARTIST:0:$((MAX_LENGTH - TRACK_LENGTH - 1))}…"
       fi
     fi
-    sketchybar --set $NAME label="${TRACK}  ${ARTIST}" label.drawing=yes icon.color=0xffa6da95
+    sketchybar --set $NAME label="${TRACK}  ${ARTIST}" \
+              --set $NAME.icon background.color=$color_green \
+              --set ${NAME}sepl icon.color=$color_green \
 
   elif [ $PLAYER_STATE = "Paused" ]; then
-    sketchybar --set $NAME icon.color=0xffeed49f
+    sketchybar --set $NAME.icon background.color=$color_yellow \
+                --set ${NAME}sepl icon.color=$color_yellow
   elif [ $PLAYER_STATE = "Stopped" ]; then
-    sketchybar --set $NAME icon.color=0xffeed49f label.drawing=no
+    sketchybar --set $NAME label="" \
+    --set $NAME.icon background.color=$color_peach \
+                --set ${NAME}sepl icon.color=$color_peach
   else
-    sketchybar --set $NAME icon.color=0xffeed49f
+    sketchybar --set $NAME.icon background.color=$color_peach \
+                --set ${NAME}sepl icon.color=$color_peach
   fi
 }
 
