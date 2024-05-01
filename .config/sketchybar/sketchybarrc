@@ -167,11 +167,13 @@ sketchybar --set spotify \
   label.color=$color_text \
   background.color=$color_surface0 \
   script="$PLUGIN_DIR/spotify.sh" \
+  --subscribe spotify spotify_change mouse.clicked \
   --set spotify.icon \
   icon= \
   icon.padding_right=8 \
   background.color=$color_peach \
-  --subscribe spotify spotify_change mouse.clicked \
+  script="$PLUGIN_DIR/spotify.sh" \
+  --subscribe spotify.icon mouse.clicked \
   --set spotifysepl \
   icon=\
   icon.color=$color_peach \
