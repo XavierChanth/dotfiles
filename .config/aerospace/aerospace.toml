@@ -1,11 +1,11 @@
 start-at-login = true
 
 after-startup-command = [
-  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar'
+  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
 ]
 
 exec-on-workspace-change = ['/bin/bash', '-c',
-  '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+  '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
 [gaps]
@@ -32,8 +32,28 @@ if.app-id = 'us.zoom.xos'
 if.window-title-regex-substring = '^$' # good job, not implementing the accessibility APIs AND not giving the window a name zoom!
 run = "layout floating"
 
+# Startup layout
+[[on-window-detected]] 
+if.app-name-regex-substring ='.'
+if.during-aerospace-startup = true
+check-further-callbacks=true
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^alacritty$'
+if.during-aerospace-startup = true
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^LibreWolf$'
+if.during-aerospace-startup = true
+run = 'move-node-to-workspace 2'
+
 [mode.main.binding]
-alt-r = 'reload-config'
+alt-shift-enter = [
+  'exec-and-forget aerospace reload-config',
+  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload'
+]
 alt-enter = ['exec-and-forget alacritty msg create-window || alacritty']
 
 # Layout movement
@@ -79,11 +99,4 @@ alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 # Resizing
 alt-shift-minus = 'resize smart -50'
 alt-shift-equal = 'resize smart +50'
-# alt-r = 'mode resize'
-# [mode.resize.binding]
-# h = 'resize width -50'
-# j = 'resize height +50'
-# k = 'resize height -50'
-# l = 'resize width +50'
-# enter = 'mode main'
-# esc = 'mode main'
+

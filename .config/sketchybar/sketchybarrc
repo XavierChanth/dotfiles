@@ -115,7 +115,7 @@ sketchybar --add item spacer2 e \
   --add item spotifysepl e \
   --add item spotify.icon e \
   --add item spotify e \
-  --add item spotifysepr e \
+  --add item spotifysepr e
 else 
   # Spotify next to clock
 sketchybar --add item spacer3 right \
@@ -123,7 +123,7 @@ sketchybar --add item spacer3 right \
   --add item spotifysepr right \
   --add item spotify right \
   --add item spotify.icon right \
-  --add item spotifysepl right 
+  --add item spotifysepl right
 fi
 
 
@@ -275,3 +275,6 @@ sketchybar --set spacerleft \
 
 ### Finalizing Setup ###
 sketchybar --update
+sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)
+sketchybar --trigger front_app_switched INFO=$(aerospace list-windows --focused | cut -d'|' -f2 | tr -d " ") 
+# sketchybar --trigger spotify_change INFO="com.spotify.client.PlaybackStateChanged"
