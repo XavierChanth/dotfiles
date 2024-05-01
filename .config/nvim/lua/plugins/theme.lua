@@ -5,7 +5,7 @@ return {
     "nvimdev/dashboard-nvim",
     opts = {
       config = {
-        header = vim.split(string.rep("\n", 8) .. logos[selected_logo] .. "\n\n", "\n"),
+        header = vim.split("\n\n" .. logos[selected_logo] .. "\n\n", "\n"),
       },
     },
   },
