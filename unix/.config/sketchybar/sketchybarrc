@@ -170,7 +170,6 @@ sketchybar --set spotify \
   --subscribe spotify spotify_change mouse.clicked \
   --set spotify.icon \
   icon= \
-  icon.padding_right=8 \
   background.color=$color_peach \
   script="$PLUGIN_DIR/spotify.sh" \
   --subscribe spotify.icon mouse.clicked \

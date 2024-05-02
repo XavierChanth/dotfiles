@@ -1,5 +1,5 @@
 local logos = require("logos")
-local selected_logo = "graffiti"
+local selected_logo = "ansi_shadow"
 return {
   {
     "nvimdev/dashboard-nvim",
