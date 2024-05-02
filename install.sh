@@ -54,8 +54,8 @@ Darwin)
 	fi
 
 	# desktop stuff
-	brew install --cask aerospace raycast
-	brew install felixkratz/formulae/borders bitwarden-cli
+	brew install --cask aerospace raycast firefox
+	brew install bitwarden-cli
 
 	# shell essentials
 	brew install bash
