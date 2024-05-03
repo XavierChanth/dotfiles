@@ -5,7 +5,7 @@ return {
     {
       "<leader>e",
       function()
-        require("neo-tree.command").execute({ toggle = true, reveal = true, dir = Util.root() })
+        require("neo-tree.command").execute({ toggle = true, reveal = true, dir = Util.root.git() })
       end,
       desc = "Explorer (root dir)",
     },
@@ -19,7 +19,12 @@ return {
     {
       "<leader>fe",
       function()
-        require("neo-tree.command").execute({ toggle = true, reveal = true, position = "current", dir = Util.root() })
+        require("neo-tree.command").execute({
+          toggle = true,
+          reveal = true,
+          position = "current",
+          dir = Util.root.git(),
+        })
       end,
       desc = "Fullscreen Explorer (root dir)",
     },

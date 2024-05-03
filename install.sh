@@ -119,9 +119,9 @@ fi
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
 
 # sync dotfiles
-stow -d "$script_dir/unix" -t "$HOME" .
+stow -d "$script_dir" -t "$HOME" --dotfiles dotfiles
 if [ $(uname) = 'Darwin' ]; then
-	stow -d "$script_dir/macos" -t "$HOME" .
+	stow -d "$script_dir" -t "$HOME" macos
 fi
 
 # sync nvim
