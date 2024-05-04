@@ -18,14 +18,14 @@ touch "$HOME/.local/bin/.stowkeep"
 touch "$HOME/.config/.stowkeep"
 
 command_exists() {
-	command -v "$1" >/dev/null 2>&1
+  command -v "$1" >/dev/null 2>&1
 }
 
 # ensure git is installed
 if ! command_exists git; then
-	echo "git not found, install git before continuing..."
-	echo "how did you even git this onto your machine?"
-	exit 1
+  echo "git not found, install git before continuing..."
+  echo "how did you even git this onto your machine?"
+  exit 1
 fi
 
 # git global settings
@@ -47,72 +47,72 @@ git config --global pull.ff only
 
 # install brew
 case "$(uname)" in
-Darwin)
-	if ! command_exists brew; then
-		echo "brew not found, installing it for you..."
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	fi
+  Darwin)
+    if ! command_exists brew; then
+      echo "brew not found, installing it for you..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
 
-	# desktop stuff
-	brew install --cask aerospace raycast firefox
-	brew install bitwarden-cli
+    # desktop stuff
+    brew install --cask aerospace raycast firefox
+    brew install bitwarden-cli
 
-	# shell essentials
-	brew install bash
-	# core tools
-	brew install coreutils moreutils
-	# net tools
-	brew install openssl wget
-	# dev tools
-	brew install alacritty tmux neovim ripgrep fzf git-delta stow
-	# extra tools
-	brew install gh jq uv vfox
+    # shell essentials
+    brew install bash
+    # core tools
+    brew install coreutils moreutils
+    # net tools
+    brew install openssl wget
+    # dev tools
+    brew install alacritty tmux neovim ripgrep fzf git-delta stow
+    # extra tools
+    brew install gh jq uv vfox
 
-	# alacritty font patch - super blurry without this
-	defaults -currentHost write -g AppleFontSmoothing -int 0
-	;;
-Linux)
-	if command_exists dnf; then
-		echo "dnf package manager found, installing packages for dnf"
-		# shell essentials
-		sudo dnf install -y bash zsh man git sudo passwd procps
-		# core tools
-		sudo dnf install -y coreutils moreutils clang parallel
-		# net tools
-		sudo dnf install -y openssl curl wget iproute traceroute hostname
-		# dev tools
-		sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
-		# extra tools
-		sudo dnf install -y gh jq clang-tools-extra inotify-tools
-	else
-		echo "package manager not configured, configure and try again"
-		exit 0
-	fi
+    # alacritty font patch - super blurry without this
+    defaults -currentHost write -g AppleFontSmoothing -int 0
+    ;;
+  Linux)
+    if command_exists dnf; then
+      echo "dnf package manager found, installing packages for dnf"
+      # shell essentials
+      sudo dnf install -y bash zsh man git sudo passwd procps
+      # core tools
+      sudo dnf install -y coreutils moreutils clang parallel
+      # net tools
+      sudo dnf install -y openssl curl wget iproute traceroute hostname
+      # dev tools
+      sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
+      # extra tools
+      sudo dnf install -y gh jq clang-tools-extra inotify-tools
+    else
+      echo "package manager not configured, configure and try again"
+      exit 0
+    fi
 
-	# install uv
-	if ! command_exists uv; then
-		curl -fsSL https://astral.sh/uv/install.sh | sh
-	fi
+    # install uv
+    if ! command_exists uv; then
+      curl -fsSL https://astral.sh/uv/install.sh | sh
+    fi
 
-	# install vfox
-	if ! command_exists vfox; then
-		# Install vfox in a sub-shell & temp folder
-		tmp_dir_name=tmp-vfox-install
-		mkdir $tmp_dir_name
-		(
-			cd $tmp_dir_name
-			curl -sSL https://raw.githubusercontent.com/xavierchanth/vfox/main/install.sh | bash
-		)
-		rm -rf $tmp_dir_name
-	fi
+    # install vfox
+    if ! command_exists vfox; then
+      # Install vfox in a sub-shell & temp folder
+      tmp_dir_name=tmp-vfox-install
+      mkdir $tmp_dir_name
+      (
+        cd $tmp_dir_name
+        curl -sSL https://raw.githubusercontent.com/xavierchanth/vfox/main/install.sh | bash
+      )
+      rm -rf $tmp_dir_name
+    fi
 
-	# End of linux block
-	;;
+    # End of linux block
+    ;;
 esac
 
 if ! command_exists stow; then
-	echo "stow not found, install gnu stow before continuing..."
-	exit 2
+  echo "stow not found, install gnu stow before continuing..."
+  exit 2
 fi
 
 # install spaceship
@@ -121,19 +121,20 @@ git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$H
 # sync dotfiles
 stow -d "$script_dir" -t "$HOME" --dotfiles dotfiles
 if [ $(uname) = 'Darwin' ]; then
-	stow -d "$script_dir" -t "$HOME" macos
+  stow -d "$script_dir" -t "$HOME" macos
 fi
 
 # sync nvim
 nvim --headless "+Lazy! sync" +qa
 
+# TODO: get rid of vfox
 # Setup vfox & programming languages
 eval "$(vfox activate bash)" # bash is safer for this script, since zsh is compatible with it anyway
 vfox_install() {
-	vfox add "$1"
-	vfox install "$1@$2"
-	vfox use -g "$1@$2"
-	return $?
+  vfox add "$1"
+  vfox install "$1@$2"
+  vfox use -g "$1@$2"
+  return $?
 }
 
 # Some programming languages that I commonly use
@@ -142,17 +143,17 @@ vfox_install golang 1.22.2
 vfox_install nodejs 21.7.3
 
 if ! vfox_install cmake 3.29.2; then
-	command_exists dnf && sudo dnf install -y cmake
+  command_exists dnf && sudo dnf install -y cmake
 fi
 
 if ! vfox_install python 3.12.3; then
-	command_exists dnf && sudo dnf install -y python3
+  command_exists dnf && sudo dnf install -y python3
 fi
 
 # install lazygit directly from source
 if ! command_exists lazygit; then
-	eval "$(vfox activate bash)"
-	go install github.com/jesseduffield/lazygit@latest
+  eval "$(vfox activate bash)"
+  go install github.com/jesseduffield/lazygit@latest
 fi
 
 # Do a healthcheck to ensure that everything I want is installed
