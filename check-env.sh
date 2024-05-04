@@ -28,19 +28,18 @@ check_commands=(
   lazygit
   delta
   stow
-  # bonus tools
-  gh
-  jq
-  uv
-  vfox
-  # languages (installed with vfox)
+  # languages
   flutter
   dart
   go
   node
   npm
   cmake
+  uv
   python
+   # bonus tools
+  gh
+  jq
 )
 
 missing=""

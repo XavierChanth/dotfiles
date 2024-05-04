@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# import vfox for zsh
-eval "$(vfox activate zsh)"
-
-FPATH="$ASDF_DIR/completions:$FPATH"
-
 command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
@@ -12,9 +7,9 @@ command_exists() {
 __path=""
 
 # flutter
-if command_exists flutter; then
+export FLUTTER_ROOT="$HOME/.local/dev/flutter"
+if [ -d $FLUTTER_ROOT ]; then
   export PUB_CACHE="$HOME/.pub-cache"
-  export FLUTTER_ROOT=$(dirname $(dirname $(which flutter))) # yikes
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
   # dart completions
   [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
@@ -33,6 +28,7 @@ else
   export CPATH="/usr/local/include:$CPATH"
 fi
 
+# cmake
 alias cmbs='cmake -B build-$(hostname) -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 alias cmbb='cmake --build build-$(hostname)'
 alias cmbt='cmake --build build-$(hostname) --target'
@@ -42,6 +38,14 @@ alias ctb='ctest --test-dir build-$(hostname) --output-on-failure'
 if command_exists go; then
   __path="$HOME/go/bin:$__path"
 fi
+
+# nvm
+# wrap this in a function because it is slow and we don't want to run this unless we need node
+init_nvm() {
+  export NVM_DIR="$HOME/.local/dev/nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+}
 
 # append local path to PATH
 export PATH="$__path:$PATH"

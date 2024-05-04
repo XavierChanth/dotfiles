@@ -65,7 +65,7 @@ return {
       },
     },
     config = {
-      -- flutter_path = require("os").getenv("FLUTTER_ROOT") .. "/bin/flutter",
+      flutter_path = require("os").getenv("FLUTTER_ROOT") .. "/bin/flutter",
       lsp = {
         root_dir = function()
           return vim.loop.cwd()

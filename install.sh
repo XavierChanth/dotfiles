@@ -15,6 +15,7 @@ mkdir -p "$HOME/.config"
 touch "$HOME/.ssh/.stowkeep"
 touch "$HOME/.local/.stowkeep"
 touch "$HOME/.local/bin/.stowkeep"
+touch "$HOME/.local/dev/.stowkeep"
 touch "$HOME/.config/.stowkeep"
 
 command_exists() {
@@ -65,8 +66,10 @@ case "$(uname)" in
     brew install openssl wget
     # dev tools
     brew install alacritty tmux neovim ripgrep fzf git-delta stow
+    # programming languages
+    brew install uv python cmake golang
     # extra tools
-    brew install gh jq uv vfox
+    brew install gh jq
 
     # alacritty font patch - super blurry without this
     defaults -currentHost write -g AppleFontSmoothing -int 0
@@ -82,28 +85,19 @@ case "$(uname)" in
       sudo dnf install -y openssl curl wget iproute traceroute hostname
       # dev tools
       sudo dnf install -y alacritty tmux neovim ripgrep fzf git-delta stow
+      # programming languages
+      sudo dnf install -y python3 cmake golang
       # extra tools
       sudo dnf install -y gh jq clang-tools-extra inotify-tools
+
     else
       echo "package manager not configured, configure and try again"
       exit 0
     fi
 
-    # install uv
+    # install uv - no dnf installation option
     if ! command_exists uv; then
       curl -fsSL https://astral.sh/uv/install.sh | sh
-    fi
-
-    # install vfox
-    if ! command_exists vfox; then
-      # Install vfox in a sub-shell & temp folder
-      tmp_dir_name=tmp-vfox-install
-      mkdir $tmp_dir_name
-      (
-        cd $tmp_dir_name
-        curl -sSL https://raw.githubusercontent.com/xavierchanth/vfox/main/install.sh | bash
-      )
-      rm -rf $tmp_dir_name
     fi
 
     # End of linux block
@@ -127,32 +121,17 @@ fi
 # sync nvim
 nvim --headless "+Lazy! sync" +qa
 
-# TODO: get rid of vfox
-# Setup vfox & programming languages
-eval "$(vfox activate bash)" # bash is safer for this script, since zsh is compatible with it anyway
-vfox_install() {
-  vfox add "$1"
-  vfox install "$1@$2"
-  vfox use -g "$1@$2"
-  return $?
-}
+# Install flutter
+git clone https://github.com/flutter/flutter.git "$HOME/.local/dev/flutter"
+"$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
+"$HOME"/.local/dev/flutter/bin/flutter channel stable
 
-# Some programming languages that I commonly use
-vfox_install flutter 3.19.6
-vfox_install golang 1.22.2
-vfox_install nodejs 21.7.3
-
-if ! vfox_install cmake 3.29.2; then
-  command_exists dnf && sudo dnf install -y cmake
-fi
-
-if ! vfox_install python 3.12.3; then
-  command_exists dnf && sudo dnf install -y python3
-fi
+# Install nvm
+git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm"
+"$HOME"/.local/dev/nvm install node
 
 # install lazygit directly from source
 if ! command_exists lazygit; then
-  eval "$(vfox activate bash)"
   go install github.com/jesseduffield/lazygit@latest
 fi
 
