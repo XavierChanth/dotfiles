@@ -1,6 +1,9 @@
+gui:
+  filterMode: fuzzy 
+  nerdFontsVersion: "3"
 git: 
+  mainBranches: [main, master, trunk]
   paging:
     colorArg: always
     pager: delta --dark --paging=never --syntax-theme base16-256 -s
-gui:
-  filterMode: fuzzy 
+# confirmOnQuit: true
