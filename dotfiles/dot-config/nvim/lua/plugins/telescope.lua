@@ -57,4 +57,27 @@ return {
       require("telescope").load_extension("undo")
     end,
   },
+  {
+    "ThePrimeagen/git-worktree.nvim",
+    commit = "a3917d0b7ca32e7faeed410cd6b0c572bf6384ac", -- PR #124
+    keys = {
+      {
+        "<leader>ga",
+        function()
+          require("telescope").extensions.git_worktree.create_git_worktree()
+        end,
+        desc = "Git worktree add",
+      },
+      {
+        "<leader>gw",
+        function()
+          require("telescope").extensions.git_worktree.git_worktrees({})
+        end,
+        desc = "Git worktrees",
+      },
+    },
+    config = function()
+      require("telescope").load_extension("git_worktree")
+    end,
+  },
 }
