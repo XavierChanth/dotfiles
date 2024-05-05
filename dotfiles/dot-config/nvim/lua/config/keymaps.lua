@@ -5,12 +5,20 @@ local map = vim.keymap.set
 
 require("which-key").register({
   ["<leader>r"] = { name = "run" },
-  ["<leader>ue"] = { name = "Explorer position" },
   ["<leader>t"] = { name = "tab stop" },
 })
 
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
+
+-- Oil.nvim
+-- Must be set here or LazyVim's default maps for neo-tree will conflict
+map("n", "<leader>e", function()
+  require("oil").open_float()
+end, { desc = "Oil" })
+map("n", "<leader>E", function()
+  require("oil").open_float(require("lazyvim.util.root").git())
+end, { desc = "Oil (root dir)" })
 
 -- LSP symbol_width
 map("n", "<leader>ss", function()

@@ -12,6 +12,13 @@ end
 return {
   {
     "nvim-telescope/telescope.nvim",
+    keys = {
+      {
+        "<leader><space>",
+        telescope.telescope("files", { cwd = require("lazyvim.util.root").git() }),
+        desc = "Find files",
+      },
+    },
     opts = {
       extensions = {
         undo = {
