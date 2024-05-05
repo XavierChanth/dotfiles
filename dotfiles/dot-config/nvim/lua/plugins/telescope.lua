@@ -15,7 +15,9 @@ return {
     keys = {
       {
         "<leader><space>",
-        telescope.telescope("files", { cwd = require("lazyvim.util.root").git() }),
+        function()
+          telescope.telescope("files", { cwd = require("lazyvim.util.root").git() })()
+        end,
         desc = "Find files",
       },
     },
