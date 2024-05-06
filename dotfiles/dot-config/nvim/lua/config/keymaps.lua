@@ -15,15 +15,6 @@ map({ "n", "v" }, "<leader>p", '"+p', { remap = true, desc = "paste from clipboa
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
 
--- Oil.nvim
--- Must be set here or LazyVim's default maps for neo-tree will conflict
-map("n", "<leader>e", function()
-  require("oil").open_float()
-end, { desc = "Oil" })
-map("n", "<leader>E", function()
-  require("oil").open_float(require("lazyvim.util.root").git())
-end, { desc = "Oil (root dir)" })
-
 -- LSP symbol_width
 map("n", "<leader>ss", function()
   require("telescope.builtin").lsp_document_symbols({

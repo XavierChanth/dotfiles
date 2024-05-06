@@ -2,7 +2,29 @@ local Util = require("lazyvim.util")
 return {
   {
     "stevearc/oil.nvim",
+    keys = {
+      {
+        "<leader>fo",
+        function()
+          require("oil").open()
+        end,
+        desc = "Oil",
+      },
+      {
+        "<leader>fO",
+        function()
+          require("oil").open(require("lazyvim.util.root").git())
+        end,
+        { desc = "Oil (root dir)" },
+      },
+    },
     opts = {
+      columns = {
+        "icon",
+        -- "permissions",
+        -- "size",
+        -- "mtime",
+      },
       view_options = {
         show_hidden = true,
       },
@@ -27,7 +49,22 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     keys = {
+      -- Oil.nvim
+      -- Must be set here or LazyVim's default maps for neo-tree will conflict
       {
+        "<leader>e",
+        "<leader>fo",
+        remap = true,
+        desc = "Oil",
+      },
+      {
+        "<leader>E",
+        "<leader>fO",
+        remap = true,
+        desc = "Oil (root dir)",
+      },
+      {
+
         "<leader>fe",
         function()
           require("neo-tree.command").execute({ toggle = true, dir = Util.root.git() })
