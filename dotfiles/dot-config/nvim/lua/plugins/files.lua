@@ -15,7 +15,7 @@ return {
         function()
           require("oil").open(require("lazyvim.util.root").git())
         end,
-        { desc = "Oil (root dir)" },
+        desc = "Oil (root dir)",
       },
     },
     opts = {
@@ -32,6 +32,8 @@ return {
       keymaps = {
         ["<leader>e"] = "actions.close",
         ["<leader>E"] = "actions.close",
+        ["q"] = "actions.close",
+        ["<C-q>"] = { "q", noremap = true },
         ["<C-c>"] = "actions.close",
         ["<backspace>"] = "actions.parent",
         ["<CR>"] = "actions.select",

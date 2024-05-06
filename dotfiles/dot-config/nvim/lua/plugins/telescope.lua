@@ -87,6 +87,25 @@ return {
     },
     config = function()
       require("telescope").load_extension("git_worktree")
+
+      local Worktree = require("git-worktree")
+
+      Worktree.on_tree_change(function(op, _)
+        if op == Worktree.Operations.Create then
+          local Process = require("lazy.manage.process")
+          local ok, _ = pcall(
+            Process.exec,
+            { "git", "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
+            { cwd = require("lazyvim.util.root").git() }
+          )
+
+          if not ok then
+            LazyVim.error({
+              'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
+            })
+          end
+        end
+      end)
     end,
   },
 }

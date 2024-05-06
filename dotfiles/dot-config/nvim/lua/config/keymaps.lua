@@ -8,6 +8,14 @@ require("which-key").register({
   ["<leader>t"] = { name = "tab stop" },
 })
 
+-- local lazygit = require("util.lazygit")
+-- map("n", "<leader>gg", function()
+--   lazygit({ root = true })
+-- end, { desc = "Lazygit (Root Dir)" })
+-- map("n", "<leader>gG", function()
+--   lazygit()
+-- end, { desc = "Lazygit (cwd)" })
+--
 -- map leader y/p to system clipboard
 map({ "n", "v" }, "<leader>y", '"+y', { remap = true, desc = "yank to clipboard" })
 map({ "n", "v" }, "<leader>p", '"+p', { remap = true, desc = "paste from clipboard" })
