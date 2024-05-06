@@ -8,6 +8,10 @@ require("which-key").register({
   ["<leader>t"] = { name = "tab stop" },
 })
 
+-- map leader y/p to system clipboard
+map({ "n", "v" }, "<leader>y", '"+y', { remap = true, desc = "yank to clipboard" })
+map({ "n", "v" }, "<leader>p", '"+p', { remap = true, desc = "paste from clipboard" })
+
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
 
