@@ -20,7 +20,6 @@ return {
   },
   {
     "mistricky/codesnap.nvim",
-    build = "make",
     keys = {
       {
         "<leader>cs",

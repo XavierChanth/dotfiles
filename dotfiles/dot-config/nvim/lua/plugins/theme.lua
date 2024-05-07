@@ -1,4 +1,6 @@
-local logos = require("logos")
+local logos = require("util.logos")
+local actions = require("util.dashboard-actions")
+
 local selected_logo = "ansi_shadow"
 return {
   {
@@ -6,6 +8,7 @@ return {
     opts = {
       config = {
         header = vim.split("\n\n" .. logos[selected_logo] .. "\n\n", "\n"),
+        center = actions,
       },
     },
   },

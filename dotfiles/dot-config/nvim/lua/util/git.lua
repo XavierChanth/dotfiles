@@ -1,8 +1,9 @@
 local RootUtil = require("lazyvim.util.root")
 
-local function bareRoot()
+local function repoRoot()
   local root = RootUtil.get()
   local git_root = vim.fs.find(".git", { type = "directory", path = root, upward = true })[1]
+  -- local bare_root = vim.fs.find("*.git", { type = "directory", path = root, upward = true })[1]
   local ret = git_root and vim.fn.fnamemodify(git_root, ":h") or root
   return ret
 end
@@ -11,41 +12,42 @@ local function worktreeRoot()
   return RootUtil.git()
 end
 
-local function lazygit(opts)
-  local LazyVim = require("lazyvim.util")
-  local Process = require("lazy.manage.process")
+local function worktreeAdd(opts)
+  local actions = require("telescope.actions")
+  local action_state = require("telescope.actions.state")
+  opts = opts or {}
+  opts.attach_mappings = function()
+    actions.select_default:replace(function(prompt_bufnr, asdf)
+      local selected_entry = action_state.get_selected_entry()
+      local current_line = action_state.get_current_line()
 
-  local gitroot = worktreeRoot()
-  local cwd = vim.uv.cwd() or gitroot
-  if opts.root or false then
-    cwd = gitroot
-  end
+      vim.print(asdf)
+      actions.close(prompt_bufnr)
 
-  local isbare = false
-  local ok, lines = pcall(Process.exec, { "git", "rev-parse", "--is-bare-repository" }, { cwd = cwd })
-  if ok then
-    isbare = lines[1] == "true"
-  else
-    LazyVim.error({ "Failed to determine if this repo is bare, assuming non-bare." })
-  end
-  if not isbare then
-    return LazyVim.lazygit({ cwd = cwd })
-  end
+      local branch = selected_entry ~= nil and selected_entry.value or current_line
 
-  local gitdir = cwd
-  ok, lines = pcall(Process.exec, { "git", "rev-parse", "--git-dir" }, { cwd = gitroot })
-  if ok then
-    gitdir = lines[1]
-  else
-    LazyVim.error({ "Failed to retrieve git dir." })
-  end
+      if branch == nil then
+        return
+      end
 
-  local args = { "--git-dir=" .. gitdir, "-work-tree=" .. cwd }
-  return LazyVim.lazygit({ args = args, cwd = cwd })
+      local name = branch:gsub("^origin/", "", 1)
+      local path = require("util.git").repoRoot() .. "/" .. name
+
+      require("git-worktree").create_worktree(path, name)
+    end)
+
+    return true
+  end
+  require("telescope.builtin").git_branches(opts)
+end
+
+local function worktrees()
+  require("telescope").extensions.git_worktree.git_worktrees()
 end
 
 return {
+  repoRoot = repoRoot,
   worktreeRoot = worktreeRoot,
-  bareRoot = bareRoot,
-  lazygit = lazygit,
+  worktreeAdd = worktreeAdd,
+  worktrees = worktrees,
 }
