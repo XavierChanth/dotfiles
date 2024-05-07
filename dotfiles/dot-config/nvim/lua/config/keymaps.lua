@@ -7,6 +7,12 @@ require("which-key").register({
   ["<leader>r"] = { name = "run" },
   ["<leader>t"] = { name = "tab stop" },
 })
+map("n", "<leader>e", function()
+  require("oil").open()
+end, { desc = "Oil" })
+map("n", "<leader>E", function()
+  require("oil").open(require("lazyvim.util.root").git())
+end, { desc = "Oil (root dir)" })
 
 -- local lazygit = require("util.lazygit")
 -- map("n", "<leader>gg", function()

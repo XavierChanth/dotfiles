@@ -2,23 +2,7 @@ local Util = require("lazyvim.util")
 return {
   {
     "stevearc/oil.nvim",
-
     keys = {
-      {
-        "<leader>e",
-        function()
-          require("oil").open()
-        end,
-        desc = "Oil",
-      },
-      {
-        "<leader>E",
-        function()
-          require("oil").open(require("lazyvim.util.root").git())
-        end,
-        desc = "Oil (root dir)",
-      },
-
       {
         "<leader>fo",
         function()
