@@ -32,6 +32,7 @@ fi
 alias cmbs='cmake -B build-$(hostname) -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 alias cmbb='cmake --build build-$(hostname)'
 alias cmbt='cmake --build build-$(hostname) --target'
+alias cmcc='ln -s build-$(hostname)/compile_commands.json .'
 alias ctb='ctest --test-dir build-$(hostname) --output-on-failure'
 
 #golang

@@ -44,6 +44,8 @@ git config --global filter.lfs.required true
 git config --global commit.gpgsign true
 git config --global gpg.format ssh
 git config --global alias.wt worktree
+git config --global alias.wtls "worktree list"
+git config --global alias.clonebare "clone --no-checkout -c core.bare=true"
 git config --global pull.ff only
 
 # install brew

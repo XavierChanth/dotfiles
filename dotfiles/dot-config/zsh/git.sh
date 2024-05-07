@@ -6,7 +6,7 @@ alias lg='lazygit'
 
 clone() {
   REPO=$1
-  shift;
+  shift
 
   if [[ $REPO =~ ^(git@github\.com:.*|https:\/\/github\.com\/.*)$ ]]; then
     prefix=""
@@ -17,3 +17,15 @@ clone() {
   git clone "$prefix$REPO" "$@"
 }
 
+clonebare() {
+  REPO=$1
+  shift
+
+  if [[ $REPO =~ ^(git@github\.com:.*|https:\/\/github\.com\/.*)$ ]]; then
+    prefix=""
+  else
+    prefix="git@github.com:"
+  fi
+
+  git clonebare "$prefix$REPO" "$@"
+}

@@ -1,9 +1,21 @@
--- make lazygit work with git worktrees
-return function(opts)
+local RootUtil = require("lazyvim.util.root")
+
+local function bareRoot()
+  local root = RootUtil.get()
+  local git_root = vim.fs.find(".git", { type = "directory", path = root, upward = true })[1]
+  local ret = git_root and vim.fn.fnamemodify(git_root, ":h") or root
+  return ret
+end
+
+local function worktreeRoot()
+  return RootUtil.git()
+end
+
+local function lazygit(opts)
   local LazyVim = require("lazyvim.util")
   local Process = require("lazy.manage.process")
 
-  local gitroot = LazyVim.root.git()
+  local gitroot = worktreeRoot()
   local cwd = vim.uv.cwd() or gitroot
   if opts.root or false then
     cwd = gitroot
@@ -31,3 +43,9 @@ return function(opts)
   local args = { "--git-dir=" .. gitdir, "-work-tree=" .. cwd }
   return LazyVim.lazygit({ args = args, cwd = cwd })
 end
+
+return {
+  worktreeRoot = worktreeRoot,
+  bareRoot = bareRoot,
+  lazygit = lazygit,
+}
