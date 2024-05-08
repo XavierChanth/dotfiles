@@ -5,7 +5,6 @@ return {
     keys = {
       {
         "<leader>ga",
-        -- Override the implementation, no extra dialog
         require("util.git").worktreeAdd,
         desc = "Git worktree add",
       },
@@ -25,18 +24,22 @@ return {
 
       Worktree.on_tree_change(function(op, _)
         if op == Worktree.Operations.Create then
-          local Process = require("lazy.manage.process")
-          local ok, _ = pcall(
-            Process.exec,
-            { "git", "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
-            { cwd = require("util.git").worktreeRoot() }
-          )
+          local Job = require("plenary.job")
 
-          if not ok then
-            LazyVim.error({
-              'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
+          Job
+            :new({
+              command = "git",
+              args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
+              cwd = require("util.git").worktreeRoot(),
+              on_exit = function(_, exit_code)
+                if exit_code ~= 0 then
+                  LazyVim.error({
+                    'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
+                  })
+                end
+              end,
             })
-          end
+            :sync()
         end
       end)
     end,
