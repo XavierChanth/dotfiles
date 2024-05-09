@@ -37,7 +37,7 @@ run = "layout floating"
 if.app-name-regex-substring ='.'
 if.during-aerospace-startup = true
 check-further-callbacks=true
-run = 'move-node-to-workspace 1'
+run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-name-regex-substring = '^LibreWolf$|^Firefox$'
@@ -47,7 +47,7 @@ run = 'move-node-to-workspace 2'
 [[on-window-detected]]
 if.app-name-regex-substring = '^alacritty$'
 if.during-aerospace-startup = true
-run = 'move-node-to-workspace 3'
+run = 'move-node-to-workspace 1'
 
 [mode.main.binding]
 alt-shift-enter = [
