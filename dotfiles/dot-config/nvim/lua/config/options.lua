@@ -21,4 +21,6 @@ opt.listchars = {
 }
 
 -- Reset the clipboard to default
-opt.clipboard = ""
+-- opt.clipboard = ""
+-- tried this off but it obviously doesn't share registers across nvim instances in tmux sessions
+-- found this to be more harmful to speed, than occasionally realizing that I overwrote stuff from nvim
