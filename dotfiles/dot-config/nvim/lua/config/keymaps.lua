@@ -12,14 +12,6 @@ require("which-key").register({
 map("n", "H", "")
 map("n", "L", "")
 
--- oil.nvim
-map("n", "<leader>e", function()
-  require("oil").open()
-end, { desc = "Oil" })
-map("n", "<leader>E", function()
-  require("oil").open(require("lazyvim.util.root").git())
-end, { desc = "Oil (root dir)" })
-
 -- run commands with telescope
 map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
 map("n", "<leader>rg", "<cmd>Gitsigns<cr>", { desc = "Gitsigns Commands" })
