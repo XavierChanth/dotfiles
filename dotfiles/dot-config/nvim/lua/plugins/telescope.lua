@@ -1,27 +1,29 @@
--- Intentional override of lazyvim's config_files to be the entire dotfiles repo
-local telescope = require("lazyvim.util.telescope")
----@diagnostic disable-next-line: duplicate-set-field
-telescope.config_files = function()
-  return telescope("files", {
-    cwd = vim.fn.expand("$HOME/.dotfiles"),
-    show_untracked = true,
-    git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
-  })
-end
-
 return {
   {
     "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      build = "make",
+      config = function()
+        require("telescope").load_extension("fzf")
+      end,
+    },
     keys = {
       {
         "<leader><space>",
         function()
-          telescope.telescope("files", { cwd = require("lazyvim.util.root").git() })()
+          require("lazyvim.util.telescope").telescope("files", { cwd = require("lazyvim.util.root").git() })()
         end,
         desc = "Find files",
       },
     },
     opts = {
+      defaults = require("util.telescope").defaults,
+      pickers = {
+        commands = {
+          entry_maker = require("util.telescope").command_entry_maker({}),
+        },
+      },
       extensions = {
         undo = {
           use_delta = true,
@@ -64,6 +66,51 @@ return {
     },
     config = function()
       require("telescope").load_extension("undo")
+    end,
+  },
+  {
+    "ThePrimeagen/git-worktree.nvim",
+    commit = "a3917d0b7ca32e7faeed410cd6b0c572bf6384ac", -- PR #124
+    keys = {
+      {
+        "<leader>ga",
+        require("util.git").worktreeAdd,
+        desc = "Git worktree add",
+      },
+      {
+        "<leader>gw",
+        require("util.git").worktrees,
+        desc = "Git worktrees",
+      },
+    },
+    config = function()
+      require("telescope").load_extension("git_worktree")
+
+      local Worktree = require("git-worktree")
+
+      Worktree.on_tree_change(function(op, _)
+        if op == Worktree.Operations.Create then
+          local Job = require("plenary.job")
+
+          Job
+            :new({
+              command = "git",
+              args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
+              cwd = require("util.git").worktreeRoot(),
+              on_exit = function(_, exit_code)
+                if exit_code ~= 0 then
+                  LazyVim.error({
+                    'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
+                  })
+                end
+              end,
+            })
+            :sync()
+        end
+      end)
+      return {
+        update_on_change_command = "",
+      }
     end,
   },
 }

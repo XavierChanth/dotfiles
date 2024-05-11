@@ -17,9 +17,7 @@ map("n", "<leader>E", function()
 end, { desc = "Oil (root dir)" })
 
 -- run commands with telescope
-map("n", "<leader>rr", function()
-  require("util.telescope").run_command({}, {})
-end, { desc = "Run commands" })
+map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
 
 -- map leader y/p to system clipboard
 map({ "n", "v" }, "<leader>y", '"+y', { remap = true, desc = "yank to clipboard" })

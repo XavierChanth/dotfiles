@@ -5,7 +5,10 @@ return {
       {
         "<leader>ro",
         function()
-          require("util.telescope").run_command({}, { pattern = "^Obsidian" })
+          return require("util.telescope").command_picker({
+            theme = "dropdown",
+            regex = "^Obsidian",
+          })
         end,
         desc = "Obsidian Commands",
       },

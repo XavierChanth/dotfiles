@@ -43,7 +43,13 @@ local actions = {
     key = "x",
   },
   {
-    action = "lua LazyVim.telescope.config_files()()",
+    action = function()
+      return require("lazyvim.util.telescope").telescope("files", {
+        cwd = vim.fn.expand("$HOME/.dotfiles"),
+        show_untracked = true,
+        git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
+      })
+    end,
     desc = " Config",
     icon = " ",
     key = "c",
