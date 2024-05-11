@@ -1,5 +1,4 @@
 return {
-  { "echasnovski/mini.pairs", enabled = false },
   {
     "folke/todo-comments.nvim",
     opts = {

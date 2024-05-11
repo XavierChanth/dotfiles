@@ -1,32 +1,42 @@
 local M = {}
 M.actions = {
   {
-    action = LazyVim.telescope("files"),
+    action = function()
+      require("util.telescope").git_files()
+    end,
     desc = " Find File",
     icon = " ",
     key = "f",
   },
   {
-    action = 'lua require("util.git_worktree").telescope()',
+    action = function()
+      require("util.git_worktree").telescope()
+    end,
     desc = " Worktrees",
     icon = " ",
     key = "w",
   },
   {
-    action = 'lua require("util.git_worktree").add()',
+    action = function()
+      require("util.git_worktree").add()
+    end,
     desc = " Worktree Add",
     icon = " ",
     key = "a",
   },
 
   {
-    action = "lua LazyVim.lazygit()",
+    action = function()
+      LazyVim.lazygit()
+    end,
     desc = " Lazygit",
     icon = " ",
     key = "g",
   },
   {
-    action = 'lua require("persistence").load()',
+    action = function()
+      require("persistence").load()
+    end,
     desc = " Restore Session",
     icon = " ",
     key = "s",
@@ -45,11 +55,7 @@ M.actions = {
   },
   {
     action = function()
-      return require("lazyvim.util.telescope").telescope("files", {
-        cwd = vim.fn.expand("$HOME/.dotfiles"),
-        show_untracked = true,
-        git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
-      })
+      return require("util.telescope").config()
     end,
     desc = " Config",
     icon = " ",
@@ -62,6 +68,7 @@ M.actions = {
     key = "q",
   },
 }
+
 for _, button in ipairs(M.actions) do
   button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
   button.key_format = "  %s"

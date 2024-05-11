@@ -12,7 +12,6 @@ return {
       },
     },
   },
-  { "folke/tokyonight.nvim", enabled = false }, -- disable Lazyvim's default theme
   { -- Setup catppuccin theme
     "catppuccin/nvim",
     name = "catppuccin",
