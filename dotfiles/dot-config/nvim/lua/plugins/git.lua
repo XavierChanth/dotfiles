@@ -14,9 +14,6 @@ return {
         desc = "Git worktrees",
       },
     },
-    opts = {
-      update_on_change_command = "true",
-    },
     config = function()
       require("telescope").load_extension("git_worktree")
 
@@ -42,6 +39,9 @@ return {
             :sync()
         end
       end)
+      return {
+        update_on_change_command = "",
+      }
     end,
   },
 }
