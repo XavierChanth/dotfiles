@@ -18,6 +18,7 @@ end, { desc = "Oil (root dir)" })
 
 -- run commands with telescope
 map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
+map("n", "<leader>rg", "<cmd>Gitsigns<cr>", { desc = "Gitsigns Commands" })
 
 -- map leader y/p to system clipboard
 map({ "n", "v" }, "<leader>y", '"+y', { remap = true, desc = "yank to clipboard" })
@@ -59,6 +60,3 @@ end, { desc = "4 spaces" })
 map("n", "<leader>t8", function()
   tabstop(8)
 end, { desc = "4 spaces" })
-
--- Gitsigns
-map("n", "<leader>rg", ":Gitsigns<CR>", { desc = "Gitsigns Commands" })

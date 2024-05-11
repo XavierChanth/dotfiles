@@ -11,9 +11,7 @@ return {
     keys = {
       {
         "<leader><space>",
-        function()
-          require("lazyvim.util.telescope").telescope("files", { cwd = require("lazyvim.util.root").git() })()
-        end,
+        require("util.telescope").git_files,
         desc = "Find files",
       },
     },
@@ -21,7 +19,7 @@ return {
       defaults = require("util.telescope").defaults,
       pickers = {
         commands = {
-          entry_maker = require("util.telescope").command_entry_maker({}),
+          entry_maker = require("util.telescope").command.entry_maker({}),
         },
       },
       extensions = {
@@ -74,12 +72,12 @@ return {
     keys = {
       {
         "<leader>ga",
-        require("util.git").worktreeAdd,
+        require("util.git_worktree").add,
         desc = "Git worktree add",
       },
       {
         "<leader>gw",
-        require("util.git").worktrees,
+        require("util.git_worktree").telescope,
         desc = "Git worktrees",
       },
     },
@@ -87,7 +85,6 @@ return {
       require("telescope").load_extension("git_worktree")
 
       local Worktree = require("git-worktree")
-
       Worktree.on_tree_change(function(op, _)
         if op == Worktree.Operations.Create then
           local Job = require("plenary.job")
@@ -96,7 +93,7 @@ return {
             :new({
               command = "git",
               args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
-              cwd = require("util.git").worktreeRoot(),
+              cwd = require("util.root").git(),
               on_exit = function(_, exit_code)
                 if exit_code ~= 0 then
                   LazyVim.error({

@@ -35,18 +35,17 @@ require("lazy").setup({
   },
   defaults = {
     lazy = true,
-    version = "*", -- use stable
-    -- version = false, -- use upstream
+    version = "*",
   },
   ui = { border = "rounded" },
-  checker = { enabled = true }, -- automatically check for plugin updates
+  checker = { enabled = true },
   performance = {
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
+        "matchit",
+        "matchparen",
         "netrwPlugin",
         "tarPlugin",
         "tohtml",

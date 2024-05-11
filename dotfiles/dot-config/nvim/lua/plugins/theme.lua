@@ -1,5 +1,5 @@
 local logos = require("util.logos")
-local actions = require("util.dashboard-actions")
+local actions = require("util.dashboard").actions
 
 local selected_logo = "ansi_shadow"
 return {

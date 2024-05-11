@@ -1,5 +1,7 @@
+local M = {}
+M.command = {}
 -- Just the command name, nice and clean
-local function command_entry_maker(opts)
+function M.command.entry_maker(opts)
   local make_display = function(entry)
     return require("telescope.pickers.entry_display").create({
       separator = "▏",
@@ -28,7 +30,7 @@ local function command_entry_maker(opts)
 end
 
 -- Finder that allows you to specify a regex filter
-local command_finder = function(opts)
+function M.command.finder(opts)
   local regex = opts.regex or ".*"
   return require("telescope.finders").new_table({
     results = (function()
@@ -54,37 +56,56 @@ local command_finder = function(opts)
       end
       return commands
     end)(),
-    entry_maker = opts.entry_maker or command_entry_maker(opts),
+    entry_maker = opts.entry_maker or M.command.entry_maker(opts),
   })
 end
 
 -- Picker that allows you to specify a regex filter
-local command_picker = function(opts)
+function M.command.picker(opts)
   require("telescope.builtin")["commands"]({
-    finder = command_finder(opts),
+    finder = M.command.finder(opts),
     theme = "dropdown",
   })
 end
 
-return {
-  command_entry_maker = command_entry_maker,
-  -- command_finder = command_finder, -- no need to use this when command picker does the extra wrapping
-  command_picker = command_picker,
-  defaults = {
-    mappings = {
-      n = {
-        ["o"] = require("telescope.actions.layout").toggle_preview,
-      },
-      i = {
-        ["<C-o>"] = require("telescope.actions.layout").toggle_preview,
-      },
+function M.builtin(builtin, opts)
+  return require("telescope.builtin")[builtin](opts)
+end
+
+function M.git_files(opts)
+  opts = opts or {}
+  opts.cwd = opts.cwd or require("util.root").git()
+  return pcall(M.builtin, "git_files", opts) or M.find_files(opts)
+end
+
+function M.find_files(opts)
+  return M.builtin("find_files", opts)
+end
+
+function M.config()
+  return M.git_files({
+    cwd = vim.fn.expand("$HOME/.dotfiles"),
+    show_untracked = true,
+    git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
+  })
+end
+
+M.defaults = {
+  mappings = {
+    n = {
+      ["o"] = require("telescope.actions.layout").toggle_preview,
     },
-    results_title = false,
-    sorting_strategy = "ascending",
-    layout_strategy = "flex",
-    layout_config = {
-      anchor = "top",
-      prompt_position = "top",
+    i = {
+      ["<C-o>"] = require("telescope.actions.layout").toggle_preview,
     },
   },
+  results_title = false,
+  sorting_strategy = "ascending",
+  layout_strategy = "flex",
+  layout_config = {
+    anchor = "top",
+    prompt_position = "top",
+  },
 }
+
+return M

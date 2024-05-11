@@ -1,4 +1,5 @@
-local actions = {
+local M = {}
+M.actions = {
   {
     action = LazyVim.telescope("files"),
     desc = " Find File",
@@ -6,13 +7,13 @@ local actions = {
     key = "f",
   },
   {
-    action = 'lua require("util.git").worktrees()',
+    action = 'lua require("util.git_worktree").telescope()',
     desc = " Worktrees",
     icon = " ",
     key = "w",
   },
   {
-    action = 'lua require("util.git").worktreeAdd()',
+    action = 'lua require("util.git_worktree").add()',
     desc = " Worktree Add",
     icon = " ",
     key = "a",
@@ -61,9 +62,9 @@ local actions = {
     key = "q",
   },
 }
-for _, button in ipairs(actions) do
+for _, button in ipairs(M.actions) do
   button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
   button.key_format = "  %s"
 end
 
-return actions
+return M
