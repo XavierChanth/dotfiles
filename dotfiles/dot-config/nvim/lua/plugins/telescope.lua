@@ -14,12 +14,27 @@ return {
         require("util.telescope").git_files,
         desc = "Find files",
       },
+
+      {
+        "<leader>fb",
+        function()
+          require("util.telescope").builtin("buffers", {})
+        end,
+        desc = "Find buffers",
+      },
     },
     opts = {
       defaults = require("util.telescope").defaults,
       pickers = {
         commands = {
           entry_maker = require("util.telescope").command.entry_maker({}),
+        },
+        lsp_document_symbols = {
+          symbol_width = 48,
+        },
+        lsp_dynamic_workspace_symbols = {
+          fname_width = 48,
+          symbol_width = 48,
         },
       },
       extensions = {

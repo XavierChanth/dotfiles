@@ -8,6 +8,10 @@ require("which-key").register({
   ["<leader>t"] = { name = "tab stop" },
 })
 
+-- Disable bufferline navigation, it's a bad habit
+map("n", "H", "")
+map("n", "L", "")
+
 -- oil.nvim
 map("n", "<leader>e", function()
   require("oil").open()
@@ -26,22 +30,6 @@ map({ "n", "v" }, "<leader>p", '"+p', { remap = true, desc = "paste from clipboa
 
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
-
--- LSP symbol_width
-map("n", "<leader>ss", function()
-  require("telescope.builtin").lsp_document_symbols({
-    symbols = require("lazyvim.config").get_kind_filter(),
-    symbol_width = 64,
-  })
-end, { desc = "Goto Symbol" })
-map("n", "<leader>sS", function()
-  require("telescope.builtin").lsp_dynamic_workspace_symbols({
-    symbols = require("lazyvim.config").get_kind_filter(),
-    symbol_width = 64,
-  })
-end, {
-  desc = "Goto Symbol (Workspace)",
-})
 
 -- Tab stops
 local tabstop = function(num)
