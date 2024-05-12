@@ -36,3 +36,6 @@ end, { desc = "4 spaces" })
 map("n", "<leader>t8", function()
   tabstop(8)
 end, { desc = "4 spaces" })
+
+-- Buffer management
+map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })

@@ -64,7 +64,20 @@ return {
       },
       sections = {
         lualine_a = { { "mode", separator = { left = "", right = "" } } },
-        lualine_y = { { "buffers", max_length = vim.o.columns * 2 / 3 } },
+        lualine_y = {
+          {
+            "buffers",
+            filetype_names = {
+              TelescopePrompt = "Telescope",
+              dashboard = "Dashboard",
+              packer = "Packer",
+              fzf = "FZF",
+              alpha = "Alpha",
+              oil = "Oil",
+            },
+            max_length = vim.o.columns * 2 / 3,
+          },
+        },
         lualine_z = {
           { "progress", padding = { left = 1, right = 0 } },
           { "location", separator = { right = "" }, padding = { left = 0, right = 1 } },
