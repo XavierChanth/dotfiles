@@ -12,6 +12,18 @@ return {
       {
         "<leader><space>",
         require("util.telescope").git_files,
+        desc = "Git files",
+      },
+      {
+        "<leader>ff",
+        require("util.telescope").find_files,
+        desc = "Find files",
+      },
+      {
+        "<leader>fF",
+        function()
+          require("util.telescope").find_files({ cwd = vim.uv.cwd() })
+        end,
         desc = "Find files",
       },
 
