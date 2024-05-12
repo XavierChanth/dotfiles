@@ -56,14 +56,21 @@ return {
   },
   {
     "nvim-lualine/lualine.nvim",
-    config = {
+    opts = {
       options = {
         theme = "catppuccin",
         section_separators = { left = "", right = "" },
       },
       sections = {
         lualine_a = { { "mode", separator = { left = "", right = "" } } },
-        lualine_z = { { separator = { right = "" } } },
+        lualine_z = {
+          {
+            function()
+              return " " .. os.date("%R")
+            end,
+            separator = { right = "" },
+          },
+        },
       },
     },
   },
