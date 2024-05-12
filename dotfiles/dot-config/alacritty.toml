@@ -13,7 +13,7 @@ family = "JetBrainsMono NF"
 
 [window]
 decorations = "buttonless"
-option_as_alt = "OnlyLeft"
+option_as_alt = "Both"
 
 [window.padding]
 x = 7

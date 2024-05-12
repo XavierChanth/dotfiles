@@ -8,6 +8,10 @@ require("which-key").register({
   ["<leader>t"] = { name = "tab stop" },
 })
 
+-- Jump 5 lines at a time
+map("n", "<C-j>", "5j")
+map("n", "<C-k>", "5k")
+
 -- run commands with telescope
 map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
 map("n", "<leader>rg", "<cmd>Gitsigns<cr>", { desc = "Gitsigns Commands" })
