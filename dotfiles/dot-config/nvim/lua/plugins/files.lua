@@ -38,7 +38,7 @@ return {
         ["H"] = "actions.toggle_hidden",
         ["g?"] = "actions.show_help",
         ["gx"] = "actions.open_external",
-        ["<C-t>"] = function()
+        ["<C-_>"] = function()
           LazyVim.terminal(nil, { cwd = require("oil").get_current_dir() })
         end,
       },
