@@ -64,13 +64,10 @@ return {
       },
       sections = {
         lualine_a = { { "mode", separator = { left = "", right = "" } } },
+        lualine_y = { { "buffers", max_length = vim.o.columns * 2 / 3 } },
         lualine_z = {
-          {
-            function()
-              return " " .. os.date("%R")
-            end,
-            separator = { left = "", right = "" },
-          },
+          { "progress", padding = { left = 1, right = 0 } },
+          { "location", separator = { right = "" }, padding = { left = 0, right = 1 } },
         },
       },
     },

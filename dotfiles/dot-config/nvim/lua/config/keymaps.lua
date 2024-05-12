@@ -8,10 +8,6 @@ require("which-key").register({
   ["<leader>t"] = { name = "tab stop" },
 })
 
--- Disable bufferline navigation, it's a bad habit
-map("n", "H", "")
-map("n", "L", "")
-
 -- run commands with telescope
 map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
 map("n", "<leader>rg", "<cmd>Gitsigns<cr>", { desc = "Gitsigns Commands" })
