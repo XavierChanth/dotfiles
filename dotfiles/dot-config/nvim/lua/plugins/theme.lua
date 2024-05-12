@@ -79,7 +79,7 @@ return {
           },
         },
         lualine_z = {
-          { "progress", padding = { left = 1, right = 0 } },
+          { "progress", separator = { left = "" }, padding = { left = 1, right = 0 } },
           { "location", separator = { right = "" }, padding = { left = 0, right = 1 } },
         },
       },
