@@ -116,20 +116,17 @@ return {
         if op == Worktree.Operations.Create then
           local Job = require("plenary.job")
 
-          Job
-            :new({
-              command = "git",
-              args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
-              cwd = require("util.root").git(),
-              on_exit = function(_, exit_code)
-                if exit_code ~= 0 then
-                  LazyVim.error({
-                    'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
-                  })
-                end
-              end,
+          local _, exit_code = Job:new({
+            command = "git",
+            args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
+            cwd = require("util.root").git(),
+          }):sync()
+
+          if exit_code ~= 0 then
+            LazyVim.error({
+              'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
             })
-            :sync()
+          end
         end
       end)
       return {
