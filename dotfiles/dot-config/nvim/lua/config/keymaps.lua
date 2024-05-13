@@ -23,6 +23,12 @@ map({ "n", "v" }, "<leader>p", '"+p', { remap = true, desc = "paste from clipboa
 -- Shift + Space = Space in Terminal Mode
 map("t", "<S-Space>", "<Space>", { noremap = true })
 
+-- Use my bare repo compatible Lazygit wrapper
+map("n", "<leader>gg", function()
+  require("util.lazygit").lazygit()
+end, { desc = "Lazygit" })
+map("n", "<leader>gG", function() end)
+
 -- Tab stops
 local tabstop = function(num)
   vim.opt.tabstop = num

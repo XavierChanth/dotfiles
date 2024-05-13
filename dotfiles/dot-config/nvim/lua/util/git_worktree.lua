@@ -2,12 +2,12 @@ local M = {}
 
 function M.add(opts)
   local actions = require("telescope.actions")
-  local action_state = require("telescope.actions.state")
+  local actions_state = require("telescope.actions.state")
   opts = opts or {}
   opts.attach_mappings = function()
     actions.select_default:replace(function(prompt_bufnr, _)
-      local selected_entry = action_state.get_selected_entry()
-      local current_line = action_state.get_current_line()
+      local selected_entry = actions_state.get_selected_entry()
+      local current_line = actions_state.get_current_line()
 
       actions.close(prompt_bufnr)
 
@@ -38,11 +38,11 @@ function M.is_inside_worktree(path)
     enabled_recording = true,
   }):sync()
 
-  return exit_code == 0 and res == "true"
+  return exit_code == 0 and res[1] == "true"
 end
 
-function M.telescope()
-  require("telescope").extensions.git_worktree.git_worktrees()
+function M.telescope(opts)
+  require("telescope").extensions.git_worktree.git_worktrees(opts)
 end
 
 return M

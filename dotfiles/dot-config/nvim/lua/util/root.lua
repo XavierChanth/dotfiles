@@ -1,21 +1,8 @@
 M = {}
-M.cache = {}
-
-function M.get()
-  local buf = vim.api.nvim_get_current_buf()
-  local ret = M.cache[buf]
-
-  if not ret then
-    ret = vim.uv.cwd()
-    M.cache[buf] = ret
-  end
-
-  return ret
-end
 
 function M.git(opts)
   opts = opts or {}
-  local root = M.get()
+  local root = LazyVim.root()
   local git_root = nil
 
   if opts.bare then

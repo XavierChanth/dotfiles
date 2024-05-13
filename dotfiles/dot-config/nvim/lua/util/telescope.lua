@@ -74,12 +74,11 @@ end
 
 function M.git_files(opts)
   opts = opts or {}
-  opts.cwd = opts.cwd or require("util.root").git()
-
+  opts.cwd = opts.cwd or require("util.root").git(opts)
   if require("util.git_worktree").is_inside_worktree(opts.cwd) then
-    M.git_files(opts)
+    return M.builtin("git_files", opts)
   else
-    M.find_files(opts)
+    return M.find_files(opts)
   end
 end
 

@@ -34,7 +34,7 @@ M.actions = {
 
   {
     action = function()
-      LazyVim.lazygit()
+      require("util.lazygit").lazygit()
     end,
     desc = " Lazygit",
     icon = " ",
