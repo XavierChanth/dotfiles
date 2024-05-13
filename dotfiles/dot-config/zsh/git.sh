@@ -4,6 +4,9 @@ alias glog='git log --oneline --decorate --graph'
 alias gloga='glog --all'
 alias lg='lazygit'
 
+alias iswt='git rev-parse --is-inside-work-tree'
+alias gwt='git worktree list --porcelain | rg $(git branch --show-current) | rg ^worktree | cut -d' ' -f 2'
+
 clone() {
   REPO=$1
   shift
