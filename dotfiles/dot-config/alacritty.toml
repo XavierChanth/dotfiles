@@ -31,6 +31,8 @@ bindings = [
   {key= "7", mods= "Command", command = { program = "tmux", args = ["select-window", "-t", ":7"] }},
   {key= "8", mods= "Command", command = { program = "tmux", args = ["select-window", "-t", ":8"] }},
   {key= "9", mods= "Command", command = { program = "tmux", args = ["select-window", "-t", ":9"] }},
+  # TODO
+  # {key= "s", mods= "Control | Option | Shift | Command", command = { program = "bash", args = ["-c", "'source $/.config/tmux/scripts/session.sh && switch_session'" ] }},
 ]
 
 # catppuccin mocha

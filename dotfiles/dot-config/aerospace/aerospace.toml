@@ -45,7 +45,7 @@ if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^alacritty$'
+if.app-name-regex-substring = '^alacritty$|^WezTerm$|^wezterm-gui$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
 
@@ -54,7 +54,7 @@ alt-shift-enter = [
   'exec-and-forget aerospace reload-config',
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload'
 ]
-alt-enter = ['exec-and-forget alacritty msg create-window || alacritty']
+alt-enter = ['exec-and-forget wezterm']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
