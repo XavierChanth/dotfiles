@@ -38,7 +38,7 @@ require("lazy").setup({
     version = "*",
   },
   ui = { border = "rounded" },
-  checker = { enabled = true },
+  checker = { enabled = false }, -- disable check for updates
   performance = {
     rtp = {
       -- disable some rtp plugins
