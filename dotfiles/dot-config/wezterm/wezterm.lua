@@ -1,10 +1,8 @@
 local wezterm = require("wezterm")
 
-local tmux = "tmux"
 local front_end = "OpenGL"
 
 if wezterm.target_triple == "aarch64-apple-darwin" then
-	tmux = "/opt/homebrew/bin/tmux"
 	front_end = "WebGpu" -- colors are wrong with OpenGL on macos
 end
 
@@ -14,7 +12,7 @@ local config = {
 	color_scheme = "Catppuccin Mocha",
 	cursor_blink_ease_in = "Constant",
 	cursor_blink_ease_out = "Constant",
-	default_prog = { tmux, "new", "-A", "-s", "main" },
+	default_prog = { "tmux", "new", "-A", "-s", "main" },
 	disable_default_key_bindings = true,
 	enable_tab_bar = false,
 	font = wezterm.font("JetBrainsMono NF"),
@@ -112,7 +110,7 @@ for i = 1, 9 do
 			mods = "CMD",
 			action = wezterm.action_callback(function(_, _)
 				wezterm.run_child_process({
-					tmux,
+					"tmux",
 					"select-window",
 					"-t",
 					":" .. istr,
