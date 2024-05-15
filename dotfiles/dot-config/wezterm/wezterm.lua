@@ -7,7 +7,6 @@ if wezterm.target_triple == "aarch64-apple-darwin" then
 end
 
 local config = {
-	adjust_window_size_when_changing_font_size = false,
 	check_for_updates = false,
 	color_scheme = "Catppuccin Mocha",
 	cursor_blink_ease_in = "Constant",
