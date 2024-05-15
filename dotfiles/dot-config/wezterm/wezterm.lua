@@ -35,6 +35,21 @@ local config = {
 			mods = "CMD",
 			action = wezterm.action.SpawnWindow,
 		},
+		{
+			key = "=",
+			mods = "CMD",
+			action = wezterm.action.IncreaseFontSize,
+		},
+		{
+			key = "-",
+			mods = "CMD",
+			action = wezterm.action.DecreaseFontSize,
+		},
+		{
+			key = "0",
+			mods = "CMD",
+			action = wezterm.action.ResetFontSize,
+		},
 	},
 	window_decorations = "RESIZE", -- no title, but window is properly resizable
 	set_environment_variables = {
