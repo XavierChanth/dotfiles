@@ -10,15 +10,30 @@ end
 
 local config = {
 	adjust_window_size_when_changing_font_size = false,
+	check_for_updates = false,
 	color_scheme = "Catppuccin Mocha",
 	cursor_blink_ease_in = "Constant",
 	cursor_blink_ease_out = "Constant",
+	default_prog = { tmux, "new", "-A", "-s", "main" },
 	disable_default_key_bindings = true,
 	enable_tab_bar = false,
 	font = wezterm.font("JetBrainsMono NF"),
 	font_size = 24.0,
 	front_end = front_end,
 	hyperlink_rules = wezterm.default_hyperlink_rules(),
+	max_fps = 144,
+	macos_window_background_blur = 20,
+	-- window_background_opacity = 0.7,
+	window_decorations = "RESIZE", -- no title, but window is properly resizable
+	window_padding = {
+		left = "0.5cell",
+		right = "0.5cell",
+		top = "0.3cell",
+		bottom = "0.3cell",
+	},
+	set_environment_variables = {
+		PATH = os.getenv("PATH"),
+	},
 	keys = {
 		{
 			key = "r",
@@ -36,6 +51,16 @@ local config = {
 			action = wezterm.action.SpawnWindow,
 		},
 		{
+			key = "c",
+			mods = "CMD",
+			action = wezterm.action.CopyTo("Clipboard"),
+		},
+		{
+			key = "v",
+			mods = "CMD",
+			action = wezterm.action.PasteFrom("Clipboard"),
+		},
+		{
 			key = "=",
 			mods = "CMD",
 			action = wezterm.action.IncreaseFontSize,
@@ -50,17 +75,6 @@ local config = {
 			mods = "CMD",
 			action = wezterm.action.ResetFontSize,
 		},
-	},
-	window_decorations = "RESIZE", -- no title, but window is properly resizable
-	set_environment_variables = {
-		PATH = os.getenv("PATH"),
-	},
-	default_prog = {
-		tmux,
-		"new",
-		"-A",
-		"-s",
-		"main",
 	},
 }
 
