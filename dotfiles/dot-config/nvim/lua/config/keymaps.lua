@@ -9,8 +9,8 @@ require("which-key").register({
 })
 
 -- Jump 5 lines at a time
-map("n", "<C-j>", "5j")
-map("n", "<C-k>", "5k")
+map("n", "<M-j>", "5j")
+map("n", "<M-k>", "5k")
 
 -- run commands with telescope
 map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
