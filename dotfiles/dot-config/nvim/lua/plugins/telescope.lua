@@ -1,4 +1,3 @@
-local Job = require("plenary.job")
 local telescope = require("util.telescope")
 return {
   {
@@ -48,19 +47,7 @@ return {
                 actions.close(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 vim.cmd.colorscheme(selection.value)
-                -- Only works with catppuccin for now
-                if string.match(selection.value, "^catppuccin-") then
-                  local flavor = string.sub(selection.value, 12)
-                  Job:new({
-                    command = "tmux",
-                    args = { "set", "-g", "@catppuccin_flavour", flavor },
-                  }):sync()
-                  Job:new({
-                    command = "sh",
-                    args = { "./tpm" },
-                    cwd = os.getenv("XDG_CONFIG_HOME") .. "/tmux/plugins/tpm",
-                  }):sync()
-                end
+                require("util.tmux").reload_config()
               end)
               return true
             end,
@@ -145,6 +132,7 @@ return {
     config = function()
       require("telescope").load_extension("git_worktree")
 
+      local Job = require("plenary.job")
       local Worktree = require("git-worktree")
       Worktree.on_tree_change(function(op, _)
         if op == Worktree.Operations.Create then
