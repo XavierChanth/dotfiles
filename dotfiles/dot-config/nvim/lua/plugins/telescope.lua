@@ -1,4 +1,5 @@
----@diagnostic disable: different-requires
+local Job = require("plenary.job")
+local telescope = require("util.telescope")
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -12,18 +13,18 @@ return {
     keys = {
       {
         "<leader><space>",
-        require("util.telescope").git_files,
+        telescope.git_files,
         desc = "Git files",
       },
       {
         "<leader>ff",
-        require("util.telescope").find_files,
+        telescope.find_files,
         desc = "Find files",
       },
       {
         "<leader>fF",
         function()
-          require("util.telescope").find_files({ cwd = vim.uv.cwd() })
+          telescope.find_files({ cwd = vim.uv.cwd() })
         end,
         desc = "Find files",
       },
@@ -31,25 +32,35 @@ return {
       {
         "<leader>fb",
         function()
-          require("util.telescope").builtin("buffers", {})
+          telescope.builtin("buffers", {})
         end,
         desc = "Find buffers",
       },
       {
         "<leader>uC",
         function()
-          require("util.telescope").builtin("colorscheme", {
+          telescope.builtin("colorscheme", {
             enable_preview = true,
-            attach_mappings = function(prompt_bufnr, map)
+            attach_mappings = function(prompt_bufnr, _)
               local actions = require("telescope.actions")
               local action_state = require("telescope.actions.state")
               actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 vim.cmd.colorscheme(selection.value)
-                -- TODO:
-                -- Update tmux colors
-                -- refresh wezterm
+                -- Only works with catppuccin for now
+                if string.match(selection.value, "^catppuccin-") then
+                  local flavor = string.sub(selection.value, 12)
+                  Job:new({
+                    command = "tmux",
+                    args = { "set", "-g", "@catppuccin_flavour", flavor },
+                  }):sync()
+                  Job:new({
+                    command = "sh",
+                    args = { "./tpm" },
+                    cwd = os.getenv("XDG_CONFIG_HOME") .. "/tmux/plugins/tpm",
+                  }):sync()
+                end
               end)
               return true
             end,
@@ -59,10 +70,10 @@ return {
       },
     },
     opts = {
-      defaults = require("util.telescope").defaults,
+      defaults = telescope.defaults,
       pickers = {
         commands = {
-          entry_maker = require("util.telescope").command.entry_maker({}),
+          entry_maker = telescope.command.entry_maker({}),
         },
         lsp_document_symbols = {
           symbol_width = 48,
@@ -137,8 +148,6 @@ return {
       local Worktree = require("git-worktree")
       Worktree.on_tree_change(function(op, _)
         if op == Worktree.Operations.Create then
-          local Job = require("plenary.job")
-
           local _, exit_code = Job:new({
             command = "git",
             args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
