@@ -6,9 +6,10 @@ if wezterm.target_triple == "aarch64-apple-darwin" then
 	front_end = "WebGpu" -- colors are wrong with OpenGL on macos
 end
 
+local colorscheme = require("colorscheme")
 local config = {
 	check_for_updates = false,
-	color_scheme = "Catppuccin Mocha",
+	color_scheme = colorscheme.current,
 	cursor_blink_ease_in = "Constant",
 	cursor_blink_ease_out = "Constant",
 	default_prog = { "tmux", "new", "-A", "-s", "main" },
@@ -32,6 +33,7 @@ local config = {
 		PATH = os.getenv("PATH"),
 	},
 	keys = {
+		-- typical terminal emulator mappings
 		{
 			key = "r",
 			mods = "CMD",
@@ -71,6 +73,23 @@ local config = {
 			key = "0",
 			mods = "CMD",
 			action = wezterm.action.ResetFontSize,
+		},
+		-- for vim
+		{
+			key = "j",
+			mods = "CMD",
+			action = wezterm.action.SendKey({
+				key = "j",
+				mods = "ALT",
+			}),
+		},
+		{
+			key = "k",
+			mods = "CMD",
+			action = wezterm.action.SendKey({
+				key = "k",
+				mods = "ALT",
+			}),
 		},
 	},
 }

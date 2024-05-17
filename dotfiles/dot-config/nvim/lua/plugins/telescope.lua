@@ -1,3 +1,4 @@
+---@diagnostic disable: different-requires
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -33,6 +34,28 @@ return {
           require("util.telescope").builtin("buffers", {})
         end,
         desc = "Find buffers",
+      },
+      {
+        "<leader>uC",
+        function()
+          require("util.telescope").builtin("colorscheme", {
+            enable_preview = true,
+            attach_mappings = function(prompt_bufnr, map)
+              local actions = require("telescope.actions")
+              local action_state = require("telescope.actions.state")
+              actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                vim.cmd.colorscheme(selection.value)
+                -- TODO:
+                -- Update tmux colors
+                -- refresh wezterm
+              end)
+              return true
+            end,
+          })
+        end,
+        desc = "Colorscheme with Preview",
       },
     },
     opts = {
