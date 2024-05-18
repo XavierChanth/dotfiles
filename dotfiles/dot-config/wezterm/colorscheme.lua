@@ -1,6 +1,5 @@
 -- Map of nvim theme names to wezterm theme names
 local themes = {
-	catppuccin = "Catppuccin Mocha",
 	["catppuccin-mocha"] = "Catppuccin Mocha",
 	["catppuccin-frappe"] = "Catppuccin Frappe",
 	["catppuccin-macchiato"] = "Catppuccin Macchiato",

@@ -29,9 +29,6 @@ local catppuccin_transform = function(palette)
 end
 
 local themes = {
-	catppuccin = function()
-		return catppuccin_transform(catppuccin_mocha)
-	end,
 	["catppuccin-mocha"] = function()
 		return catppuccin_transform(catppuccin_mocha)
 	end,

@@ -47,7 +47,7 @@ return {
               local action_state = require("telescope.actions.state")
               actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
-                colors.post_switch(action_state.get_selected_entry())
+                colors.switch(action_state.get_selected_entry())
               end)
               return true
             end,
