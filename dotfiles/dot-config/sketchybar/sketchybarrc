@@ -9,7 +9,7 @@ package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.local/share/sket
 
 local sbar = require("sketchybar")
 sbar.begin_config()
-require("bar")
+require("init")
 require("left")
 require("right")
 require("middle")
