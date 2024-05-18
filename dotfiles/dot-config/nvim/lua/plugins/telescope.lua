@@ -48,6 +48,7 @@ return {
                 local selection = action_state.get_selected_entry()
                 vim.cmd.colorscheme(selection.value)
                 require("util.tmux").reload_config()
+                require("util.sketchybar").reload_config()
               end)
               return true
             end,

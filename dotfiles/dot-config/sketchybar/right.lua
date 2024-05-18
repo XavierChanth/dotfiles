@@ -2,12 +2,12 @@ local sbar = require("sketchybar")
 local opts = require("opts")
 
 sbar.add("item", opts.get_spacer(8, { position = "right" }))
-sbar.add("item", opts.get_right_separator("surface0", { position = "right" }))
+sbar.add("item", opts.get_right_separator("surface", { position = "right" }))
 
 local clock = sbar.add("item", {
 	position = "right",
 	icon = { drawing = false },
-	background = { color = opts.color.surface0 },
+	background = { color = opts.color.surface },
 	label = {
 		color = opts.color.text,
 		padding_left = 8,
@@ -31,8 +31,8 @@ sbar.add("item", {
 		color = opts.color.base,
 		padding_right = 8,
 	},
-	background = { color = opts.color.mauve },
+	background = { color = opts.color.purple },
 	label = { drawing = false },
 })
 
-sbar.add("item", opts.get_left_separator("mauve", { position = "right" }))
+sbar.add("item", opts.get_left_separator("purple", { position = "right" }))

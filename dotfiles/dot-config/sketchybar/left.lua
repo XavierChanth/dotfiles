@@ -21,7 +21,7 @@ sbar.exec("aerospace list-workspaces --all", function(result)
 		space:subscribe("aerospace_workspace_change", function(env)
 			if env.FOCUSED_WORKSPACE:sub(1, 1) == sid then
 				space:set({
-					background = { color = opts.color.peach },
+					background = { color = opts.color.orange },
 				})
 			else
 				space:set({

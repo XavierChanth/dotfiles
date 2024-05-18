@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 local Job = require("plenary.job")
 
 M.reload_config = function()

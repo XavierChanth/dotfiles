@@ -13,7 +13,7 @@ local function init_media(position)
 			padding_left = 8,
 			padding_right = 4,
 		},
-		background = { color = opts.color.surface0 },
+		background = { color = opts.color.surface },
 		updates = true,
 	}
 end
@@ -26,7 +26,7 @@ local function init_media_icon(position)
 			padding_right = 8,
 		},
 		background = {
-			color = opts.color.peach,
+			color = opts.color.orange,
 		},
 	}
 end
@@ -40,13 +40,13 @@ local function builtin()
 	media_sepl = sbar.add("item", opts.get_left_separator("peach", { position = "e" }))
 	media_icon = sbar.add("item", init_media_icon("e"))
 	media = sbar.add("item", init_media("e"))
-	sbar.add("item", opts.get_right_separator("surface0", { position = "e" }))
+	sbar.add("item", opts.get_right_separator("surface", { position = "e" }))
 
 	sbar.add("item", opts.get_spacer(16, { position = "q" }))
-	sbar.add("item", opts.get_right_separator("surface0", { position = "q" }))
+	sbar.add("item", opts.get_right_separator("surface", { position = "q" }))
 	local battery = sbar.add("item", {
 		position = "q",
-		background = { color = opts.color.surface0 },
+		background = { color = opts.color.surface },
 		label = {
 			string = "%",
 			color = opts.color.text,
@@ -97,10 +97,10 @@ end
 
 local function external()
 	sbar.add("item", opts.get_spacer(16, { position = "right" }))
-	sbar.add("item", opts.get_right_separator("surface0", { position = "right" }))
+	sbar.add("item", opts.get_right_separator("surface", { position = "right" }))
 	media = sbar.add("item", init_media("right"))
 	media_icon = sbar.add("item", init_media_icon("right"))
-	media_sepl = sbar.add("item", opts.get_left_separator("peach", { position = "right" }))
+	media_sepl = sbar.add("item", opts.get_left_separator("orange", { position = "right" }))
 end
 
 -- Setup the dynamic layout based on the display query
@@ -116,7 +116,7 @@ sbar.exec(
 		-- Subscribe to media events
 		media:subscribe("media_change", function(env)
 			if whitelist[env.INFO.app] == true then
-				local color = opts.color.peach
+				local color = opts.color.orange
 				if env.INFO.state == "playing" then
 					color = opts.color.green
 				elseif env.INFO.state == "paused" then

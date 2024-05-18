@@ -1,3 +1,4 @@
+local colorscheme = require("colorscheme")
 M = {}
 
 M.merge = function(left, right)
@@ -7,20 +8,7 @@ M.merge = function(left, right)
 	return left
 end
 
-M.color = {
-	transparent = 0x00000000,
-	base = 0xff1e1e2e,
-	surface0 = 0xff313244,
-	text = 0xffcdd6f4,
-	blue = 0xff89b4fa,
-	pink = 0xfff5c2e7,
-	peach = 0xfffab387,
-	teal = 0xff94e2d5,
-	mauve = 0xffcba6f7,
-	green = 0xffa6e3a1,
-	yellow = 0xfff9e2af,
-}
-
+M.color = colorscheme.current
 M.font_face = "JetBrainsMono Nerd Font"
 
 M.font = {
