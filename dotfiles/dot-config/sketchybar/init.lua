@@ -31,5 +31,3 @@ sbar.default({
 		padding_right = 0,
 	},
 })
-
-sbar.hotload(true)
