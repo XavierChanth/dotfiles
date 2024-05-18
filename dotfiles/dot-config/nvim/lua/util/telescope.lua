@@ -68,6 +68,10 @@ function M.command.picker(opts)
   })
 end
 
+function M.finder_from_table(t)
+  return require("telescope.finders").new_table(t)
+end
+
 function M.builtin(builtin, opts)
   return require("telescope.builtin")[builtin](opts)
 end

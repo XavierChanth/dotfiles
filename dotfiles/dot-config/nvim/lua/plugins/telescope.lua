@@ -38,17 +38,16 @@ return {
       {
         "<leader>uC",
         function()
+          local colors = require("colors")
           telescope.builtin("colorscheme", {
+            finder = require("util.telescope").finder_from_table(colors.configured),
             enable_preview = true,
             attach_mappings = function(prompt_bufnr, _)
               local actions = require("telescope.actions")
               local action_state = require("telescope.actions.state")
               actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
-                local selection = action_state.get_selected_entry()
-                vim.cmd.colorscheme(selection.value)
-                require("util.tmux").reload_config()
-                require("util.sketchybar").reload_config()
+                colors.post_switch(action_state.get_selected_entry())
               end)
               return true
             end,
