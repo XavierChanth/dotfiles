@@ -1,281 +1,30 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env lua
 
-# Config starting point from https://github.com/neutonfoo/dotfiles/tree/main/.config/sketchybar
-# Thanks @neutonfoo!
-SKETCHYBAR_CONFIG="$HOME/.config/sketchybar"
+os.execute(
+	"[ ! -d $HOME/.local/share/sketchybar_lua/ ] && "
+		.. "(git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua && cd /tmp/SbarLua/ && make install)"
+)
 
-MAIN_DISPLAY=$(system_profiler SPDisplaysDataType | grep -B 3 'Main Display:' | awk '/Display Type/ {print $3}')
+package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.local/share/sketchybar_lua/?.so"
 
-is_builtin() {
-  [[ $MAIN_DISPLAY = "Built-in" ]]
-}
+local sbar = require("sketchybar")
 
-FONT_FACE="JetBrainsMono Nerd Font"
-PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+sbar.begin_config()
 
-color_transparent=0x00000000
-color_base=0xff1e1e2e
-color_surface0=0xff313244
-color_text=0xffcdd6f4
-color_blue=0xff89b4fa
-color_pink=0xfff5c2e7
-color_peach=0xfffab387
-color_teal=0xff94e2d5
-color_mauve=0xffcba6f7
+require("init")
 
-SPOTIFY_EVENT="com.spotify.client.PlaybackStateChanged"
+sbar.hotload(true)
+sbar.end_config()
 
-### Bar & Defaults ###
+sbar.exec("aerospace list-windows --focused", function(window)
+	sbar.trigger("front_app_switched", {
+		INFO = window:match("| (.*) |"),
+	})
+end)
+sbar.exec("aerospace list-workspaces --focused", function(workspace)
+	sbar.trigger("aerospace_workspace_change", {
+		FOCUSED_WORKSPACE = workspace,
+	})
+end)
 
-sketchybar --bar \
-  height=40 \
-  color=$color_base \
-  margin=0 \
-  sticky=on \
-  padding_left=0 \
-  padding_right=0 \
-  notch_width=188 \
-  display=main
-
-sketchybar --default \
-  background.height=32 \
-  background.color=$color_transparent \
-  icon.color=$color_base \
-  icon.font="$FONT_FACE:Medium:20.0" \
-  icon.padding_left=0 \
-  icon.padding_right=0 \
-  label.color=$color_text \
-  label.font="$FONT_FACE:Medium:20.0" \
-  label.y_offset=0 \
-  label.padding_left=0 \
-  label.padding_right=0
-
-### LEFT LAYOUT ###
-
-# Left side separator
-sketchybar --add item spacerleft left \
-  --add item seplblue left
-
-# Aerospace
-sketchybar --add event aerospace_workspace_change
-for sid in $(aerospace list-workspaces --all); do
-  sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change \
-    --set space.$sid \
-    icon.drawing=no \
-    background.color=$color_blue \
-    label.color=$color_base \
-    label.padding_left=8 \
-    label.padding_right=8 \
-    label.font="$FONT_FACE:Medium:20.0" \
-    label="$sid" \
-    click_script="aerospace workspace $sid" \
-    script="$CONFIG_DIR/plugins/aerospace.sh $sid"
-  done
-
-# Layout the rest of the left side
-sketchybar --add item seprblue left \
-  --add item front_app left \
-  --add item front_app.name left
-
-### LEFT STYLE ###
-# Front app plugin
-sketchybar --set front_app \
-  icon.y_offset=1 \
-  label.drawing=no \
-  script="$PLUGIN_DIR/front_app.sh" \
-  --set front_app.name \
-  background.color=$color_transparent \
-  icon.drawing=off \
-  label.font="$FONT_FACE:Medium:20.0" \
-  label.padding_left=5 \
-  --subscribe front_app front_app_switched
-
-### REST OF LAYOUT ###
-
-# Clock
-sketchybar --add item spacerright right \
-  --add item seprdef1 right \
-  --add item clock right \
-  --add item clock.icon right \
-  --add item seplmauve right
-
-# Dynamic elements
-if is_builtin; then
-  # Battery left of notch
-  sketchybar --add item spacer1 q \
-    --add item seprdef2 q \
-    --add item battery q \
-    --add item battery.icon q \
-    --add item seplpink q
-
-  # Spotify right of notch
-sketchybar --add item spacer2 e \
-  --add event spotify_change $SPOTIFY_EVENT \
-  --add item spotifysepl e \
-  --add item spotify.icon e \
-  --add item spotify e \
-  --add item spotifysepr e
-else 
-  # Spotify next to clock
-sketchybar --add item spacer3 right \
-  --add event spotify_change $SPOTIFY_EVENT \
-  --add item spotifysepr right \
-  --add item spotify right \
-  --add item spotify.icon right \
-  --add item spotifysepl right
-fi
-
-
-### RIGHT STYLE ###
-
-# Clock
-sketchybar --set clock \
-  icon.drawing=no \
-  background.color=$color_surface0 \
-  label.color=$color_text \
-  label.padding_left=8 \
-  update_freq=1 \
-  script="$PLUGIN_DIR/clock.sh" \
-  --set clock.icon \
-  icon=󰥔 \
-  icon.color=$color_base \
-  icon.padding_right=8 \
-  background.color=$color_mauve \
-  label.drawing=no
-
-# Battery
-if is_builtin; then
-  sketchybar --set battery \
-    background.color=$color_surface0 \
-    label.color=$color_text \
-    label.padding_left=8 \
-    update_freq=20 \
-    script="$PLUGIN_DIR/battery.sh" \
-    --set battery.icon \
-    icon.color=$color_base \
-    icon.padding_right=8 \
-    background.color=$color_pink \
-    background.drawing=on
-fi
-
-# Spotify
-sketchybar --set spotify \
-  label.padding_left=4 \
-  label.padding_right=4 \
-  label="  " \
-  label.color=$color_text \
-  background.color=$color_surface0 \
-  script="$PLUGIN_DIR/spotify.sh" \
-  --subscribe spotify spotify_change mouse.clicked \
-  --set spotify.icon \
-  icon= \
-  background.color=$color_peach \
-  script="$PLUGIN_DIR/spotify.sh" \
-  --subscribe spotify.icon mouse.clicked \
-  --set spotifysepl \
-  icon=\
-  icon.color=$color_peach \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  label.drawing=no \
-  background.drawing=no \
-  icon.padding_right=-1 \
-  --set spotifysepr \
-  icon= \
-  icon.color=$color_surface0 \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  icon.padding_left=0 \
-  icon.padding_right=0 \
-  label.drawing=no \
-  background.drawing=no 
-
-### Left Separators ###
-sketchybar --set seplblue \
-  icon=\
-  icon.color=$color_blue \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  label.drawing=no \
-  background.drawing=no \
-  icon.padding_right=-1 \
-  --set seplmauve \
-  icon=\
-  icon.color=$color_mauve \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  label.drawing=no \
-  background.drawing=no \
-  icon.padding_right=-1 \
-  --set seplpink \
-  icon=\
-  icon.color=$color_pink \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  label.drawing=no \
-  background.drawing=no \
-  icon.padding_right=-1
-
-### Right Separators ###
-sketchybar --set seprblue \
-  icon=\
-  icon.color=$color_blue \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  icon.padding_left=0 \
-  icon.padding_right=0 \
-  label.drawing=no \
-  background.drawing=no \
-  --set seprdef1 \
-  icon=\
-  icon.color=$color_surface0 \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  icon.padding_left=0 \
-  icon.padding_right=0 \
-  label.drawing=no \
-  background.drawing=no\
-  --set seprdef2 \
-  icon=\
-  icon.color=$color_surface0 \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  icon.padding_left=0 \
-  icon.padding_right=0 \
-  label.drawing=no \
-  background.drawing=no \
-  --set seprdef3 \
-  icon=\
-  icon.color=$color_surface0 \
-  icon.font="$FONT_FACE:Bold:24.0" \
-  icon.padding_left=0 \
-  icon.padding_right=0 \
-  label.drawing=no \
-  background.drawing=no
-
-### Spacers ###
-sketchybar --set spacerleft \
-  icon.drawing=no \
-  label.drawing=no \
-  background.color=$color_transparent \
-  background.padding_left=8 \
-  --set spacerright \
-  icon.drawing=no \
-  label.drawing=no \
-  background.color=$color_transparent \
-  background.padding_left=8 \
-  --set spacer1 \
-  icon.drawing=no \
-  label.drawing=no \
-  background.color=$color_transparent \
-  background.padding_left=16 \
-  --set spacer2 \
-  icon.drawing=no \
-  label.drawing=no \
-  background.color=$color_transparent \
-  background.padding_left=20 \
-  --set spacer3 \
-  icon.drawing=no \
-  label.drawing=no \
-  background.color=$color_transparent \
-  background.padding_left=16
-
-
-### Finalizing Setup ###
-sketchybar --update
-sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)
-sketchybar --trigger front_app_switched INFO=$(aerospace list-windows --focused | cut -d'|' -f2 | tr -d " ") 
-# sketchybar --trigger spotify_change INFO="com.spotify.client.PlaybackStateChanged"
+sbar.event_loop()
