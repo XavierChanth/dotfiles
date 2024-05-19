@@ -62,11 +62,12 @@ if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
 
 [mode.main.binding]
-alt-shift-enter = [
+alt-shift-r = [
   'exec-and-forget aerospace reload-config',
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload'
 ]
 alt-enter = ['exec-and-forget wezterm']
+alt-shift-enter = ['exec-and-forget wezterm start zsh']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
