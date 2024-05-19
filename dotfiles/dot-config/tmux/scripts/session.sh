@@ -12,7 +12,7 @@ add_session() {
       find "$HOME/src" "$HOME/dev" -mindepth 0 -maxdepth 2 -type d
       echo "$HOME/.dotfiles"
     ) |
-      fzf --scheme=path --tiebreak=end,index --header add-session
+      fzf --scheme=path --tiebreak=end,index --header "Open tmux session"
   )
   [ -z $selected ] && return
   name=$(basename $selected)
@@ -31,7 +31,7 @@ switch_or_add_session() {
       find "$HOME/src" "$HOME/dev" -mindepth 0 -maxdepth 2 -type d
       echo "$HOME/.dotfiles"
     ) |
-      fzf --scheme=path --tiebreak=end,index --header add-session
+      fzf --scheme=path --tiebreak=end,index --header "Open tmux session"
   )
   [ -z $selected ] && return
   name=$(basename $selected)

@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/zsh
 
 run_local() {
   selected=$(
-    find ".local/layouts/" -type f |
-      fzf --scheme=path --tiebreak=end,index --header add-session
+    find . -type f | grep -E "\.local/layouts/(.*)\.kdl" |
+      fzf --scheme=path --tiebreak=end,index --header "Open zellij layout"
   )
   [ -z $selected ] && return
   zellij -l $selected

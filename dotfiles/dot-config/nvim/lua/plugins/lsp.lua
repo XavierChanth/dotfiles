@@ -1,6 +1,9 @@
 local uname = vim.loop.os_uname()
 local is_linux_arm64 = uname.sysname == "Linux" and uname.machine == "aarch64"
 local no_mason_linux_arm64 = { mason = not is_linux_arm64 }
+local function get_flutter_bin_path()
+  return require("os").getenv("FLUTTER_ROOT") .. "/bin/"
+end
 return {
   -- lsp
   {
@@ -65,7 +68,7 @@ return {
       },
     },
     config = {
-      flutter_path = require("os").getenv("FLUTTER_ROOT") .. "/bin/flutter",
+      flutter_path = get_flutter_bin_path() .. "flutter",
       lsp = {
         root_dir = function()
           return vim.loop.cwd()
