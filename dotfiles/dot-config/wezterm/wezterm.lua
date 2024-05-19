@@ -26,8 +26,8 @@ local config = {
 	window_padding = {
 		left = "0.5cell",
 		right = "0.5cell",
-		top = "0.3cell",
-		bottom = "0.3cell",
+		top = "2",
+		bottom = "2",
 	},
 	set_environment_variables = {
 		PATH = os.getenv("PATH"),
