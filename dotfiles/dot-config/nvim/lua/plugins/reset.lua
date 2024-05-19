@@ -1,5 +1,4 @@
 local plugins = {
-  "folke/tokyonight.nvim",
   "echasnovski/mini.pairs",
   "nvim-pack/nvim-spectre",
   "nvim-neo-tree/neo-tree.nvim",

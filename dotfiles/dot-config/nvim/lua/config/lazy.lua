@@ -19,7 +19,7 @@ require("lazy").setup({
       dependencies = { "raddari/last-color.nvim" },
       config = {
         colorscheme = function()
-          local theme = require("last-color").recall() or "catppuccin"
+          local theme = require("last-color").recall() or "catppuccin-mocha"
           vim.cmd(("colorscheme %s"):format(theme))
         end,
       },

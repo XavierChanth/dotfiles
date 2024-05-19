@@ -7,6 +7,10 @@ M.configured = {
   "catppuccin-frappe",
   "catppuccin-macchiato",
   "catppuccin-latte",
+  "tokyonight-night",
+  "tokyonight-day",
+  "tokyonight-storm",
+  "tokyonight-moon",
 }
 
 M.switch = function(color)

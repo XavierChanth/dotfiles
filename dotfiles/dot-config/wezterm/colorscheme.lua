@@ -4,6 +4,10 @@ local themes = {
 	["catppuccin-frappe"] = "Catppuccin Frappe",
 	["catppuccin-macchiato"] = "Catppuccin Macchiato",
 	["catppuccin-latte"] = "Catppuccin Latte",
+	["tokyonight-night"] = "Tokyo Night",
+	["tokyonight-day"] = "Tokyo Night Day",
+	["tokyonight-storm"] = "Tokyo Night Storm",
+	["tokyonight-moon"] = "Tokyo Night Moon",
 }
 
 -- Set the default theme
