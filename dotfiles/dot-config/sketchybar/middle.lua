@@ -36,7 +36,7 @@ local media_icon
 local media_sepl
 
 local function builtin()
-	sbar.add("item", opts.get_spacer(16, { position = "e" }))
+	sbar.add("item", opts.get_spacer(20, { position = "e" }))
 	media_sepl = sbar.add("item", opts.get_left_separator("peach", { position = "e" }))
 	media_icon = sbar.add("item", init_media_icon("e"))
 	media = sbar.add("item", init_media("e"))
