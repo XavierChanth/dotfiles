@@ -25,6 +25,9 @@ return {
     "neovim/nvim-lspconfig",
     commit = "94874383aea04f259a81cf9e40750be60d5bcb30", -- v0.1.7 doesn't have ruff support yet so lets use a commit that does
     opts = {
+      inlay_hints = {
+        enabled = false,
+      },
       servers = {
         gopls = no_mason_linux_arm64,
         pyright = no_mason_linux_arm64,
