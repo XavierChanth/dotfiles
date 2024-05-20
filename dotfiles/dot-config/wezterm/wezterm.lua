@@ -101,6 +101,7 @@ local hyper_to_tmux_prefix_key = {
 	["d"] = "D",
 	["c"] = "c",
 	["x"] = "x",
+	["w"] = "w",
 }
 
 for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
