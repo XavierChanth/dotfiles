@@ -150,7 +150,7 @@ return {
         end
       end)
       return {
-        update_on_change_command = "",
+        update_on_change_command = "lua require('oil').get_current_directory()",
       }
     end,
   },

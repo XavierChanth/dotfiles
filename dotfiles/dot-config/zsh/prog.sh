@@ -29,11 +29,11 @@ else
 fi
 
 # cmake
-alias cmbs='cmake -B build-$(hostname) -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
-alias cmbb='cmake --build build-$(hostname)'
-alias cmbt='cmake --build build-$(hostname) --target'
-alias cmcc='ln -s build-$(hostname)/compile_commands.json .'
-alias ctb='ctest --test-dir build-$(hostname) --output-on-failure'
+alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug'
+alias cmbb='cmake --build build'
+alias cmbt='cmake --build build --target'
+alias cmcc='ln -s build/compile_commands.json .'
+alias ctb='ctest --test-dir build --output-on-failure'
 
 #golang
 if command_exists go; then

@@ -129,4 +129,22 @@ return {
       }
     end,
   },
+  -- dap
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    config = function()
+      local ft = require("mason-nvim-dap.mappings.filetypes")
+      ft.lldb = ft.codelldb
+      local dap = require("dap")
+      dap.adapters.lldb = require("mason-nvim-dap.mappings.adapters.codelldb")
+      require("util.dotenv").load(vim.fs.find(".env", { type = "file", root_dir = require("util.root").git() })[1])
+    end,
+  },
+  -- config
+  {
+    "folke/neoconf.nvim",
+    opts = {
+      local_settings = ".local/neoconf.json",
+    },
+  },
 }

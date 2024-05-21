@@ -42,6 +42,7 @@ function M.is_inside_worktree(path)
 end
 
 function M.telescope(opts)
+  require("oil").get_current_dir()
   require("telescope").extensions.git_worktree.git_worktrees(opts)
 end
 
