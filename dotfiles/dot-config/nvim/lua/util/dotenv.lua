@@ -51,15 +51,12 @@ local function load(file)
 
   local ok, data = pcall(read_file, file)
   if not ok then
-    vim.print("couldn't read file")
-    vim.print(data)
     return
   end
 
   local values = parse_data(data)
   for k, v in pairs(values) do
     vim.schedule(function()
-      vim.print("setting: " .. k .. "=" .. v)
       vim.uv.os_setenv(k, v)
     end)
   end
