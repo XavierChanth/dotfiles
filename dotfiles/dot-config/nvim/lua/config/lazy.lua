@@ -18,13 +18,11 @@ require("lazy").setup({
       import = "lazyvim.plugins",
       dependencies = { "raddari/last-color.nvim" },
       config = {
-        colorscheme = function()
-          local theme = require("last-color").recall() or "catppuccin-mocha"
-          vim.cmd(("colorscheme %s"):format(theme))
-        end,
+        colorscheme = require("util.colorscheme").setup,
       },
     },
     { import = "plugins" },
+    { import = "lazyvim.plugins.extras.coding.luasnip" },
     { import = "lazyvim.plugins.extras.dap.core" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.outline" },

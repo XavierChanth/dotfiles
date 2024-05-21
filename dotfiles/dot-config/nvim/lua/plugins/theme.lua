@@ -74,7 +74,7 @@ return {
               alpha = "Alpha",
               oil = "Oil",
             },
-            max_length = vim.o.columns * 2 / 3,
+            max_length = vim.o.columns * 1 / 2,
           },
         },
         lualine_z = {
