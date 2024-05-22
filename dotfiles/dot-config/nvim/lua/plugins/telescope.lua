@@ -27,13 +27,19 @@ return {
         end,
         desc = "Find files",
       },
-
       {
         "<leader>fb",
         function()
           telescope.builtin("buffers", {})
         end,
         desc = "Find buffers",
+      },
+      {
+        "<leader>j",
+        function()
+          telescope.builtin("buffers", {})
+        end,
+        desc = "Jump to buffer (telescope)",
       },
       {
         "<leader>uC",
