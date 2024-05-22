@@ -1,0 +1,11 @@
+#!/bin/bash
+
+root="$(git rev-parse --show-toplevel)"
+
+# create a vertical split in the sshnpd dir
+tmux neww -c "$root/packages/c/sshnpd"
+tmux splitw -h -c "$root/packages/c/sshnpd"
+
+# move the window to #2 and focus
+tmux movew -b -t :2
+tmux selectw -t :2

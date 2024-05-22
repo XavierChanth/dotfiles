@@ -52,3 +52,19 @@ delete_session() {
     fzf --header delete-session --preview 'tmux capture-pane -pt {}' |
     xargs tmux kill-session -t
 }
+
+docker_session() {
+  selected=$(docker ps --all --format "table {{.Names}}" | fzf)
+  [-z $selected ] && return
+
+  name=$(basename $selected)
+  docker start $selected
+
+  if [ -z $TMUX ]; then
+    tmux new-ses -Ac $selected -s $name
+    return
+  fi
+
+  tmux switch-client -t $name ||
+    tmux new-ses -AdPc $selected -s $name docker exec -it $name /bin/zsh | xargs tmux switch-client -t
+}

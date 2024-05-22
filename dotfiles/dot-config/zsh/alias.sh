@@ -24,12 +24,8 @@ alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
 
 alias t='tmux'
 alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && switch_or_add_session'
-
-alias td='__tt_selected=$(docker ps --all --format "table {{.Names}}" | fzf) || return 1 &&
-  docker start $__tt_selected &&
-  [ -z $TMUX ] && tmux new-ses -Ac $__tt_selected -s $(basename $__tt_selected) ||
-  tmux switch-client -t $(basename $__tt_selected) ||
-  tmux new-ses -AdPc $__tt_selected -s $(basename $__tt_selected) docker exec -it $(basename $__tt_selected) /bin/zsh | xargs tmux switch-client -t'
+alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && docker_session'
+alias tl='source $XDG_CONFIG_HOME/tmux/scripts/layout.sh && run_layout'
 
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
