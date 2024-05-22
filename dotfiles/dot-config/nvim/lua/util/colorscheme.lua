@@ -3,10 +3,7 @@ local prev_color = nil
 
 local function apply()
   local theme = require("last-color").recall() or prev_color or "catppuccin-mocha"
-  if prev_color ~= theme then
-    vim.cmd(("colorscheme %s"):format(theme))
-    prev_color = theme
-  end
+  vim.cmd(("colorscheme %s"):format(theme))
 end
 
 local function start_timer()

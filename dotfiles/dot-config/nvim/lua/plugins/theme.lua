@@ -56,6 +56,10 @@ return {
     },
   },
   {
+    "folke/tokyonight.nvim",
+    commit = "4a9f04a647356d7727e5d41f7e7438a6f18381f4",
+  },
+  {
     "nvim-lualine/lualine.nvim",
     opts = {
       options = {
