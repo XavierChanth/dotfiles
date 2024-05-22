@@ -45,6 +45,11 @@ local config = {
 			action = wezterm.action.CloseCurrentTab({ confirm = false }),
 		},
 		{
+			key = "q",
+			mods = "CMD",
+			action = wezterm.action.QuitApplication,
+		},
+		{
 			key = "t",
 			mods = "CMD",
 			action = wezterm.action.SpawnWindow,
