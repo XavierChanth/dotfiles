@@ -1,5 +1,6 @@
 local logos = require("util.logos")
 local actions = require("util.dashboard").actions
+local icons = require("lazyvim.config").icons
 
 local selected_logo = "ansi_shadow"
 return {
@@ -63,19 +64,33 @@ return {
       },
       sections = {
         lualine_a = { { "mode", separator = { left = "", right = "" } } },
+        lualine_c = {
+          -- LazyVim.lualine.root_dir(),
+          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+          { LazyVim.lualine.pretty_path() },
+        },
         lualine_y = {
           {
-            "buffers",
-            filetype_names = {
-              TelescopePrompt = "Telescope",
-              dashboard = "Dashboard",
-              packer = "Packer",
-              fzf = "FZF",
-              alpha = "Alpha",
-              oil = "Oil",
+            "diagnostics",
+            symbols = {
+              error = icons.diagnostics.Error,
+              warn = icons.diagnostics.Warn,
+              info = icons.diagnostics.Info,
+              hint = icons.diagnostics.Hint,
             },
-            max_length = vim.o.columns * 1 / 2,
           },
+          -- {
+          --   "buffers",
+          --   filetype_names = {
+          --     TelescopePrompt = "Telescope",
+          --     dashboard = "Dashboard",
+          --     packer = "Packer",
+          --     fzf = "FZF",
+          --     alpha = "Alpha",
+          --     oil = "Oil",
+          --   },
+          --   max_length = vim.o.columns * 1 / 2,
+          -- },
         },
         lualine_z = {
           { "progress", separator = { left = "" }, padding = { left = 1, right = 0 } },
