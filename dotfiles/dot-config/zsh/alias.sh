@@ -14,18 +14,20 @@ alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias v='nvim'
-alias vv='cc; nvim'
+alias vv='nvim $(fzf)'
+
+alias c='cd $(find . -type d | fzf || echo ".")'
 
 alias dl='mkdir .local; echo "**" > .local/.gitignore'
-
-alias z='zellij'
-alias zz='source $XDG_CONFIG_HOME/zellij/session.sh && add_session'
-alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
 
 alias t='tmux'
 alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && switch_or_add_session'
 alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && docker_session'
 alias tl='source $XDG_CONFIG_HOME/tmux/scripts/layout.sh && run_layout'
+
+alias z='zellij'
+alias zz='source $XDG_CONFIG_HOME/zellij/session.sh && add_session'
+alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
 
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'

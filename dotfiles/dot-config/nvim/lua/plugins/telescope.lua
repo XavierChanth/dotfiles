@@ -37,7 +37,11 @@ return {
       {
         "<leader>j",
         function()
-          telescope.builtin("buffers", {})
+          telescope.builtin("buffers", {
+            -- ignore_current_buffer = true,
+            sort_lastused = true,
+            sort_mru = true,
+          })
         end,
         desc = "Jump to buffer (telescope)",
       },
