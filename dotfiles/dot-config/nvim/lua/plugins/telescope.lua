@@ -1,4 +1,7 @@
 local telescope = require("util.telescope")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -38,9 +41,14 @@ return {
         "<leader>j",
         function()
           telescope.builtin("buffers", {
-            -- ignore_current_buffer = true,
             sort_lastused = true,
             sort_mru = true,
+            attach_mappings = function(_, map)
+              map("n", "d", function()
+                local selection = action_state.get_current_selection()
+                vim.api.nvim_buf_delete(selection.bufnr, {})
+              end)
+            end,
           })
         end,
         desc = "Jump to buffer (telescope)",
@@ -53,8 +61,6 @@ return {
             finder = require("util.telescope").finder_from_table(colors.configured),
             enable_preview = true,
             attach_mappings = function(prompt_bufnr, _)
-              local actions = require("telescope.actions")
-              local action_state = require("telescope.actions.state")
               actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
                 colors.switch(action_state.get_selected_entry().value)
