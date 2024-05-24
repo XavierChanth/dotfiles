@@ -43,11 +43,23 @@ return {
           telescope.builtin("buffers", {
             sort_lastused = true,
             sort_mru = true,
-            attach_mappings = function(_, map)
-              map("n", "d", function()
-                local selection = action_state.get_current_selection()
-                vim.api.nvim_buf_delete(selection.bufnr, {})
+            attach_mappings = function(prompt_bufnr, map)
+              map("n", "D", function()
+                local current_picker = action_state.get_current_picker(prompt_bufnr)
+                local multi_selections = current_picker:get_multi_selection()
+
+                if next(multi_selections) == nil then
+                  local selection = action_state.get_selected_entry()
+                  actions.close(prompt_bufnr)
+                  vim.api.nvim_buf_delete(selection.bufnr, {})
+                else
+                  actions.close(prompt_bufnr)
+                  for _, selection in ipairs(multi_selections) do
+                    vim.api.nvim_buf_delete(selection.bufnr, {})
+                  end
+                end
               end)
+              return true
             end,
           })
         end,
