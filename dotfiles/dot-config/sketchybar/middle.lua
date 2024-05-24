@@ -116,14 +116,16 @@ sbar.exec(
 		-- Subscribe to media events
 		media:subscribe("media_change", function(env)
 			if whitelist[env.INFO.app] == true then
+				local label = env.INFO.artist .. ": " .. env.INFO.title
 				local color = opts.color.orange
+
 				if env.INFO.state == "playing" then
 					color = opts.color.green
 				elseif env.INFO.state == "paused" then
 					color = opts.color.yellow
+					label = "What was I listening to?"
 				end
 
-				local label = env.INFO.artist .. ": " .. env.INFO.title
 				media:set({ label = { string = label:sub(1, 35) } })
 				media_icon:set({ background = { color = color } })
 				media_sepl:set({ icon = { color = color } })
