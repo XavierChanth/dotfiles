@@ -22,16 +22,21 @@ M.font = {
 		style = "Medium",
 		size = 20.0,
 	},
+	separator = {
+		family = M.font_face,
+		style = "Regular",
+		size = 36.1,
+	},
 }
 
 M.get_left_separator = function(color, override)
 	override = override or {}
 	return M.merge({
 		icon = {
-			string = "",
+			string = "",
 			color = M.color[color],
-			font = M.font.bold_24,
-			padding_right = -1,
+			font = M.font.separator,
+			padding_right = -16,
 		},
 		label = { drawing = false },
 		background = { drawing = false },
@@ -42,10 +47,10 @@ M.get_right_separator = function(color, override)
 	override = override or {}
 	return M.merge({
 		icon = {
-			string = "",
+			string = "",
 			color = M.color[color],
-			font = M.font.bold_24,
-			padding_left = 0,
+			font = M.font.separator,
+			padding_left = -16,
 			padding_right = 0,
 		},
 		label = { drawing = false },
