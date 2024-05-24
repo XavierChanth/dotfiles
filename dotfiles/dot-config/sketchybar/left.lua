@@ -55,7 +55,7 @@ sbar.exec("aerospace list-workspaces --all", function(result)
 	end)
 	sbar.exec("aerospace list-windows --focused", function(window)
 		sbar.trigger("front_app_switched", {
-			INFO = window:match("| (.*) |"),
+			INFO = window:match("| ([^|]*) |"),
 		})
 	end)
 	sbar.exec("aerospace list-workspaces --focused", function(workspace)
