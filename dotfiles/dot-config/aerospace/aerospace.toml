@@ -45,7 +45,7 @@ if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
 # Startup layout
-[[on-window-detected]] 
+[[on-window-detected]]
 if.app-name-regex-substring ='.'
 if.during-aerospace-startup = true
 check-further-callbacks=true
