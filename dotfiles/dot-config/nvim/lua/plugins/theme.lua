@@ -69,9 +69,13 @@ return {
       sections = {
         lualine_a = { { "mode", separator = { left = "", right = "" } } },
         lualine_c = {
-          -- LazyVim.lualine.root_dir(),
           { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-          { LazyVim.lualine.pretty_path() },
+          {
+            function()
+              local abs = require("oil").get_current_dir() or vim.api.nvim_buf_get_name(0)
+              return abs:gsub("^" .. require("util.root").git() .. "/?", "")
+            end,
+          },
         },
         lualine_y = {
           {
