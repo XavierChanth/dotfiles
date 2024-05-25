@@ -11,19 +11,25 @@ source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
 SPACESHIP_GCLOUD_SHOW=false
 SPACESHIP_HOST_SHOW="always"
 
+# history
+source <(fzf --zsh)
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+
 # plugins
 source $XDG_CONFIG_HOME/zsh/vi-mode.sh
 source $XDG_CONFIG_HOME/zsh/alias.sh
 source $XDG_CONFIG_HOME/zsh/atsign.sh
 source $XDG_CONFIG_HOME/zsh/commands.sh
 
-if command -v git &> /dev/null; then
+if command -v git &>/dev/null; then
   source $XDG_CONFIG_HOME/zsh/git.sh
 fi
 
 if [ "$(uname)" = 'Darwin' ]; then
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-  if command -v brew &> /dev/null; then
+  if command -v brew &>/dev/null; then
     export PATH="/opt/homebrew/bin:$PATH"
     export HOMEBREW_NO_ENV_HINTS=true
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
@@ -31,9 +37,8 @@ if [ "$(uname)" = 'Darwin' ]; then
   fi
 fi
 
-source $XDG_CONFIG_HOME/zsh/prog.sh;
+source $XDG_CONFIG_HOME/zsh/prog.sh
 
 autoload -Uz compinit
 compinit
 export PATH="$HOME/.local/bin:$PATH"
-
