@@ -87,6 +87,9 @@ return {
     opts = {
       defaults = telescope.defaults,
       pickers = {
+        buffers = {
+          initial_mode = "normal",
+        },
         commands = {
           entry_maker = telescope.command.entry_maker({}),
         },
@@ -162,7 +165,7 @@ return {
 
       local Job = require("plenary.job")
       local Worktree = require("git-worktree")
-      Worktree.on_tree_change(function(op, _)
+      Worktree.on_tree_change(function(op, metadata)
         if op == Worktree.Operations.Create then
           local _, exit_code = Job:new({
             command = "git",
@@ -176,9 +179,28 @@ return {
             })
           end
         end
+        -- if op == Worktree.Operations.Switch then
+        --   local bufnr = vim.fn.bufnr
+        --   local buflisted = vim.fn.buflisted
+        --   local get_name = vim.api.nvim_buf_get_name
+        --   local delete = vim.api.nvim_buf_delete
+        --
+        -- :ls t is what we actually want
+        --   -- Close all buffers that are in the old working tree
+        --   for buffer = 1, bufnr("$") do
+        --     if buflisted(buffer) == 1 then
+        --       local name = get_name(buffer)
+        --       local pattern = "^" .. metadata.prev_path
+        --       if name:find(pattern) == 1 then
+        --         delete(buffer, {})
+        --       end
+        --     end
+        --   end
+        -- end
       end)
+
       return {
-        update_on_change_command = "lua require('oil').get_current_directory()",
+        update_on_change = true,
       }
     end,
   },
