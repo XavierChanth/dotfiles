@@ -16,10 +16,21 @@ zle-line-init() {
 }
 zle -N zle-line-init # register init
 
-function zle-keymap-select() { # change cursor when swapping keymaps
+zle-keymap-select() { # change cursor when swapping keymaps
   case $KEYMAP in
     vicmd) echo -ne $_block ;;
     viins | main) echo -ne $_beam ;;
   esac
 }
 zle -N zle-keymap-select # register keymap select
+
+# Some common zle widgets which I accidentally type
+w() {
+  zle accept-line
+}
+zle -N w
+
+wq() {
+  zle accept-line
+}
+zle -N wq
