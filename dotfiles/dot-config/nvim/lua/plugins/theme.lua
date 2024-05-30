@@ -2,7 +2,7 @@ local logos = require("util.logos")
 local actions = require("util.dashboard").actions
 local icons = require("lazyvim.config").icons
 
-local selected_logo = "ansi_shadow"
+local selected_logo = "nvim_sharp"
 return {
   {
     "nvimdev/dashboard-nvim",
