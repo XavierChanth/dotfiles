@@ -121,7 +121,8 @@ if [ $(uname) = 'Darwin' ]; then
 fi
 
 # Install flutter
-git clone https://github.com/flutter/flutter.git "$HOME/.local/dev/flutter"
+export FLUTTER_ROOT="$HOME/.local/dev/flutter"
+git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT"
 "$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
 "$HOME"/.local/dev/flutter/bin/flutter channel stable
 
