@@ -120,9 +120,6 @@ if [ $(uname) = 'Darwin' ]; then
   stow -d "$script_dir" -t "$HOME" macos
 fi
 
-# sync nvim
-nvim --headless "+Lazy! sync" +qa
-
 # Install flutter
 git clone https://github.com/flutter/flutter.git "$HOME/.local/dev/flutter"
 "$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
@@ -136,6 +133,9 @@ git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm"
 if ! command_exists lazygit; then
   go install github.com/jesseduffield/lazygit@latest
 fi
+
+# sync nvim
+nvim --headless "+Lazy! sync" +qa
 
 # Do a healthcheck to ensure that everything I want is installed
 "$script_dir"/check-env.sh
