@@ -12,7 +12,7 @@ SPACESHIP_GCLOUD_SHOW=false
 SPACESHIP_HOST_SHOW="always"
 
 # history
-source <(fzf --zsh)
+source <(fzf --zsh 2>/dev/null)
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
