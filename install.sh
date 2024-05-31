@@ -135,6 +135,11 @@ if ! command_exists lazygit; then
   go install github.com/jesseduffield/lazygit@latest
 fi
 
+# gh dash
+if ! command_exists gh; then
+  gh extension install dlvhdr/gh-dash
+fi
+
 # sync nvim
 nvim --headless "+Lazy! sync" +qa
 
