@@ -68,3 +68,42 @@ docker_session() {
   tmux switch-client -t $name ||
     tmux new-ses -AdPc $selected -s $name docker exec -it $name /bin/zsh | xargs tmux switch-client -t
 }
+
+ssh_session() {
+
+  hostname=$(
+    (
+      echo ""
+      grep -E "^Host ([^*]+)$" $HOME/.ssh/config | sed 's/Host //'
+    ) | fzf --header "Host"
+  )
+
+  if [ -z "$hostname" ]; then
+    echo "Enter custom hostname:"
+    read hostname
+  fi
+
+  jumpbox=$(
+    (
+      echo ""
+      grep -E "^Host ([^*]+)$" $HOME/.ssh/config | sed 's/Host //'
+    ) | fzf --header "Jumpbox"
+  )
+
+  echo "Additional args:"
+  read args
+
+  if [ -n "$jumpbox" ]; then
+    command="ssh $USER@$hostname -J $jumpbox"
+  else
+    command="ssh $USER@$hostname"
+  fi
+
+  if [ -z $TMUX ]; then
+    tmux new-ses -As $hostname -e "TMUX_SSH_COMMAND='$command'" "$command"
+    return
+  fi
+
+  # FIXME:
+  tmux new-ses -e "TMUX_SSH_COMMAND=$command" -AdPs "$hostname" "$command" | xargs tmux switch-client -t
+}
