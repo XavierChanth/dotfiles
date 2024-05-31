@@ -35,6 +35,18 @@ local tabstop = function(num)
   vim.opt.shiftwidth = num
 end
 
+-- Buffer management
+map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
+
+-- gh-dash
+map("n", "<leader>gd", function()
+  LazyVim.terminal({ "gh", "dash" }, {
+    esc_esc = false,
+    ctrl_hjkl = false,
+  })
+end, { desc = "GitHub Dash" })
+
+-- Tabs
 map("n", "<leader>t2", function()
   tabstop(2)
 end, { desc = "2 spaces" })
@@ -46,6 +58,3 @@ end, { desc = "4 spaces" })
 map("n", "<leader>t8", function()
   tabstop(8)
 end, { desc = "4 spaces" })
-
--- Buffer management
-map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
