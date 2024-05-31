@@ -6,6 +6,7 @@ local map = vim.keymap.set
 require("which-key").register({
   ["<leader>r"] = { name = "run" },
   ["<leader>t"] = { name = "tab stop" },
+  ["<leader>gh"] = { name = "Git " },
 })
 
 -- Jump 5 lines at a time
@@ -28,6 +29,13 @@ map("n", "<leader>gg", function()
   require("util.lazygit").lazygit()
 end, { desc = "Lazygit" })
 map("n", "<leader>gG", function() end)
+-- gh-dash
+map("n", "<leader>gr", function()
+  LazyVim.terminal({ "gh", "dash" }, {
+    esc_esc = false,
+    ctrl_hjkl = false,
+  })
+end, { desc = "GitHub Reviews Dashboard" })
 
 -- Tab stops
 local tabstop = function(num)
@@ -37,14 +45,6 @@ end
 
 -- Buffer management
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
-
--- gh-dash
-map("n", "<leader>gd", function()
-  LazyVim.terminal({ "gh", "dash" }, {
-    esc_esc = false,
-    ctrl_hjkl = false,
-  })
-end, { desc = "GitHub Dash" })
 
 -- Tabs
 map("n", "<leader>t2", function()
