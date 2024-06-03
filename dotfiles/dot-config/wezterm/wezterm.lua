@@ -113,6 +113,11 @@ local hyper_to_tmux_prefix_key = {
 	["d"] = "D",
 }
 
+for i = 1, 9 do
+	local s = tostring(i)
+	hyper_to_tmux_prefix_key[s] = s
+end
+
 for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
 	config.keys[#config.keys + 1] = {
 		key = key_in,
@@ -127,25 +132,6 @@ for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
 			}),
 		}),
 	}
-end
-
--- map CMD + 1-9 to tmux panes
-for i = 1, 9 do
-	if i ~= nil then
-		local istr = string.format("%d", i)
-		config.keys[#config.keys + 1] = {
-			key = istr,
-			mods = "CMD",
-			action = wezterm.action_callback(function(_, _)
-				wezterm.run_child_process({
-					"tmux",
-					"select-window",
-					"-t",
-					":" .. istr,
-				})
-			end),
-		}
-	end
 end
 
 return config
