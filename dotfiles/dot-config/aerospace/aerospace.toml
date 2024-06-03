@@ -13,7 +13,7 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 # inner.vertical =   8
 # outer.left =       8
 # outer.bottom =     8
-# outer.top =        [ {monitor.built-in = 8}, 48]
+# outer.top =        [ {monitor.built-in = 8}, {monitor.main = 48}, 8]
 # outer.right =      8
 
 inner.horizontal = 0
@@ -24,7 +24,7 @@ outer.top =        [ {monitor.built-in = 0}, {monitor.main = 40}, 0]
 outer.right =      0
 
 [workspace-to-monitor-force-assignment]
-1 = 'secondary'
+1 = 'secondary' # '^Sidecar.*$'
 
 # See https://nikitabobko.github.io/AeroSpace/guide#exec-env-vars
 [exec]

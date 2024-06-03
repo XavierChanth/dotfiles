@@ -37,6 +37,8 @@ return {
         end,
         desc = "Find buffers",
       },
+      { "<leader>ft", false },
+      { "<leader>fT", false },
       {
         "<leader>j",
         function()

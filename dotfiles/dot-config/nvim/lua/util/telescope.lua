@@ -1,3 +1,6 @@
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+
 local M = {}
 M.command = {}
 -- Just the command name, nice and clean
@@ -98,11 +101,38 @@ function M.config()
   })
 end
 
+function M.buffers(opts)
+  opts = vim.tbl_extend("force", {
+    sort_lastused = true,
+    sort_mru = true,
+    attach_mappings = function(prompt_bufnr, map)
+      map("n", "D", function()
+        local current_picker = action_state.get_current_picker(prompt_bufnr)
+        local multi_selections = current_picker:get_multi_selection()
+
+        if next(multi_selections) == nil then
+          local selection = action_state.get_selected_entry()
+          actions.close(prompt_bufnr)
+          vim.api.nvim_buf_delete(selection.bufnr, {})
+        else
+          actions.close(prompt_bufnr)
+          for _, selection in ipairs(multi_selections) do
+            vim.api.nvim_buf_delete(selection.bufnr, {})
+          end
+        end
+      end)
+      return true
+    end,
+  }, opts or {})
+  M.builtin("buffers", opts)
+end
+
 M.defaults = {
   mappings = {
     n = {
       ["o"] = require("telescope.actions.layout").toggle_preview,
     },
+
     i = {
       ["<C-o>"] = require("telescope.actions.layout").toggle_preview,
     },
