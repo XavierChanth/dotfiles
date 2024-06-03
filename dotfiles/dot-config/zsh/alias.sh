@@ -20,7 +20,13 @@ alias c='cd $(find . -type d | fzf || echo ".")'
 
 alias dl='mkdir .local; echo "**" > .local/.gitignore'
 
-alias t='tmux'
+t() {
+  if [ $# -gt 0 ]; then
+    tmux $@
+  else
+    tmux new -A -s 'main'
+  fi
+}
 alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && switch_or_add_session'
 alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && docker_session'
 alias tl='source $XDG_CONFIG_HOME/tmux/scripts/layout.sh && run_layout'
