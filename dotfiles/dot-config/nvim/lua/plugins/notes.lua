@@ -1,3 +1,4 @@
+local path = vim.env.HOME .. "/src/xc/notes"
 return {
   {
     "epwalsh/obsidian.nvim",
@@ -14,11 +15,14 @@ return {
       },
     },
     ft = "markdown",
+    cond = function()
+      return vim.fn.isdirectory(path)
+    end,
     opts = {
       workspaces = {
         {
           name = "notes",
-          path = "~/src/xc/notes",
+          path = path,
         },
       },
       notes_subdir = "01_notes",
