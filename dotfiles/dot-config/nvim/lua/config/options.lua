@@ -19,3 +19,7 @@ opt.listchars = {
   precedes = "…",
   space = "·",
 }
+
+if vim.env.SSH_TTY and vim.env.TMUX then
+  opt.clipboard = "unnamedplus"
+end
