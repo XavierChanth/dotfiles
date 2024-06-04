@@ -14,9 +14,11 @@ return {
         desc = "Obsidian Commands",
       },
     },
-    ft = "markdown",
-    cond = function()
-      return vim.fn.isdirectory(path)
+    ft = function()
+      if vim.fn.isdirectory(path) == 1 then
+        return { "markdown" }
+      end
+      return {}
     end,
     opts = {
       workspaces = {
