@@ -1,5 +1,7 @@
 local M = {}
 
+M.callbacks = {}
+
 function M.add(opts)
   local actions = require("telescope.actions")
   local actions_state = require("telescope.actions.state")
@@ -44,6 +46,18 @@ end
 function M.telescope(opts)
   require("oil").get_current_dir()
   require("telescope").extensions.git_worktree.git_worktrees(opts)
+end
+
+function M.one_shot_cb(cb, opts)
+  opts = opts or {}
+  local wt = require("git-worktree")
+  wt.on_tree_change(function()
+    cb()
+    wt.reset()
+    for _, v in ipairs(M.callbacks) do
+      wt.on_tree_change(v)
+    end
+  end)
 end
 
 return M

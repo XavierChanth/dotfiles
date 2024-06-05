@@ -51,7 +51,7 @@
   "window.autoDetectColorScheme": true,
   "window.title": "${rootName}",
   "workbench.preferredDarkColorTheme": "One Hunter Theme",
-  "workbench.preferredLightColorTheme": "One Hunter Theme Light",
+  "workbench.preferredLightColorTheme": "Default Dark+",
   "workbench.startupEditor": "none",
   "workbench.tree.indent": 12,
   "workbench.tree.renderIndentGuides": "always",
@@ -114,5 +114,6 @@
   "explorer.compactFolders": false,
   "workbench.activityBar.location": "top",
   "editor.accessibilitySupport": "off",
-  "workbench.editor.editorActionsLocation": "titleBar"
+  "workbench.editor.editorActionsLocation": "titleBar",
+  "remote.SSH.configFile": "/Users/chant/.config/vscode/ssh_config"
 }

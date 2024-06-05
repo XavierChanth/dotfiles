@@ -1,6 +1,11 @@
 Host *
   IdentitiesOnly yes
 
+Host npd-dev
+  ProxyJump charon
+Host dev
+  ProxyJump charon
+
 Host charon
   Hostname localhost
   AddKeysToAgent yes
