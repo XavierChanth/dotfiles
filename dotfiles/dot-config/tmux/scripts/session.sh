@@ -2,7 +2,7 @@
 
 switch_session() {
   tmux ls -F '#S' |
-    fzf --header switch-session --preview 'tmux capture-pane -pt {}' |
+    fzf --header "Switch tmux session" --preview 'tmux capture-pane -pt {}' |
     xargs -I % tmux switch-client -t '%'
 }
 
@@ -49,7 +49,7 @@ switch_or_add_session() {
 
 delete_session() {
   tmux ls -F '#S' |
-    fzf --header delete-session --preview 'tmux capture-pane -pt {}' |
+    fzf --header "!!! DELETE tmux session !!!" --preview 'tmux capture-pane -pt {}' |
     xargs tmux kill-session -t
 }
 
