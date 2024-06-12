@@ -6,9 +6,5 @@ add a todo list right into the repo.
 
 ## TODOs
 
-- finish setting up neomutt
-- create install-de.sh file for setting up desktop environments 
-  - everything: install wezterm, aerc + account config file (manually)
-  - macos: aerospace, raycast, sketchybar
-  - fedora: whatever I decided to use the next time I configure it :)
+- None, yay!
 
