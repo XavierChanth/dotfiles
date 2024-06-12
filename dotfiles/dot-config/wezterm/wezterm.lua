@@ -111,6 +111,7 @@ local hyper_to_tmux_prefix_key = {
 	-- weird mappings
 	["q"] = "d",
 	["d"] = "D",
+	["Tab"] = "L",
 }
 
 for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
