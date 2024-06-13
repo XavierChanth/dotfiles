@@ -75,7 +75,7 @@ alt-shift-enter = ['exec-and-forget wezterm start zsh']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
-alt-a = 'layout accordion horizontal vertical'
+alt-a = 'layout accordion horizontal'
 
 alt-shift-space = 'layout floating tiling'
 
