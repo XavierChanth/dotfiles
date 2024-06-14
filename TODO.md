@@ -6,5 +6,5 @@ add a todo list right into the repo.
 
 ## TODOs
 
-- None, yay!
+- aerc, threads show as a single message?
 
