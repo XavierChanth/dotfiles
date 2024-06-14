@@ -4,8 +4,5 @@
 .zshenv
 
 # Lock files
-lazy-lock.json
 Brewfile.lock.json
 
-# For protection against accidental deletion
-confirmed_overwrite
