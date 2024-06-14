@@ -5,7 +5,9 @@ Xavier Chanthavong
 Senior Software Engineer | Atsign <https://atsign.com>
 xavier@atsign.com | +1 647-909-1639 | @xavierchanth
 
+On {{dateFormat (.OriginalDate | toLocal) "Mon Jan 2, 2006 at 3:04 PM MST"}}, {{.OriginalFrom | names | join ", "}} wrote:
+{{trimSignature .OriginalText | quote}}
 {{- with .Signature }}
 
 {{.}}
-{{- end -}}
+{{- end }}
