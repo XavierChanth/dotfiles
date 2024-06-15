@@ -52,4 +52,24 @@ return {
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
+  {
+    "NStefan002/screenkey.nvim",
+    event = "BufEnter",
+    opts = {
+      win_opts = {
+        border = "rounded",
+      },
+      disable = {
+        filetypes = {
+          "toggleterm",
+        },
+        buftypes = {
+          "terminal",
+        },
+      },
+      group_mappings = true,
+      display_infront = { "Telescope*" },
+      display_behind = {},
+    },
+  },
 }
