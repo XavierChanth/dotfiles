@@ -54,7 +54,7 @@ return {
   },
   {
     "NStefan002/screenkey.nvim",
-    event = "BufEnter",
+    cmd = { "Screenkey" },
     opts = {
       win_opts = {
         border = "rounded",
