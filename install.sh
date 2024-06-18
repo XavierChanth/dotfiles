@@ -67,7 +67,7 @@ case "$(uname)" in
     # net tools
     brew install openssl wget
     # dev tools
-    brew install tmux neovim ripgrep fzf fd git-delta stow
+    brew install tmux neovim ripgrep fzf fd git-delta bat stow
     # programming languages
     brew install uv python cmake golang
     # extra tools
@@ -86,7 +86,7 @@ case "$(uname)" in
       # net tools
       sudo dnf install -y openssl curl wget iproute traceroute hostname
       # dev tools
-      sudo dnf install -y tmux neovim ripgrep fzf fd git-delta stow
+      sudo dnf install -y tmux neovim ripgrep fzf fd git-delta bat stow
       # programming languages
       sudo dnf install -y python3 cmake golang
       # extra tools
