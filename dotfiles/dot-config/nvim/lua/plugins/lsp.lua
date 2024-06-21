@@ -98,6 +98,7 @@ return {
         injected = {},
         shfmt = { prepend_args = { "-i", "2", "-ci" } },
         gersemi = { prepend_args = { "--indent", "2" } },
+        prettier = { prepend_args = { "--prose-wrap", "always" } },
       },
     },
   },
