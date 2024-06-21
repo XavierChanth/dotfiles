@@ -75,12 +75,14 @@ alt-shift-enter = ['exec-and-forget wezterm start zsh']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
-alt-a = 'layout accordion horizontal'
+alt-a = 'layout h_accordion'
 
 alt-shift-space = 'layout floating tiling'
 
 alt-f = 'fullscreen'
 alt-shift-f = 'macos-native-fullscreen'
+
+alt-r = 'flatten-workspace-tree'
 
 # Window movement
 alt-h = 'focus left'
