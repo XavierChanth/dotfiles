@@ -70,8 +70,8 @@ alt-shift-r = [
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload'
 ]
 
-alt-enter = ['exec-and-forget wezterm']
-alt-shift-enter = ['exec-and-forget wezterm start zsh']
+alt-enter = ['exec-and-forget open -n /Applications/WezTerm.app']
+alt-shift-enter = ['exec-and-forget open -n /Applications/WezTerm.app --args start zsh']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
