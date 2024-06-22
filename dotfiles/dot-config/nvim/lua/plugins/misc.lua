@@ -80,4 +80,10 @@ return {
       vim.fn["mkdp#util#install"]()
     end,
   },
+  {
+    "edluffy/hologram.nvim",
+    opts = {
+      auto_display = true,
+    },
+  },
 }
