@@ -25,6 +25,7 @@ case "$(uname)" in
         wezterm asciinema
         font-jetbrains-mono-nerd-font
         aerc abook
+        yazi ffmpegthumbnailer unar poppler
       EOF
     fi
     ;;
@@ -36,5 +37,6 @@ case "$(uname)" in
       sudo dnf install aerc abook
     fi
 
+    # TODO: install yazi
     ;;
 esac
