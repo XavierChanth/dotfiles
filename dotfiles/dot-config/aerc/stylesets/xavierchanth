@@ -42,6 +42,7 @@ msglist_flagged.bold=true
 dirlist_default.fg=white
 
 # highlight selected item
+*.selected.reverse=true
 *.selected.fg=blue
 *.selected.bold=true
 
