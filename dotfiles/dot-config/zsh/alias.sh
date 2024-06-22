@@ -31,6 +31,10 @@ alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && switch_or_add_sessi
 alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && docker_session'
 alias tl='source $XDG_CONFIG_HOME/tmux/scripts/layout.sh && run_layout'
 
+if command -v yazi >/dev/null 2>&1; then
+  alias y='yazi'
+fi
+
 alias z='zellij'
 alias zz='source $XDG_CONFIG_HOME/zellij/session.sh && add_session'
 alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
