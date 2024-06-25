@@ -24,7 +24,7 @@ case "$(uname)" in
       brew install <<EOF
         wezterm asciinema
         font-jetbrains-mono-nerd-font
-        aerc abook
+        aerc abook pandoc
         yazi ffmpegthumbnailer unar poppler
       EOF
     fi
