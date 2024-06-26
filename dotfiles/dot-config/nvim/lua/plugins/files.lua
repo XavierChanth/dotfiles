@@ -32,6 +32,7 @@ return {
       keymaps = {
         ["<leader>e"] = "actions.close",
         ["<leader>E"] = "actions.close",
+        ["<leader>q"] = "q",
         ["q"] = "actions.close",
         ["<backspace>"] = "actions.parent",
         ["<CR>"] = "actions.select",
