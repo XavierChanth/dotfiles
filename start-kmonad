@@ -1,0 +1,5 @@
+#!/bin/bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+
+sudo $HOME/.local/bin/kmonad $script_dir/keyboards/kmonad/internal.kbd

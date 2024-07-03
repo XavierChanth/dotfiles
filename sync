@@ -1,0 +1,16 @@
+#!/bin/bash
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+if ! command_exists stow; then
+  echo "stow not found, install gnu stow before continuing..."
+  exit 2
+fi
+
+stow -d "$script_dir" -t "$HOME" --dotfiles dotfiles
+if [ $(uname) = 'Darwin' ]; then
+  stow -d "$script_dir" -t "$HOME" macos
+fi

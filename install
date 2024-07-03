@@ -106,19 +106,11 @@ case "$(uname)" in
     ;;
 esac
 
-if ! command_exists stow; then
-  echo "stow not found, install gnu stow before continuing..."
-  exit 2
-fi
-
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
 
 # sync dotfiles
-stow -d "$script_dir" -t "$HOME" --dotfiles dotfiles
-if [ $(uname) = 'Darwin' ]; then
-  stow -d "$script_dir" -t "$HOME" macos
-fi
+$script_dir/sync.sh || exit $?
 
 # Install flutter
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"
