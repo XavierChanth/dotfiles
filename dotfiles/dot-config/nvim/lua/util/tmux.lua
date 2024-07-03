@@ -15,4 +15,15 @@ M.reload_plugins = function()
   }):sync()
 end
 
+M.neww = function(opts)
+  local args = { "neww" }
+  if opts.cwd then
+    args = { "neww", "-c", opts.cwd }
+  end
+  Job:new({
+    command = "tmux",
+    args = args,
+  }):sync()
+end
+
 return M

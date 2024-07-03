@@ -43,6 +43,9 @@ return {
         ["<C-_>"] = function()
           LazyVim.terminal(nil, { cwd = require("oil").get_current_dir() })
         end,
+        ["<C-t>"] = function()
+          require("util.tmux").neww({ cwd = require("oil").get_current_dir() })
+        end,
       },
       float = {
         padding = 8,
