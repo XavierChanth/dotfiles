@@ -1,9 +1,11 @@
 local wezterm = require("wezterm")
 
 local front_end = "OpenGL"
+local path = os.getenv("PATH")
 
 if wezterm.target_triple == "aarch64-apple-darwin" then
 	front_end = "WebGpu" -- colors are wrong with OpenGL on macos
+	PATH = path .. ":/opt/homebrew/"
 end
 
 local colorscheme = require("colorscheme")
@@ -30,7 +32,7 @@ local config = {
 		bottom = "2",
 	},
 	set_environment_variables = {
-		PATH = os.getenv("PATH"),
+		PATH = path,
 	},
 	keys = {
 		-- typical terminal emulator mappings
