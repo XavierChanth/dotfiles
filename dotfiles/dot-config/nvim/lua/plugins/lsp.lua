@@ -74,7 +74,7 @@ return {
       flutter_path = get_flutter_bin_path() .. "flutter",
       lsp = {
         root_dir = function()
-          return vim.loop.cwd()
+          return vim.uv.cwd()
         end,
         init_options = {
           onlyAnalyzeProjectsWithOpenFiles = false,

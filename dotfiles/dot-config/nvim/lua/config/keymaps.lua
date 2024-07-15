@@ -3,10 +3,10 @@
 -- Add any additional keymaps here
 local map = vim.keymap.set
 
-require("which-key").register({
-  ["<leader>r"] = { name = "run" },
-  ["<leader>t"] = { name = "tab stop" },
-  ["<leader>gh"] = { name = "Git " },
+require("which-key").add({
+  { "<leader>gh", group = "Git " },
+  { "<leader>r", group = "run" },
+  { "<leader>t", group = "tab stop" },
 })
 
 -- Jump 5 lines at a time
