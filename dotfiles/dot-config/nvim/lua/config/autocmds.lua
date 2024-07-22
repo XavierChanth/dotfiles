@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd("User", {
     vim.fn.mkdir(snapshot_dir, "p")
     local snapshot = snapshot_dir .. os.date("/%Y-%m-%dT%H:%M:%S.json")
 
-    vim.loop.fs_copyfile(lockfile, snapshot)
+    vim.uv.fs_copyfile(lockfile, snapshot)
   end,
 })
 -- Browse Snapshots with :LazySnapshots

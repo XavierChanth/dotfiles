@@ -58,6 +58,7 @@ return {
     opts = {
       win_opts = {
         border = "rounded",
+        title = "",
       },
       disable = {
         filetypes = {
