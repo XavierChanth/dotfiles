@@ -29,7 +29,7 @@ else
 fi
 
 # cmake
-alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-Wall -Wextra -Wpedantic -Wno-error -Wno-calloc-transposed-args -Werror-implicit-function-declaration"'
+alias cmbs='cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-Wno-error"'
 alias cmbb='cmake --build build'
 alias cmbt='cmake --build build --target'
 alias cmcc='ln -s build/compile_commands.json .'
