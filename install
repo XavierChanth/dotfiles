@@ -86,20 +86,48 @@ case "$(uname)" in
       # net tools
       sudo dnf install -y openssl curl wget iproute traceroute hostname
       # dev tools
-      sudo dnf install -y tmux neovim ripgrep fzf fd git-delta bat stow
+      sudo dnf install -y tmux neovim ripgrep fd git-delta bat stow
       # programming languages
       sudo dnf install -y python3 cmake golang
       # extra tools
       sudo dnf install -y gh jq clang-tools-extra inotify-tools
-
+    elif command_exists apt-get; then
+      # shell essentials
+      sudo apt-get install -y bash zsh man git sudo passwd procps
+      # core tools
+      sudo apt-get install -y coreutils moreutils clang parallel
+      # net tools
+      sudo apt-get install -y openssl curl wget traceroute hostname
+      # dev tools
+      sudo apt-get install -y tmux neovim ripgrep fd-find bat stow
+      # programming languages
+      sudo apt-get install -y python3 cmake
+      # extra tools
+      sudo apt-get install -y gh jq clang-format inotify-tools
+      # because packages for go in ubuntu are no longer supported in 22.04
+      wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz -O /tmp/go1.22.5.linux-amd64.tar.gz
+      sudo tar -xvf /tmp/go1.22.5.linux-amd64.tar.gz -C /usr/local
+      sudo ln -s /usr/local/go/bin/go /usr/bin/go
     else
       echo "package manager not configured, configure and try again"
       exit 0
     fi
 
-    # install uv - no dnf installation option
+    # Some Linux packages are not
+    # - Up to date and missing features
+    # - Available in certain package managers
+    # Thus installing these few through other means
     if ! command_exists uv; then
       curl -fsSL https://astral.sh/uv/install.sh | sh
+    fi
+
+    if ! command_exists fzf; then
+      go install github.com/junegunn/fzf@latest
+    fi
+
+    if ! command_exists delta; then
+      curl -fsSL https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_0.17.0_amd64.deb -o /tmp/git-delta_0.17.0_amd64.deb
+      sudo dpkg -i /tmp/git-delta_0.17.0_amd64.deb
     fi
 
     # End of linux block
