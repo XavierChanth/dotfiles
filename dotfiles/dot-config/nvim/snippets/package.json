@@ -18,6 +18,13 @@
           "zsh"
         ],
         "path": "./shell.json"
+      },
+      {
+        "language": [
+          "email",
+          "eml"
+        ],
+        "path": "./email.json"
       }
     ]
   }
