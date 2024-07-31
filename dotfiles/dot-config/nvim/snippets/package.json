@@ -21,10 +21,10 @@
       },
       {
         "language": [
-          "email",
+          "mail",
           "eml"
         ],
-        "path": "./email.json"
+        "path": "./mail.json"
       }
     ]
   }

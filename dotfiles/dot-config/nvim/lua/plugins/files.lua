@@ -51,23 +51,4 @@ return {
       },
     },
   },
-  {
-    "ThePrimeagen/harpoon",
-    keys = {
-      {
-        "H",
-        function()
-          require("harpoon"):list():prev()
-        end,
-        desc = "Harpoon previous",
-      },
-      {
-        "L",
-        function()
-          require("harpoon"):list():next()
-        end,
-        desc = "Harpoon next",
-      },
-    },
-  },
 }

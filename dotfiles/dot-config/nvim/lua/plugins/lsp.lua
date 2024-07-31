@@ -102,16 +102,6 @@ return {
       },
     },
   },
-  -- cmp
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.fn.stdpath("config") .. "/snippets" })
-      end,
-    },
-  },
   {
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -140,12 +130,5 @@ return {
       dap.adapters.lldb = require("mason-nvim-dap.mappings.adapters.codelldb")
       require("util.dotenv").load(vim.fs.find(".env", { type = "file", root_dir = require("util.root").git() })[1])
     end,
-  },
-  -- config
-  {
-    "folke/neoconf.nvim",
-    opts = {
-      local_settings = ".local/neoconf.json",
-    },
   },
 }
