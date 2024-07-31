@@ -2,8 +2,11 @@ X-Mailer: aerc {{version}}
 
 
 Xavier Chanthavong
-Senior Solutions Engineer | [Atsign](https://atsign.com)
+Senior Solutions Engineer | NoPorts & Atsign
 xavier@atsign.com | +1 647-909-1639 | @xavierchanth
+
+NoPorts<https://noports.com>
+Atsign<https://atsign.com>
 
 On {{dateFormat (.OriginalDate | toLocal) "Mon Jan 2, 2006 at 3:04 PM MST"}}, {{.OriginalFrom | names | join ", "}} wrote:
 {{trimSignature .OriginalText | quote}}
