@@ -35,6 +35,10 @@ if command -v yazi >/dev/null 2>&1; then
   alias y='yazi'
 fi
 
+if command -v aerc >/dev/null 2>&1; then
+  alias a='aerc'
+fi
+
 alias z='zellij'
 alias zz='source $XDG_CONFIG_HOME/zellij/session.sh && add_session'
 alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
