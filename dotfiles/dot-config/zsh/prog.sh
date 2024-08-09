@@ -7,7 +7,7 @@ command_exists() {
 __path=""
 
 if command_exists vfox; then
-  alias vfox='eval "$(\vfox activate zsh)" && vfox'
+  alias vfox='if [ -z $__VFOX_SHELL ]; then eval "$(\vfox activate zsh)"; fi; vfox'
 fi
 
 # flutter
