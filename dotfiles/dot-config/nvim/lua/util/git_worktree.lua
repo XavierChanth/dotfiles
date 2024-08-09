@@ -2,7 +2,7 @@ local M = {}
 
 local function set_current(path)
   local base = require("util.root").git({ bare = true })
-  local c = string.gsub(path, base, "")
+  local c = string.gsub(path, base .. "/", "")
   if c == "" then
     c = "--"
   end
