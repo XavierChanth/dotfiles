@@ -54,7 +54,6 @@ return {
   },
   {
     "NStefan002/screenkey.nvim",
-    commit = "75b44c5ddab5dd16440bfaa82075475d019e509d",
     cmd = { "Screenkey" },
     opts = {
       win_opts = {
