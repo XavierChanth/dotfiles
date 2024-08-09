@@ -13,7 +13,7 @@
   "flash.nvim": { "branch": "main", "commit": "ec0bf2842189f65f60fd40bf3557cac1029cc932" },
   "flutter-tools.nvim": { "branch": "main", "commit": "5aa227fa083fd740184b55b5220dfabc24a25cc7" },
   "friendly-snippets": { "branch": "main", "commit": "00ebcaa159e817150bd83bfe2d51fa3b3377d5c4" },
-  "git-worktree.nvim": { "branch": "main", "commit": "9b5136bd9539805ba16ad0e92f3a021224c182d8" },
+  "git-worktree.nvim": { "branch": "main", "commit": "604ab2dd763776a36d1aad9fd81a3c513c1d4d94" },
   "gitsigns.nvim": { "branch": "main", "commit": "d9f997dba757be01434ed3538d202f88286df476" },
   "grug-far.nvim": { "branch": "main", "commit": "22f1571d2c60883b3fbf05e90f04cabde056fe3e" },
   "harpoon": { "branch": "harpoon2", "commit": "0378a6c428a0bed6a2781d459d7943843f374bce" },
@@ -60,7 +60,7 @@
   "tokyonight.nvim": { "branch": "main", "commit": "4a9f04a647356d7727e5d41f7e7438a6f18381f4" },
   "trouble.nvim": { "branch": "main", "commit": "40c5317a6e90fe3393f07b0fee580d9e93a216b4" },
   "ts-comments.nvim": { "branch": "main", "commit": "79e4337e4231ff8ca33dab85162b5ee8e78f22ce" },
-  "venv-selector.nvim": { "branch": "regexp", "commit": "a036144f96adc99f2affab238673ded30e368182" },
+  "venv-selector.nvim": { "branch": "regexp", "commit": "c43dc6bf8c7e7cf124a991775ed3defe87112d3a" },
   "vim-tmux-navigator": { "branch": "master", "commit": "85b8e5f60c1690cde57dbb66467ce39cd1b63343" },
   "which-key.nvim": { "branch": "main", "commit": "6c1584eb76b55629702716995cca4ae2798a9cca" }
 }
