@@ -35,7 +35,7 @@ return {
         ["q"] = "actions.close",
         ["<backspace>"] = "actions.parent",
         ["<CR>"] = "actions.select",
-        ["<C-l>"] = "actions.refresh",
+        ["<C-r>"] = "actions.refresh",
         ["H"] = "actions.toggle_hidden",
         ["g?"] = "actions.show_help",
         ["gx"] = "actions.open_external",
