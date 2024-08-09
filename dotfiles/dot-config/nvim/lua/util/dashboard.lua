@@ -1,7 +1,6 @@
 local M = {}
 M.actions = {
   {
-
     action = require("oil").open,
     desc = " Explorer",
     icon = "󰉋 ",
