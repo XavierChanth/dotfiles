@@ -12,8 +12,8 @@ function M.lazygit(opts)
         local actions = require("telescope.actions")
         actions.select_default:enhance({
           pre = function()
-            wt.one_shot_cb(function()
-              opts.cwd = require("util.root").git(opts)
+            wt.telescope(opts, function(path, _)
+              opts.cwd = path
               LazyVim.lazygit(opts)
             end)
           end,

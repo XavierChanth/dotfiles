@@ -1,7 +1,6 @@
 local M = {}
 
-M.callbacks = {}
-
+-- Simpler flow for git wt add - automatically names the wt to match the branch name
 function M.add(opts)
   local actions = require("telescope.actions")
   local actions_state = require("telescope.actions.state")
@@ -43,21 +42,44 @@ function M.is_inside_worktree(path)
   return exit_code == 0 and res[1] == "true"
 end
 
-function M.telescope(opts)
+function M.telescope(opts, callback)
+  local path = require("util.root").git(opts)
+  M.callbacks[path] = callback
+  -- Make sure oil is loaded before using git_worktree
   require("oil").get_current_dir()
-  require("telescope").extensions.git_worktree.git_worktrees(opts)
+  require("telescope").extensions.git_worktree.git_worktree(opts)
 end
 
-function M.one_shot_cb(cb, opts)
-  opts = opts or {}
-  local wt = require("git-worktree")
-  wt.on_tree_change(function()
-    cb()
-    wt.reset()
-    for _, v in ipairs(M.callbacks) do
-      wt.on_tree_change(v)
+-- Trigger a one time callback are linked to prev_path
+M.callbacks = {}
+function M.trigger_callback(path, prev_path)
+  local cb = M.callbacks[prev_path]
+  if cb ~= nil then
+    cb(path, prev_path)
+  end
+end
+
+function M.config()
+  require("telescope").load_extension("git_worktree")
+  local Job = require("plenary.job")
+  local Hooks = require("git-worktree.hooks")
+  -- Fix for using fake "bare" repos -- no-checkout + manually enabling bare flag afterwards
+  Hooks.register("CREATE", function(path, _, _)
+    local _, exit_code = Job:new({
+      command = "git",
+      args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
+      cwd = path,
+    }):sync()
+
+    if exit_code ~= 0 then
+      LazyVim.error({
+        'Failed to configure upstream. Please run:  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"',
+      })
     end
   end)
-end
 
+  Hooks.register("SWITCH", function(path, prev_path)
+    M.trigger_callback(path, prev_path)
+  end)
+end
 return M
