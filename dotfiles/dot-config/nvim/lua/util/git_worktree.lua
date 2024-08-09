@@ -1,5 +1,15 @@
 local M = {}
 
+local function set_current(path)
+  local base = require("util.root").git({ bare = true })
+  local c = string.gsub(path, base, "")
+  if c == "" then
+    c = "--"
+  end
+  local footer = "Worktree:" .. c
+  vim.cmd("DashboardUpdateFooter " .. footer)
+end
+
 -- Simpler flow for git wt add - automatically names the wt to match the branch name
 function M.add(opts)
   local actions = require("telescope.actions")
@@ -70,6 +80,7 @@ function M.config()
   local Hooks = require("git-worktree.hooks")
   -- Fix for using fake "bare" repos -- no-checkout + manually enabling bare flag afterwards
   Hooks.register("CREATE", function(path, _, _)
+    set_current(path)
     local _, exit_code = Job:new({
       command = "git",
       args = { "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*" },
@@ -84,6 +95,7 @@ function M.config()
   end)
 
   Hooks.register("SWITCH", function(path, prev_path)
+    set_current(path)
     local had_cb = M.trigger_callback(path, prev_path)
     if had_cb then
       return
