@@ -6,6 +6,10 @@ command_exists() {
 
 __path=""
 
+if command_exists vfox; then
+  alias vfox='eval "$(\vfox activate zsh)" && vfox'
+fi
+
 # flutter
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"
 if [ -d $FLUTTER_ROOT ]; then
@@ -35,18 +39,10 @@ alias cmbt='cmake --build build --target'
 alias cmcc='ln -s build/compile_commands.json .'
 alias ctb='ctest --test-dir build --output-on-failure'
 
-#golang
+# golang
 if command_exists go; then
   __path="$HOME/go/bin:$__path"
 fi
-
-# nvm
-# wrap this in a function because it is slow and we don't want to run this unless we need node
-init_nvm() {
-  export NVM_DIR="$HOME/.local/dev/nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-}
 
 # append local path to PATH
 export PATH="$__path:$PATH"
