@@ -42,7 +42,7 @@ if.app-id = 'us.zoom.xos'
 if.window-title-regex-substring = '^$' # good job, not implementing the accessibility APIs AND not giving the window a name zoom!
 run = "layout floating"
 
-[[on-window-detected]] # Don't tile the floating iterm2 window
+[[on-window-detected]]
 if.app-name-regex-substring = '^LibreWolf$|^Firefox$'
 if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
@@ -55,7 +55,7 @@ check-further-callbacks=true
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^LibreWolf$|^Firefox$'
+if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Safari$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
