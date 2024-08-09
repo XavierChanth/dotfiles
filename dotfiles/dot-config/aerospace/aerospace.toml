@@ -72,6 +72,7 @@ alt-shift-r = [
 
 alt-enter = ['exec-and-forget open -n /Applications/WezTerm.app']
 alt-shift-enter = ['exec-and-forget open -n /Applications/WezTerm.app --args start zsh']
+alt-space = ['exec-and-forget open -a /Applications/Safari.app']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
