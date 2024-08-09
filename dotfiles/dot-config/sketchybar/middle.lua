@@ -65,9 +65,9 @@ local function builtin()
 	})
 	sbar.add("item", opts.get_left_separator("pink", { position = "q" }))
 
-	local function update_battery(env)
-		sbar.exec("pmset -g batt | grep -q 'AC Power' && echo 'true' || echo 'false'", function(charging)
-			local is_charging = charging == "true\n"
+	local function update_battery(_)
+		sbar.exec("pmset -g batt | grep -q 'AC Power'", function(_, exit_code)
+			local is_charging = exit_code == 0
 			if is_charging then
 				battery_icon:set({ icon = { string = " " } })
 			end
@@ -105,9 +105,9 @@ end
 
 -- Setup the dynamic layout based on the display query
 sbar.exec(
-	"system_profiler SPDisplaysDataType | grep -B 3 'Main Display:' | awk '/Display Type/ {print $3}' | grep -q 'Built-in' && echo 'true' || echo 'false'",
-	function(result)
-		if result == "true\n" then
+	"system_profiler SPDisplaysDataType | grep -B 3 'Main Display:' | awk '/Display Type/ {print $3}' | grep -q 'Built-in'",
+	function(_, exit_code)
+		if exit_code == 0 then
 			builtin()
 		else
 			external()
