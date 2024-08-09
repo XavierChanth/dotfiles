@@ -43,10 +43,13 @@ function M.is_inside_worktree(path)
 end
 
 function M.telescope(opts, callback)
-  local path = require("util.root").git(opts)
-  M.callbacks[path] = callback
-  -- Make sure oil is loaded before using git_worktree
-  require("oil").get_current_dir()
+  if callback == nil then
+    require("persistence").save()
+  else
+    local path = require("util.root").git(opts)
+    M.callbacks[path] = callback
+  end
+
   require("telescope").extensions.git_worktree.git_worktree(opts)
 end
 
@@ -56,7 +59,9 @@ function M.trigger_callback(path, prev_path)
   local cb = M.callbacks[prev_path]
   if cb ~= nil then
     cb(path, prev_path)
+    return true
   end
+  return false
 end
 
 function M.config()
@@ -79,7 +84,13 @@ function M.config()
   end)
 
   Hooks.register("SWITCH", function(path, prev_path)
-    M.trigger_callback(path, prev_path)
+    local had_cb = M.trigger_callback(path, prev_path)
+    if had_cb then
+      return
+    end
+
+    vim.cmd("bufdo bd") -- Close all buffers
+    vim.cmd("Dashboard") -- Open dashboard
   end)
 end
 return M
