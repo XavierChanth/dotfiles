@@ -70,9 +70,19 @@ alt-shift-r = [
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload'
 ]
 
+# Terminal openers (always new)
 alt-enter = ['exec-and-forget open -n /Applications/WezTerm.app']
 alt-shift-enter = ['exec-and-forget open -n /Applications/WezTerm.app --args start zsh']
-alt-space = ['exec-and-forget open -a /Applications/Safari.app']
+
+# Go to workspace + app
+alt-t = [
+  'workspace 3',
+  'exec-and-forget open -a /Applications/WezTerm.app'
+]
+alt-space = [
+  'workspace 2',
+  'exec-and-forget open -a /Applications/Safari.app'
+]
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
