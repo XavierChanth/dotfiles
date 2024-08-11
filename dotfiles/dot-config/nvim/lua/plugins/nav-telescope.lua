@@ -134,6 +134,7 @@ return {
       },
     },
   },
+  -- Telescope extensions --
   {
     "debugloop/telescope-undo.nvim",
     keys = {

@@ -4,7 +4,11 @@ os.execute(
 )
 os.execute(
 	"[ ! -d $HOME/.local/share/sketchybar_themes/tokyonight ] && "
-		.. "git clone https://github.com/xavierchanth/tokyonight.nvim $HOME/.local/share/sketchybar_themes/tokyonight"
+		.. "git clone https://github.com/folke/tokyonight.nvim $HOME/.local/share/sketchybar_themes/tokyonight && "
+		.. "echo 'return colors' >> $HOME/.local/share/sketchybar_themes/tokyonight/extras/lua/tokyonight_day.lua &&"
+		.. "echo 'return colors' >> $HOME/.local/share/sketchybar_themes/tokyonight/extras/lua/tokyonight_night.lua &&"
+		.. "echo 'return colors' >> $HOME/.local/share/sketchybar_themes/tokyonight/extras/lua/tokyonight_moon.lua &&"
+		.. "echo 'return colors' >> $HOME/.local/share/sketchybar_themes/tokyonight/extras/lua/tokyonight_storm.lua"
 )
 
 local cat = require("colors.catppuccin")
