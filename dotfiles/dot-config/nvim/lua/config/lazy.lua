@@ -17,7 +17,7 @@ require("lazy").setup({
       "LazyVim/LazyVim",
       import = "lazyvim.plugins",
       dependencies = { "raddari/last-color.nvim" },
-      config = {
+      opts = {
         colorscheme = require("util.colorscheme").setup,
       },
     },

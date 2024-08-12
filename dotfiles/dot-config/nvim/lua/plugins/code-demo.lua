@@ -12,7 +12,7 @@ return {
         desc = "Codesnap (clipboard)",
       },
     },
-    config = {
+    opts = {
       save_path = vim.env.HOME .. "/Desktop",
       watermark = "",
     },

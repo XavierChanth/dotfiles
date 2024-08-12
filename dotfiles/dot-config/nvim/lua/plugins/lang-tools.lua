@@ -17,7 +17,7 @@ return {
         desc = "Flutter Commands",
       },
     },
-    config = {
+    opts = {
       flutter_path = get_flutter_bin_path() .. "flutter",
       lsp = {
         root_dir = function()
