@@ -75,7 +75,7 @@ function M.terminals(opts)
   local terminals = require("util.terminal").terminals
   require("telescope.pickers")
     .new(opts, {
-      prompt_title = "terminals",
+      prompt_title = "Terminals",
       finder = M.finder_from_table(terminals),
       sorter = require("telescope.config").values.generic_sorter(opts),
       attach_mappings = function(prompt_bufnr, _)
