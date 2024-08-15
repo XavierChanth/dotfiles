@@ -2,16 +2,13 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 local map = vim.keymap.set
+local unmap = vim.keymap.del
 
 require("which-key").add({
   { "<leader>gh", group = "Git " },
   { "<leader>r", group = "run" },
   { "<leader>t", group = "tab stop" },
 })
-
--- Jump 5 lines at a time
-map("n", "<M-j>", "5j")
-map("n", "<M-k>", "5k")
 
 -- run commands with telescope
 map("n", "<leader>rr", "<cmd>Telescope commands<cr>", { desc = "Run commands" })
@@ -36,6 +33,10 @@ map("n", "<leader>gr", function()
     ctrl_hjkl = false,
   })
 end, { desc = "GitHub Reviews Dashboard" })
+
+-- LazyVim's default terminal mappings
+unmap("n", "<leader>ft")
+unmap("n", "<leader>fT")
 
 -- Tab stops
 local tabstop = function(num)

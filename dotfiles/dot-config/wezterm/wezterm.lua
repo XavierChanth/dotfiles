@@ -85,17 +85,17 @@ local config = {
 		{
 			key = "j",
 			mods = "CMD",
-			action = wezterm.action.SendKey({
-				key = "j",
-				mods = "ALT",
+			action = wezterm.action.Multiple({
+				wezterm.action.SendKey({ key = "5" }),
+				wezterm.action.SendKey({ key = "j" }),
 			}),
 		},
 		{
 			key = "k",
 			mods = "CMD",
-			action = wezterm.action.SendKey({
-				key = "k",
-				mods = "ALT",
+			action = wezterm.action.Multiple({
+				wezterm.action.SendKey({ key = "5" }),
+				wezterm.action.SendKey({ key = "k" }),
 			}),
 		},
 	},

@@ -40,7 +40,7 @@ return {
         ["g?"] = "actions.show_help",
         ["gx"] = "actions.open_external",
         ["<C-_>"] = function()
-          LazyVim.terminal(nil, { cwd = require("oil").get_current_dir() })
+          require("util.terminal").open_oil_terminal()
         end,
         ["<C-t>"] = function()
           require("util.tmux").neww({ cwd = require("oil").get_current_dir() })

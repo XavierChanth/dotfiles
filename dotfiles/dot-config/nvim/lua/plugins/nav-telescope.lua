@@ -37,8 +37,14 @@ return {
         end,
         desc = "Find buffers",
       },
-      { "<leader>ft", false },
-      { "<leader>fT", false },
+      { "<leader>,", false },
+      {
+        "<leader>m",
+        function()
+          require("util.telescope").terminals()
+        end,
+        desc = "Find terminals",
+      },
       {
         "<leader>j",
         function()

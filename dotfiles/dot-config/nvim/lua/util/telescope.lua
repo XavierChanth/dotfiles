@@ -71,6 +71,25 @@ function M.command.picker(opts)
   })
 end
 
+function M.terminals(opts)
+  local terminals = require("util.terminal").terminals
+  require("telescope.pickers")
+    .new(opts, {
+      prompt_title = "terminals",
+      finder = M.finder_from_table(terminals),
+      sorter = require("telescope.config").values.generic_sorter(opts),
+      attach_mappings = function(prompt_bufnr, _)
+        actions.select_default:replace(function()
+          actions.close(prompt_bufnr)
+          local selection = action_state.get_selected_entry()
+          LazyVim.terminal(nil, { cwd = selection[1] })
+        end)
+        return true
+      end,
+    })
+    :find()
+end
+
 function M.finder_from_table(t)
   return require("telescope.finders").new_table(t)
 end

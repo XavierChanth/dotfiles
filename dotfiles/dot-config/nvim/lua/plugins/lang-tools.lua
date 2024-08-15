@@ -4,6 +4,7 @@ end
 
 -- Additional tools / plugins which enhance / complement LSP
 return {
+  -- Flutter
   {
     "akinsho/flutter-tools.nvim",
     event = "BufReadPre *.dart,pubspec.yaml",
@@ -34,6 +35,11 @@ return {
       },
     },
   },
+  {
+    "wa11breaker/flutter-bloc.nvim",
+    event = "BufReadPre *.dart,pubspec.yaml",
+  },
+  -- Go
   {
     "maxandron/goplements.nvim",
     ft = "go",
