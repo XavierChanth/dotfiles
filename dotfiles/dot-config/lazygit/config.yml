@@ -5,22 +5,28 @@ git:
     pager: delta --dark --paging=never --syntax-theme base16-256 -s
 
 customCommands:
-  - key: 'N'
-    context: 'localBranches'
+  - key: "N"
+    context: "localBranches"
     prompts:
-      - type: 'input'
-        title: 'What is the new branch name?'
-        key: 'BranchName'
-        initialValue: ''
+      - type: "input"
+        title: "What is the new branch name?"
+        key: "BranchName"
+        initialValue: ""
     command: "git branch {{.Form.BranchName}} {{.SelectedLocalBranch.Name}}"
-    loadingText: 'Creating branch'
+    loadingText: "Creating branch"
 
 gui:
-  filterMode: fuzzy 
+  filterMode: fuzzy
   nerdFontsVersion: "3"
   theme:
     activeBorderColor:
       - bold
   authorColors:
-    '*': 'cyan'
+    "*": "cyan"
 
+keybinding:
+  universal:
+    prevBlock-alt: ""
+    nextBlock-alt: ""
+    nextTab: l
+    prevTab: h
