@@ -6,8 +6,7 @@ local function set_current(path)
   if c == "" then
     c = "--"
   end
-  local footer = "Worktree:" .. c
-  vim.cmd("DashboardUpdateFooter " .. footer)
+  vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
 end
 
 -- Simpler flow for git wt add - automatically names the wt to match the branch name

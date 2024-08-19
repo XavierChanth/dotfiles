@@ -1,4 +1,4 @@
-local uname = vim.loop.os_uname()
+local uname = vim.uv.os_uname()
 local is_linux_arm64 = uname.sysname == "Linux" and uname.machine == "aarch64"
 local no_mason_linux_arm64 = { mason = not is_linux_arm64 }
 
