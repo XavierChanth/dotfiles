@@ -46,7 +46,7 @@ return {
         desc = "Find terminals",
       },
       {
-        "<S-h>",
+        "<leader>j",
         function()
           telescope.builtin("buffers", {
             sort_lastused = true,
@@ -71,7 +71,7 @@ return {
             end,
           })
         end,
-        desc = "List open buffers",
+        desc = "Jump to buffer",
       },
       {
         "<leader>uC",
