@@ -45,6 +45,7 @@ end
 
 -- Buffer management
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
+unmap("n", "<S-h>")
 unmap("n", "<S-l>")
 
 -- Tabs
