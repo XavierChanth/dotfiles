@@ -1,7 +1,6 @@
 -- disabled plugins - added by LazyVim, but I don't want.
 local disabled = {
   "echasnovski/mini.pairs",
-  "nvim-neo-tree/neo-tree.nvim",
   "akinsho/bufferline.nvim",
 }
 
