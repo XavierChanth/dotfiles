@@ -29,7 +29,7 @@ return {
     "nvimdev/dashboard-nvim",
     opts = {
       config = {
-        header = vim.split("\n\n" .. logos[selected_logo] .. "\n\n", "\n"),
+        header = vim.split("\n" .. logos[selected_logo] .. "\n\n", "\n"),
         center = actions,
       },
     },
