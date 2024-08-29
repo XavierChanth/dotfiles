@@ -1,7 +1,29 @@
 local logos = require("util.logos")
 local actions = require("util.dashboard").actions
 
+local slimline_themes = {
+  minimal = {
+    style = "fg",
+    spaces = { left = "", right = "" },
+    sep = {
+      hide = { first = true, last = true },
+      left = "",
+      right = "",
+    },
+  },
+  bubble = {
+    spaces = { left = "", right = "" },
+    sep = {
+      hide = { first = true, last = true },
+      left = "",
+      right = "",
+    },
+  },
+}
+
 local selected_logo = "nvim_sharp"
+local selected_theme = "minimal"
+
 return {
   {
     "nvimdev/dashboard-nvim",
@@ -15,31 +37,16 @@ return {
   {
     "sschleemilch/slimline.nvim",
     lazy = false,
-    opts = {
-      spaces = {
-        left = "",
-        right = "",
-      },
-      sep = {
-        hide = {
-          first = true,
-          last = true,
-        },
-        left = "",
-        right = "",
-      },
+    opts = vim.tbl_extend("force", {
       hl = {
         modes = {
-          normal = "Function", -- highlight base of modes
-          insert = "String",
-          pending = "Boolean",
-          visual = "Keyword",
-          command = "Boolean",
+          normal = "Function", -- blue
+          insert = "String", -- green
+          pending = "error", -- red
+          visual = "Keyword", -- purple
+          command = "Boolean", -- orange
         },
-        base = "Comment", -- highlight of everything in in between components
-        primary = "Normal", -- highlight of primary parts (e.g. filename)
-        secondary = "Comment", -- highlight of secondary parts (e.g. filepath)
       },
-    },
+    }, slimline_themes[selected_theme]),
   },
 }

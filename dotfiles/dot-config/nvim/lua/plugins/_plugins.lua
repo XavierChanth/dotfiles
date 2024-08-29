@@ -2,6 +2,7 @@
 local disabled = {
   "echasnovski/mini.pairs",
   "akinsho/bufferline.nvim",
+  "nvim-lualine/lualine.nvim",
 }
 
 -- Pinned plugin versions
