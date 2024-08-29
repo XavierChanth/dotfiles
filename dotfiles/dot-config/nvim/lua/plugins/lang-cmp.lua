@@ -14,5 +14,9 @@ return {
       ["<C-d>"] = cmp.mapping.scroll_docs(4),
       ["<CR>"] = cmp.mapping.confirm({ select = false }),
     }
+    opts.performance = {
+      debounce = 0,
+      throttle = 0,
+    }
   end,
 }
