@@ -10,6 +10,14 @@ return {
       window = {
         position = "current",
       },
+      filesystem = {
+        window = {
+          mappings = {
+            ["-"] = "set_root",
+            ["."] = "toggle_hidden",
+          },
+        },
+      },
     },
   },
   {
@@ -32,7 +40,7 @@ return {
     },
     opts = {
       columns = {
-        "icon",
+        -- "icon",
         -- "permissions",
         -- "size",
         -- "mtime",
