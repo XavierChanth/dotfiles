@@ -56,6 +56,7 @@
   "persistence.nvim": { "branch": "main", "commit": "c45ff862b53ce07a853a753fb0b33e148dbb99d2" },
   "plenary.nvim": { "branch": "master", "commit": "50012918b2fc8357b87cff2a7f7f0446e47da174" },
   "screenkey.nvim": { "branch": "main", "commit": "b1516d5d610c89555062397d29fa7f32fc8ec431" },
+  "slimline.nvim": { "branch": "main", "commit": "2cac7ad7f121ec6f4c5809bef9b4986c2cd3274e" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "cf48d4dfce44e0b9a2e19a008d6ec6ea6f01a83b" },
   "telescope-undo.nvim": { "branch": "main", "commit": "51be9ae7c42fc27c0b05505e3a0162e0f05fbb6a" },
   "telescope.nvim": { "branch": "master", "commit": "5972437de807c3bc101565175da66a1aa4f8707a" },

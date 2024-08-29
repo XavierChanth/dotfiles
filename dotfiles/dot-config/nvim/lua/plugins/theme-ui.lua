@@ -1,6 +1,5 @@
 local logos = require("util.logos")
 local actions = require("util.dashboard").actions
-local icons = require("lazyvim.config").icons
 
 local selected_logo = "nvim_sharp"
 return {
@@ -14,50 +13,32 @@ return {
     },
   },
   {
-    "nvim-lualine/lualine.nvim",
+    "sschleemilch/slimline.nvim",
+    lazy = false,
     opts = {
-      options = {
-        section_separators = { left = "", right = "" },
-        component_separators = { left = "", right = "" },
+      spaces = {
+        left = "",
+        right = "",
       },
-      sections = {
-        lualine_a = { { "mode", separator = { left = "", right = "" } } },
-        lualine_c = {
-          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-          {
-            function()
-              local abs = require("oil").get_current_dir() or vim.api.nvim_buf_get_name(0)
-              return abs:gsub("^" .. require("util.root").git() .. "/?", "")
-            end,
-          },
+      sep = {
+        hide = {
+          first = true,
+          last = true,
         },
-        lualine_y = {
-          {
-            "diagnostics",
-            symbols = {
-              error = icons.diagnostics.Error,
-              warn = icons.diagnostics.Warn,
-              info = icons.diagnostics.Info,
-              hint = icons.diagnostics.Hint,
-            },
-          },
-          -- {
-          --   "buffers",
-          --   filetype_names = {
-          --     TelescopePrompt = "Telescope",
-          --     dashboard = "Dashboard",
-          --     packer = "Packer",
-          --     fzf = "FZF",
-          --     alpha = "Alpha",
-          --     oil = "Oil",
-          --   },
-          --   max_length = vim.o.columns * 1 / 2,
-          -- },
+        left = "",
+        right = "",
+      },
+      hl = {
+        modes = {
+          normal = "Function", -- highlight base of modes
+          insert = "String",
+          pending = "Boolean",
+          visual = "Keyword",
+          command = "Boolean",
         },
-        lualine_z = {
-          { "progress", separator = { left = "" }, padding = { left = 1, right = 0 } },
-          { "location", separator = { right = "" }, padding = { left = 0, right = 1 } },
-        },
+        base = "Comment", -- highlight of everything in in between components
+        primary = "Normal", -- highlight of primary parts (e.g. filename)
+        secondary = "Comment", -- highlight of secondary parts (e.g. filepath)
       },
     },
   },
