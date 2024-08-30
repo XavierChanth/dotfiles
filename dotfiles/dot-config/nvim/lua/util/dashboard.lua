@@ -53,14 +53,14 @@ M.actions = {
     icon = " ",
     key = "x",
   },
-  {
-    action = function()
-      return require("util.telescope").config()
-    end,
-    desc = " Config",
-    icon = " ",
-    key = "c",
-  },
+  -- {
+  --   action = function()
+  --     return require("util.telescope").config()
+  --   end,
+  --   desc = " Config",
+  --   icon = " ",
+  --   key = "c",
+  -- },
   {
     action = function()
       require("persistence").load()
