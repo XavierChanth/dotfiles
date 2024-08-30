@@ -100,8 +100,7 @@ function M.config()
       return
     end
 
-    vim.cmd("bufdo bd") -- Close all buffers
-    vim.cmd("Dashboard") -- Open dashboard
+    vim.cmd("bufdo bd | Dashboard") -- Open dashboard & close all buffers
   end)
 end
 return M
