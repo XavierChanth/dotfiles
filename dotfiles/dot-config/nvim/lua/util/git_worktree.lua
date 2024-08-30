@@ -52,6 +52,7 @@ function M.is_inside_worktree(path)
 end
 
 function M.telescope(opts, callback)
+  opts = opts or {}
   if callback == nil then
     require("persistence").save()
   else
