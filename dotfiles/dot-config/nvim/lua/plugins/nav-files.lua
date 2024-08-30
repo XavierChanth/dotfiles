@@ -1,27 +1,7 @@
 return {
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    keys = {
-      { "<leader>e", false },
-      { "<leader>E", false },
-      { "<leader>fE", false },
-    },
-    opts = {
-      window = {
-        position = "current",
-      },
-      filesystem = {
-        window = {
-          mappings = {
-            ["-"] = "set_root",
-            ["."] = "toggle_hidden",
-          },
-        },
-      },
-    },
-  },
-  {
     "stevearc/oil.nvim",
+    lazy = false, -- load at startup since we override netrw with oil
     keys = {
       {
         "<leader>e",
@@ -60,15 +40,36 @@ return {
         ["H"] = "actions.toggle_hidden",
         ["g?"] = "actions.show_help",
         ["gx"] = "actions.open_external",
-        ["<C-_>"] = function()
+        ["<C-_>"] = function() -- opens the floating terminal at the current dir
           require("util.terminal").open_oil_terminal()
         end,
-        ["<C-t>"] = function()
+        ["<C-t>"] = function() -- opens a new tmux window at the current dir
           require("util.tmux").neww({ cwd = require("oil").get_current_dir() })
         end,
       },
       float = {
         padding = 8,
+      },
+    },
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    keys = {
+      { "<leader>e", false },
+      { "<leader>E", false },
+      { "<leader>fE", false },
+    },
+    opts = {
+      window = {
+        position = "current",
+      },
+      filesystem = {
+        window = {
+          mappings = {
+            ["-"] = "set_root",
+            ["."] = "toggle_hidden",
+          },
+        },
       },
     },
   },

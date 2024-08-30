@@ -1,7 +1,9 @@
 local M = {}
 M.actions = {
   {
-    action = require("oil").open,
+    action = function()
+      require("oil").open(nil)
+    end,
     desc = " Explorer",
     icon = "󰉋 ",
     key = "e",
