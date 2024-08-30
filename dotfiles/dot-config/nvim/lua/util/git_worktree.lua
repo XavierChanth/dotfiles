@@ -6,7 +6,10 @@ local function set_current(path)
   if c == "" then
     c = "--"
   end
-  vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
+  vim.cmd("Dashboard")
+  vim.defer_fn(function()
+    vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
+  end, 10)
 end
 
 -- Simpler flow for git wt add - automatically names the wt to match the branch name
@@ -52,7 +55,6 @@ function M.is_inside_worktree(path)
 end
 
 function M.telescope(opts, callback)
-  opts = opts or {}
   if callback == nil then
     require("persistence").save()
   else
@@ -95,13 +97,15 @@ function M.config()
   end)
 
   Hooks.register("SWITCH", function(path, prev_path)
-    set_current(path)
     local had_cb = M.trigger_callback(path, prev_path)
     if had_cb then
+      set_current(path)
       return
     end
-
-    vim.cmd("bufdo bd | Dashboard") -- Open dashboard & close all buffers
+    vim.cmd("bufdo bd")
+    vim.defer_fn(function()
+      set_current(path)
+    end, 10)
   end)
 end
 return M
