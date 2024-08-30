@@ -44,5 +44,10 @@ if command_exists go; then
   __path="$HOME/go/bin:$__path"
 fi
 
+# rust / cargo
+if command_exists cargo; then
+  __path="$HOME/.cargo/bin:$__path"
+fi
+
 # append local path to PATH
 export PATH="$__path:$PATH"

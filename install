@@ -69,7 +69,7 @@ case "$(uname)" in
     # dev tools
     brew install tmux neovim ripgrep fzf fd git-delta bat stow
     # programming languages
-    brew install uv python cmake golang
+    brew install uv python cmake golang rust
     # extra tools
     brew install gh jq
 
@@ -88,7 +88,7 @@ case "$(uname)" in
       # dev tools
       sudo dnf install -y tmux neovim ripgrep fd git-delta bat stow
       # programming languages
-      sudo dnf install -y python3 cmake golang
+      sudo dnf install -y python3 cmake golang rust
       # extra tools
       sudo dnf install -y gh jq clang-tools-extra inotify-tools
     elif command_exists apt-get; then
