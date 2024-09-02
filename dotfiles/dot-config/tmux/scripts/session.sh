@@ -12,10 +12,6 @@ switch_session() {
     xargs -I % tmux switch-client -t '%'
 }
 
-tree_session() {
-  tmux choose-tree -s -O time
-}
-
 add_session() {
   selected=$(
     (
