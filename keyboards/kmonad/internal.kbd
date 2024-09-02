@@ -1,30 +1,34 @@
 (defcfg
-  ;; For MacOS
   input  (iokit-name "Apple Internal Keyboard / Trackpad")
   output (kext)
-
-  ;; This option tells KMonad to let non-configured keys act normal
   fallthrough true
 )
 
 (defsrc
-caps    a    s    d    f    g    h    j    k    l    ;
+esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+caps a s d f g h j k l ;
+fn
 )
 
 (defalias
-    mcaps (tap-hold-next-release 250 esc (around lctl (around lsft (around lalt lmet))))
-    ctl_a (tap-hold-next-release 250 a lctl)
-    sft_s (tap-hold-next-release 250 s lsft)
-    alt_d (tap-hold-next-release 250 d lalt)
-    cmd_f (tap-hold-next-release 250 f lmet)
+    fn (around (layer-toggle function) fn)
 
-   ;; cmd_j (tap-hold-next-release 250 j rmet)
-   ;; alt_k (tap-hold-next-release 250 k lalt)
-   ;; sft_l (tap-hold-next-release 250 l rsft)
-   ;; ctl_; (tap-hold-next-release 250 ; rctl)
+    caps (tap-hold-next-release 250 esc (around lctl (around lsft (around lalt lmet))))
+
+    a (tap-hold-next-release 250 a lctl)
+    s (tap-hold-next-release 250 s lsft)
+    d (tap-hold-next-release 250 d lalt)
+    f (tap-hold-next-release 250 f lmet)
 )
 
-(deflayer homerowmods
-;; @mcaps   @ctl_a   @sft_s   @alt_d   @cmd_f   g   h   @cmd_j   @alt_k   @sft_l   @ctl_;
-@mcaps   @ctl_a   @sft_s   @alt_d   @cmd_f   g   h   j  k l ;
+(deflayer default
+  esc brdn brup lp mctl bldn blup prev pp next mute vold volu
+  @caps @a @s @d @f g h j k l ;
+  @fn
+)
+
+(deflayer function
+  _ f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+  _ _ _ _ _ _ _ _ _ _ _
+  _
 )

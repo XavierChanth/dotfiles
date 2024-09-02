@@ -21,9 +21,7 @@ brew install stack haskell-stack
 stack init
 stack build --flag kmonad:dext --extra-include-dirs=c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/include/pqrs/karabiner/driverkit:c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/src/Client/vendor/include
 
-echo "Copying over the internal keyboard to /etc/kmonad"
-sudo mkdir -p /etc/kmonad
-sudo cp $script_dir/internal.kbd /etc/kmonad/default.kbd
+$script_dir/reinstall.sh
 
 echo "\nMake sure to install the binary to /usr/local/bin/kmonad"
 read
