@@ -20,7 +20,8 @@ clone() {
   git clone "$prefix$REPO" "$@"
 }
 
-clonebare() {
+# git clone bare
+gcb() {
   REPO=$1
   shift
 
@@ -30,5 +31,5 @@ clonebare() {
     prefix="git@github.com:"
   fi
 
-  git clonebare "$prefix$REPO" "$@"
+  git cb "$prefix$REPO" "$@"
 }
