@@ -38,6 +38,30 @@ return {
     "sschleemilch/slimline.nvim",
     lazy = false,
     opts = vim.tbl_extend("force", {
+      components = { -- Choose components and their location
+        right = {
+          -- Next two functions from lazyvim lualine config
+          function()
+            ---@diagnostic disable-next-line: undefined-field
+            if require("noice").api.status.command.has() then
+              ---@diagnostic disable-next-line: undefined-field
+              return require("noice").api.status.command.get()
+            end
+            return ""
+          end,
+          function()
+            ---@diagnostic disable-next-line: undefined-field
+            if require("noice").api.status.mode.has() then
+              ---@diagnostic disable-next-line: undefined-field
+              return require("noice").api.status.mode.get()
+            end
+            return ""
+          end,
+          "diagnostics",
+          "filetype_lsp",
+          "progress",
+        },
+      },
       hl = {
         modes = {
           normal = "Function", -- blue
