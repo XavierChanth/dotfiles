@@ -1,14 +1,6 @@
 Host *
   IdentitiesOnly yes
 
-Host charon
-  Hostname localhost
-  AddKeysToAgent yes
-  IdentityFile ~/.ssh/id_ed25519
-  UserKnownHostsFile /dev/null
-  StrictHostKeyChecking no
-  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -h @xchan_8286 -d charon -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
-
 Host hades
   Hostname localhost
   AddKeysToAgent yes
@@ -17,6 +9,29 @@ Host hades
   StrictHostKeyChecking no
   ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -h @xchan_8286 -d hades -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
 
+Host charon
+  Hostname localhost
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -h @xchan_8286 -d charon -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
+
+Host fedora-40
+  ProxyJump charon
+
+Host ubuntu-20-04
+  ProxyJump charon
+
+Host ubuntu-22-04
+  ProxyJump charon
+
+Host ubuntu-24-04
+  ProxyJump charon
+
+Host docker
+  ProxyJump charon
+
 Host uplink
   Hostname localhost
   AddKeysToAgent yes
@@ -24,4 +39,3 @@ Host uplink
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
   ProxyCommand=$(sshnp -f @xavierchanth -t @xchan_8286 -h @xchan_8286 -d uplink -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
-
