@@ -28,10 +28,7 @@ map("n", "<leader>gG", function() end)
 
 -- gh-dash
 map("n", "<leader>gr", function()
-  LazyVim.terminal({ "gh", "dash" }, {
-    esc_esc = false,
-    ctrl_hjkl = false,
-  })
+  require("util.terminal").terminal({ "gh", "dash" })
 end, { desc = "GitHub Reviews Dashboard" })
 
 -- LazyVim's default terminal mappings
@@ -39,11 +36,8 @@ unmap("n", "<leader>ft")
 unmap("n", "<leader>fT")
 
 -- Yazi
-map("n", "<leader>fy", function()
-  LazyVim.terminal({ "yazi" }, {
-    esc_esc = false,
-    ctrl_hjkl = false,
-  })
+map("n", "<leader>fe", function()
+  require("util.terminal").terminal({ "yazi" })
 end, { desc = "Open Yazi" })
 
 -- Tab stops

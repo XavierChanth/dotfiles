@@ -52,25 +52,4 @@ return {
       },
     },
   },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    keys = {
-      { "<leader>e", false },
-      { "<leader>E", false },
-      { "<leader>fE", false },
-    },
-    opts = {
-      window = {
-        position = "current",
-      },
-      filesystem = {
-        window = {
-          mappings = {
-            ["-"] = "set_root",
-            ["."] = "toggle_hidden",
-          },
-        },
-      },
-    },
-  },
 }

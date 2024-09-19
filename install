@@ -71,13 +71,13 @@ case "$(uname)" in
     # programming languages
     brew install uv python cmake golang rust dotnet
     # extra tools
-    brew install gh jq
+    brew install gh jq yazi
 
     # alacritty font patch - super blurry without this
     defaults -currentHost write -g AppleFontSmoothing -int 0
     ;;
   Linux)
-    # TODO: add dotnet
+    # TODO: add dotnet, yazi
     if command_exists dnf; then
       echo "dnf package manager found, installing packages for dnf"
       # shell essentials

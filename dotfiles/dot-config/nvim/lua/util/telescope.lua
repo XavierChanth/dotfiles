@@ -82,7 +82,7 @@ function M.terminals(opts)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
           local cwd = action_state.get_selected_entry()[1]
-          LazyVim.terminal(nil, { cwd = cwd })
+          require("util.terminal").terminal(nil, { cwd = cwd })
           vim.schedule(vim.cmd.startinsert)
         end)
         return true

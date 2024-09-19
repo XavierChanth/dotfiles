@@ -1,5 +1,35 @@
 #!/bin/bash
 
+function add_session() {
+  selected="$1"
+  [ -z $selected ] && return
+
+  name="$2"
+  if [ -z "$name" ]; then
+    name=$(basename $selected)
+  fi
+  command="$3"
+  tmuxcommand="$4"
+
+  tmux if-shell -F '#{==:#{pane_mode},tree-mode}' 'send q'
+  session=$(tmux new-ses -Pc $selected -s $name || printf $name)
+
+  if [ -n $tmuxcommand ]; then
+    tmux send-prefix -t $session
+    tmux send-keys -t $session : "$tmuxcommand" Enter
+  fi
+
+  if [ -n $command ]; then
+    tmux send-keys -t $session $command C-m C-l
+  fi
+
+  if [ -z $TMUX ]; then
+    tmux attach -t $session
+  else
+    tmux switch-client -t $session
+  fi
+}
+
 function fzf_session() {
   selected=$(
     (
@@ -8,17 +38,7 @@ function fzf_session() {
     ) |
       fzf --scheme=path --tiebreak=end,index --header "Open tmux session"
   )
-
-  [ -z $selected ] && return
-  name=$(basename $selected)
-  tmux if-shell -F '#{==:#{pane_mode},tree-mode}' 'send q'
-  session=$(tmux new-ses -APdc $selected -s $name)
-
-  if [ -z $TMUX ]; then
-    tmux attach -t $session
-  else
-    tmux switch-client -t $session
-  fi
+  add_session "$selected"
 }
 
 function ssh_session() {
@@ -33,14 +53,6 @@ function ssh_session() {
   name="ssh-$selected"
   command="ssh $selected"
 
-  tmux if-shell -F '#{==:#{pane_mode},tree-mode}' 'send q'
-  session=$(tmux new-ses -APdc $selected -s $name)
-  tmux send-keys -t $session $command C-l C-m
-
-  if [ -z $TMUX ]; then
-    tmux attach -t $session
-  else
-    tmux switch-client -t $session
-  fi
-
+  # TODO: fix command
+  add_session "$selected" "$name" # "$command"
 }
