@@ -81,8 +81,9 @@ function M.terminals(opts)
       attach_mappings = function(prompt_bufnr, _)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
-          local selection = action_state.get_selected_entry()
-          LazyVim.terminal(nil, { cwd = selection[1] })
+          local cwd = action_state.get_selected_entry()[1]
+          LazyVim.terminal(nil, { cwd = cwd })
+          vim.schedule(vim.cmd.startinsert)
         end)
         return true
       end,

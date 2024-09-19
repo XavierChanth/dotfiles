@@ -3,7 +3,6 @@ return {
   opts = {
     formatters_by_ft = {
       cmake = { "gersemi" },
-      markdown = { "markdownlint-cli2", "markdown-toc" },
     },
     formatters = {
       injected = {},

@@ -6,14 +6,15 @@ return {
   {
     "williamboman/mason.nvim",
     opts = {
+      registries = {
+        "github:xavierchanth/mason-registry",
+        "github:mason-org/mason-registry",
+      },
       ensure_installed = {
         -- lsp
-        "bash-language-server",
-        "clangd",
         "lua-language-server",
         -- formatter
         "shfmt",
-        "gersemi",
         "stylua",
       },
     },
@@ -49,6 +50,31 @@ return {
             completeUnimported = true,
             clangdFileStatus = true,
           },
+        },
+      },
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters_by_ft = {
+        markdown = { "pymarkdownlnt" },
+      },
+      linters = {
+        pymarkdownlnt = {
+          cmd = "pymarkdownlnt",
+          stdin = true,
+          args = {
+            "-s",
+            "plugins.md012.maximum=$#2",
+            "scan-stdin",
+          },
+          stream = nil,
+          ignore_exitcode = true,
+          parser = require("lint.parser").from_errorformat("stdin:%l:%c: %m", {
+            source = "pymarkdownlnt",
+            severity = vim.diagnostic.severity.WARN,
+          }),
         },
       },
     },
