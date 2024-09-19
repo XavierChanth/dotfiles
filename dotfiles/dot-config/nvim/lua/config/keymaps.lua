@@ -25,6 +25,7 @@ map("n", "<leader>gg", function()
   require("util.lazygit").lazygit()
 end, { desc = "Lazygit" })
 map("n", "<leader>gG", function() end)
+
 -- gh-dash
 map("n", "<leader>gr", function()
   LazyVim.terminal({ "gh", "dash" }, {
@@ -36,6 +37,14 @@ end, { desc = "GitHub Reviews Dashboard" })
 -- LazyVim's default terminal mappings
 unmap("n", "<leader>ft")
 unmap("n", "<leader>fT")
+
+-- Yazi
+map("n", "<leader>fy", function()
+  LazyVim.terminal({ "yazi" }, {
+    esc_esc = false,
+    ctrl_hjkl = false,
+  })
+end, { desc = "Open Yazi" })
 
 -- Tab stops
 local tabstop = function(num)
