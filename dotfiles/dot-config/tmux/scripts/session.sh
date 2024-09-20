@@ -12,7 +12,7 @@ function add_session() {
   tmuxcommand="$4"
 
   tmux if-shell -F '#{==:#{pane_mode},tree-mode}' 'send q'
-  session=$(tmux new-ses -Pc $selected -s $name || printf $name)
+  session=$(tmux new-ses -dPc $selected -s $name || printf $name)
 
   if [ -n $tmuxcommand ]; then
     tmux send-prefix -t $session
