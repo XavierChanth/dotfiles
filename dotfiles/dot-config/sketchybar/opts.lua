@@ -52,7 +52,7 @@ M.get_left_separator = function(color, override)
 	else
 		return M.merge({
 			icon = {
-				string = "█",
+				string = "█",
 				color = M.color[color],
 				font = M.font.separator2,
 				padding_right = -2,
@@ -79,7 +79,7 @@ M.get_right_separator = function(color, override)
 	else
 		return M.merge({
 			icon = {
-				string = "█",
+				string = "█",
 				color = M.color[color],
 				font = M.font.separator2,
 			},
