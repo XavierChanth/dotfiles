@@ -1,5 +1,7 @@
 Host *
   IdentitiesOnly yes
+  ControlMaster auto
+  ControlPath ~/.ssh/control-%r@%n:%p
 
 Host hades
   Hostname localhost
@@ -7,7 +9,7 @@ Host hades
   IdentityFile ~/.ssh/id_ed25519
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
-  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -h @xchan_8286 -d hades -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
+  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -r @xchan_8286 -d hades -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
 
 Host charon
   Hostname localhost
@@ -15,7 +17,7 @@ Host charon
   IdentityFile ~/.ssh/id_ed25519
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
-  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -h @xchan_8286 -d charon -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
+  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -r @xchan_8286 -d charon -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
 
 Host fedora-40
   ProxyJump charon
@@ -38,4 +40,4 @@ Host uplink
   IdentityFile ~/.ssh/id_ed25519
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
-  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan_8286 -h @xchan_8286 -d uplink -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
+  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan_8286 -r @xchan_8286 -d uplink -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"

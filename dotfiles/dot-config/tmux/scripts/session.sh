@@ -8,19 +8,15 @@ function add_session() {
   if [ -z "$name" ]; then
     name=$(basename $selected)
   fi
+
   command="$3"
-  tmuxcommand="$4"
 
   tmux if-shell -F '#{==:#{pane_mode},tree-mode}' 'send q'
-  session=$(tmux new-ses -dPc $selected -s $name || printf $name)
-
-  if [ -n $tmuxcommand ]; then
-    tmux send-prefix -t $session
-    tmux send-keys -t $session : "$tmuxcommand" Enter
-  fi
-
-  if [ -n $command ]; then
-    tmux send-keys -t $session $command C-m C-l
+  if [ -n "$command" ]; then
+    session=$(tmux new-ses -dPF "#S" -c $selected -s $name "$command")
+    tmux set -t "$session" default-command "$command"
+  else
+    session=$(tmux new-ses -dPF "#S" -c $selected -s $name || printf $name)
   fi
 
   if [ -z $TMUX ]; then
@@ -50,9 +46,10 @@ function ssh_session() {
   )
 
   [ -z $selected ] && return
-  name="ssh-$selected"
-  command="ssh $selected"
 
-  # TODO: fix command
-  add_session "$selected" "$name" # "$command"
+  name="ssh-$selected"
+  # add sshnp to path so it works in ProxyCommands
+  command="PATH='$PATH:$HOME/.local/bin'; ssh $selected"
+
+  add_session "$selected" "$name" "$command"
 }
