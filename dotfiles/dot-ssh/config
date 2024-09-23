@@ -4,12 +4,13 @@ Host *
   ControlPath ~/.ssh/control-%r@%n:%p
 
 Host hades
-  Hostname localhost
-  AddKeysToAgent yes
-  IdentityFile ~/.ssh/id_ed25519
-  UserKnownHostsFile /dev/null
-  StrictHostKeyChecking no
-  ProxyCommand=$(sshnp -f @xavierchanth -t @xchan -r @xchan_8286 -d hades -u chant -x 2>/dev/null) -W "%h:%p" -o "StrictHostKeyChecking=no"
+  ProxyJump charon
+
+Host poseidon
+  ProxyJump charon
+
+Host zeus
+  ProxyJump charon
 
 Host charon
   Hostname localhost
