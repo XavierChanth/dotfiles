@@ -102,6 +102,7 @@ end
 function M.git_files(opts)
   opts = opts or {}
   opts.cwd = opts.cwd or require("util.root").git(opts)
+  opts.show_untracked = opts.show_untracked or true
   if require("util.git_worktree").is_inside_worktree(opts.cwd) then
     return M.builtin("git_files", opts)
   else
