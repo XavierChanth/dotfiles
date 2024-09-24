@@ -69,7 +69,7 @@ case "$(uname)" in
     # dev tools
     brew install tmux neovim ripgrep fzf fd git-delta bat stow
     # programming languages
-    brew install uv python cmake golang rust dotnet
+    brew install uv python cmake golang rust dotnet-sdk
     # extra tools
     brew install gh jq yazi
 
