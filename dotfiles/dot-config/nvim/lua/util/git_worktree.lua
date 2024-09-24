@@ -13,6 +13,7 @@ local function set_current(path)
 end
 
 -- Simpler flow for git wt add - automatically names the wt to match the branch name
+-- TODO: checkout remote branch instead of current branch
 function M.add(opts)
   local actions = require("telescope.actions")
   local actions_state = require("telescope.actions.state")
@@ -31,13 +32,30 @@ function M.add(opts)
       end
 
       local name = branch:gsub("^origin/", "", 1)
-      local path = require("util.root").git({ bare = true }) .. "/" .. name
+      local git_root = require("util.root").git({ bare = true })
+      local path = git_root .. "/" .. name
 
-      require("git-worktree").create_worktree(path, name)
+      require("plenary.job")
+        :new({
+          command = "git",
+          args = { "branch", name, branch },
+          cwd = vim.uv.cwd(),
+        })
+        :after(function()
+          vim.schedule(function()
+            require("git-worktree").create_worktree(path, name)
+          end)
+        end)
+        :start()
     end)
 
     return true
   end
+
+  -- only allow creating a worktree from remote refs, because using local refs
+  -- often leads to invalid git states
+  opts.pattern = "refs/remotes/**"
+
   require("telescope.builtin").git_branches(opts)
 end
 
