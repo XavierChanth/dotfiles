@@ -18,6 +18,7 @@ M.switch = function(color)
     vim.cmd.colorscheme(color)
     require("util.tmux").reload_config()
     require("util.sketchybar").reload_config()
+    require("util.wezterm").set_lastcolor(color)
   end
 end
 
