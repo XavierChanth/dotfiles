@@ -52,10 +52,6 @@ function M.add(opts)
     return true
   end
 
-  -- only allow creating a worktree from remote refs, because using local refs
-  -- often leads to invalid git states
-  opts.pattern = "refs/remotes/**"
-
   require("telescope.builtin").git_branches(opts)
 end
 
