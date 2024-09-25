@@ -75,6 +75,8 @@ case "$(uname)" in
 
     # alacritty font patch - super blurry without this
     defaults -currentHost write -g AppleFontSmoothing -int 0
+    # Key repeating
+    defaults write -g ApplePressAndHoldEnabled -bool false
     ;;
   Linux)
     if command_exists dnf; then

@@ -1,0 +1,43 @@
+" plugins 
+set surround
+set highlightedyank
+set nerdtree
+
+set scrolloff=8
+set linenumber
+set relativenumber
+set showmode
+set showcmd
+set visualbell
+set clipboard+=unnamed
+
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+let mapleader = " "
+
+map <leader>e :NERDTreeToggle<CR>
+map <leader><leader> <action>(SearchEverywhere)
+map <leader>sg <Action>(FindInPath)
+map <leader>xt <Action>(ActivateTODOToolWindow)
+map <leader>xx <Action>(ActivateProblemsToolWindow)
+map <leader>gg <Action>(ActivateVersionControlToolWindow)
+
+
+map <leader>gd <Action>(GotoDeclaration)
+map <leader>gy <Action>(GotoTypeDeclaration)
+map <leader>gi <Action>(GotoImplementation)
+map <leader>gu <Action>(ShowUsages)
+map <leader>gf <Action>(Back)
+map <leader>gb <Action>(Forward)
+map <leader>cr <Action>(RenameElement)
+
+map <leader>\ <Action>(SplitVertically)
+map <leader>- <Action>(SplitHorizontally)
+
+map <leader>bd <action>(CloseContent)
+
+
+
