@@ -139,7 +139,7 @@ esac
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
 
 # sync dotfiles
-$script_dir/sync.sh || exit $?
+$script_dir/sync || exit $?
 
 # Install flutter
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"
@@ -170,4 +170,4 @@ fi
 nvim --headless "+Lazy! sync" +qa
 
 # Do a healthcheck to ensure that everything I want is installed
-"$script_dir"/check-env.sh
+"$script_dir"/check-env
