@@ -4,9 +4,9 @@ script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 # Make files and directories used but not "owned" by dotfiles
 touch "$HOME"/.zshenv
 
-mkdir -p "$HOME/dev"
 mkdir -p "$HOME/src"
 mkdir -p "$HOME/.ssh"
+mkdir -p "$HOME/dev/local"
 mkdir -p "$HOME/.local/bin"
 mkdir -p "$HOME/.local/asdf"
 mkdir -p "$HOME/.config"
