@@ -50,91 +50,92 @@ git config --global pull.ff only
 
 # install brew
 case "$(uname)" in
-  Darwin)
-    if ! command_exists brew; then
-      echo "brew not found, installing it for you..."
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
+Darwin)
+  if ! command_exists brew; then
+    echo "brew not found, installing it for you..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
 
-    # desktop stuff
-    brew install --cask aerospace raycast firefox
-    brew install bitwarden-cli
+  # desktop stuff
+  brew install --cask aerospace raycast firefox
+  brew install bitwarden-cli
 
+  # shell essentials
+  brew install bash
+  # core tools
+  brew install coreutils moreutils
+  # net tools
+  brew install openssl wget
+  # dev tools
+  brew install tmux neovim ripgrep fzf fd git-delta bat stow
+  # programming languages
+  brew install uv python cmake golang rust dotnet-sdk
+  # extra tools
+  brew install gh jq yazi
+
+  # alacritty font patch - super blurry without this
+  defaults -currentHost write -g AppleFontSmoothing -int 0
+  # Key repeating
+  defaults write -g ApplePressAndHoldEnabled -bool false
+  ;;
+Linux)
+  # TODO install nuget
+  if command_exists dnf; then
+    echo "dnf package manager found, installing packages for dnf"
     # shell essentials
-    brew install bash
+    sudo dnf install -y bash zsh man git sudo passwd procps
     # core tools
-    brew install coreutils moreutils
+    sudo dnf install -y coreutils moreutils clang parallel
     # net tools
-    brew install openssl wget
+    sudo dnf install -y openssl curl wget iproute traceroute hostname
     # dev tools
-    brew install tmux neovim ripgrep fzf fd git-delta bat stow
+    sudo dnf install -y tmux neovim ripgrep fd git-delta bat stow
     # programming languages
-    brew install uv python cmake golang rust dotnet-sdk
+    sudo dnf install -y python3 cmake golang rust dotnet-sdk-8.0
     # extra tools
-    brew install gh jq yazi
+    sudo dnf install -y gh jq clang-tools-extra inotify-tools
+  elif command_exists apt-get; then
+    # shell essentials
+    sudo apt-get install -y bash zsh man git sudo passwd procps
+    # core tools
+    sudo apt-get install -y coreutils moreutils clang parallel
+    # net tools
+    sudo apt-get install -y openssl curl wget traceroute hostname
+    # dev tools
+    sudo apt-get install -y tmux neovim ripgrep fd-find bat stow
+    # programming languages
+    # TODO: add dotnet
+    sudo apt-get install -y python3 cmake
+    # extra tools
+    sudo apt-get install -y gh jq clang-format inotify-tools
+    # because packages for go in ubuntu are no longer supported in 22.04
+    wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz -O /tmp/go1.22.5.linux-amd64.tar.gz
+    sudo tar -xvf /tmp/go1.22.5.linux-amd64.tar.gz -C /usr/local
+    sudo ln -s /usr/local/go/bin/go /usr/bin/go
+  else
+    echo "package manager not configured, configure and try again"
+    exit 0
+  fi
 
-    # alacritty font patch - super blurry without this
-    defaults -currentHost write -g AppleFontSmoothing -int 0
-    # Key repeating
-    defaults write -g ApplePressAndHoldEnabled -bool false
-    ;;
-  Linux)
-    if command_exists dnf; then
-      echo "dnf package manager found, installing packages for dnf"
-      # shell essentials
-      sudo dnf install -y bash zsh man git sudo passwd procps
-      # core tools
-      sudo dnf install -y coreutils moreutils clang parallel
-      # net tools
-      sudo dnf install -y openssl curl wget iproute traceroute hostname
-      # dev tools
-      sudo dnf install -y tmux neovim ripgrep fd git-delta bat stow
-      # programming languages
-      sudo dnf install -y python3 cmake golang rust dotnet-sdk-8.0
-      # extra tools
-      sudo dnf install -y gh jq clang-tools-extra inotify-tools
-    elif command_exists apt-get; then
-      # shell essentials
-      sudo apt-get install -y bash zsh man git sudo passwd procps
-      # core tools
-      sudo apt-get install -y coreutils moreutils clang parallel
-      # net tools
-      sudo apt-get install -y openssl curl wget traceroute hostname
-      # dev tools
-      sudo apt-get install -y tmux neovim ripgrep fd-find bat stow
-      # programming languages
-      # TODO: add dotnet
-      sudo apt-get install -y python3 cmake
-      # extra tools
-      sudo apt-get install -y gh jq clang-format inotify-tools
-      # because packages for go in ubuntu are no longer supported in 22.04
-      wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz -O /tmp/go1.22.5.linux-amd64.tar.gz
-      sudo tar -xvf /tmp/go1.22.5.linux-amd64.tar.gz -C /usr/local
-      sudo ln -s /usr/local/go/bin/go /usr/bin/go
-    else
-      echo "package manager not configured, configure and try again"
-      exit 0
-    fi
+  # Some Linux packages are not
+  # - Up to date and missing features
+  # - Available in certain package managers
+  # Thus installing these few through other means
+  if ! command_exists uv; then
+    curl -fsSL https://astral.sh/uv/install.sh | sh
+  fi
 
-    # Some Linux packages are not
-    # - Up to date and missing features
-    # - Available in certain package managers
-    # Thus installing these few through other means
-    if ! command_exists uv; then
-      curl -fsSL https://astral.sh/uv/install.sh | sh
-    fi
+  if ! command_exists fzf; then
+    go install github.com/junegunn/fzf@latest
+  fi
 
-    if ! command_exists fzf; then
-      go install github.com/junegunn/fzf@latest
-    fi
+  if ! command_exists delta; then
+    curl -fsSL https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_0.17.0_amd64.deb -o /tmp/git-delta_0.17.0_amd64.deb
+    sudo dpkg -i /tmp/git-delta_0.17.0_amd64.deb
+  fi
 
-    if ! command_exists delta; then
-      curl -fsSL https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_0.17.0_amd64.deb -o /tmp/git-delta_0.17.0_amd64.deb
-      sudo dpkg -i /tmp/git-delta_0.17.0_amd64.deb
-    fi
-
-    # End of linux block
-    ;;
+  # End of linux block
+  ;;
 esac
 
 # install spaceship
