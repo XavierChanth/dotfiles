@@ -23,3 +23,6 @@ vim.api.nvim_create_user_command("LazySnapshots", "edit " .. snapshot_dir, {})
 
 -- Save without formatting
 vim.api.nvim_create_user_command("W", "lua vim.g.autoformat = false; vim.cmd.w(); vim.g.autoformat = true", {})
+
+-- Recognize .xaml as xml
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = { "*.xaml" }, command = "setf xml" })

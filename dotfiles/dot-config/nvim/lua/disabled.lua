@@ -1,3 +1,5 @@
+local plugins = {}
+
 -- disabled plugins - added by LazyVim, but I don't want.
 local disabled = {
   "echasnovski/mini.pairs",
@@ -5,9 +7,6 @@ local disabled = {
   -- "nvim-lualine/lualine.nvim",
   "nvim-neo-tree/neo-tree.nvim",
 }
-
--- Pinned plugin versions
-local plugins = {}
 
 for _, plugin in ipairs(disabled) do
   if type(plugin) == "string" then

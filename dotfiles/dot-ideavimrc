@@ -25,6 +25,7 @@ map <leader>xt <Action>(ActivateTODOToolWindow)
 map <leader>xx <Action>(ActivateProblemsToolWindow)
 map <leader>gg <Action>(ActivateVersionControlToolWindow)
 
+nmap K <Action>(QuickImplementations)
 
 map <leader>gd <Action>(GotoDeclaration)
 map <leader>gy <Action>(GotoTypeDeclaration)

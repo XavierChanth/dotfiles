@@ -3,6 +3,9 @@ Host *
   ControlMaster auto
   ControlPath ~/.ssh/control-%r@%n:%p
 
+Host github.com
+  ControlMaster no
+
 Host hades
   ProxyJump charon
 

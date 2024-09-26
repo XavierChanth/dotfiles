@@ -2,7 +2,6 @@ local function get_flutter_bin_path()
   return require("os").getenv("FLUTTER_ROOT") .. "/bin/"
 end
 
--- Additional tools / plugins which enhance / complement LSP
 return {
   -- Flutter
   {
@@ -29,8 +28,7 @@ return {
           closingLabels = true,
         },
         settings = {
-          lineLength = 80,
-          -- renameFilesWithClasses = "always",
+          lineLength = 80, -- renameFilesWithClasses = "always",
         },
       },
     },
@@ -38,19 +36,5 @@ return {
   {
     "wa11breaker/flutter-bloc.nvim",
     event = "BufReadPre *.dart,pubspec.yaml",
-  },
-  -- Go
-  {
-    "maxandron/goplements.nvim",
-    ft = "go",
-    opts = {
-      -- The prefixes prepended to the type names
-      prefix = {
-        interface = "implemented by: ",
-        struct = "implements: ",
-      },
-      -- Whether to display the package name along with the type name (i.e., builtins.error vs error)
-      display_package = false,
-    },
   },
 }

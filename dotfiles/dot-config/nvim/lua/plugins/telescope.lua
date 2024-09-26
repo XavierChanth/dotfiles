@@ -76,7 +76,7 @@ return {
       {
         "<leader>uC",
         function()
-          local colors = require("colors")
+          local colors = require("util.colors")
           telescope.builtin("colorscheme", {
             finder = require("util.telescope").finder_from_table(colors.configured),
             enable_preview = true,
@@ -139,36 +139,5 @@ return {
         },
       },
     },
-  },
-  -- Telescope extensions --
-  {
-    "debugloop/telescope-undo.nvim",
-    keys = {
-      {
-        "<leader>uh",
-        "<cmd>Telescope undo<cr>",
-        desc = "undo history",
-      },
-    },
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
-  },
-  {
-    "polarmutex/git-worktree.nvim",
-    commit = "604ab2dd763776a36d1aad9fd81a3c513c1d4d94",
-    keys = {
-      {
-        "<leader>ga",
-        require("util.git_worktree").add,
-        desc = "Git worktree add",
-      },
-      {
-        "<leader>gw",
-        require("util.git_worktree").telescope,
-        desc = "Git worktrees",
-      },
-    },
-    config = require("util.git_worktree").config,
   },
 }
