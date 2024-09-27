@@ -38,10 +38,12 @@ function fzf_session() {
 }
 
 function ssh_session() {
+  includes=$(cat "$HOME/.ssh/config" | grep 'Include ' | cut -d ' ' -f2 | sed -e "s|^|$HOME/.ssh/|")
+  files=$(printf $includes | xargs -I % /bin/sh -c 'ls %' && echo "$HOME/.ssh/config")
+  hosts=$(echo $files | xargs -I % /bin/sh -c 'cat "%" | grep "Host " | grep -v "Host \*" | cut -d " " -f2')
+
   selected=$(
-    (
-      cat $HOME/.ssh/config | grep 'Host ' | grep -v 'Host \*' | cut -d ' ' -f2
-    ) |
+    echo $hosts |
       fzf --scheme=path --tiebreak=end,index --header "Open tmux session"
   )
 
