@@ -1,3 +1,3 @@
 return {
-  { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
+  { import = "lazyvim.plugins.extras.lang.omnisharp" },
 }
