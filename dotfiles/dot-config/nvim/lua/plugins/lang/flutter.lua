@@ -3,7 +3,6 @@ local function get_flutter_bin_path()
 end
 
 return {
-  -- Flutter
   {
     "akinsho/flutter-tools.nvim",
     event = "BufReadPre *.dart,pubspec.yaml",

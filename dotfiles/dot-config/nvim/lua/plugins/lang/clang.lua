@@ -11,7 +11,7 @@ return {
           },
           cmd = {
             "clangd",
-            "--query-driver=/usr/bin/clang++",
+            "--query-driver=/usr/bin/clang",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=iwyu",
@@ -27,15 +27,15 @@ return {
         },
       },
     },
-    {
-      "stevearc/conform.nvim",
-      opts = {
-        formatters_by_ft = {
-          cmake = { "gersemi" },
-        },
-        formatters = {
-          gersemi = { prepend_args = { "--indent", "2" } }, -- cmake formatter
-        },
+  },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        cmake = { "gersemi" },
+      },
+      formatters = {
+        gersemi = { prepend_args = { "--indent", "2" } }, -- cmake formatter
       },
     },
   },
