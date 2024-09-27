@@ -51,7 +51,7 @@ map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
 unmap("n", "<S-h>")
 unmap("n", "<S-l>")
 
--- Tabs
+-- Indentation
 map("n", "<leader>t2", function()
   tabstop(2)
 end, { desc = "2 spaces" })
@@ -63,3 +63,12 @@ end, { desc = "4 spaces" })
 map("n", "<leader>t8", function()
   tabstop(8)
 end, { desc = "4 spaces" })
+
+-- Tabs the annoying thing
+map("n", "<leader><tab>c", "<cmd>tabnew<cr>", { desc = "Tab Create" })
+map("n", "<leader><tab>h", "<cmd>tabnext -1<cr>", { desc = "Tab Left" })
+map("n", "<leader><tab>l", "<cmd>tabnext<cr>", { desc = "Tab Right" })
+unmap("n", "<leader><tab><tab>")
+unmap("n", "<leader><tab>f")
+unmap("n", "<leader><tab>[")
+unmap("n", "<leader><tab>]")
