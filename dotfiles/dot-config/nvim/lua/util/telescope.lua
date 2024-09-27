@@ -78,13 +78,37 @@ function M.terminals(opts)
       prompt_title = "Terminals",
       finder = M.finder_from_table(terminals),
       sorter = require("telescope.config").values.generic_sorter(opts),
-      attach_mappings = function(prompt_bufnr, _)
+      attach_mappings = function(prompt_bufnr, map)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
           local cwd = action_state.get_selected_entry()[1]
           require("util.terminal").terminal(nil, { cwd = cwd })
           vim.schedule(vim.cmd.startinsert)
         end)
+        local function delete_from_telescope()
+          ---@diagnostic disable-next-line: redundant-parameter
+          local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
+          local len = #terminals
+          local offset = 0
+          for index, value in ipairs(terminals) do
+            if #value == #cwd or value == cwd then
+              terminals[index] = nil
+              offset = offset + 1
+            else
+              if offset > 0 then
+                terminals[index - offset] = value
+              end
+            end
+          end
+
+          for i = len - offset + 1, len do
+            terminals[i] = nil
+          end
+
+          actions.close(prompt_bufnr)
+        end
+        map("i", "<c-d>", delete_from_telescope)
+        map("n", "<c-d>", delete_from_telescope)
         return true
       end,
     })
