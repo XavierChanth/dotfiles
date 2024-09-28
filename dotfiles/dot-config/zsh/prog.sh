@@ -49,5 +49,10 @@ if command_exists cargo; then
   __path="$HOME/.cargo/bin:$__path"
 fi
 
+# dotnet
+if command_exists dotnet; then
+  __path="$HOME/.dotnet/tools:$__path"
+fi
+
 # append local path to PATH
 export PATH="$__path:$PATH"
