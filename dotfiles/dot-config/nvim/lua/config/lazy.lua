@@ -28,7 +28,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.editor.outline" },
     { import = "lazyvim.plugins.extras.vscode" },
     { import = "plugins" },
-    { import = "plugins.lang.clang" },
+    { import = "plugins.lang" },
     { import = "disabled" },
     { import = "pinned" },
   },
