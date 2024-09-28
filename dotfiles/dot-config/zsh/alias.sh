@@ -14,8 +14,6 @@ alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias v='nvim'
-alias vv='nvim $(fzf)'
-
 alias c='cd $(find . -type d | fzf || echo ".")'
 
 alias dl='mkdir .local; echo "**" > .local/.gitignore'
@@ -27,8 +25,8 @@ t() {
     tmux new -A -s 'main'
   fi
 }
-alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && switch_or_add_session'
-alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && docker_session'
+alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && fzf_session'
+alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && ssh_session'
 alias tl='source $XDG_CONFIG_HOME/tmux/scripts/layout.sh && run_layout'
 
 if command -v yazi >/dev/null 2>&1; then
@@ -39,9 +37,10 @@ if command -v aerc >/dev/null 2>&1; then
   alias a='aerc'
 fi
 
-alias z='zellij'
-alias zz='source $XDG_CONFIG_HOME/zellij/session.sh && add_session'
-alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
+# not using zellij rn
+# alias z='zellij'
+# alias zz='source $XDG_CONFIG_HOME/zellij/session.sh && add_session'
+# alias zl='source $XDG_CONFIG_HOME/zellij/layout.sh && run_local'
 
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
