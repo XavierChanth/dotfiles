@@ -72,7 +72,14 @@ function M.command.picker(opts)
 end
 
 function M.terminals(opts)
-  local terminals = require("util.terminal").terminals
+  local util = require("util.terminal")
+  local terminals = {}
+  for index, term in pairs(util.get_terminals()) do
+    if term ~= nil then
+      terminals[#terminals + 1] = index
+    end
+  end
+
   require("telescope.pickers")
     .new(opts, {
       prompt_title = "Terminals",
@@ -82,33 +89,17 @@ function M.terminals(opts)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
           local cwd = action_state.get_selected_entry()[1]
-          require("util.terminal").terminal(nil, { cwd = cwd })
+          util.terminal(nil, { cwd = cwd })
           vim.schedule(vim.cmd.startinsert)
         end)
         local function delete_from_telescope()
           ---@diagnostic disable-next-line: redundant-parameter
           local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
-          local len = #terminals
-          local offset = 0
-          for index, value in ipairs(terminals) do
-            if #value == #cwd or value == cwd then
-              terminals[index] = nil
-              offset = offset + 1
-            else
-              if offset > 0 then
-                terminals[index - offset] = value
-              end
-            end
-          end
-
-          for i = len - offset + 1, len do
-            terminals[i] = nil
-          end
-
+          util.remove_terminal_entry(cwd)
           actions.close(prompt_bufnr)
         end
-        map("i", "<c-d>", delete_from_telescope)
-        map("n", "<c-d>", delete_from_telescope)
+        map("i", "<C-d>", delete_from_telescope)
+        map("n", "<C-d>", delete_from_telescope)
         return true
       end,
     })
@@ -151,7 +142,7 @@ function M.buffers(opts)
     sort_lastused = true,
     sort_mru = true,
     attach_mappings = function(prompt_bufnr, map)
-      map("n", "D", function()
+      map("n", "<C-d>", function()
         local current_picker = action_state.get_current_picker(prompt_bufnr)
         local multi_selections = current_picker:get_multi_selection()
 

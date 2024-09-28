@@ -31,7 +31,10 @@ map("n", "<leader>gr", function()
   require("util.terminal").terminal({ "gh", "dash" })
 end, { desc = "GitHub Reviews Dashboard" })
 
--- LazyVim's default terminal mappings
+-- Terminal
+map("n", "<C-_>", function()
+  require("util.terminal").open_last_terminal()
+end, { desc = "Terminal (Last)" })
 unmap("n", "<leader>ft")
 unmap("n", "<leader>fT")
 

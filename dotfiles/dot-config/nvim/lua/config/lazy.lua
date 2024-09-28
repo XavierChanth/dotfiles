@@ -15,6 +15,7 @@ require("lazy").setup({
   spec = {
     {
       "LazyVim/LazyVim",
+      branch = "main",
       import = "lazyvim.plugins",
       dependencies = { "raddari/last-color.nvim" },
       opts = {
@@ -26,7 +27,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.mini-diff" },
     { import = "lazyvim.plugins.extras.editor.outline" },
-    { import = "lazyvim.plugins.extras.vscode" },
     { import = "plugins" },
     { import = "plugins.lang" },
     { import = "disabled" },
