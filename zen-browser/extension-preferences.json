@@ -1,0 +1,63 @@
+{
+  "formautofill@mozilla.org": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "pictureinpicture@mozilla.org": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "webcompat-reporter@mozilla.org": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "screenshots@mozilla.org": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "webcompat@mozilla.org": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "firefox-compact-dark@mozilla.org": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "addons-search-detection@mozilla.com": {
+    "permissions": [
+      "internal:privateBrowsingAllowed",
+      "internal:svgContextPropertiesAllowed"
+    ],
+    "origins": []
+  },
+  "firefox-compact-light@mozilla.org": {
+    "permissions": ["internal:privateBrowsingAllowed"],
+    "origins": []
+  },
+  "default-theme@mozilla.org": {
+    "permissions": ["internal:privateBrowsingAllowed"],
+    "origins": []
+  },
+  "{d7742d87-e61d-4b78-b8a1-b469842139fa}": {
+    "permissions": ["<all_urls>"],
+    "origins": ["<all_urls>", "file:///*"]
+  }
+}
