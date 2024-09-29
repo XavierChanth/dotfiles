@@ -167,7 +167,7 @@ fi
 
 # csharp-ls
 if command_exists dotnet; then
-  dotnet tool install -y --global csharp-ls
+  dotnet tool install --global csharp-ls
 fi
 
 # sync nvim
