@@ -1,4 +1,9 @@
 [submodule "keyboards/qmk"]
 	path = keyboards/qmk
 	url = https://github.com/XavierChanth/qmk_userspace
-  ignore = dirty
+[submodule "keyboards/zsa_firmware"]
+	path = keyboards/zsa_firmware
+	url = https://github.com/zsa/qmk_firmware
+[submodule "keyboards/qmk_firmware"]
+	path = keyboards/qmk_firmware
+	url = https://github.com/zsa/qmk_firmware
