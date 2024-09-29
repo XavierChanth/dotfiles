@@ -4,7 +4,9 @@ after-startup-command = [
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
 ]
 
-exec-on-workspace-change = ['/bin/bash', '-c',
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
   '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
@@ -17,11 +19,11 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 # outer.right =      8
 
 inner.horizontal = 0
-inner.vertical =   0
-outer.left =       0
-outer.bottom =     0
-outer.top =        [ {monitor.built-in = 0}, {monitor.main = 40}, 0]
-outer.right =      0
+inner.vertical = 0
+outer.left = 0
+outer.bottom = 0
+outer.top = [{ monitor.built-in = 0 }, { monitor.main = 40 }, 0]
+outer.right = 0
 
 [workspace-to-monitor-force-assignment]
 1 = 'secondary' # '^Sidecar.*$'
@@ -43,19 +45,19 @@ if.window-title-regex-substring = '^$' # good job, not implementing the accessib
 run = "layout floating"
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^LibreWolf$|^Firefox$'
+if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen Browser$'
 if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
 # Startup layout
 [[on-window-detected]]
-if.app-name-regex-substring ='.'
+if.app-name-regex-substring = '.'
 if.during-aerospace-startup = true
-check-further-callbacks=true
+check-further-callbacks = true
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Safari$'
+if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen Browser$|^Safari$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
@@ -67,21 +69,20 @@ run = 'move-node-to-workspace 3'
 [mode.main.binding]
 alt-shift-r = [
   'exec-and-forget aerospace reload-config',
-  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload'
+  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload',
 ]
 
 # Terminal openers (always new)
 alt-enter = ['exec-and-forget open -n /Applications/WezTerm.app']
-alt-shift-enter = ['exec-and-forget open -n /Applications/WezTerm.app --args start zsh']
+alt-shift-enter = [
+  'exec-and-forget open -n /Applications/WezTerm.app --args start zsh',
+]
 
 # Go to workspace + app
-alt-t = [
-  'workspace 3',
-  'exec-and-forget open -a /Applications/WezTerm.app'
-]
+alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
 alt-space = [
   'workspace 2',
-  'exec-and-forget open -a /Applications/Safari.app'
+  'exec-and-forget open -a /Applications/Zen\ Browser.app',
 ]
 
 # Layout movement
@@ -132,4 +133,3 @@ alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 # Resizing
 alt-shift-minus = 'resize smart -50'
 alt-shift-equal = 'resize smart +50'
-
