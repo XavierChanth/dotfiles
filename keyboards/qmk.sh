@@ -22,7 +22,6 @@ qmk_init() {
     cd "$script_dir/qmk" || return 1
     qmk config user.overlay_dir="$(realpath .)"
   )
-  qmk config user.keymap=xavierchanth
 }
 
 qmk_init
@@ -41,15 +40,17 @@ qmk_update() {
 # Waiting eons for https://github.com/qmk/qmk_firmware/pull/22751
 # Good thing I don't intend to flash this board any time soon
 qmk_air75() {
-  qmk config user.qmk_home="$script_dir/qmk_firmware"
-  qmk config user.keyboard=nuphy/air75_v2/ansi
   qmk_init
-  qmk compile
+  qmk userspace-remove -kb 'all'
+  qmk config user.qmk_home="$script_dir/qmk_firmware"
+  qmk userspace-add -kb nuphy/air75_v2/ansi -km xavierchanth
+  qmk userspace-compile
 }
 
 qmk_voyager() {
-  qmk config user.qmk_home="$script_dir/zsa_firmware"
-  qmk config user.keyboard=voyager
   qmk_init
-  qmk compile
+  qmk userspace-remove -kb 'all'
+  qmk config user.qmk_home="$script_dir/zsa_firmware"
+  qmk userspace-add -kb voyager -km xavierchanth
+  qmk userspace-compile
 }

@@ -6,5 +6,4 @@ add a todo list right into the repo.
 
 ## TODOs
 
-- aerc, threads show as a single message?
-
+- Get QMK setup properly
