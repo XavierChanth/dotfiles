@@ -11,6 +11,6 @@ if ! command_exists stow; then
 fi
 
 stow -d "$script_dir" -t "$HOME" --dotfiles dotfiles
-if [ $(uname) = 'Darwin' ]; then
-  stow -d "$script_dir" -t "$HOME" macos
-fi
+# if [ $(uname) = 'Darwin' ]; then
+#   stow -d "$script_dir" -t "$HOME" macos
+# fi

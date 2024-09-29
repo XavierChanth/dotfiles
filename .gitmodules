@@ -1,3 +1,7 @@
 [submodule "keyboards/qmk_firmware"]
 	path = keyboards/qmk_firmware
 	url = git@github.com:XavierChanth/qmk_firmware.git
+  ignore = dirty
+[submodule "keyboards/qmk"]
+	path = keyboards/qmk
+	url = https://github.com/XavierChanth/qmk_userspace
