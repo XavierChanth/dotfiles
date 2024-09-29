@@ -37,6 +37,7 @@ check_commands=(
   cmake
   uv
   python
+  dotnet
    # bonus tools
   gh
   jq

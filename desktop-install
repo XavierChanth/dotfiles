@@ -11,7 +11,7 @@ case "$(uname)" in
 
       # core apps
       brew install <<EOF
-        librewolf google-chrome
+        zen-browser google-chrome
         zoom discord spotify
         betterdisplay cleanshot unnaturalscrollwheels
       EOF

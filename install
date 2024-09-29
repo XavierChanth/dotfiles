@@ -5,10 +5,9 @@ script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 touch "$HOME"/.zshenv
 
 mkdir -p "$HOME/src"
-mkdir -p "$HOME/.ssh"
+mkdir -p "$HOME/.ssh/config.d" # ssh profiles that I don't want tracked in git go here
 mkdir -p "$HOME/dev/local"
 mkdir -p "$HOME/.local/bin"
-mkdir -p "$HOME/.local/asdf"
 mkdir -p "$HOME/.config"
 
 # Prevent stow from adopting certain folders, and instead only link the files
@@ -26,6 +25,7 @@ command_exists() {
 if ! command_exists git; then
   echo "git not found, install git before continuing..."
   echo "how did you even git this onto your machine?"
+  echo "haha... see what I did there..."
   exit 1
 fi
 
@@ -56,10 +56,6 @@ case "$(uname)" in
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
-    # desktop stuff
-    brew install --cask aerospace raycast firefox
-    brew install bitwarden-cli
-
     # shell essentials
     brew install bash
     # core tools
@@ -72,7 +68,6 @@ case "$(uname)" in
     brew install uv python cmake golang rust dotnet-sdk
     # extra tools
     brew install gh jq yazi
-    dotnet tool install -y --global csharp-ls
 
     # alacritty font patch - super blurry without this
     defaults -currentHost write -g AppleFontSmoothing -int 0
@@ -156,18 +151,23 @@ git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm"
 "$HOME"/.local/dev/nvm install node
 
 # install lazygit from source
-if ! command_exists lazygit; then
+if ! command_exists lazygit && command_exists go; then
   go install github.com/jesseduffield/lazygit@latest
 fi
 
 # install yazi from source
-if ! command_exists yazi; then
+if ! command_exists yazi && command_exists cargo; then
   cargo install --locked yazi-fm yazi-cli
 fi
 
 # gh dash
-if ! command_exists gh; then
+if command_exists gh; then
   gh extension install dlvhdr/gh-dash
+fi
+
+# csharp-ls
+if command_exists dotnet; then
+  dotnet tool install -y --global csharp-ls
 fi
 
 # sync nvim
