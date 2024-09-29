@@ -4,6 +4,12 @@
 local map = vim.keymap.set
 local unmap = vim.keymap.del
 
+-- Don't use this keymaps with VSCode, use vscode.lua instead
+if vim.g.vscode then
+  require("config/vscode")
+  return
+end
+
 require("which-key").add({
   { "<leader>gh", group = "Git " },
   { "<leader>r", group = "run" },
@@ -48,6 +54,9 @@ local tabstop = function(num)
   vim.opt.tabstop = num
   vim.opt.shiftwidth = num
 end
+
+--Splits
+map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = true })
 
 -- Buffer management
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
