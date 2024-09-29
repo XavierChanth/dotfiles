@@ -1,0 +1,38 @@
+#!/bin/bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+dot_scripts="backup check-env install install-desktop start-kmonad sync sync-zen-browser"
+
+usage() {
+  echo "Usage:"
+  echo "dotfiles <command>"
+  echo
+  echo "Available commands:"
+  for file in $dot_scripts; do
+    echo $file
+  done
+}
+
+main() {
+  local command=$1
+
+  if [ -z $command ]; then
+    usage
+    return 1
+  fi
+
+  local found=false
+  for file in $dot_scripts; do
+    if [ "$command" = "$file" ]; then
+      found=true
+    fi
+  done
+
+  if $found; then
+    $script_dir/dotfiles.d/$command
+  else
+    usage
+    return 1
+  fi
+}
+main $@

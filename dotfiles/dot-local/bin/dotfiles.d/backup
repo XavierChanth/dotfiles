@@ -1,0 +1,6 @@
+#!/bin/bash
+
+_brew_file="$HOME/.local/brew/Brewfile"
+rm "$_brew_file"
+brew bundle dump --file="$_brew_file"
+brew leaves --installed-on-request >"$HOME/.local/brew/leaves.txt"

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+if ! command_exists stow; then
+  echo "stow not found, install gnu stow before continuing..."
+  exit 2
+fi
+
+main() {
+  profile_dir="$HOME/.local/zen-browser"
+  mkdir -p $profile_dir
+
+  echo "First make a profile in about:profiles and select directory $profile_dir"
+  echo "Then quit the browser"
+  echo "Have you made a profile and quit? [Y/n]"
+  read -r input
+  case $input in
+    Y | y)
+      stow -d "$HOME/.dotfiles" -t "$profile_dir" --dotfiles zen-browser
+      echo "Please restart the browser"
+      echo "Go to the extensions tab and toggle on and off each extension"
+      echo "It is best to restart the browser again for good measure"
+      ;;
+    *)
+      echo Aborting operation
+      return 1
+      ;;
+  esac
+}
+main $@

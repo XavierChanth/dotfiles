@@ -33,8 +33,8 @@ case "$(uname)" in
     if command_exists dnf; then
       echo "dnf package manager found, installing packages for dnf"
 
-      sudo dnf install wezterm
-      sudo dnf install aerc abook
+      sudo dnf install -y wezterm
+      sudo dnf install -y aerc abook
     fi
 
     ;;
