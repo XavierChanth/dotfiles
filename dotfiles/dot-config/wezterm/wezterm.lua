@@ -109,6 +109,7 @@ local hyper_to_tmux_prefix_key = {
 	["d"] = "d",
 	["r"] = "r",
 	["c"] = "c",
+	["l"] = "l",
 	["x"] = "x",
 	["w"] = "w",
 	["z"] = "z",
