@@ -1,7 +1,7 @@
 #!/bin/bash
 
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
-dot_scripts="backup check-env install install-desktop install-zen-browser start-kmonad sync"
+dot_scripts=$(ls -1 "$script_dir/dotfiles.d/")
 
 usage() {
   echo "Usage:"

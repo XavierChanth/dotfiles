@@ -48,59 +48,6 @@ git config --global alias.wtls "worktree list"
 git config --global alias.cb "clone --no-checkout -c core.bare=true"
 git config --global pull.ff only
 
-configure_macos() {
-  defaults -currentHost write -g AppleFontSmoothing -int 0
-  defaults write -g NSWindowShouldDragOnGesture -bool true
-  defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
-
-  # Configure the dock
-  defaults write com.apple.dock orientation -string right
-  defaults write com.apple.dock tilesize -float 32
-  defaults write com.apple.dock autohide -bool true
-  defaults write com.apple.dock autohide-time-modifier -int 0
-  defaults write com.apple.dock autohide-delay -int 0
-  defaults write com.apple.dock show-recents -bool false
-  defaults write com.apple.dock minimize-to-application -bool true
-  defaults write com.apple.dock mineffect -string scale
-  defaults write com.apple.dock static-only -bool true
-
-  # Mission Control
-  defaults write com.apple.dock mru-spaces -bool false
-  defaults write com.apple.dock expose-group-apps -bool true
-  defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true
-  defaults write com.apple.spaces spans-displays -bool true
-  killall Dock # Restart Dock & Mission Control
-
-  # Menu bar
-  defaults write NSGlobalDomain AppleMenuBarFontSize -string large
-  defaults write NSGlobalDomain AppleMenuBarVisibleInFullscreen -bool false
-
-  # Configure finder
-  defaults write com.apple.finder AppleShowAllFiles -bool true
-  defaults write com.apple.finder ShowPathbar -bool true
-  defaults write com.apple.finder ShowStatusBar -bool true
-  defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
-  defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
-  defaults write com.apple.finder _FXSortFoldersFirst -bool true
-  defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-  defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-  defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 3
-
-  # Hide stuff from desktop
-  defaults write com.apple.finder CreateDesktop -bool false
-  defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
-  defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
-  defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
-  defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
-  killall Finder # Restart Desktop & Finder
-
-  # Mouse & Keyboard
-  defaults write NSGlobalDomain com.apple.mouse.linear -bool true
-  defaults write NSGlobalDomain com.apple.mouse.scaling -float 2.0
-  defaults write NSGLobalDomain ApplePressAndHoldEnabled -bool false
-  defaults write NSGlobalDomain com.apple.keyboard.fnState -bool false
-}
-
 # install brew
 case "$(uname)" in
   Darwin)
@@ -122,7 +69,7 @@ case "$(uname)" in
     # extra tools
     brew install gh jq yazi
 
-    configure_macos
+    $script_dir/configure-macos
     ;;
   Linux)
     # TODO install nuget
