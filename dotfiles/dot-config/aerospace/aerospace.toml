@@ -1,13 +1,11 @@
 start-at-login = true
 
-after-startup-command = [
-  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
-]
+after-startup-command = ['exec-and-forget /opt/bin/sketchybar']
 
 exec-on-workspace-change = [
   '/bin/bash',
   '-c',
-  '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  '/opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
 [gaps]

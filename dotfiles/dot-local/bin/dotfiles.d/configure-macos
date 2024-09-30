@@ -20,7 +20,7 @@ main() {
   defaults write com.apple.dock mru-spaces -bool false
   defaults write com.apple.dock expose-group-apps -bool true
   defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true
-  defaults write com.apple.spaces spans-displays -bool true
+  defaults write com.apple.spaces spans-displays -bool false
   killall Dock # Restart Dock & Mission Control
 
   # Menu bar
