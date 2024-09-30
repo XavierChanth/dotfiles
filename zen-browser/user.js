@@ -45,6 +45,4 @@ user_pref("ui.textScaleFactor", 120);
 //     "zenToggleWebPanels":{"ctrl":false,"alt":true,"shift":false,"meta":false,"key":"P"}}`,
 // );
 user_pref("zen.keyboard.shortcuts.disable-firefox", true);
-user_pref("zen.themes.updated-value-observer", true);
-user_pref("zen.view.sidebar-expanded", true);
 user_pref("zen.welcomeScreen.seen", true);
