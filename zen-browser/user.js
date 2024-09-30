@@ -1,6 +1,6 @@
 user_pref("accessibility.typeaheadfind.flashBar", 0);
 user_pref("app.update.auto", false);
-user_pref("browser.contentblocking.category", "standard");
+user_pref("browser.contentblocking.category", "strict");
 user_pref("browser.newtabpage.pinned", "[]");
 user_pref("browser.shell.checkDefaultBrowser", false);
 user_pref("browser.tabs.inTitlebar", 1);
@@ -14,18 +14,21 @@ user_pref(
 );
 user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
 user_pref("browser.urlbar.placeholderName.private", "DuckDuckGo");
+user_pref("dom.security.https_only_mode", true);
 user_pref(
   "extensions.pictureinpicture.enable_picture_in_picture_overrides",
   true,
 );
 user_pref("extensions.ui.dictionary.hidden", true);
-user_pref("extensions.ui.extension.hidden", false);
+user_pref("extensions.ui.extension.hidden", true);
 user_pref("extensions.ui.lastCategory", "addons://list/extension");
 user_pref("extensions.ui.locale.hidden", true);
-user_pref("extensions.ui.plugin.hidden", false);
+user_pref("extensions.ui.plugin.hidden", true);
 user_pref("extensions.ui.sitepermission.hidden", true);
 user_pref("font.name.monospace.x-western", "JetBrainsMono Nerd Font Mono");
 user_pref("font.size.monospace.x-western", 14);
+user_pref("permissions.isolateBy.privateBrowsing", true);
+user_pref("permissions.isolateBy.userContext", true);
 user_pref("privacy.userContext.enabled", true);
 user_pref("signon.rememberSignons", false);
 user_pref("ui.textScaleFactor", 120);
