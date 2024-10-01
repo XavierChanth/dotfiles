@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/zsh
 
-set keyseq-timeout 0
+set keyseq-timeout 0 # no key delays
+setopt COMBINING_CHARS
 
 # basic exports
 export XDG_CONFIG_HOME="$HOME/.config"

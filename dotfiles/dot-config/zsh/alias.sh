@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # you probably think this is dumb right?
 # well... it actually does something really cool
