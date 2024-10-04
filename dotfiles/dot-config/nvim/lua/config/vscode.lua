@@ -29,6 +29,11 @@ vim.notify = vscode.notify
 
 -- VSCode settings
 local global_settings = {
+  ["editor.autoClosingBrackets"] = "never",
+  ["editor.autoClosingComments"] = "never",
+  ["editor.autoClosingDelete"] = "never",
+  ["editor.autoClosingOvertype"] = "never",
+  ["editor.autoClosingQuotes"] = "never",
   ["files.autoSave"] = "afterDelay",
   ["files.autoSaveDelay"] = 500,
   ["editor.accessibilitySupport"] = "off",
@@ -56,19 +61,18 @@ local global_settings = {
   ["scm.defaultViewMode"] = "tree",
   ["scm.diffDecorationsIgnoreTrimWhitespace"] = "true", --Vscode wants a string for this one
   ["telemetry.telemetryLevel"] = "off",
+  ["terminal.integrated.fontFamily"] = "'JetBrainsMono Nerd Font'",
   ["window.title"] = "${rootName}",
   ["workbench.activityBar.location"] = "top",
   ["workbench.editor.editorActionsLocation"] = "titleBar",
   ["workbench.editor.showTabs"] = "single",
   ["workbench.panel.opensMaximized"] = "always",
   ["workbench.sideBar.location"] = "right",
-  ["workbench.startupEditor"] = "newUntitledFile",
+  ["workbench.startupEditor"] = "readme",
+  ["workbench.panel.defaultLocation"] = "left",
   ["workbench.tree.indent"] = 12,
   ["workbench.tree.renderIndentGuides"] = "always",
-  ["vscode-neovim.statusLineSeparator"] = " | ",
-  -- Tables don't work
-  -- ["editor.rulers"] = { 80, 120 },
-  -- ["extensions.experimental.affinity"] = {
+  ["vscode-neovim.statusLineSeparator"] = " | ", -- Tables don't work ["editor.rulers"] = { 80, 120 }, ["extensions.experimental.affinity"] = {
   --   ["asvetliakov.vscode-neovim"] = 1,
   -- },
 }
@@ -85,6 +89,9 @@ for key, value in pairs(global_settings) do
 end
 
 -- Neovim Keymaps
+map("n", "<leader>qq", function()
+  vscode.action("workbench.action.closeWindow")
+end);
 
 -- Search and replace
 map("n", "<leader>sg", function()
