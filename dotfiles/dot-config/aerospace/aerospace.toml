@@ -106,7 +106,7 @@ alt-shift-k = 'move up'
 alt-shift-l = 'move right'
 
 # Workspace movement
-alt-tab = 'workspace-back-and-forth'
+# alt-tab = 'workspace-back-and-forth'
 
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
