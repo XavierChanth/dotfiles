@@ -10,6 +10,7 @@ if ! command_exists stow; then
 fi
 
 stow -d "$HOME/.dotfiles" -t "$HOME" --dotfiles dotfiles
-# if [ $(uname) = 'Darwin' ]; then
-#   stow -d "$script_dir" -t "$HOME" macos
-# fi
+if [ $(uname) = 'Darwin' ]; then
+  stow -d "$HOME/.dotfiles/dotfiles/dot-config/vscode" -t "$HOME/Library/Application Support/Code/User"
+  # stow -d "$HOME/.dotfiles/" -t "$HOME" macos
+fi

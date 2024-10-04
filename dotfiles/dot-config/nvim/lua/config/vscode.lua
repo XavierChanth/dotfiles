@@ -3,15 +3,10 @@
 --
 -- VSCode extensions to install:
 --
--- VSCode Neovim
--- Auto Hide -VIM
--- Error Lens
--- Markdown Preview Mermaid Support
--- Prettier - Code Formatter
--- Python (Pack)
--- Jupyter (Pack)
--- Remote - SSH (Pack)
--- Trailing Spaces
+-- VSCode Neovim   - asvetliakov.vscode-neovim
+-- Auto Hide -VIM  - Vitchu.vscode-autohide-vim
+-- Error Lens      - usernamehw.errorlens
+-- Trailing Spaces - shardulm94.trailing-spaces
 --
 -- Keymaps to add
 -- Ctrl+- Terminal: Focus Terminal [when: !view.terminal.visible]
@@ -65,8 +60,9 @@ local global_settings = {
   ["workbench.activityBar.location"] = "top",
   ["workbench.editor.editorActionsLocation"] = "titleBar",
   ["workbench.editor.showTabs"] = "single",
+  ["workbench.panel.opensMaximized"] = "always",
   ["workbench.sideBar.location"] = "right",
-  ["workbench.startupEditor"] = "none",
+  ["workbench.startupEditor"] = "newUntitledFile",
   ["workbench.tree.indent"] = 12,
   ["workbench.tree.renderIndentGuides"] = "always",
   ["vscode-neovim.statusLineSeparator"] = " | ",
