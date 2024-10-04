@@ -1,3 +1,8 @@
+local platform = require("util.platform")
+if platform.is_gui() or platform.is_windows() then
+  return {}
+end
+
 return {
   "christoomey/vim-tmux-navigator",
   cmd = {

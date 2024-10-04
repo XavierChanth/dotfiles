@@ -1,5 +1,14 @@
-local function get_flutter_bin_path()
-  return require("os").getenv("FLUTTER_ROOT") .. "/bin/"
+local os = require("os")
+local flutter_root = os.getenv("FLUTTER_ROOT")
+if not flutter_root then
+  return {}
+end
+
+local flutter_path = flutter_root .. "/bin/flutter"
+local flutter_exists = vim.uv.fs_stat(flutter_path) or false
+
+if not flutter_exists then
+  return {}
 end
 
 return {
@@ -17,7 +26,7 @@ return {
       },
     },
     opts = {
-      flutter_path = get_flutter_bin_path() .. "flutter",
+      flutter_path = flutter_path,
       lsp = {
         root_dir = function()
           return vim.uv.cwd()

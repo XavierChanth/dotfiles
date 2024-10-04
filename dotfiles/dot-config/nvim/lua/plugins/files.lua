@@ -44,6 +44,10 @@ return {
           require("util.terminal").open_oil_terminal()
         end,
         ["<C-t>"] = function() -- opens a new tmux window at the current dir
+          local platform = require("util.platform")
+          if platform.is_gui() or platform.is_windows() then
+            return
+          end
           require("util.tmux").neww({ cwd = require("oil").get_current_dir() })
         end,
       },
