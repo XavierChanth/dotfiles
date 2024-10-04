@@ -18,7 +18,7 @@
   "cursor_blink": false,
   "relative_line_numbers": true,
   "tab_bar": {
-    "show_nav_history_buttons": false,
+    "show_nav_history_buttons": false
   },
   "telemetry": {
     "diagnostics": false,
