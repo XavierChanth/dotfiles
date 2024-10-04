@@ -3,9 +3,11 @@ local wezterm = require("wezterm")
 local front_end = "OpenGL"
 local path = os.getenv("PATH")
 
+local default_prog = { "tmux", "new", "-A", "-s", "main" }
+
 if wezterm.target_triple == "aarch64-apple-darwin" then
 	front_end = "WebGpu" -- colors are wrong with OpenGL on macos
-	PATH = path .. ":/opt/homebrew/"
+	path = path .. ":/opt/homebrew/bin"
 end
 
 local colorscheme = require("colorscheme")
@@ -14,7 +16,7 @@ local config = {
 	color_scheme = colorscheme.current,
 	cursor_blink_ease_in = "Constant",
 	cursor_blink_ease_out = "Constant",
-	default_prog = { "tmux", "new", "-A", "-s", "main" },
+	default_prog = default_prog,
 	disable_default_key_bindings = true,
 	enable_tab_bar = false,
 	font = wezterm.font("JetBrainsMono NF"),
