@@ -16,6 +16,7 @@ local media = sbar.add("item", {
 		color = opts.color.surface,
 		padding_right = 12,
 	},
+	updates = true,
 })
 
 local media_icon = sbar.add("item", {
