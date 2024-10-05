@@ -41,6 +41,7 @@ local global_settings = {
   ["editor.fontFamily"] = "'JetBrainsMono Nerd Font'",
   ["editor.fontLigatures"] = true,
   ["editor.formatOnSave"] = true,
+  ["editor.glyphMargin"] = false,
   ["editor.guides.bracketPairs"] = true,
   ["editor.guides.bracketPairsHorizontal"] = true,
   ["editor.guides.highlightActiveIndentation"] = true,
@@ -70,11 +71,14 @@ local global_settings = {
   ["workbench.sideBar.location"] = "right",
   ["workbench.startupEditor"] = "readme",
   ["workbench.panel.defaultLocation"] = "left",
+  ["workbench.layoutControl.enabled"] = false,
   ["workbench.tree.indent"] = 12,
   ["workbench.tree.renderIndentGuides"] = "always",
-  ["vscode-neovim.statusLineSeparator"] = " | ", -- Tables don't work ["editor.rulers"] = { 80, 120 }, ["extensions.experimental.affinity"] = {
+  ["vscode-neovim.statusLineSeparator"] = " | ",
+  -- Tables don't work ["editor.rulers"] = { 80, 120 },
+  -- ["extensions.experimental.affinity"] = {
   --   ["asvetliakov.vscode-neovim"] = 1,
-  -- },
+  --, },
 }
 
 for key, value in pairs(global_settings) do
@@ -123,13 +127,13 @@ end)
 
 -- Buffers/Tabs
 map("n", "<leader>bd", function()
-  vscode.actions("workbench.action.closeActiveEditor")
+  vscode.action("workbench.action.closeActiveEditor")
 end)
 map("n", "<leader>bo", function()
-  vscode.actions("workbench.action.closeOtherEditors")
+  vscode.action("workbench.action.closeOtherEditors")
 end)
 
 -- Resets
 map("n", "<leader>\\", function()
-  vscode.actions("workbench.action.splitEditor")
+  vscode.action("workbench.action.splitEditor")
 end)
