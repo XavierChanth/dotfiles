@@ -14,6 +14,7 @@ local battery = sbar.add("item", {
 		padding_right = 10,
 	},
 	drawing = false,
+	updates = "when_shown",
 })
 local battery_icon = sbar.add("item", {
 	position = "q",
@@ -26,6 +27,7 @@ local battery_icon = sbar.add("item", {
 		color = opts.color.pink,
 	},
 	drawing = false,
+	updates = "when_shown",
 })
 
 battery:subscribe("battery_change", function(env)
