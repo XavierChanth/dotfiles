@@ -9,10 +9,14 @@ package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.local/share/sket
 
 local sbar = require("sketchybar")
 sbar.begin_config()
-require("init")
-require("left")
-require("right")
-require("middle")
+
+local events = require("events")
+require("bar")
+
+events.setup_events()
+require("items") -- items must be loaded in between
+events.trigger_events()
+
 sbar.hotload(true)
 sbar.end_config()
 sbar.event_loop()

@@ -1,16 +1,17 @@
 local sbar = require("sketchybar")
 local opts = require("opts")
 
-sbar.add("item", opts.get_spacer(8, { position = "right" }))
-sbar.add("item", opts.get_right_separator("surface", { position = "right" }))
-
 local clock = sbar.add("item", {
 	position = "right",
 	icon = { drawing = false },
-	background = { color = opts.color.surface },
+	background = {
+		color = opts.color.surface,
+		padding_right = 8,
+	},
 	label = {
 		color = opts.color.text,
-		padding_left = 8,
+		padding_left = 10,
+		padding_right = 12,
 	},
 	update_freq = 1,
 	script = "sketchybar --name $NAME label=$(date '+%d/%m %H:%M')",
@@ -29,10 +30,9 @@ sbar.add("item", {
 	icon = {
 		string = "󰥔 ",
 		color = opts.color.base,
+		padding_left = 10,
 		padding_right = 8,
 	},
 	background = { color = opts.color.purple },
 	label = { drawing = false },
 })
-
-sbar.add("item", opts.get_left_separator("purple", { position = "right" }))
