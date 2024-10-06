@@ -3,6 +3,19 @@
 set keyseq-timeout 0 # no key delays
 setopt COMBINING_CHARS # better paste for emojis
 
+# basic programs
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+if command -v "bat" >/dev/null 2>&1; then
+  export PAGER="bat"
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export FZF_CTRL_T_OPTS="--preview 'bat --line-range :50 {}'"
+else
+  export PAGER="less"
+  export MANPAGER="less"
+fi
+
 # basic exports
 export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
@@ -28,7 +41,7 @@ source $XDG_CONFIG_HOME/zsh/commands.sh
 
 # setup brew and zsh features
 if [ "$(uname)" = 'Darwin' ]; then
-  if command -v brew &>/dev/null; then
+  if command -v brew >/dev/null 2>&1; then
     export PATH="/opt/homebrew/bin:$PATH"
     export HOMEBREW_NO_ENV_HINTS=true
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH

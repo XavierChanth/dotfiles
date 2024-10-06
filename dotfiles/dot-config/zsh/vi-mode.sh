@@ -1,8 +1,5 @@
 #!/bin/zsh
 
-export EDITOR="nvim"
-export VISUAL="nvim"
-
 bindkey -v          # vi-mode in zsh
 export KEYTIMEOUT=1 # decrease the delay
 

@@ -6,8 +6,7 @@
 alias sudo='sudo '
 
 alias ls='ls --color'
-alias ll='ls -lh'
-alias la='ls -lah'
+alias cat='bat'
 
 alias x64='arch -x86_64'
 alias s='source $HOME/.zshenv && source $HOME/.zshrc'

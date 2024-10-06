@@ -2,7 +2,7 @@ git:
   mainBranches: [main, master, trunk]
   paging:
     colorArg: always
-    pager: delta --dark --paging=never --syntax-theme base16-256 -s
+    pager: delta --paging=never --syntax-theme ansi -s
 
 customCommands:
   - key: "N"
@@ -14,7 +14,12 @@ customCommands:
         initialValue: ""
     command: "git branch {{.Form.BranchName}} {{.SelectedLocalBranch.Name}}"
     loadingText: "Creating branch"
-
+  - key: "<c-f>"
+    context: "commits"
+    command: "git show {{.SelectedLocalCommit.Sha}}"
+    subprocess: true
+    description: "Show selected commit"
+    stream: true
 gui:
   filterMode: fuzzy
   nerdFontsVersion: "3"

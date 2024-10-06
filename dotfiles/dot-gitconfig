@@ -1,0 +1,26 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[pull]
+	ff = only
+
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+
+[alias]
+	wt = worktree
+	wtls = worktree list
+	cb = clone --no-checkout -c core.bare=true
+
+[include]
+  path = ~/.config/git/user-default
+  path = ~/.config/git/delta
+
+[includeIf "hasconfig:remote.*.url:https://github.com/atsign-**"]
+  path = ~/.config/git/user-atsign
+

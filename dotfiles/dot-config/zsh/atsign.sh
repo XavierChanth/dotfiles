@@ -1,7 +1,7 @@
 #!/bin/zsh
 # atsign specific stuff
 
-if ! command -v openssl &>/dev/null; then
+if ! command -v openssl >/dev/null 2>&1; then
   echo "openssl is required for atsign commands"
   return
 fi
