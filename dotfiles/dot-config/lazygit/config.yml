@@ -1,8 +1,7 @@
 git:
   mainBranches: [main, master, trunk]
   paging:
-    colorArg: always
-    pager: delta --paging=never --syntax-theme ansi -s
+    pager: delta --dark  --paging=never --syntax-theme ansi -s --no-gitconfig
 
 customCommands:
   - key: "N"

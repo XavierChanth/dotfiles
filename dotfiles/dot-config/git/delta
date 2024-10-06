@@ -5,7 +5,6 @@
   diffFilter = delta --color-only
 
 [delta]
-  true-color = always
   navigate = true
   side-by-side = true
   line-numbers = true

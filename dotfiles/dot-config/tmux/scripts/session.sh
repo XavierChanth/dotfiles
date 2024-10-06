@@ -29,7 +29,10 @@ function add_session() {
 function fzf_session() {
   selected=$(
     (
+      # tested find against fd, for a small set of directories like this find is slightly faster
+      # now, if you were recursively searching all files, fd wins by a mile
       find "$HOME/src" "$HOME/dev" -mindepth 0 -maxdepth 2 -type d
+      # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
       echo "$HOME/.dotfiles"
     ) |
       fzf --scheme=path --tiebreak=end,index --header "Open tmux session"
@@ -38,7 +41,7 @@ function fzf_session() {
 }
 
 function ssh_session() {
-  includes=$(cat "$HOME/.ssh/config" | grep 'Include ' | cut -d ' ' -f2 | sed -e "s|^|$HOME/.ssh/|")
+  includes=$(cat "$HOME/.ssh/config" | rg 'Include ' | cut -d ' ' -f2 | sed -e "s|^|$HOME/.ssh/|")
   files=$(printf $includes | xargs -I % /bin/sh -c 'ls %' && echo "$HOME/.ssh/config")
   hosts=$(echo $files | xargs -I % /bin/sh -c 'cat "%" | grep "Host " | grep -v "Host \*" | cut -d " " -f2')
 
