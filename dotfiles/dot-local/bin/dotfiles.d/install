@@ -60,7 +60,6 @@ case "$(uname)" in
     $script_dir/configure-macos
     ;;
   Linux)
-    # TODO install nuget
     if command_exists dnf; then
       echo "dnf package manager found, installing packages for dnf"
       # shell essentials
@@ -103,7 +102,6 @@ case "$(uname)" in
       exit 0
     fi
 
-    curl -fsSL https://astral.sh/uv/install.sh | sh
     go install github.com/junegunn/fzf@latest
 
     if ! command_exists delta; then
@@ -111,6 +109,9 @@ case "$(uname)" in
       sudo dpkg -i /tmp/git-delta_0.17.0_amd64.deb
     fi
 
+    if ! $LIGHT; then
+      curl -fsSL https://astral.sh/uv/install.sh | sh
+    fi
     # End of linux block
     ;;
 esac
@@ -121,6 +122,11 @@ git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$H
 
 # sync dotfiles
 $script_dir/sync || exit $?
+
+# install lazygit from source
+if command_exists go; then
+  go install github.com/jesseduffield/lazygit@latest
+fi
 
 if ! $LIGHT; then
   # Install flutter
@@ -133,14 +139,7 @@ if ! $LIGHT; then
   git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm" 2>/dev/null ||
     git -C "$HOME/.local/dev/nvm" pull
   "$HOME"/.local/dev/nvm install node
-fi
 
-# install lazygit from source
-if command_exists go; then
-  go install github.com/jesseduffield/lazygit@latest
-fi
-
-if ! $LIGHT; then
   # install yazi from source
   if command_exists cargo; then
     cargo install --locked yazi-fm yazi-cli
@@ -155,10 +154,10 @@ if ! $LIGHT; then
   if command_exists dotnet; then
     dotnet tool install --global csharp-ls
   fi
-fi
 
-# sync nvim
-nvim --headless "+Lazy! sync" +qa
+  # sync nvim
+  nvim --headless "+Lazy! sync" +qa
+fi
 
 # Do a healthcheck to ensure that everything I want is installed
 "$script_dir"/check-env
