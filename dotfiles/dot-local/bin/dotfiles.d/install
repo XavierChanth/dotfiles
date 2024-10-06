@@ -1,6 +1,11 @@
 #!/bin/bash
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
+LIGHT=false
+if [ "$1" = "--light" ]; then
+  LIGHT=true
+fi
+
 # Make files and directories used but not "owned" by dotfiles
 touch "$HOME"/.zshenv
 
@@ -45,10 +50,12 @@ case "$(uname)" in
     brew install openssl wget
     # dev tools
     brew install tmux neovim ripgrep fzf fd git-delta bat stow
-    # programming languages
-    brew install uv python cmake golang rust dotnet-sdk
-    # extra tools
-    brew install gh jq yazi
+    if ! $LIGHT; then
+      # programming languages
+      brew install uv python cmake golang rust dotnet-sdk
+      # extra tools
+      brew install gh jq yazi
+    fi
 
     $script_dir/configure-macos
     ;;
@@ -64,10 +71,12 @@ case "$(uname)" in
       sudo dnf install -y openssl curl wget iproute traceroute hostname
       # dev tools
       sudo dnf install -y tmux neovim ripgrep fd git-delta bat stow
-      # programming languages
-      sudo dnf install -y python3 cmake golang rust dotnet-sdk-8.0
-      # extra tools
-      sudo dnf install -y gh jq clang-tools-extra inotify-tools
+      if ! $LIGHT; then
+        # programming languages
+        sudo dnf install -y python3 cmake golang rust dotnet-sdk-8.0
+        # extra tools
+        sudo dnf install -y gh jq clang-tools-extra inotify-tools
+      fi
     elif command_exists apt-get; then
       # shell essentials
       sudo apt-get install -y bash zsh man git sudo passwd procps
@@ -77,31 +86,25 @@ case "$(uname)" in
       sudo apt-get install -y openssl curl wget traceroute hostname
       # dev tools
       sudo apt-get install -y tmux neovim ripgrep fd-find bat stow
-      # programming languages
-      # TODO: add dotnet
-      sudo apt-get install -y python3 cmake
-      # extra tools
-      sudo apt-get install -y gh jq clang-format inotify-tools
-      # because packages for go in ubuntu are no longer supported in 22.04
-      wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz -O /tmp/go1.22.5.linux-amd64.tar.gz
-      sudo tar -xvf /tmp/go1.22.5.linux-amd64.tar.gz -C /usr/local
-      sudo ln -s /usr/local/go/bin/go /usr/bin/go
+      if ! $LIGHT; then
+        # programming languages
+        # TODO: add dotnet
+        sudo apt-get install -y python3 cmake
+        # extra tools
+        sudo apt-get install -y gh jq clang-format inotify-tools
+
+        # because packages for go in ubuntu are no longer supported in 22.04
+        wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz -O /tmp/go1.22.5.linux-amd64.tar.gz
+        sudo tar -xvf /tmp/go1.22.5.linux-amd64.tar.gz -C /usr/local
+        sudo ln -s /usr/local/go/bin/go /usr/bin/go
+      fi
     else
       echo "package manager not configured, configure and try again"
       exit 0
     fi
 
-    # Some Linux packages are not
-    # - Up to date and missing features
-    # - Available in certain package managers
-    # Thus installing these few through other means
-    if ! command_exists uv; then
-      curl -fsSL https://astral.sh/uv/install.sh | sh
-    fi
-
-    if ! command_exists fzf; then
-      go install github.com/junegunn/fzf@latest
-    fi
+    curl -fsSL https://astral.sh/uv/install.sh | sh
+    go install github.com/junegunn/fzf@latest
 
     if ! command_exists delta; then
       curl -fsSL https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_0.17.0_amd64.deb -o /tmp/git-delta_0.17.0_amd64.deb
@@ -113,39 +116,45 @@ case "$(uname)" in
 esac
 
 # install spaceship
-git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt"
+git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
+  git -C "$HOME/.config/spaceship-prompt" pull
 
 # sync dotfiles
 $script_dir/sync || exit $?
 
-# Install flutter
-export FLUTTER_ROOT="$HOME/.local/dev/flutter"
-git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT"
-"$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
-"$HOME"/.local/dev/flutter/bin/flutter channel stable
+if ! $LIGHT; then
+  # Install flutter
+  export FLUTTER_ROOT="$HOME/.local/dev/flutter"
+  git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT" 2>/dev/null
+  "$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
+  "$HOME"/.local/dev/flutter/bin/flutter channel stable
 
-# Install nvm
-git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm"
-"$HOME"/.local/dev/nvm install node
+  # Install nvm
+  git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm" 2>/dev/null ||
+    git -C "$HOME/.local/dev/nvm" pull
+  "$HOME"/.local/dev/nvm install node
+fi
 
 # install lazygit from source
-if ! command_exists lazygit && command_exists go; then
+if command_exists go; then
   go install github.com/jesseduffield/lazygit@latest
 fi
 
-# install yazi from source
-if ! command_exists yazi && command_exists cargo; then
-  cargo install --locked yazi-fm yazi-cli
-fi
+if ! $LIGHT; then
+  # install yazi from source
+  if command_exists cargo; then
+    cargo install --locked yazi-fm yazi-cli
+  fi
 
-# gh dash
-if command_exists gh; then
-  gh extension install dlvhdr/gh-dash
-fi
+  # gh dash
+  if command_exists gh; then
+    gh extension install dlvhdr/gh-dash
+  fi
 
-# csharp-ls
-if command_exists dotnet; then
-  dotnet tool install --global csharp-ls
+  # csharp-ls
+  if command_exists dotnet; then
+    dotnet tool install --global csharp-ls
+  fi
 fi
 
 # sync nvim

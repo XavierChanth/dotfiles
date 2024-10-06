@@ -3,11 +3,11 @@
 bindkey -v          # vi-mode in zsh
 export KEYTIMEOUT=1 # decrease the delay
 
-local block='\e[1 q'
-local beam='\e[5 q'
+_block='\e[1 q'
+_beam='\e[5 q'
 
-local mode="I"
-local color="green"
+_mode="I"
+_color="green"
 
 function spaceship_mode() {
   spaceship::section::v4 \
@@ -20,14 +20,14 @@ function spaceship_mode() {
 function zle-keymap-select() { # change cursor when swapping keymaps
   case $KEYMAP in
     vicmd)
-      echo -ne $block
-      mode="N"
-      color="blue"
+      echo -ne $_block
+      _mode="N"
+      _color="blue"
       ;;
     viins | main)
-      echo -ne $beam
-      mode="I"
-      color="green"
+      echo -ne $_beam
+      _mode="I"
+      _color="green"
       ;;
   esac
   # refresh spaceship when we change modes
@@ -38,7 +38,7 @@ function zle-keymap-select() { # change cursor when swapping keymaps
 function zle-line-init() {
   zle -K viins # Start in insert keymap
   # Start with beam cursor
-  echo -ne $beam
+  echo -ne $_beam
 }
 
 # Yank to system
