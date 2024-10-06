@@ -25,7 +25,8 @@ local config = {
 	hyperlink_rules = wezterm.default_hyperlink_rules(),
 	max_fps = 144,
 	macos_window_background_blur = 20,
-	-- window_background_opacity = 0.7,
+	quit_when_all_windows_are_closed = false,
+	skip_close_confirmation = "NeverPrompt",
 	window_decorations = "RESIZE", -- no title, but window is properly resizable
 	window_padding = {
 		left = "0.5cell",
@@ -83,7 +84,7 @@ local config = {
 			mods = "CMD",
 			action = wezterm.action.ResetFontSize,
 		},
-		-- for vim
+		-- for vim / less
 		{
 			key = "j",
 			mods = "CMD",
