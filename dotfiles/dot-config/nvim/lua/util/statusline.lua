@@ -96,6 +96,7 @@ local statuslines = {
           "mason",
           "nvim-dap-ui",
           "oil",
+          "quickfix",
           "toggleterm",
           "trouble",
         },

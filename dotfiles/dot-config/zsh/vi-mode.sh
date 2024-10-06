@@ -11,10 +11,10 @@ _color="green"
 
 function spaceship_mode() {
   spaceship::section::v4 \
-    --color "$color" \
+    --color "$_color" \
     --prefix "" \
     --suffix " " \
-    "$mode"
+    "$_mode"
 }
 # Override default keymap-select
 function zle-keymap-select() { # change cursor when swapping keymaps
@@ -31,7 +31,7 @@ function zle-keymap-select() { # change cursor when swapping keymaps
       ;;
   esac
   # refresh spaceship when we change modes
-  spaceship::core::refresh_section "mode" ; zle .reset-prompt
+  spaceship::core::refresh_section "mode" ; zle .reset-prompt && zle -R
 }
 
 # Override default line-init
