@@ -6,3 +6,4 @@
 # Lock files
 Brewfile.lock.json
 
+etc-backups/

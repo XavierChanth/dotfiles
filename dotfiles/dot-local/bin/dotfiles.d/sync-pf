@@ -1,0 +1,15 @@
+#!/bin/bash
+set -eux
+
+if [ $UID -ne 0 ]; then
+  echo Running this as root...
+  exec sudo "$0" "$@"
+fi
+
+backup_dir="$DOTFILES/etc-backups/$(date -u +%s)"
+mkdir -p "$backup_dir"
+mv /etc/pf.conf "$backup_dir/pf.conf"
+
+pfctl -d
+ln -s "$DOTFILES/etc/pf.conf" /etc/pf.conf
+pfctl -e -f /etc/pf.conf
