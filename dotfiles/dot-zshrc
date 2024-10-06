@@ -8,27 +8,25 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
 
-# prompt
-source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
-SPACESHIP_GCLOUD_SHOW=false
-SPACESHIP_HOST_SHOW="always"
-
 # history
 source <(fzf --zsh 2>/dev/null)
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
 
-# plugins
+# vi-mode - must be set before prompt
 source $XDG_CONFIG_HOME/zsh/vi-mode.sh
+
+# prompt
+source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
+SPACESHIP_PROMPT_ORDER=(dir git exec_time async line_sep jobs exit_code sudo mode char)
+
+# custom commands
 source $XDG_CONFIG_HOME/zsh/alias.sh
 source $XDG_CONFIG_HOME/zsh/atsign.sh
 source $XDG_CONFIG_HOME/zsh/commands.sh
 
-if command -v git &>/dev/null; then
-  source $XDG_CONFIG_HOME/zsh/git.sh
-fi
-
+# setup brew and zsh features
 if [ "$(uname)" = 'Darwin' ]; then
   if command -v brew &>/dev/null; then
     export PATH="/opt/homebrew/bin:$PATH"
@@ -38,9 +36,12 @@ if [ "$(uname)" = 'Darwin' ]; then
   fi
 fi
 
-source $XDG_CONFIG_HOME/zsh/prog.sh
+# Programming language setup
+source $XDG_CONFIG_HOME/zsh/lang.sh
 
-# Final configuration
+# Final setup of zsh completion
 autoload -Uz compinit
 compinit
+
+# Export last so it's prioritized over other paths
 export PATH="$HOME/.local/bin:$PATH"

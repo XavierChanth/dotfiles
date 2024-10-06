@@ -29,6 +29,10 @@ alias tt='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && fzf_session'
 alias td='source $XDG_CONFIG_HOME/tmux/scripts/session.sh && ssh_session'
 alias tl='source $XDG_CONFIG_HOME/tmux/scripts/layout.sh && run_layout'
 
+if command -v lazygit >/dev/null 2>&1; then
+  alias lg='lazygit'
+fi
+
 if command -v yazi >/dev/null 2>&1; then
   alias y='yazi'
 fi
