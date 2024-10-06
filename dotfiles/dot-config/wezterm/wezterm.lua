@@ -34,6 +34,7 @@ local config = {
 		top = "2",
 		bottom = "2",
 	},
+	term = "wezterm",
 	set_environment_variables = {
 		PATH = path,
 	},
