@@ -9,8 +9,7 @@ if ! command_exists stow; then
   exit 2
 fi
 
-stow -d "$HOME/.dotfiles" -t "$HOME" --dotfiles dotfiles
+stow -d "$DOTFILES" -t "$HOME" --dotfiles dotfiles
 if [ $(uname) = 'Darwin' ]; then
-  stow -d "$HOME/.dotfiles/dotfiles/dot-config/vscode" -t "$HOME/Library/Application Support/Code/User"
-  # stow -d "$HOME/.dotfiles/" -t "$HOME" macos
+  stow -d "$DOTFILES/dotfiles/dot-config/vscode" -t "$HOME/Library/Application Support/Code/User"
 fi

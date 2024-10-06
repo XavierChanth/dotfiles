@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sudo $HOME/.local/bin/kmonad $HOME/.dotfiles/keyboards/kmonad/internal.kbd

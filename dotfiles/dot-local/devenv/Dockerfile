@@ -22,8 +22,8 @@ WORKDIR /home/chant/.dotfiles
 RUN git remote set-url --push origin git@github.com:xavierchanth/dotfiles.git
 WORKDIR /home/chant
 
-RUN chmod u+x /home/chant/.dotfiles/install.sh; \
-  /home/chant/.dotfiles/install.sh
+RUN chmod u+x /home/chant/.dotfiles/install; \
+  /home/chant/.dotfiles/install
 
 # Keep the container from exiting
 ENTRYPOINT ["tail"]

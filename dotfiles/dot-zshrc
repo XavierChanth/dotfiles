@@ -1,11 +1,12 @@
 #!/bin/zsh
 
 set keyseq-timeout 0 # no key delays
-setopt COMBINING_CHARS
+setopt COMBINING_CHARS # better paste for emojis
 
 # basic exports
 export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
+export DOTFILES="$HOME/.dotfiles"
 
 # prompt
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
@@ -29,7 +30,6 @@ if command -v git &>/dev/null; then
 fi
 
 if [ "$(uname)" = 'Darwin' ]; then
-  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
   if command -v brew &>/dev/null; then
     export PATH="/opt/homebrew/bin:$PATH"
     export HOMEBREW_NO_ENV_HINTS=true
@@ -40,6 +40,7 @@ fi
 
 source $XDG_CONFIG_HOME/zsh/prog.sh
 
+# Final configuration
 autoload -Uz compinit
 compinit
 export PATH="$HOME/.local/bin:$PATH"

@@ -1,12 +1,12 @@
 #!/bin/bash
 
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
-scripts_path="$script_dir/dotfiles.d"
+scripts_path="$script_dir/../kmonad.d"
 scripts=$(ls -1 "$scripts_path")
 
 usage() {
   echo "Usage:"
-  echo "dotfiles <command>"
+  echo "dotfiles kmonad <command>"
   echo
   echo "Available commands:"
   for file in $scripts; do

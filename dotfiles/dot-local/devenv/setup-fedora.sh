@@ -14,7 +14,7 @@ set -eu
 ssh-keygen -t ed25519 -N '' -f /home/chant/.ssh/id_ed25519
 (cd /home/chant; rm -rf /home/chant/.zshrc; git clone https://github.com/xavierchanth/dotfiles.git /home/chant/.dotfiles)
 (cd /home/chant/.dotfiles; git remote set-url --push origin git@github.com:xavierchanth/dotfiles.git)
-/home/chant/.dotfiles/install.sh
+/home/chant/.dotfiles/install
 EOF
 
 touch /home/chant/post-install.sh

@@ -129,14 +129,6 @@ function M.find_files(opts)
   return M.builtin("find_files", opts)
 end
 
-function M.config()
-  return M.git_files({
-    cwd = vim.fn.expand("$HOME/.dotfiles"),
-    show_untracked = true,
-    git_command = { "/bin/zsh", "-c", "git ls-files --exclude-standard --cached" },
-  })
-end
-
 function M.buffers(opts)
   opts = vim.tbl_extend("force", {
     sort_lastused = true,
