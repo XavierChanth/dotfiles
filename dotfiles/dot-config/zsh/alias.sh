@@ -22,14 +22,6 @@ t() {
   fi
 }
 
-if command -v lazygit >/dev/null 2>&1; then
-  alias lg='lazygit'
-fi
-
-if command -v yazi >/dev/null 2>&1; then
-  alias y='yazi'
-fi
-
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
 fi
