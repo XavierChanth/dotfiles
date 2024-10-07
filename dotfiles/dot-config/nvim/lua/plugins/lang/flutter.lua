@@ -28,15 +28,39 @@ return {
     opts = {
       flutter_path = flutter_path,
       lsp = {
-        root_dir = function()
-          return vim.uv.cwd()
-        end,
         init_options = {
           onlyAnalyzeProjectsWithOpenFiles = false,
           closingLabels = true,
         },
+        on_attach = function(client)
+          client.config.settings.dart.lineLength = 80
+
+          local pubspec_file = client.config.root_dir .. "/pubspec.yaml"
+          local file = io.open(pubspec_file, "r")
+          if file ~= nil then
+            local line = ""
+            while line ~= nil do
+              line = file:read("*L")
+              if line ~= nil then
+                local _, pos = line:find("publish_to:", 1, true)
+                if pos ~= nil then
+                  if line:find("['\"%s]?none['\"%s]", pos) ~= nil then
+                    client.config.settings.dart.lineLength = 120
+                  end
+                  ---@diagnostic disable-next-line: cast-local-type
+                  line = nil
+                end
+              end
+            end
+            file:close()
+          end
+
+          client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+        end,
         settings = {
-          lineLength = 80, -- renameFilesWithClasses = "always",
+          dart = {
+            lineLength = 80,
+          },
         },
       },
     },
@@ -46,3 +70,16 @@ return {
     event = "BufReadPre *.dart,pubspec.yaml",
   },
 }
+
+-- on_attach = function(client)
+--       local lsp_config = vim.fs.find(function(name)
+--         return name:match(".*%.delphilsp.json$")
+--       end, { type = "file", path = client.config.root_dir, upward = false })[1]
+--
+--       if lsp_config then
+--         client.config.settings = { settingsFile = lsp_config }
+--         client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+--       else
+--         vim.notify_once("delphi_ls: '*.delphilsp.json' config file not found")
+--       end
+--     end,
