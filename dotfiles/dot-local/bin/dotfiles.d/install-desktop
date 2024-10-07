@@ -6,27 +6,23 @@ command_exists() {
 
 case "$(uname)" in
   Darwin)
-    if command_exists dnf; then
+    if command_exists brew; then
       echo "brew package manager found, installing packages for brew"
 
       # core apps
-      brew install <<EOF
-        zen-browser google-chrome
-        zoom discord spotify
-        betterdisplay cleanshot unnaturalscrollwheels
-      EOF
+      brew install zen-browser google-chrome
+      brew install zoom discord spotify
+      brew install betterdisplay cleanshot unnaturalscrollwheels
       # desktop essentials
       brew tap felixkratz/formulae
-      brew install <<EOF
-        aerospace sketchybar raycast
-      EOF
+      brew install aerospace sketchybar raycast
+
       # terminal stuff
-      brew install <<EOF
-        wezterm asciinema
-        font-jetbrains-mono-nerd-font
-        aerc abook pandoc
-        ffmpegthumbnailer unar poppler
-      EOF
+
+      brew install wezterm asciinema
+      brew install font-jetbrains-mono-nerd-font
+      brew install aerc abook pandoc
+      brew install ffmpegthumbnailer unar poppler
     fi
     ;;
   Linux)
@@ -36,13 +32,13 @@ case "$(uname)" in
       sudo dnf install -y wezterm
       sudo dnf install -y aerc abook
     fi
-
     ;;
 esac
 
 # install wezterm terminfo
-tempfile=$(mktemp) &&
-  curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo &&
-  tic -x -o ~/.terminfo $tempfile
-rm $tempfile
-
+tempfile="$(mktemp)"
+if [ -n "$tempfile" ]; then
+  curl -o "$tempfile" "https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo"
+  tic -x -o ~/.terminfo "$tempfile"
+fi
+[ -n "$tempfile" ] && rm "$tempfile"
