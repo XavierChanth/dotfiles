@@ -18,39 +18,24 @@ script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
 # Must be in the dir before trying to set the overlay_dir
 qmk_init() {
-  (
-    cd "$script_dir/qmk" || return 1
-    qmk config user.overlay_dir="$(realpath .)"
-  )
-}
-
-qmk_init
-
-# Note ZSA uses a separate repo to manage their keyboards so typical build methods will not work.
-# Use these helper scripts instead of following the docs
-qmk_update() {
-  (
-    cd "$script_dir" || return 1
-    git submodule update --init --recursive qmk
-    git submodule update --init --recursive zsa_firmware
-  ) || return 1
+  cd "$script_dir"
+  qmk config user.overlay_dir="$(realpath qmk)"
+  cd "$script_dir/qmk_firmware";
   qmk setup
-}
-
-# Waiting eons for https://github.com/qmk/qmk_firmware/pull/22751
-# Good thing I don't intend to flash this board any time soon
-qmk_air75() {
-  qmk_init
   qmk userspace-remove -kb 'all'
   qmk config user.qmk_home="$script_dir/qmk_firmware"
-  qmk userspace-add -kb nuphy/air75_v2/ansi -km xavierchanth
-  qmk userspace-compile
 }
 
+# xavierchanth/qmk_firmware branch: xavierchanth
+qmk_air75() {
+  (qmk_init
+    git switch xavierchanth || return 1
+  qmk compile -kb nuphy/air75_v2/ansi -km xavierchanth)
+}
+
+# zsa/qmk_firmware branch: firmware24
 qmk_voyager() {
-  qmk_init
-  qmk userspace-remove -kb 'all'
-  qmk config user.qmk_home="$script_dir/zsa_firmware"
-  qmk userspace-add -kb voyager -km xavierchanth
-  qmk userspace-compile
+  (qmk_init
+  git switch firmware24
+  qmk compile -kb voyager -km xavierchanth)
 }
