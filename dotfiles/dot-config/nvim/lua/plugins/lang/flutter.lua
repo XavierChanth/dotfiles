@@ -70,16 +70,3 @@ return {
     event = "BufReadPre *.dart,pubspec.yaml",
   },
 }
-
--- on_attach = function(client)
---       local lsp_config = vim.fs.find(function(name)
---         return name:match(".*%.delphilsp.json$")
---       end, { type = "file", path = client.config.root_dir, upward = false })[1]
---
---       if lsp_config then
---         client.config.settings = { settingsFile = lsp_config }
---         client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
---       else
---         vim.notify_once("delphi_ls: '*.delphilsp.json' config file not found")
---       end
---     end,
