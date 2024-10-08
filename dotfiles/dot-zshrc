@@ -51,7 +51,6 @@ fi
 
 # Programming language setup
 source $XDG_CONFIG_HOME/zsh/lang.sh
-source $XDG_CONFIG_HOME/zsh/lang-tools.sh # tools that depend on paths from lang.sh
 
 # Final setup of zsh completion
 autoload -Uz compinit

@@ -30,3 +30,6 @@ fi
 # --no-parent ensures you only get this page and everything nested under it
 # rather than the whole site
 alias wgetsite='wget --no-parent -p -r'
+
+alias lg='lazygit'
+alias y='yazi'
