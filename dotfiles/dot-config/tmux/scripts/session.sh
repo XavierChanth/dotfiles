@@ -34,6 +34,7 @@ function fzf_session() {
       find "$HOME/src" "$HOME/dev" -mindepth 0 -maxdepth 2 -type d
       # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
       echo "$HOME/.dotfiles"
+      echo "main"
     ) |
       fzf --scheme=path --tiebreak=end,index --header "Open tmux session"
   )
