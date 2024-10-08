@@ -6,7 +6,7 @@ function add_session() {
 
   name="$2"
   if [ -z "$name" ]; then
-    name=$(basename $selected)
+    name=$(basename $selected | sed -e 's/\./_/g')
   fi
 
   command="$3"
