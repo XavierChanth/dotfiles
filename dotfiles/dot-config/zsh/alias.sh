@@ -25,3 +25,8 @@ t() {
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
 fi
+
+# Get a whole website recursively (-r), including css & js (-p)
+# --no-parent ensures you only get this page and everything nested under it
+# rather than the whole site
+alias wgetsite='wget --no-parent -p -r'
