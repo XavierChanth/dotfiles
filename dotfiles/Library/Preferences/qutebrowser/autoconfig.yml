@@ -6,8 +6,19 @@
 
 config_version: 2
 settings:
+  bindings.commands:
+    global:
+      normal: {}
+  content.pdfjs:
+    global: true
+  editor.command:
+    global:
+    - /opt/homebrew/bin/nvim
+    - '{file}'
   fonts.default_size:
     global: 18pt
+  scrolling.smooth:
+    global: true
   tabs.position:
     global: left
   tabs.show:

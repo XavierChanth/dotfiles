@@ -80,7 +80,7 @@ alt-shift-enter = [
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
 alt-space = [
   'workspace 2',
-  'exec-and-forget open -a /Applications/Zen\ Browser.app',
+  'exec-and-forget open -a /Applications/qutebrowser.app',
 ]
 
 # Layout movement
