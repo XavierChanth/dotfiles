@@ -41,7 +41,7 @@ return {
 		sbar.add("event", "battery_change")
 		battery_watcher = sbar.add("item", {
 			drawing = false,
-			update_freq = 20,
+			update_freq = 60, -- check battery once per minute
 		})
 		woke_watcher = sbar.add("item", {
 			drawing = false,
@@ -55,7 +55,7 @@ return {
 		battery_watcher:subscribe("forced", update_battery)
 		battery_watcher:subscribe("power_source_change", function(env)
 			local charging = (env.INFO == "AC")
-			if battery.charging == charging then
+			if battery.charging ~= charging then
 				battery.charging = charging
 				sbar.trigger("battery_change", { percentage = battery.percentage, charging = charging })
 			end

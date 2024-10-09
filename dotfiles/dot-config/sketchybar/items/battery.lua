@@ -14,7 +14,7 @@ local battery = sbar.add("item", {
 		padding_right = 10,
 	},
 	drawing = false,
-	updates = "when_shown",
+	updates = true,
 })
 local battery_icon = sbar.add("item", {
 	position = "q",
@@ -27,12 +27,11 @@ local battery_icon = sbar.add("item", {
 		color = opts.color.pink,
 	},
 	drawing = false,
-	updates = "when_shown",
 })
 
 battery:subscribe("battery_change", function(env)
 	battery:set({ label = { string = env.percentage .. "%" } })
-	if env.charging then
+	if env.charging == "on" then
 		battery_icon:set({ icon = { string = " " } })
 	else
 		local icon = " "
@@ -51,6 +50,6 @@ battery:subscribe("battery_change", function(env)
 end)
 
 battery:subscribe("builtin_display_change", function(env)
-	battery:set({ drawing = env.is_builtin })
-	battery_icon:set({ drawing = env.is_builtin })
+	battery:set({ drawing = env.is_builtin == "true" })
+	battery_icon:set({ drawing = env.is_builtin == "true" })
 end)
