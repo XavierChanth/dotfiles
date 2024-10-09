@@ -10,7 +10,7 @@ case "$(uname)" in
       echo "brew package manager found, installing packages for brew"
 
       # core apps
-      brew install zen-browser google-chrome
+      brew install zen-browser google-chrome qutebrowser
       brew install zoom discord spotify
       brew install betterdisplay cleanshot unnaturalscrollwheels
       # desktop essentials

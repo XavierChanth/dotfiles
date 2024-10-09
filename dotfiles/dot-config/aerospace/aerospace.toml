@@ -55,7 +55,7 @@ check-further-callbacks = true
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen Browser$|^Safari$'
+if.app-name-regex-substring = '^qutebrowser$|^LibreWolf$|^Firefox$|^Zen Browser$|^Safari$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
