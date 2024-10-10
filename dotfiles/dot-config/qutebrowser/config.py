@@ -71,9 +71,12 @@ c.bindings.commands = {
     }
 }
 c.colors.webpage.darkmode.enabled = color != "latte"
+c.colors.webpage.darkmode.threshold.background = 32
+c.colors.webpage.darkmode.threshold.foreground = 224
 c.content.autoplay = False
 c.content.javascript.clipboard = "access"
 c.content.pdfjs = True
+c.downloads.position = "bottom"
 c.editor.command = ["code", "{file}"]
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
@@ -91,11 +94,12 @@ c.statusbar.widgets = [
     "text:|",
     "scroll",
 ]
+c.tabs.last_close = "startpage"
 c.tabs.pinned.frozen = True
 c.tabs.pinned.shrink = False
-c.tabs.title.format_pinned = "📌{audio}{index}: {current_title}"
-c.tabs.position = "left"
+c.tabs.position = "right"
 c.tabs.show = "switching"
+c.tabs.title.format_pinned = "📌{audio}{index}: {current_title}"
 c.tabs.width = "25%"
 c.url.searchengines["gh"] = "https://github.com/{}"
 c.url.searchengines["ghs"] = "https://github.com/search?q={}"
