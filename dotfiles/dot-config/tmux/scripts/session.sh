@@ -31,7 +31,7 @@ function fzf_session() {
     (
       # tested find against fd, for a small set of directories like this find is slightly faster
       # now, if you were recursively searching all files, fd wins by a mile
-      find "$HOME/src" "$HOME/dev" -mindepth 0 -maxdepth 2 -type d
+      find "$HOME/src" -mindepth 0 -maxdepth 2 -type d
       # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
       echo "$HOME/.dotfiles"
       echo "main"

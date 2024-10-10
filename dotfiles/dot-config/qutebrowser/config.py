@@ -10,12 +10,11 @@ import catppuccin
 config.load_autoconfig()
 
 
-asdf = "asdf"
 # Colors
 home = os.getenv("HOME")
 lastcolor = ""
 with open(f"{home}/.local/share/nvim/last-color", "r") as f:
-    lastcolor = f.readline()
+    lastcolor = f.readline().strip()
     f.close()
 
 colors = {
@@ -65,6 +64,10 @@ c.bindings.commands = {
         "<Meta-8>": "tab-focus 8",
         "<Meta-9>": "tab-focus 9",
         "<Meta-m>": "tab-mute",
+        " ": "nop",
+        " m": "mark-set",
+        # " b": "spawn --userscript bitwarden",
+        "<Meta-r>": "config-source",
     }
 }
 c.colors.webpage.darkmode.enabled = color != "latte"

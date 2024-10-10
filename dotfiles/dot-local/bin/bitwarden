@@ -1,0 +1,14 @@
+#!/bin/bash
+# TODO: make bitwarden plugin
+
+bw="/opt/homebrew/bin/bw"
+dmenu="/opt/homebrew/bin/dmenu-mac"
+
+unlock() {
+  if $($bw unlock --check); then
+    return 0
+  fi
+  local pass="$(echo "" | dmenu -p "Password: " <&-)"
+  [ -n "${query}" ] && firefox https://www.google.com/search?q="${query}" &
+  $bw
+}
