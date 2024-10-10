@@ -1,2 +1,2 @@
 [lint]
-ignore-init-module-imports = false
+ignore = ["F821"]

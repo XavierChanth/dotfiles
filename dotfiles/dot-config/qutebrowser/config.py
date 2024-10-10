@@ -1,12 +1,16 @@
-import catppuccin
+# pyright: basic, reportUndefinedVariable=false, reportMissingImports=false
 import os
 
-# pyright: ignore[reportUndefinedVariable]
+from qutebrowser.api import interceptor
+
+import catppuccin
 
 # load your autoconfig, use this, if the rest of your config is empty!
+
 config.load_autoconfig()
 
 
+asdf = "asdf"
 # Colors
 home = os.getenv("HOME")
 lastcolor = ""
@@ -29,7 +33,6 @@ color = colors.get(lastcolor, "macchiato")
 catppuccin.setup(c, color, True)
 
 # YouTube ad-block
-from qutebrowser.api import interceptor
 
 
 def filter_yt(info: interceptor.Request):
@@ -48,10 +51,20 @@ interceptor.register(filter_yt)
 # config
 c.bindings.commands = {
     "normal": {
-        "<Meta-->": "zoom-out",
-        "<Meta-=>": "zoom-in",
         "<Ctrl-o>": "back",
         "<Ctrl-i>": "forward",
+        "<Meta-->": "zoom-out",
+        "<Meta-=>": "zoom-in",
+        "<Meta-1>": "tab-focus 1",
+        "<Meta-2>": "tab-focus 2",
+        "<Meta-3>": "tab-focus 3",
+        "<Meta-4>": "tab-focus 4",
+        "<Meta-5>": "tab-focus 5",
+        "<Meta-6>": "tab-focus 6",
+        "<Meta-7>": "tab-focus 7",
+        "<Meta-8>": "tab-focus 8",
+        "<Meta-9>": "tab-focus 9",
+        "<Meta-m>": "tab-mute",
     }
 }
 c.colors.webpage.darkmode.enabled = color != "latte"
