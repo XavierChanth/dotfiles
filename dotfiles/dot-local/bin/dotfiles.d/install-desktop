@@ -1,44 +1,43 @@
 #!/bin/bash
 
 command_exists() {
-  command -v "$1" >/dev/null 2>&1
+    command -v "$1" >/dev/null 2>&1
 }
 
 case "$(uname)" in
-  Darwin)
-    if command_exists brew; then
-      echo "brew package manager found, installing packages for brew"
+    Darwin)
+        if command_exists brew; then
+            echo "brew package manager found, installing packages for brew"
 
-      # core apps
-      brew install zen-browser google-chrome qutebrowser
-      brew install zoom discord spotify
-      brew install betterdisplay cleanshot unnaturalscrollwheels
-      # desktop essentials
-      brew tap felixkratz/formulae
-      brew install aerospace sketchybar raycast
+            # core apps
+            brew install zen-browser google-chrome qutebrowser
+            brew install zoom discord spotify
+            brew install betterdisplay cleanshot unnaturalscrollwheels
+            # desktop essentials
+            brew tap felixkratz/formulae
+            brew install aerospace sketchybar raycast
 
-      # terminal stuff
+            # terminal stuff
+            brew install wezterm asciinema
+            brew install font-jetbrains-mono-nerd-font
+            brew install aerc abook pandoc
+            brew install ffmpegthumbnailer unar poppler
+        fi
+        ;;
+    Linux)
+        if command_exists dnf; then
+            echo "dnf package manager found, installing packages for dnf"
 
-      brew install wezterm asciinema
-      brew install font-jetbrains-mono-nerd-font
-      brew install aerc abook pandoc
-      brew install ffmpegthumbnailer unar poppler
-    fi
-    ;;
-  Linux)
-    if command_exists dnf; then
-      echo "dnf package manager found, installing packages for dnf"
-
-      sudo dnf install -y wezterm
-      sudo dnf install -y aerc abook
-    fi
-    ;;
+            sudo dnf install -y wezterm
+            sudo dnf install -y aerc abook
+        fi
+        ;;
 esac
 
 # install wezterm terminfo
 tempfile="$(mktemp)"
 if [ -n "$tempfile" ]; then
-  curl -o "$tempfile" "https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo"
-  tic -x -o ~/.terminfo "$tempfile"
+    curl -o "$tempfile" "https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo"
+    tic -x -o ~/.terminfo "$tempfile"
 fi
 [ -n "$tempfile" ] && rm "$tempfile"
