@@ -4,3 +4,6 @@
 [submodule "keyboards/qmk_firmware"]
 	path = keyboards/qmk_firmware
 	url = https://github.com/xavierchanth/qmk_firmware
+[submodule "dotfiles/dot-config/qutebrowser/catppuccin"]
+	path = dotfiles/dot-config/qutebrowser/catppuccin
+	url = https://github.com/catppuccin/qutebrowser.git

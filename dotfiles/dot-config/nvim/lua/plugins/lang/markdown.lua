@@ -5,6 +5,31 @@ return {
       auto_display = true,
     },
   },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters_by_ft = {
+        markdown = { "pymarkdownlnt" },
+      },
+      linters = {
+        pymarkdownlnt = {
+          cmd = "pymarkdownlnt",
+          stdin = true,
+          args = {
+            "-s",
+            "plugins.md012.maximum=$#2",
+            "scan-stdin",
+          },
+          stream = nil,
+          ignore_exitcode = true,
+          parser = require("lint.parser").from_errorformat("stdin:%l:%c: %m", {
+            source = "pymarkdownlnt",
+            severity = vim.diagnostic.severity.WARN,
+          }),
+        },
+      },
+    },
+  },
   -- From https://www.lazyvim.org/extras/lang/markdown
   -- I don't want marksman installed, so I can't use the full extra module
   {
