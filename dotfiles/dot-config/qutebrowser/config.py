@@ -69,6 +69,7 @@ c.bindings.commands = {
         # " b": "spawn --userscript bitwarden",
         "<Meta-r>": "config-source",
         "td": "config-cycle colors.webpage.darkmode.enabled true false",
+        "tt": "config-cycle tabs.show switching always",
     }
 }
 c.colors.webpage.darkmode.enabled = color != "latte"

@@ -12,14 +12,15 @@ case "$(uname)" in
       # core apps
       brew install zen-browser google-chrome qutebrowser
       brew install zoom discord spotify
-      brew install betterdisplay cleanshot unnaturalscrollwheels
+      brew install betterdisplay cleanshot unnaturalscrollwheels the-unarchiver
+
       # desktop essentials
       brew tap felixkratz/formulae
       brew tap pders01/homebrew-unmenu
       brew install aerospace sketchybar unmenu bitwarden-cli
 
       # terminal stuff
-      brew install wezterm asciinema
+      brew install wezterm asciinema visual-studio-code
       brew install font-jetbrains-mono-nerd-font
       brew install aerc abook pandoc
       brew install ffmpegthumbnailer unar poppler
