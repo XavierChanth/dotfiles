@@ -15,7 +15,8 @@ case "$(uname)" in
       brew install betterdisplay cleanshot unnaturalscrollwheels
       # desktop essentials
       brew tap felixkratz/formulae
-      brew install aerospace sketchybar dmenu-mac bitwarden-cli
+      brew tap pders01/homebrew-unmenu
+      brew install aerospace sketchybar unmenu bitwarden-cli
 
       # terminal stuff
       brew install wezterm asciinema
@@ -40,14 +41,5 @@ if [ -n "$tempfile" ]; then
   curl -o "$tempfile" "https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo"
   tic -x -o ~/.terminfo "$tempfile"
 fi
-
-# if [ $(uname) = 'Darwin']; then
-#   git clone git@github.com:unmanbearpig/unmenu.git $HOME/.local/lib/unmenu
-#   (
-#     cd $$OME/.local/lib/unmenu
-#     make
-#     cp -r build/Build/Products/Release/unmenu.app /Applications
-#   )
-# fi
 
 [ -n "$tempfile" ] && rm "$tempfile"

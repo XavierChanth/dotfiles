@@ -9,13 +9,6 @@ exec-on-workspace-change = [
 ]
 
 [gaps]
-# inner.horizontal = 8
-# inner.vertical =   8
-# outer.left =       8
-# outer.bottom =     8
-# outer.top =        [ {monitor.built-in = 8}, {monitor.main = 48}, 8]
-# outer.right =      8
-
 inner.horizontal = 0
 inner.vertical = 0
 outer.left = 0
@@ -32,34 +25,29 @@ inherit-env-vars = true
 [exec.env-vars]
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
 
-[[on-window-detected]] # Don't tile the floating iterm2 window
-if.app-id = 'com.googlecode.iterm2'
-if.window-title-regex-substring = '^Floating Terminal$'
-run = "layout floating"
-
 [[on-window-detected]] # "Waiting for host" window on zoom
 if.app-id = 'us.zoom.xos'
 if.window-title-regex-substring = '^$' # good job, not implementing the accessibility APIs AND not giving the window a name zoom!
 run = "layout floating"
 
-[[on-window-detected]]
+[[on-window-detected]] # Firefox (and friends) Picture-in-Picture floats
 if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen Browser$'
 if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
 # Startup layout
-[[on-window-detected]]
+[[on-window-detected]] # Everything on 1
 if.app-name-regex-substring = '.'
 if.during-aerospace-startup = true
 check-further-callbacks = true
 run = 'move-node-to-workspace 1'
 
-[[on-window-detected]]
+[[on-window-detected]] # Browsers on 2
 if.app-name-regex-substring = '^qutebrowser$|^LibreWolf$|^Firefox$|^Zen Browser$|^Safari$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
-[[on-window-detected]]
+[[on-window-detected]] # Terminals on 3
 if.app-name-regex-substring = '^alacritty$|^WezTerm$|^wezterm-gui$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
@@ -78,21 +66,20 @@ alt-shift-enter = [
 
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
-alt-space = [
-  'workspace 2',
-  'exec-and-forget open -a /Applications/qutebrowser.app',
-]
+alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/qutebrowser.app']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
 alt-a = 'layout accordion horizontal vertical'
 
+alt-q = 'enable off'
 alt-shift-space = 'layout floating tiling'
 
 alt-f = 'fullscreen'
 alt-shift-f = 'macos-native-fullscreen'
 
 alt-r = 'flatten-workspace-tree'
+alt-w = 'close'
 
 # Window movement
 alt-h = 'focus left'
