@@ -26,7 +26,6 @@ local config = {
 	max_fps = 144,
 	macos_window_background_blur = 20,
 	quit_when_all_windows_are_closed = false,
-	skip_close_confirmation = "NeverPrompt",
 	window_decorations = "RESIZE", -- no title, but window is properly resizable
 	window_padding = {
 		left = "0.5cell",

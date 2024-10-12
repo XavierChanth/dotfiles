@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# TODOS:
+# - Macos / Linux specific flows for getting input
+#   - Normal : dmenu-mac / dmenu
+#   - Password : TBD / dmenu
+# - Lock / unlock
+# - Select a username for domain
+# - Select a password for domain
+#   - Flags for stdout or copy with pbcopy
+# - Select OTP code for domain
+
+# NOTE: Goals:
+# - Nothing important should be leakable as a result of some malicious program
+# - User verification is a good thing in this context
+# - Output formats should support autofilling in qtbrowser
+# - Passwords should never be visible in plaintext EVER
+# - Secrets should not be leakable or easily accessed by some other program

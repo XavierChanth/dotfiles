@@ -16,8 +16,7 @@ case "$(uname)" in
 
       # desktop essentials
       brew tap felixkratz/formulae
-      brew tap pders01/homebrew-unmenu
-      brew install aerospace sketchybar unmenu bitwarden-cli
+      brew install aerospace sketchybar dmenu-mac bitwarden-cli
 
       # terminal stuff
       brew install wezterm asciinema visual-studio-code
@@ -42,5 +41,4 @@ if [ -n "$tempfile" ]; then
   curl -o "$tempfile" "https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo"
   tic -x -o ~/.terminfo "$tempfile"
 fi
-
 [ -n "$tempfile" ] && rm "$tempfile"

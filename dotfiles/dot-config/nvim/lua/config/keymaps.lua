@@ -60,6 +60,7 @@ map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = true })
 
 -- Buffer management
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
+map("n", "<leader>br", "<cmd>bd|e#<cr>", { desc = "Reopen buffer" })
 unmap("n", "<S-h>")
 unmap("n", "<S-l>")
 

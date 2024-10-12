@@ -48,6 +48,15 @@ def filter_yt(info: interceptor.Request):
 interceptor.register(filter_yt)
 
 # config
+c.aliases = {
+    "q": "close",
+    "qa": "quit",
+    "w": "session-save",
+    "wq": "quit --save",
+    "wqa": "quit --save",
+    "pass": "spawn --userscript bitwarden -w",
+    "user": "spawn --userscript bitwarden -e",
+}
 c.bindings.commands = {
     "normal": {
         "<Ctrl-o>": "back",
@@ -64,8 +73,7 @@ c.bindings.commands = {
         "<Meta-8>": "tab-focus 8",
         "<Meta-9>": "tab-focus 9",
         "<Meta-m>": "tab-mute",
-        " ": "nop",
-        " m": "mark-set",
+        "<Ctrl-m>": "mark-set",
         # " b": "spawn --userscript bitwarden",
         "<Meta-r>": "config-source",
         "td": "config-cycle colors.webpage.darkmode.enabled true false",
@@ -73,8 +81,8 @@ c.bindings.commands = {
     }
 }
 c.colors.webpage.darkmode.enabled = color != "latte"
-c.colors.webpage.darkmode.threshold.background = 32
-c.colors.webpage.darkmode.threshold.foreground = 224
+c.colors.webpage.darkmode.threshold.background = 0
+c.colors.webpage.darkmode.threshold.foreground = 256
 c.content.autoplay = False
 c.content.javascript.clipboard = "access"
 c.content.pdfjs = True
