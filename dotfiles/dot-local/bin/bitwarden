@@ -16,3 +16,153 @@
 # - Output formats should support autofilling in qtbrowser
 # - Passwords should never be visible in plaintext EVER
 # - Secrets should not be leakable or easily accessed by some other program
+
+if [ $(uname) = 'Darwin' ]; then
+  bw='/opt/homebrew/bin/bw'
+  picker='/Applications/dmenu-mac.app/Contents/MacOS/dmenu-mac'
+  get_password='macos_get_password'
+  bad_password='macos_bad_password'
+  clipboard='pbcopy'
+  # keychain stuff
+  create_keychain='macos_create_keychain'
+  clear_session='macos_clear_session_token'
+  save_session='macos_save_session_token'
+  get_session='macos_get_session_token'
+  lock_keychain='macos_lock_keychain'
+else
+  # TODO: other platforms
+  echo Platform not setup / supported
+  exit 1
+fi
+
+# This returns the password from this function as plaintext, use at your own risk
+# I prefer this over storing my password / session in some secret which could
+# potentially get leaked by another malicious program
+macos_get_password() {
+  local prompt="$1"
+  [ -z "$prompt" ] && prompt="Password"
+  echo $(osascript -e "set dialogText to text returned of (display dialog \"$prompt:\" default answer \"\" hidden answer true)
+  return dialogText" 2>/dev/null)
+}
+
+macos_bad_password() {
+  osascript -e "display dialog \"Password authentication failed\" with icon caution" >/dev/null 2>&1
+}
+
+macos_create_keychain() {
+  local password=$(macos_get_password "Set vault pincode")
+  {
+    echo $password
+    echo $password
+  } | security create-keychain bitwarden >/dev/null 2>&1
+}
+
+macos_clear_session_token() {
+  security delete-generic-password -a session -s bitwarden bitwarden >/dev/null 2>&1
+}
+
+macos_save_session_token() {
+  local token=$1
+  macos_clear_session_token
+  security add-generic-password -a session -s bitwarden -w $token bitwarden >/dev/null 2>&1
+}
+
+macos_get_session_token() {
+  echo $(security find-generic-password -a session -s bitwarden -g bitwarden 2>&1 | grep 'password:' | cut -d '"' -f2)
+}
+
+macos_lock_keychain() {
+  security lock-keychain bitwarden >/dev/null 2>&1
+}
+
+# setup the keychain and login to bitwarden
+# must be called from an interactive shell
+setup() {
+  echo Logging in to Bitwarden:
+  $bw login
+  echo Creating Bitwarden keychain:
+  $create_keychain
+}
+
+unlock() {
+  local session=$($get_session)
+  if ! env BW_SESSION="$session" $bw --nointeraction unlock --check >/dev/null 2>&1; then
+    local password=$($get_password "Bitwarden master password")
+    if [ -z "$password" ]; then
+      # user cancelled
+      return 0
+    fi
+    local session=$($bw --nointeraction unlock --raw "$password" 2>/dev/null)
+    if [ -z $session ]; then
+      $bad_password
+      return 1
+    fi
+    $save_session $session
+  fi
+}
+
+lock() {
+  $clear_session
+  $bw --nointeraction lock >/dev/null 2>&1
+  $lock_keychain
+}
+
+pick_password() {
+  unlock
+  local session=$($get_session)
+  # This is slow
+  local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
+    jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end)+ (if .login.password then {pass: .login.password} else {} end))')
+
+  local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
+  local selected=$(printf "%s" "$display_items" | $picker)
+  local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
+  local item=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .pass")
+  printf "%s" "$item"
+}
+
+pick_password_to_clipboard() {
+  pick_password | $clipboard
+}
+
+pick_username() {
+  unlock
+  local session=$($get_session)
+  # This is slow
+  local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
+    jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end))')
+
+  local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
+  local selected=$(printf "%s" "$display_items" | $picker)
+  local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
+  local item=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .user")
+  printf "%s" "$item"
+}
+
+pick_username_to_clipboard() {
+  pick_username | $clipboard
+}
+
+scripts="lock unlock pick_password_to_clipboard pick_username_to_clipboard"
+main() {
+  local command=$1
+  shift 1
+
+  local found=false
+  for cmd in $scripts; do
+    if [ "$command" = "$cmd" ]; then
+      found=true
+    fi
+  done
+
+  if $found; then
+    $command $@
+  else
+    echo "Accepted commands: $scripts"
+    return 1
+  fi
+}
+
+if [ $# -gt 0 ]; then
+  main $@
+fi

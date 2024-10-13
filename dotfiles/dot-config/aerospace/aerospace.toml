@@ -64,6 +64,10 @@ alt-shift-enter = [
   'exec-and-forget open -n /Applications/WezTerm.app --args start zsh',
 ]
 
+# Password manager
+alt-p = ['exec-and-forget ~/.local/bin/bitwarden pick_password_to_clipboard']
+alt-u = ['exec-and-forget ~/.local/bin/bitwarden pick_username_to_clipboard']
+
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
 alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/qutebrowser.app']

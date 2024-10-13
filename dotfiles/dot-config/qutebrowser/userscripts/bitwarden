@@ -1,4 +1,7 @@
 # TODO
+# - Convert to bash
+# - Use my own custom ~/.local/bin/bitwarden script
+
 #!/usr/bin/env python3
 
 # SPDX-FileCopyrightText: Chris Braun (cryzed) <cryzed@googlemail.com>
