@@ -1,21 +1,8 @@
 #!/bin/bash
 
 # TODOS:
-# - Macos / Linux specific flows for getting input
-#   - Normal : dmenu-mac / dmenu
-#   - Password : TBD / dmenu
-# - Lock / unlock
-# - Select a username for domain
-# - Select a password for domain
-#   - Flags for stdout or copy with pbcopy
+# - Migrate OTPs to bitwarden
 # - Select OTP code for domain
-
-# NOTE: Goals:
-# - Nothing important should be leakable as a result of some malicious program
-# - User verification is a good thing in this context
-# - Output formats should support autofilling in qtbrowser
-# - Passwords should never be visible in plaintext EVER
-# - Secrets should not be leakable or easily accessed by some other program
 
 if [ $(uname) = 'Darwin' ]; then
   bw='/opt/homebrew/bin/bw'
@@ -115,7 +102,14 @@ pick_password() {
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end)+ (if .login.password then {pass: .login.password} else {} end))')
 
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
-  local selected=$(printf "%s" "$display_items" | $picker)
+  local selected=$({
+    echo ".Cancel"
+    printf "%s" "$display_items"
+  } | $picker)
+  if [ $selected = '.Cancel' ]; then
+    printf ""
+    return 0
+  fi
   local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
   local item=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .pass")
   printf "%s" "$item"
@@ -133,7 +127,14 @@ pick_username() {
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end))')
 
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
-  local selected=$(printf "%s" "$display_items" | $picker)
+  local selected=$({
+    echo ".Cancel"
+    printf "%s" "$display_items"
+  } | $picker)
+  if [ $selected = '.Cancel' ]; then
+    printf ""
+    return 0
+  fi
   local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
   local item=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .user")
   printf "%s" "$item"
