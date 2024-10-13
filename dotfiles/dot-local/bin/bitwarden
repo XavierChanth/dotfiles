@@ -94,6 +94,19 @@ lock() {
   $lock_keychain
 }
 
+pick_item() {
+  local display_items="$@"
+  local selected=$({
+    echo ".Cancel"
+    printf "%s" "$display_items"
+  } | $picker)
+  if [ "$selected" = '.Cancel' ]; then
+    printf ""
+    return 0
+  fi
+  printf "%s" "$selected"
+}
+
 pick_password() {
   unlock
   local session=$($get_session)
@@ -102,14 +115,8 @@ pick_password() {
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end)+ (if .login.password then {pass: .login.password} else {} end))')
 
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
-  local selected=$({
-    echo ".Cancel"
-    printf "%s" "$display_items"
-  } | $picker)
-  if [ $selected = '.Cancel' ]; then
-    printf ""
-    return 0
-  fi
+  local selected=$(pick_item "$display_items")
+  [ -z "$selected" ] && return 0
   local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
   local item=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .pass")
   printf "%s" "$item"
@@ -127,14 +134,8 @@ pick_username() {
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end))')
 
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
-  local selected=$({
-    echo ".Cancel"
-    printf "%s" "$display_items"
-  } | $picker)
-  if [ $selected = '.Cancel' ]; then
-    printf ""
-    return 0
-  fi
+  local selected=$(pick_item "$display_items")
+  [ -z "$selected" ] && return 0
   local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
   local item=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .user")
   printf "%s" "$item"
@@ -144,7 +145,27 @@ pick_username_to_clipboard() {
   pick_username | $clipboard
 }
 
-scripts="lock unlock pick_password_to_clipboard pick_username_to_clipboard"
+# requires premium bitwarden :(
+pick_totp() {
+  unlock
+  local session=$($get_session)
+  # This is slow
+  local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
+    jq -c 'map(select(.login.totp != null) | { id, name })')
+
+  local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) [\(.id)]"')
+  local selected=$(pick_item "$display_items")
+  [ -z "$selected" ] && return 0
+  local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
+  local item=$($bw --nointeraction --session "$session" get totp "$selected_id")
+  printf "%s" "$item"
+}
+
+pick_totp_to_clipboard() {
+  pick_totp | $clipboard
+}
+
+scripts="lock unlock pick_password_to_clipboard pick_username_to_clipboard pick_totp_to_clipboard"
 main() {
   local command=$1
   shift 1
@@ -164,6 +185,15 @@ main() {
   fi
 }
 
-if [ $# -gt 0 ]; then
-  main $@
-fi
+# Helper function
+# https://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced
+is_sourced() {
+  if [ -n "$ZSH_VERSION" ]; then
+    case $ZSH_EVAL_CONTEXT in *:file:*) return 0 ;; esac
+  else # Add additional POSIX-compatible shell names here, if needed.
+    case ${0##*/} in dash | -dash | bash | -bash | ksh | -ksh | sh | -sh) return 0 ;; esac
+  fi
+  return 1 # NOT sourced.
+}
+
+is_sourced || main $@
