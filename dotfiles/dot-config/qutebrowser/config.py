@@ -54,8 +54,6 @@ c.aliases = {
     "w": "session-save",
     "wq": "quit --save",
     "wqa": "quit --save",
-    "pass": "spawn --userscript bitwarden -w",
-    "user": "spawn --userscript bitwarden -e",
 }
 c.bindings.commands = {
     "normal": {
@@ -74,11 +72,11 @@ c.bindings.commands = {
         "<Meta-9>": "tab-focus 9",
         "<Meta-m>": "tab-mute",
         "<Ctrl-m>": "mark-set",
-        # " b": "spawn --userscript bitwarden",
         "<Meta-r>": "config-source",
         "td": "config-cycle colors.webpage.darkmode.enabled true false",
         "tt": "config-cycle tabs.show switching always",
-    }
+    },
+    "insert": {"<Ctrl-b>": "spawn --userscript bitwarden"},
 }
 c.colors.webpage.darkmode.enabled = color != "latte"
 c.colors.webpage.darkmode.threshold.background = 0

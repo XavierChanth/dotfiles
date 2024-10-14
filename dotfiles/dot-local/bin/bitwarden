@@ -112,7 +112,7 @@ pick_password() {
   local session=$($get_session)
   # This is slow
   local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
-    jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end)+ (if .login.password then {pass: .login.password} else {} end))')
+    jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end) + (if .login.password then {pass: .login.password} else {} end))')
 
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
   local selected=$(pick_item "$display_items")
@@ -163,6 +163,22 @@ pick_totp() {
 
 pick_totp_to_clipboard() {
   pick_totp | $clipboard
+}
+
+pick_username_and_password() {
+  unlock
+  local session=$($get_session)
+  # This is slow
+  local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
+    jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end) + (if .login.password then {pass: .login.password} else {} end))')
+
+  local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
+  local selected=$(pick_item "$display_items")
+  [ -z "$selected" ] && return 0
+  local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
+  local item1=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .user")
+  local item2=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .pass")
+  printf "%s\n%s" "$item1" "$item2"
 }
 
 scripts="lock unlock pick_password_to_clipboard pick_username_to_clipboard pick_totp_to_clipboard"
