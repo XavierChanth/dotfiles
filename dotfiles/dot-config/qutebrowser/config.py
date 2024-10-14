@@ -112,7 +112,7 @@ c.tabs.pinned.shrink = False
 c.tabs.position = "right"
 c.tabs.show = "switching"
 c.tabs.title.format_pinned = "📌{audio}{index}: {current_title}"
-c.tabs.width = "25%"
+c.tabs.width = "15%"
 c.url.searchengines["gh"] = "https://github.com/{}"
 c.url.searchengines["ghs"] = "https://github.com/search?q={}"
 c.zoom.default = "120%"
