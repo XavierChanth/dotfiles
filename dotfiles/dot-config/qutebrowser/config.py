@@ -78,6 +78,7 @@ c.bindings.commands = {
     },
     "insert": {"<Ctrl-b>": "spawn --userscript bitwarden"},
 }
+c.colors.webpage.bg = "white"
 c.colors.webpage.darkmode.enabled = color != "latte"
 c.colors.webpage.darkmode.threshold.background = 0
 c.colors.webpage.darkmode.threshold.foreground = 256
