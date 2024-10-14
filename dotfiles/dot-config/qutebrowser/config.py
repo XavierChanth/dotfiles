@@ -89,7 +89,10 @@ c.downloads.position = "bottom"
 c.editor.command = ["code", "{file}"]
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
-c.qt.args = ["disable-logging", "disable-reading-from-canvas"]
+c.qt.args = [
+    "disable-logging",
+    "disable-reading-from-canvas",
+]
 c.scrolling.smooth = True
 c.statusbar.padding = {"top": 8, "bottom": 8, "left": 0, "right": 8}
 c.statusbar.position = "top"
