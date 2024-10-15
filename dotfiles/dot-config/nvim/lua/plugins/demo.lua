@@ -20,6 +20,15 @@ return {
   {
     "NStefan002/screenkey.nvim",
     cmd = { "Screenkey" },
+    keys = {
+      {
+        "<leader>uk",
+        function()
+          vim.cmd("Screenkey")
+        end,
+        desc = "Screenkey (toggle)",
+      },
+    },
     opts = {
       win_opts = {
         border = "rounded",
