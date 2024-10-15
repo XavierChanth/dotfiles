@@ -67,7 +67,7 @@ alt-shift-enter = [
 # Password manager
 alt-p = ['exec-and-forget ~/.local/bin/bitwarden pick_password_to_clipboard']
 alt-u = ['exec-and-forget ~/.local/bin/bitwarden pick_username_to_clipboard']
-# alt-o = ['exec-and-forget ~/.local/bin/bitwarden pick_totp_to_clipboard']
+alt-o = ['exec-and-forget ~/.local/bin/bitwarden pick_totp_to_clipboard']
 
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
