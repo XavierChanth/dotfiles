@@ -33,7 +33,7 @@ return {
       {
         "<leader>fb",
         function()
-          telescope.builtin("buffers", {})
+          telescope.builtin("buffers")
         end,
         desc = "Find buffers",
       },
@@ -51,24 +51,6 @@ return {
           telescope.builtin("buffers", {
             sort_lastused = true,
             sort_mru = true,
-            attach_mappings = function(prompt_bufnr, map)
-              map("n", "D", function()
-                local current_picker = action_state.get_current_picker(prompt_bufnr)
-                local multi_selections = current_picker:get_multi_selection()
-
-                if next(multi_selections) == nil then
-                  local selection = action_state.get_selected_entry()
-                  actions.close(prompt_bufnr)
-                  vim.api.nvim_buf_delete(selection.bufnr, {})
-                else
-                  actions.close(prompt_bufnr)
-                  for _, selection in ipairs(multi_selections) do
-                    vim.api.nvim_buf_delete(selection.bufnr, {})
-                  end
-                end
-              end)
-              return true
-            end,
           })
         end,
         desc = "Jump to buffer",
@@ -97,6 +79,26 @@ return {
       pickers = {
         buffers = {
           initial_mode = "normal",
+          mappings = {
+            n = {
+              ["<C-d>"] = function(prompt_bufnr)
+                local current_picker = action_state.get_current_picker(prompt_bufnr)
+                local multi_selections = current_picker:get_multi_selection()
+
+                if next(multi_selections) == nil then
+                  local selection = action_state.get_selected_entry()
+                  actions.close(prompt_bufnr)
+                  vim.api.nvim_buf_delete(selection.bufnr, {})
+                else
+                  actions.close(prompt_bufnr)
+                  for _, selection in ipairs(multi_selections) do
+                    vim.api.nvim_buf_delete(selection.bufnr, {})
+                  end
+                end
+                return true
+              end,
+            },
+          },
         },
         commands = {
           entry_maker = telescope.command.entry_maker({}),
