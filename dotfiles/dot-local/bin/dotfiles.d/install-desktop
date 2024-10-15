@@ -16,7 +16,8 @@ case "$(uname)" in
 
       # desktop essentials
       brew tap felixkratz/formulae
-      brew install aerospace sketchybar dmenu-mac bitwarden-cli
+      brew install aerospace sketchybar
+      brew install dmenu-mac bitwarden-cli oath-toolkit
 
       # terminal stuff
       brew install wezterm asciinema visual-studio-code

@@ -10,6 +10,7 @@ if [ $(uname) = 'Darwin' ]; then
   get_password='macos_get_password'
   bad_password='macos_bad_password'
   clipboard='pbcopy'
+  oath='/opt/homebrew/bin/oathtool'
   # keychain stuff
   create_keychain='macos_create_keychain'
   clear_session='macos_clear_session_token'
@@ -89,9 +90,15 @@ unlock() {
 }
 
 lock() {
-  $clear_session
-  $bw --nointeraction lock >/dev/null 2>&1
+  # lock just the keychain
+  # requires keychain password to unlock again
   $lock_keychain
+}
+
+lock_vault() {
+  # lock the bitwarden vault
+  # requires master password to unlock again
+  $bw --nointeraction lock >/dev/null 2>&1
 }
 
 pick_item() {
@@ -113,7 +120,7 @@ pick_password() {
   # This is slow
   local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end) + (if .login.password then {pass: .login.password} else {} end))')
-
+  lock
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
   local selected=$(pick_item "$display_items")
   [ -z "$selected" ] && return 0
@@ -132,7 +139,7 @@ pick_username() {
   # This is slow
   local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end))')
-
+  lock
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
   local selected=$(pick_item "$display_items")
   [ -z "$selected" ] && return 0
@@ -151,13 +158,21 @@ pick_totp() {
   local session=$($get_session)
   # This is slow
   local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
-    jq -c 'map(select(.login.totp != null) | { id, name })')
-
+    jq -c 'map(select(.login.totp != null) | { id, name } + (if .login.username then {totp: .login.totp} else {} end))')
+  lock
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) [\(.id)]"')
   local selected=$(pick_item "$display_items")
   [ -z "$selected" ] && return 0
   local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
-  local item=$($bw --nointeraction --session "$session" get totp "$selected_id")
+  local otp_uri=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .totp")
+  printf "%s" "$otp_uri" | grep -q 'otpauth://' || return 1 # unrecognized format
+  local items=$(printf "%s" "$otp_uri" | sed -e 's|otpauth://\([a-z]*\)/.*secret=\(.*\)\(\&.*\)$|\1 \2|')
+  local otp_type=$(printf "%s" "$items" | cut -w -f1)
+  local otp_secret=$(printf "%s" "$items" | cut -w -f2)
+  case "$otp_type" in
+    hotp | totp) local item=$($oath -b --"$otp_type" "$otp_secret") ;;
+    *) return 1 ;; # unrecognized type;;
+  esac
   printf "%s" "$item"
 }
 
@@ -171,7 +186,7 @@ pick_username_and_password() {
   # This is slow
   local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
     jq -c 'map({ id, name } + (if .login.username then {user: .login.username} else {} end) + (if .login.password then {pass: .login.password} else {} end))')
-
+  lock
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) (\(.user)) [\(.id)]"')
   local selected=$(pick_item "$display_items")
   [ -z "$selected" ] && return 0
