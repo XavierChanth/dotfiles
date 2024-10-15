@@ -158,7 +158,7 @@ pick_totp() {
   local session=$($get_session)
   # This is slow
   local items=$($bw --nointeraction --session "$session" list items $@ 2>/dev/null |
-    jq -c 'map(select(.login.totp != null) | { id, name } + (if .login.username then {totp: .login.totp} else {} end))')
+    jq -c 'map(select(.login.totp != null) | { id, name } + (if .login.totp then {totp: .login.totp} else {} end))')
   lock
   local display_items=$(printf "%s" "$items" | jq -r '.[] | "\(.name) [\(.id)]"')
   local selected=$(pick_item "$display_items")
@@ -166,7 +166,7 @@ pick_totp() {
   local selected_id=$(printf "%s" "$selected" | grep -o ' \[.*\]$' | cut -d'[' -f2 | cut -d']' -f1)
   local otp_uri=$(printf "%s" "$items" | jq -r ".[] | select(.id==\"$selected_id\") | .totp")
   printf "%s" "$otp_uri" | grep -q 'otpauth://' || return 1 # unrecognized format
-  local items=$(printf "%s" "$otp_uri" | sed -e 's|otpauth://\([a-z]*\)/.*secret=\(.*\)\(\&.*\)$|\1 \2|')
+  local items=$(printf "%s" "$otp_uri" | sed -e 's|otpauth://\([a-z]*\)/.*secret=\([a-zA-Z0-9]*\)\(\&.*\)$|\1 \2|')
   local otp_type=$(printf "%s" "$items" | cut -w -f1)
   local otp_secret=$(printf "%s" "$items" | cut -w -f2)
   case "$otp_type" in
