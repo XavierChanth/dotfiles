@@ -2,26 +2,31 @@
 
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
-git clone --recursive https://github.com/kmonad/kmonad.git $script_dir/.kmonad
+git clone --recursive https://github.com/kmonad/kmonad.git $script_dir/.kmonad || (cd $script_dir/.kmonad && git pull && git submodule update --init)
 
-ln -s $script_dir/../../../macos/Library/LaunchAgents/xyz.xavierchanth.kmonad.plist
+sudo cp $DOTFILES/keyboards/kmonad/local.kmonad.plist /Library/LaunchDaemons/local.kmonad.plist
 
-cd $script_dir/.kmonad || exit 1
-open c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/dist/Karabiner-DriverKit-VirtualHIDDevice-3.1.0.pkg
+(
+  cd $script_dir/.kmonad
+  open c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/dist/Karabiner-DriverKit-VirtualHIDDevice-3.1.0.pkg
+)
+echo "Press enter to continue"
+read
+
+/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager forceActivate
 
 echo "Press enter to continue"
 read
 
-/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate
+brew install --formula stack haskell-stack
+(
+  cd $script_dir/.kmonad
+  stack init
+  stack build --flag kmonad:dext --extra-include-dirs=c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/include/pqrs/karabiner/driverkit:c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/src/Client/vendor/include
+)
 
-echo "Press enter to continue"
-read
+$script_dir/sync
 
-brew install stack haskell-stack
-stack init
-stack build --flag kmonad:dext --extra-include-dirs=c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/include/pqrs/karabiner/driverkit:c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/src/Client/vendor/include
-
-$script_dir/reinstall
-
-echo "\nMake sure to install the binary to /usr/local/bin/kmonad"
+echo
+echo "Make sure to install the binary to /usr/local/bin/kmonad"
 read
