@@ -1,6 +1,9 @@
 start-at-login = true
 
-after-startup-command = ['exec-and-forget /opt/bin/sketchybar']
+after-startup-command = [
+  'exec-and-forget /opt/bin/sketchybar',
+  'exec-and-forget open -a dmenu-mac',
+]
 
 exec-on-workspace-change = [
   '/bin/bash',
@@ -56,6 +59,7 @@ run = 'move-node-to-workspace 3'
 alt-shift-r = [
   'exec-and-forget aerospace reload-config',
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload',
+  'exec-and-forget open -a dmenu-mac',
 ]
 
 # Terminal openers (always new)
