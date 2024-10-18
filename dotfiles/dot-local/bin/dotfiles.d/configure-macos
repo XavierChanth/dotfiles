@@ -6,14 +6,17 @@ main() {
   defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 
   # Configure the dock
-  defaults write com.apple.dock orientation -string right
+  defaults write com.apple.dock orientation -string bottom
   defaults write com.apple.dock tilesize -float 32
+  defaults write com.apple.dock largesize -float 64
+  defaults write com.apple.dock magnification -int 1
   defaults write com.apple.dock autohide -bool true
   defaults write com.apple.dock autohide-time-modifier -int 0
   defaults write com.apple.dock autohide-delay -int 0
   defaults write com.apple.dock show-recents -bool false
   defaults write com.apple.dock minimize-to-application -bool true
   defaults write com.apple.dock mineffect -string scale
+  # Empties dock and only shows open apps
   defaults write com.apple.dock static-only -bool true
 
   # Mission Control
@@ -51,6 +54,9 @@ main() {
   defaults write NSGlobalDomain com.apple.mouse.scaling -float 2.0
   defaults write NSGLobalDomain ApplePressAndHoldEnabled -bool false
   defaults write NSGlobalDomain com.apple.keyboard.fnState -bool false
+
+  # Disable app quarantine - use at own risk
+  # defaults write com.apple.LaunchServices "LSQuarantine" -bool "false"
 }
 
 main $@
