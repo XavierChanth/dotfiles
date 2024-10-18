@@ -62,9 +62,7 @@ return {
 		end)
 
 		woke_watcher:subscribe("system_woke", function()
-			battery_watcher:subscribe("forced", function(_)
-				update_display()
-			end)
+			update_display()
 		end)
 	end,
 }
