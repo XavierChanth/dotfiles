@@ -42,8 +42,6 @@ return {
       setup = {
         [ruff] = function()
           require("util.lsp").on_attach(function(client, _)
-            vim.opt.tabstop = 4
-            vim.opt.shiftwidth = 4
             -- Disable hover in favor of Pyright
             client.server_capabilities.hoverProvider = false
           end, ruff)
