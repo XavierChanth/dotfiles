@@ -9,6 +9,7 @@
   "conform.nvim": { "branch": "master", "commit": "50649648851cd0e126dfedd0f3c33b900a6f1ef8" },
   "csharpls-extended-lsp.nvim": { "branch": "master", "commit": "9328e1a5451e52ac79dece8cd718641989d6a484" },
   "dashboard-nvim": { "branch": "master", "commit": "d2c5a4d1341f5ca1ed2ecb4ecfcff2bc8ea18b14" },
+  "dressing.nvim": { "branch": "master", "commit": "1b7921eecc65af1baf8ac1dc06f0794934cbcfb2" },
   "flutter-bloc.nvim": { "branch": "main", "commit": "2052a74ee112f09c0de6b6e836811981d87cd9a6" },
   "flutter-tools.nvim": { "branch": "main", "commit": "eda1d75e80fc4e11d4f535de45b3f3e26fa95efb" },
   "friendly-snippets": { "branch": "main", "commit": "de8fce94985873666bd9712ea3e49ee17aadb1ed" },
