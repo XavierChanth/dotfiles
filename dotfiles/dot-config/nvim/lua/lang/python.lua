@@ -42,6 +42,8 @@ return {
       setup = {
         [ruff] = function()
           require("util.lsp").on_attach(function(client, _)
+            vim.opt.tabstop = 4
+            vim.opt.shiftwidth = 4
             -- Disable hover in favor of Pyright
             client.server_capabilities.hoverProvider = false
           end, ruff)
@@ -83,7 +85,7 @@ return {
       -- stylua: ignore
       keys = {
         { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
-        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
+        { "<leader>dPc", function() require('dap-python').test_class() end,  desc = "Debug Class",  ft = "python" },
       },
       config = function()
         if vim.fn.has("win32") == 1 then

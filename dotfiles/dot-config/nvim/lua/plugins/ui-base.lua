@@ -33,7 +33,7 @@ return {
     },
     -- stylua: ignore
     keys = {
-      { "<leader>sn",  "",                                                                            desc = "+noice" },
+      { "<leader>un",  "",                                                                            desc = "+noice" },
       { "<S-Enter>",   function() require("noice").redirect(vim.fn.getcmdline()) end,                 mode = "c",                              desc = "Redirect Cmdline" },
       { "<leader>unl", function() require("noice").cmd("last") end,                                   desc = "Noice Last Message" },
       { "<leader>unh", function() require("noice").cmd("history") end,                                desc = "Noice History" },
@@ -58,7 +58,7 @@ return {
     "rcarriga/nvim-notify",
     keys = {
       {
-        "<leader>un",
+        "<leader>ud",
         function()
           require("notify").dismiss({ silent = true, pending = true })
         end,
