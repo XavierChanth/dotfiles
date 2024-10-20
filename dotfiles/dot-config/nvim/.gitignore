@@ -1,0 +1,11 @@
+tt.*
+.tests
+doc/tags
+debug
+.repro
+foo.*
+*.log
+data
+
+# don't commit lazyvim.json... only want to install some extensions on every machine
+lazyvim.json
