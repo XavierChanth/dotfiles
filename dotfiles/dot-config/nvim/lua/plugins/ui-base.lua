@@ -1,6 +1,7 @@
 return {
-  { "MunifTanjim/nui.nvim", lazy = true },
+  { "MunifTanjim/nui.nvim",  lazy = true },
 
+  { "stevearc/dressing.nvim" },
   {
     "folke/noice.nvim",
     event = "VeryLazy",

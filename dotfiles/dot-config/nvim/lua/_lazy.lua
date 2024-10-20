@@ -16,7 +16,6 @@ require("autocmds") -- TODO lazy load this
 
 -- removed plugins when I migrated from LazyVim
 --flash.nvim
---grug-far.nvim
 --harpoon.nvim
 --mason-nvim-dap.nvim
 --nvim-dap  <leader>dp  <leader>dr  <leader>ds  <leader>dt  <leader>dw  <leader>d  <leader>d (v)  <leader>dB  <leader>db  <leader>dc  <leader>da  <leader>dC  <leader>dg  <leader>di  <leader>dj  <leader>dk  <leader>dl  <leader>do  <leader>dO
