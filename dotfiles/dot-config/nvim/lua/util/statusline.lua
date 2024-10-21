@@ -157,16 +157,6 @@ local statuslines = {
     return {
       "nvim-lualine/lualine.nvim",
       event = "VeryLazy",
-      init = function()
-        vim.g.lualine_laststatus = vim.o.laststatus
-        if vim.fn.argc(-1) > 0 then
-          -- set an empty statusline till lualine loads
-          vim.o.statusline = " "
-        else
-          -- hide the statusline on the starter page
-          vim.o.laststatus = 0
-        end
-      end,
       opts = vim.tbl_deep_extend("force", {
         options = {
           theme = "auto",
@@ -211,7 +201,7 @@ local statuslines = {
         components = {
           left = {
             "mode",
-            pretty_path(),
+            "path",
           },
           right = {
             command_component,
@@ -245,16 +235,8 @@ local statuslines = {
 
 ---@param opts StatusLineOpts
 function M.get(opts)
-  local disable_lualine = {}
-  if opts.statusline ~= "lualine" then
-    disable_lualine = {
-      "nvim-lualine/lualine.nvim",
-      enabled = false,
-    }
-  end
   return {
     statuslines[opts.statusline](opts.theme),
-    disable_lualine,
   }
 end
 
