@@ -161,6 +161,9 @@ end
 M.defaults = {
   mappings = {
     n = {
+      ["q"] = function(prompt_bufnr)
+        require("telescope.actions").close(prompt_bufnr)
+      end,
       ["o"] = function(bufnr)
         require("telescope.actions.layout").toggle_preview(bufnr)
       end,
