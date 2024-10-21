@@ -1,17 +1,16 @@
 -- Pulled straight from LazyVim
+-- TODO: clean this up
 
 local M = {}
 
----@param opts? lsp.Client.filter
 function M.get_clients(opts)
-  local ret = {} ---@type vim.lsp.Client[]
+  local ret = {}
   if vim.lsp.get_clients then
     ret = vim.lsp.get_clients(opts)
   else
     ---@diagnostic disable-next-line: deprecated
     ret = vim.lsp.get_active_clients(opts)
     if opts and opts.method then
-      ---@param client vim.lsp.Client
       ret = vim.tbl_filter(function(client)
         return client.supports_method(opts.method, { bufnr = opts.bufnr })
       end, ret)
@@ -147,10 +146,12 @@ end
 ---@param to string
 ---@param rename? fun()
 function M.on_rename(from, to, rename)
-  local changes = { files = { {
-    oldUri = vim.uri_from_fname(from),
-    newUri = vim.uri_from_fname(to),
-  } } }
+  local changes = {
+    files = { {
+      oldUri = vim.uri_from_fname(from),
+      newUri = vim.uri_from_fname(to),
+    } }
+  }
 
   local clients = M.get_clients()
   for _, client in ipairs(clients) do
@@ -205,56 +206,6 @@ function M.disable(server, cond)
   end)
 end
 
----@param opts? LazyFormatter| {filter?: (string|lsp.Client.filter)}
-function M.formatter(opts)
-  opts = opts or {}
-  local filter = opts.filter or {}
-  filter = type(filter) == "string" and { name = filter } or filter
-  ---@cast filter lsp.Client.filter
-  ---@type LazyFormatter
-  local ret = {
-    name = "LSP",
-    primary = true,
-    priority = 1,
-    format = function(buf)
-      M.format(require("util.lazy").merge({}, filter, { bufnr = buf }))
-    end,
-    sources = function(buf)
-      local clients = M.get_clients(require("util.lazy").merge({}, filter, { bufnr = buf }))
-      ---@param client vim.lsp.Client
-      local ret = vim.tbl_filter(function(client)
-        return client.supports_method("textDocument/formatting")
-          or client.supports_method("textDocument/rangeFormatting")
-      end, clients)
-      ---@param client vim.lsp.Client
-      return vim.tbl_map(function(client)
-        return client.name
-      end, ret)
-    end,
-  }
-  return require("util.lazy").merge(ret, opts) --[[@as LazyFormatter]]
-end
-
----@param opts? lsp.Client.format
-function M.format(opts)
-  opts = vim.tbl_deep_extend(
-    "force",
-    {},
-    opts or {},
-    require("util.lazy").opts("nvim-lspconfig").format or {},
-    require("util.lazy").opts("conform.nvim").format or {}
-  )
-  local ok, conform = pcall(require, "conform")
-  -- use conform for formatting with LSP when available,
-  -- since it has better format diffing
-  if ok then
-    opts.formatters = {}
-    conform.format(opts)
-  else
-    vim.lsp.buf.format(opts)
-  end
-end
-
 M.words = {}
 M.words.enabled = false
 M.words.ns = vim.api.nvim_create_namespace("vim_lsp_references")
@@ -303,10 +254,9 @@ function M.words.setup(opts)
   end)
 end
 
----@return LspWord[] words, number? current
 function M.words.get()
   local cursor = vim.api.nvim_win_get_cursor(0)
-  local current, ret = nil, {} ---@type number?, LspWord[]
+  local current, ret = nil, {}
   for _, extmark in ipairs(vim.api.nvim_buf_get_extmarks(0, M.words.ns, 0, -1, { details = true })) do
     local w = {
       from = { extmark[2] + 1, extmark[3] },

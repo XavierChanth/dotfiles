@@ -1,12 +1,6 @@
 return {
   {
-    "edluffy/hologram.nvim",
-    opts = {
-      auto_display = true,
-    },
-  },
-  {
-    "mfussenegger/nvim-lint",
+    "nvim-lint",
     opts = {
       linters_by_ft = {
         markdown = { "pymarkdownlnt" },
@@ -30,8 +24,13 @@ return {
       },
     },
   },
-  -- From https://www.lazyvim.org/extras/lang/markdown
-  -- I don't want marksman installed, so I can't use the full extra module
+  -- Additional plugins
+  {
+    "edluffy/hologram.nvim",
+    opts = {
+      auto_display = true,
+    },
+  },
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown", "norg", "rmd", "org" },
@@ -47,23 +46,15 @@ return {
         icons = {},
       },
     },
-    config = function(_, opts)
-      require("render-markdown").setup(opts)
-      LazyVim.toggle.map("<leader>um", {
-        name = "Render Markdown",
-        get = function()
-          return require("render-markdown.state").enabled
+    keys = {
+      {
+        "<leader>um",
+        function()
+          require("render-markdown").toggle()
         end,
-        set = function(enabled)
-          local m = require("render-markdown")
-          if enabled then
-            m.enable()
-          else
-            m.disable()
-          end
-        end,
-      })
-    end,
+        desc = "Toggle Render markdown",
+      },
+    },
   },
   {
     "iamcco/markdown-preview.nvim",

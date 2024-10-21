@@ -21,22 +21,6 @@ function M.opts(name)
   return Plugin.values(plugin, "opts", false)
 end
 
-function M.get_pkg_path(pkg, path, opts)
-  pcall(require, "mason") -- make sure Mason is loaded. Will fail when generating docs
-  local root = vim.env.MASON or (vim.fn.stdpath("data") .. "/mason")
-  opts = opts or {}
-  opts.warn = opts.warn == nil and true or opts.warn
-  path = path or ""
-  local ret = root .. "/packages/" .. pkg .. "/" .. path
-  if opts.warn and not vim.loop.fs_stat(ret) and not require("lazy.core.config").headless() then
-    vim.notify(
-      ("Mason package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path),
-      vim.log.levels.WARN
-    )
-  end
-  return ret
-end
-
 local cache = {} ---@type table<(fun()), table<string, any>>
 ---@generic T: fun()
 ---@param fn T
@@ -54,7 +38,7 @@ end
 
 local LazyUtil = require("lazy.core.util")
 setmetatable(M, {
-  __index = function(t, k)
+  __index = function(_, k)
     if LazyUtil[k] then
       return LazyUtil[k]
     end

@@ -10,27 +10,19 @@ if not vim.uv.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+
 -- removed plugins when I migrated from LazyVim
 -- - flash.nvim
 -- - harpoon.nvim
--- - mason-nvim-dap.nvim
--- - nvim-dap
--- - nvim-dap-go
--- - nvim-dap-python
--- - nvim-dap-ui
--- - nvim-dap-virtual-text
--- - nvim-nio
--- - nvim-treesitter-textobjects
+-- - dap & testing stuff
 
-require("config.options")
+require("options")
 require("lazy").setup({
   spec = {
-    { import = "config.autocmds" },
     { import = "plugins" },
     { import = "plugins.lang" },
-    { import = "config.vscode" },
-    { import = "config.keymaps" },
-    { import = "config.pinned" },
+    { import = "plugins.lang-after" },
+    { import = "plugins.after" },
   },
   defaults = {
     lazy = true,

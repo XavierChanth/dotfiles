@@ -1,6 +1,6 @@
 return {
   {
-    "williamboman/mason.nvim",
+    "mason.nvim",
     opts = {
       ensure_installed = {
         "lua-language-server",
@@ -8,9 +8,22 @@ return {
       },
     },
   },
-
   {
-    "neovim/nvim-lspconfig",
+    "conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+      },
+    },
+  },
+  {
+    "nvim-cmp",
+    opts = function(_, opts)
+      table.insert(opts.sources, { name = "lazydev", group_index = 0 })
+    end,
+  },
+  {
+    "nvim-lspconfig",
     opts = {
       servers = {
         lua_ls = {
@@ -47,18 +60,8 @@ return {
       },
     },
   },
-
-  {
-    "conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        lua = { "stylua" },
-      },
-    },
-  },
-  -- Manage libuv types with lazy. Plugin will never be loaded
+  -- Additional plugins
   { "Bilal2453/luvit-meta", lazy = true },
-
   {
     "folke/lazydev.nvim",
     ft = "lua",
@@ -70,11 +73,5 @@ return {
         { path = "lazy.nvim", words = { "LazyVim" } },
       },
     },
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      table.insert(opts.sources, { name = "lazydev", group_index = 0 })
-    end,
   },
 }

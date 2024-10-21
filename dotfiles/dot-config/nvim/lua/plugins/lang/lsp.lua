@@ -61,8 +61,6 @@ return {
       },
     },
     config = function(_, opts)
-      require("util.format").register(require("util.lsp").formatter())
-
       -- setup keymaps
       require("util.lsp").on_attach(function(client, buffer)
         require("util.lsp_keymaps").on_attach(client, buffer)
@@ -73,63 +71,16 @@ return {
 
       require("util.lsp").words.setup(opts.document_highlight)
 
-      -- diagnostics signs
-      if vim.fn.has("nvim-0.10.0") == 0 then
-        if type(opts.diagnostics.signs) ~= "boolean" then
-          for severity, icon in pairs(opts.diagnostics.signs.text) do
-            local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
-            name = "DiagnosticSign" .. name
-            vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-          end
-        end
-      end
-
-      if vim.fn.has("nvim-0.10") == 1 then
-        -- inlay hints
-        if opts.inlay_hints.enabled then
-          require("util.lsp").on_supports_method("textDocument/inlayHint", function(client, buffer)
-            if
-                vim.api.nvim_buf_is_valid(buffer)
-                and vim.bo[buffer].buftype == ""
-                and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[buffer].filetype)
-            then
-              vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
-            end
-          end)
-        end
-
-        -- code lens
-        if opts.codelens.enabled and vim.lsp.codelens then
-          require("util.lsp").on_supports_method("textDocument/codeLens", function(client, buffer)
-            vim.lsp.codelens.refresh()
-            vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-              buffer = buffer,
-              callback = vim.lsp.codelens.refresh,
-            })
-          end)
-        end
-      end
-
-      if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
-        opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-            or function(diagnostic)
-              for d, icon in pairs(diagnostic_icons) do
-                if diagnostic.severity == vim.diagnostic.severity[d] then
-                  return icon
-                end
-              end
-            end
-      end
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       local servers = opts.servers
-      local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      local cmp_nvim_lsp = require("cmp_nvim_lsp")
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+        cmp_nvim_lsp.default_capabilities() or {},
         opts.capabilities or {}
       )
 
@@ -154,11 +105,8 @@ return {
       end
 
       -- get all the servers that are available through mason-lspconfig
-      local have_mason, mlsp = pcall(require, "mason-lspconfig")
-      local all_mslp_servers = {}
-      if have_mason then
-        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-      end
+      local mlsp = require("mason-lspconfig")
+      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
 
       local ensure_installed = {} ---@type string[]
       for server, server_opts in pairs(servers) do
@@ -175,27 +123,14 @@ return {
         end
       end
 
-      if have_mason then
-        mlsp.setup({
-          ensure_installed = vim.tbl_deep_extend(
-            "force",
-            ensure_installed,
-            require("util.lazy").opts("mason-lspconfig.nvim").ensure_installed or {}
-          ),
-          handlers = { setup },
-        })
-      end
-
-      if require("util.lsp").is_enabled("denols") and require("util.lsp").is_enabled("vtsls") then
-        local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-        require("util.lsp").disable("vtsls", is_deno)
-        require("util.lsp").disable("denols", function(root_dir, config)
-          if not is_deno(root_dir) then
-            config.settings.deno.enable = false
-          end
-          return false
-        end)
-      end
+      mlsp.setup({
+        ensure_installed = vim.tbl_deep_extend(
+          "force",
+          ensure_installed,
+          require("util.lazy").opts("mason-lspconfig.nvim").ensure_installed or {}
+        ),
+        handlers = { setup },
+      })
     end,
   },
 }

@@ -2,7 +2,6 @@ if not vim.g.vscode then
   return {}
 end
 
-
 -- Manual Installation Steps
 -- I don't use vscode enough to make this worth automating
 --
@@ -19,7 +18,6 @@ end
 -- Cmd+w  View: Hide Panel  [when: panelFocus]
 -- Cmd+w  View: Toggle Primary Side Bar Visibility  [when: sideBarFocus]
 
-local vscode = require("vscode")
 local map = vim.keymap.set
 
 -- Neovim settings
@@ -94,7 +92,7 @@ end
 -- Neovim Keymaps
 map("n", "<leader>qq", function()
   vscode.action("workbench.action.closeWindow")
-end);
+end)
 
 -- Search and replace
 map("n", "<leader>sg", function()

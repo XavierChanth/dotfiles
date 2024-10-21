@@ -1,6 +1,6 @@
 return {
   {
-    "nvim-treesitter/nvim-treesitter",
+    "nvim-treesitter",
     opts = { ensure_installed = { "dockerfile" } },
   },
   {
@@ -8,18 +8,7 @@ return {
     opts = { ensure_installed = { "hadolint" } },
   },
   {
-    "nvimtools/none-ls.nvim",
-    optional = true,
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      opts.sources = vim.list_extend(opts.sources or {}, {
-        nls.builtins.diagnostics.hadolint,
-      })
-    end,
-  },
-  {
-    "mfussenegger/nvim-lint",
-    optional = true,
+    "nvim-lint",
     opts = {
       linters_by_ft = {
         dockerfile = { "hadolint" },
@@ -27,7 +16,7 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
+    "nvim-lspconfig",
     opts = {
       servers = {
         dockerls = { mason = not require("util.platform").is_linux_arm64() },

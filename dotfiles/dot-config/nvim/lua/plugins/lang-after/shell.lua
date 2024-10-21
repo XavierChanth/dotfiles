@@ -1,14 +1,12 @@
 return {
   {
-    "williamboman/mason.nvim",
+    "mason.nvim",
     opts = {
-      ensure_installed = {
-        "shfmt",
-      },
+      ensure_installed = { "shfmt" },
     },
   },
   {
-    "stevearc/conform.nvim",
+    "conform.nvim",
     opts = {
       formatters = {
         shfmt = { prepend_args = { "-i", "2", "-ci" } },

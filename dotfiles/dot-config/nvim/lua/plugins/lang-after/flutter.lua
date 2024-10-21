@@ -12,6 +12,7 @@ if not flutter_exists then
 end
 
 return {
+  -- Additional plugins
   {
     "akinsho/flutter-tools.nvim",
     event = "BufReadPre *.dart,pubspec.yaml",

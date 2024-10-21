@@ -129,7 +129,7 @@ local function setup()
               and path
               and vim.fn.getfsize(path) > vim.g.bigfile_size
               and "bigfile"
-            or nil
+              or nil
         end,
       },
     },
@@ -176,7 +176,7 @@ local function setup()
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = vim.api.nvim_create_augroup("LazyFormat", {}),
     callback = function(event)
-      require("util.format").format({ buf = event.buf })
+      require("conform").format({ buf = event.buf })
     end,
   })
 end
