@@ -4,7 +4,6 @@ if vim.g.vscode then
 end
 
 local map = vim.keymap.set
--- TODO new keymaps go here
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
@@ -170,7 +169,8 @@ return {
 
           -- better descriptions
           { "gx", desc = "Open with system app" },
-        } },
+        },
+      },
     },
     keys = {
       {
@@ -189,5 +189,4 @@ return {
       },
     },
   },
-
 }

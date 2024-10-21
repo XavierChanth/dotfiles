@@ -39,7 +39,6 @@ return {
       highlight = { enable = true },
       indent = { enable = true },
       ensure_installed = {
-        -- TODO: move to lang dir
         "bash",
         "c",
         "diff",
