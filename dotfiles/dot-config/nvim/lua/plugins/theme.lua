@@ -3,6 +3,7 @@ local logo = require("util.logos")["nvim_sharp"]
 return {
   {
     "nvimdev/dashboard-nvim",
+    cmd = "Dashboard",
     lazy = false,
     opts = function()
       if vim.o.filetype == "lazy" then
@@ -21,9 +22,9 @@ return {
         config = {
           header = vim.split("\n\n" .. logo .. "\n\n", "\n"),
           center = require("util.dashboard").actions,
-        }
+        },
       }
-    end
+    end,
   },
   require("util.statusline").get({
     statusline = "lualine",

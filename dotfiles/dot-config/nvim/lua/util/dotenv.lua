@@ -1,13 +1,3 @@
-local loop = vim.loop
-
-local function read_file(path)
-  local fd = assert(loop.fs_open(path, "r", 438))
-  local stat = assert(loop.fs_fstat(fd))
-  local data = assert(loop.fs_read(fd, stat.size, 0))
-  assert(loop.fs_close(fd))
-  return data
-end
-
 local function parse_data(data)
   local values = vim.split(data, "\n")
   local out = {}
@@ -49,8 +39,8 @@ local function load(file)
     file = get_env_file()
   end
 
-  local ok, data = pcall(read_file, file)
-  if not ok then
+  local data = vim.secure.read(file)
+  if data == nil then
     return
   end
 

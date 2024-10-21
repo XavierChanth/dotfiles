@@ -65,11 +65,11 @@ return {
 
       -- setup keymaps
       require("util.lsp").on_attach(function(client, buffer)
-        require("keymaps_lsp").on_attach(client, buffer)
+        require("util.lsp_keymaps").on_attach(client, buffer)
       end)
 
       require("util.lsp").setup()
-      require("util.lsp").on_dynamic_capability(require("keymaps_lsp").on_attach)
+      require("util.lsp").on_dynamic_capability(require("util.lsp_keymaps").on_attach)
 
       require("util.lsp").words.setup(opts.document_highlight)
 

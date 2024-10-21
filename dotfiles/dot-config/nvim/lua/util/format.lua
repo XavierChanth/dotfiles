@@ -10,7 +10,7 @@ function M.register(formatter)
 end
 
 function M.formatexpr()
-  if LazyVim.has("conform.nvim") then
+  if require("util.lazy").has("conform.nvim") then
     return require("conform").formatexpr()
   end
   return vim.lsp.formatexpr({ timeout_ms = 3000 })

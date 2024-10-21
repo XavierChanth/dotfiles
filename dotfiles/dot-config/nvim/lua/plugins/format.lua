@@ -45,6 +45,8 @@ M.has_parser = require("util.lazy").memoize(M.has_parser)
 return {
   {
     "stevearc/conform.nvim",
+    event = { "BufReadPost", "BufNewFile", "BufReadPre" },
+    cmd = "ConformInfo",
     dependencies = { "mason.nvim" },
     init = function()
       -- Install the conform formatter on VeryLazy
@@ -84,7 +86,7 @@ return {
   },
   -- Setup prettier
   {
-    "conform.nvim",
+    "stevearc/conform.nvim",
     opts = function(_, opts)
       opts.formatters_by_ft = opts.formatters_by_ft or {}
       for _, ft in ipairs(supported) do

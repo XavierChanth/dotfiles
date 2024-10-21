@@ -2,6 +2,7 @@ local telescope = require("util.telescope")
 return {
   {
     "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
     opts = {
       defaults = telescope.defaults,
       pickers = {
@@ -73,12 +74,43 @@ return {
       },
     },
     keys = {
-      { "<leader><space>", telescope.git_files,                           desc = "Git files", },
-      { "<leader>ff",      telescope.find_files,                          desc = "Find files", },
-      { "<leader>sh",      function() telescope.builtin("help_tags") end, desc = "Help Pages" },
-      { "<leader>sk",      function() telescope.builtin("keymaps") end,   desc = "Key Maps" },
-      { "<leader>sm",      function() telescope.builtin("marks") end,     desc = "Jump to Mark" },
-      { "<leader>sg",      function() telescope.builtin("live_grep") end, desc = "Grep (Root Dir)" },
+      { "<leader><space>", telescope.git_files, desc = "Git files" },
+      { "<leader>ff", telescope.find_files, desc = "Find files" },
+      {
+        "<leader>sh",
+        function()
+          telescope.builtin("help_tags")
+        end,
+        desc = "Help Pages",
+      },
+      {
+        "<leader>sk",
+        function()
+          telescope.builtin("keymaps")
+        end,
+        desc = "Key Maps",
+      },
+      {
+        "<leader>sm",
+        function()
+          telescope.builtin("marks")
+        end,
+        desc = "Jump to Mark",
+      },
+      {
+        "<leader>sg",
+        function()
+          telescope.builtin("live_grep")
+        end,
+        desc = "Grep (Root Dir)",
+      },
+      {
+        "<leader>sc",
+        function()
+          telescope.builtin("resume")
+        end,
+        desc = "Continue (resume)",
+      },
       {
         "<leader>ss",
         function()
@@ -128,7 +160,7 @@ return {
       {
         "<leader>uc",
         function()
-          local colors = require("util.colors")
+          local colors = require("util.colorscheme")
           telescope.builtin("colorscheme", {
             finder = require("util.telescope").finder_from_table(colors.configured),
             enable_preview = true,
@@ -150,7 +182,7 @@ return {
         "<leader>uh",
         "<cmd>Telescope undo<cr>",
         desc = "undo history",
-      }
+      },
     },
     dependencies = {
       {
@@ -166,6 +198,6 @@ return {
           require("telescope").load_extension("undo")
         end,
       },
-    }
+    },
   },
 }

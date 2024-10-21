@@ -1,4 +1,9 @@
--- Manual Work
+if not vim.g.vscode then
+  return {}
+end
+
+
+-- Manual Installation Steps
 -- I don't use vscode enough to make this worth automating
 --
 -- VSCode extensions to install:
@@ -14,12 +19,6 @@
 -- Cmd+w  View: Hide Panel  [when: panelFocus]
 -- Cmd+w  View: Toggle Primary Side Bar Visibility  [when: sideBarFocus]
 
-if not vim.g.vscode then
-  return
-end
-
--- Tell the LazyVim extra to load first
-require("lazyvim.plugins.extras.vscode")
 local vscode = require("vscode")
 local map = vim.keymap.set
 
@@ -137,3 +136,5 @@ end)
 map("n", "<leader>\\", function()
   vscode.action("workbench.action.splitEditor")
 end)
+
+return {}

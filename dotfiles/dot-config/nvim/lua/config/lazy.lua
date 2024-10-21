@@ -10,27 +10,27 @@ if not vim.uv.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
-
-require("options")
-require("autocmds") -- TODO lazy load this
-
 -- removed plugins when I migrated from LazyVim
---flash.nvim
---harpoon.nvim
---mason-nvim-dap.nvim
---nvim-dap  <leader>dp  <leader>dr  <leader>ds  <leader>dt  <leader>dw  <leader>d  <leader>d (v)  <leader>dB  <leader>db  <leader>dc  <leader>da  <leader>dC  <leader>dg  <leader>di  <leader>dj  <leader>dk  <leader>dl  <leader>do  <leader>dO
---nvim-dap-go  nvim-dap
---nvim-dap-python  <leader>dPt  <leader>dPc  nvim-dap
---nvim-dap-ui  <leader>du  <leader>de  <leader>de (v)  nvim-dap
---nvim-dap-virtual-text  nvim-dap
---nvim-nio
---nvim-treesitter-textobjects
+-- - flash.nvim
+-- - harpoon.nvim
+-- - mason-nvim-dap.nvim
+-- - nvim-dap
+-- - nvim-dap-go
+-- - nvim-dap-python
+-- - nvim-dap-ui
+-- - nvim-dap-virtual-text
+-- - nvim-nio
+-- - nvim-treesitter-textobjects
 
+require("config.options")
 require("lazy").setup({
   spec = {
+    { import = "config.autocmds" },
     { import = "plugins" },
-    { import = "lang" }, -- TODO: remove lazy extras
-    { import = "pinned" },
+    { import = "plugins.lang" },
+    { import = "config.vscode" },
+    { import = "config.keymaps" },
+    { import = "config.pinned" },
   },
   defaults = {
     lazy = true,
@@ -54,9 +54,3 @@ require("lazy").setup({
     },
   },
 })
-
-if vim.g.vscode then
-  require("vscode")
-else
-  require("keymaps").maps()
-end

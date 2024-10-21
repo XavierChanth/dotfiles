@@ -47,6 +47,15 @@ return {
       },
     },
   },
+
+  {
+    "conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+      },
+    },
+  },
   -- Manage libuv types with lazy. Plugin will never be loaded
   { "Bilal2453/luvit-meta", lazy = true },
 
