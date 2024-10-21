@@ -1,4 +1,9 @@
-local diagnostic_icons = require("util.symbols").diagnostics
+local diagnostic_icons = {
+  [vim.diagnostic.severity.ERROR] = " ",
+  [vim.diagnostic.severity.WARN] = " ",
+  [vim.diagnostic.severity.HINT] = " ",
+  [vim.diagnostic.severity.INFO] = " ",
+}
 
 return {
   {
@@ -70,7 +75,6 @@ return {
       require("util.lsp").on_dynamic_capability(require("util.lsp_keymaps").on_attach)
 
       require("util.lsp").words.setup(opts.document_highlight)
-
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 

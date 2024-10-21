@@ -35,7 +35,7 @@ return {
       },
     },
     opts = function()
-      local cmp = require("lua.plugins.lang.cmp")
+      local cmp = require("plugins.lang.cmp")
       local defaults = require("cmp.config.default")()
       return {
         completion = {
