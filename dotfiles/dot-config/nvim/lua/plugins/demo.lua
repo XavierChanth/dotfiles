@@ -18,33 +18,21 @@ return {
     },
   },
   {
-    "NStefan002/screenkey.nvim",
-    cmd = { "Screenkey" },
+    "nvchad/showkeys",
+    cmd = "ShowkeysToggle",
     keys = {
       {
         "<leader>uk",
         function()
-          vim.cmd("Screenkey")
+          vim.cmd("ShowkeysToggle")
         end,
-        desc = "Screenkey (toggle)",
+        desc = "Showkeys (toggle)",
       },
     },
     opts = {
-      win_opts = {
-        border = "rounded",
-        title = "",
-      },
-      disable = {
-        filetypes = {
-          "toggleterm",
-        },
-        buftypes = {
-          "terminal",
-        },
-      },
-      group_mappings = true,
-      display_infront = { "Telescope*" },
-      display_behind = {},
+      timeout = 1,
+      maxkeys = 3,
+      show_count = true,
     },
   },
 }
