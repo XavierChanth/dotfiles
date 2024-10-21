@@ -175,6 +175,19 @@ M.defaults = {
       end,
     },
   },
+  get_selection_window = function()
+    -- open files in the first window that is an actual file.
+    -- use the current window if no other window is available.
+    local wins = vim.api.nvim_list_wins()
+    table.insert(wins, 1, vim.api.nvim_get_current_win())
+    for _, win in ipairs(wins) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      if vim.bo[buf].buftype == "" then
+        return win
+      end
+    end
+    return 0
+  end,
   results_title = false,
   sorting_strategy = "ascending",
   layout_strategy = "flex",

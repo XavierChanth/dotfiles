@@ -3,7 +3,7 @@ return {
 
   {
     "stevearc/dressing.nvim",
-    lazy = true,
+    event = "VeryLazy",
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
@@ -95,6 +95,16 @@ return {
         vim.api.nvim_win_set_config(win, { zindex = 100 })
       end,
     },
+    -- This init is needed, we don't want to load everything that nvim-notify
+    -- does, only notifications, let other plugins handle the rest
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          vim.notify = require("notify")
+        end,
+      })
+    end,
   },
 
   {
