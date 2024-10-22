@@ -83,7 +83,7 @@ map("t", "<S-Space>", "<Space>", { noremap = true })
 
 -- Yazi
 map("n", "<leader>fe", function()
-  require("util.terminal").terminal({ "yazi" })
+  require("util.terminal").terminal("yazi", {})
 end, { desc = "Open Yazi" })
 
 -- Windows

@@ -78,32 +78,32 @@ function M.terminals(opts)
   end
 
   require("telescope.pickers")
-    .new(opts, {
-      prompt_title = "Terminals",
-      finder = M.finder_from_table(terminals),
-      sorter = require("telescope.config").values.generic_sorter(opts),
-      attach_mappings = function(prompt_bufnr, map)
-        local actions = require("telescope.actions")
-        local action_state = require("telescope.actions.state")
+      .new(opts, {
+        prompt_title = "Terminals",
+        finder = M.finder_from_table(terminals),
+        sorter = require("telescope.config").values.generic_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+          local actions = require("telescope.actions")
+          local action_state = require("telescope.actions.state")
 
-        actions.select_default:replace(function()
-          actions.close(prompt_bufnr)
-          local cwd = action_state.get_selected_entry()[1]
-          util.terminal(nil, { cwd = cwd })
-          vim.schedule(vim.cmd.startinsert)
-        end)
-        local function delete_from_telescope()
-          ---@diagnostic disable-next-line: redundant-parameter
-          local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
-          util.remove_terminal_entry(cwd)
-          actions.close(prompt_bufnr)
-        end
-        map("i", "<C-d>", delete_from_telescope)
-        map("n", "<C-d>", delete_from_telescope)
-        return true
-      end,
-    })
-    :find()
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local cwd = action_state.get_selected_entry()[1]
+            util.terminal(nil, { cwd = cwd })
+            vim.schedule(vim.cmd.startinsert)
+          end)
+          local function delete_from_telescope()
+            ---@diagnostic disable-next-line: redundant-parameter
+            local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
+            util.remove_terminal_entry(cwd)
+            actions.close(prompt_bufnr)
+          end
+          map("i", "<C-d>", delete_from_telescope)
+          map("n", "<C-d>", delete_from_telescope)
+          return true
+        end,
+      })
+      :find()
 end
 
 function M.finder_from_table(t)

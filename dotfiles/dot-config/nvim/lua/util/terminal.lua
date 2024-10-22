@@ -1,4 +1,6 @@
 local M = {}
+
+---@type Terminal[]
 local terminals = {}
 
 M.get_terminals = function()
@@ -10,7 +12,10 @@ function M.remove_terminal_entry(cwd)
   for index, terminal in pairs(terminals) do
     if #index == #cwd and index == cwd then
       terminals[index] = nil
-      terminal:close({ wipe = true })
+      terminal:shutdown()
+      if #last == #cwd and last == cwd then
+        last = nil
+      end
     end
   end
 end
