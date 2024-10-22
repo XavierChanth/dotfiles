@@ -20,6 +20,21 @@ return {
 
   {
     "folke/noice.nvim",
+    dependencies = {
+      {
+        "rcarriga/nvim-notify",
+        opts = {
+          stages = "static",
+          timeout = 3000,
+          max_height = function()
+            return math.floor(vim.o.lines * 0.75)
+          end,
+          max_width = function()
+            return math.floor(vim.o.columns * 0.75)
+          end,
+        },
+      }
+    },
     event = "VeryLazy",
     opts = {
       lsp = {
@@ -68,42 +83,7 @@ return {
         vim.cmd([[messages clear]])
       end
       require("noice").setup(opts)
-    end,
-  },
-
-  {
-    "rcarriga/nvim-notify",
-    keys = {
-      {
-        "<leader>ud",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
-        desc = "Dismiss All Notifications",
-      },
-    },
-    opts = {
-      stages = "static",
-      timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
-      on_open = function(win)
-        vim.api.nvim_win_set_config(win, { zindex = 100 })
-      end,
-    },
-    -- This init is needed, we don't want to load everything that nvim-notify
-    -- does, only notifications, let other plugins handle the rest
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          vim.notify = require("notify")
-        end,
-      })
+      require("telescope").load_extension("noice")
     end,
   },
 
