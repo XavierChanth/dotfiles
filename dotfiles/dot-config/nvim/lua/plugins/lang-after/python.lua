@@ -42,6 +42,8 @@ return {
             callback = function(event)
               local client = vim.lsp.get_client_by_id(event.data.client_id)
               if client then
+                vim.api.nvim_set_option_value("tabstop", 4, { buf = event.buf })
+                vim.api.nvim_set_option_value("shiftwidth", 4, { buf = event.buf })
                 -- Disable hover in favor of Pyright
                 client.server_capabilities.hoverProvider = false
               end

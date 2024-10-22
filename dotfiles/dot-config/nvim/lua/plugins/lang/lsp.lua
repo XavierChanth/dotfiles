@@ -36,15 +36,8 @@ return {
         },
         severity_sort = true,
       },
-      inlay_hints = {
-        enabled = false,
-      },
-      codelens = {
-        enabled = false,
-      },
-      document_highlight = {
-        enabled = true,
-      },
+      inlay_hints = { enabled = false, },
+      codelens = { enabled = false, },
       capabilities = {
         workspace = {
           fileOperations = {
@@ -83,9 +76,10 @@ return {
           })
           map({
             "gr",
-            "<cmd>Telescope lsp_references<cr>",
+            function()
+              require("telescope.builtin").lsp_references()
+            end,
             desc = "References",
-            nowait = true,
           })
           map({
             "gI",
@@ -115,38 +109,37 @@ return {
             "gK",
             vim.lsp.buf.signature_help,
             desc = "Signature Help",
-            has = "signatureHelp",
           })
           map({
             "<c-k>",
             vim.lsp.buf.signature_help,
             mode = "i",
             desc = "Signature Help",
-            has = "signatureHelp",
           })
           map({
             "<leader>ca",
             vim.lsp.buf.code_action,
             desc = "Code Action",
             mode = { "n", "v" },
-            has = "codeAction",
           })
           map({
             "<leader>cr",
             vim.lsp.buf.rename,
             desc = "Rename",
-            has = "rename",
           })
           map({
             "<leader>cA",
             require("util.lsp").action.source,
             desc = "Source Action",
-            has = "codeAction",
           })
 
-          -- Setup highlight groups when the cursor stops
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+          if not client then
+            return
+          end
+
+          -- Setup highlight groups when the cursor stops
+          if client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
               buffer = event.buf,
@@ -171,6 +164,7 @@ return {
         end,
       })
 
+      -- Setup diagnostic options
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       -- Merge capabilities from all servers
@@ -193,15 +187,6 @@ return {
           return
         end
 
-        if opts.setup[server] then
-          if opts.setup[server](server, server_opts) then
-            return
-          end
-        elseif opts.setup["*"] then
-          if opts.setup["*"](server, server_opts) then
-            return
-          end
-        end
         require("lspconfig")[server].setup(server_opts)
       end
 
@@ -223,7 +208,7 @@ return {
         end
       end
 
-      --- Ensure that everything is installed correctly
+      -- Everything else can be installed with mason
       require("mason-lspconfig").setup({
         ensure_installed = vim.tbl_deep_extend(
           "force",
