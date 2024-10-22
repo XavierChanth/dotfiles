@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 function M.lazygit(opts)
   opts = opts or {}

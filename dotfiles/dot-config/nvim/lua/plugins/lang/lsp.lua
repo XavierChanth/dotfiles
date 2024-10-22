@@ -4,7 +4,6 @@ local diagnostic_icons = {
   [vim.diagnostic.severity.HINT] = " ",
   [vim.diagnostic.severity.INFO] = " ",
 }
-
 return {
   {
     "williamboman/mason.nvim",
@@ -31,17 +30,11 @@ return {
         update_in_insert = false,
         virtual_text = {
           spacing = 4,
-          prefix = "icons", -- "●",
+          prefix = function(diagnostic)
+            return diagnostic_icons[diagnostic.severity]
+          end,
         },
         severity_sort = true,
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = diagnostic_icons.Error,
-            [vim.diagnostic.severity.WARN] = diagnostic_icons.Warn,
-            [vim.diagnostic.severity.HINT] = diagnostic_icons.Hint,
-            [vim.diagnostic.severity.INFO] = diagnostic_icons.Info,
-          },
-        },
       },
       inlay_hints = {
         enabled = false,
@@ -66,18 +59,121 @@ return {
       },
     },
     config = function(_, opts)
-      -- setup keymaps
-      require("util.lsp").on_attach(function(client, buffer)
-        require("util.lsp_keymaps").on_attach(client, buffer)
-      end)
+      -- LSP Attach
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(event)
+          -- Default Keymaps
+          local map = function(keymap)
+            keymap.mode = keymap.mode or "n"
+            vim.keymap.set(keymap.mode, keymap[1], keymap[2], { buffer = event.buf, desc = "LSP: " .. keymap.desc })
+          end
 
-      require("util.lsp").setup()
-      require("util.lsp").on_dynamic_capability(require("util.lsp_keymaps").on_attach)
+          map({
+            "<leader>ul",
+            "<cmd>LspInfo<cr>",
+            desc = "Lsp Info",
+          })
+          map({
+            "gd",
+            function()
+              require("telescope.builtin").lsp_definitions({ reuse_win = true })
+            end,
+            desc = "Goto Definition",
+            has = "definition",
+          })
+          map({
+            "gr",
+            "<cmd>Telescope lsp_references<cr>",
+            desc = "References",
+            nowait = true,
+          })
+          map({
+            "gI",
+            function()
+              require("telescope.builtin").lsp_implementations({ reuse_win = true })
+            end,
+            desc = "Goto Implementation",
+          })
+          map({
+            "gy",
+            function()
+              require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+            end,
+            desc = "Goto T[y]pe Definition",
+          })
+          map({
+            "gD",
+            vim.lsp.buf.declaration,
+            desc = "Goto Declaration",
+          })
+          map({
+            "K",
+            vim.lsp.buf.hover,
+            desc = "Hover",
+          })
+          map({
+            "gK",
+            vim.lsp.buf.signature_help,
+            desc = "Signature Help",
+            has = "signatureHelp",
+          })
+          map({
+            "<c-k>",
+            vim.lsp.buf.signature_help,
+            mode = "i",
+            desc = "Signature Help",
+            has = "signatureHelp",
+          })
+          map({
+            "<leader>ca",
+            vim.lsp.buf.code_action,
+            desc = "Code Action",
+            mode = { "n", "v" },
+            has = "codeAction",
+          })
+          map({
+            "<leader>cr",
+            vim.lsp.buf.rename,
+            desc = "Rename",
+            has = "rename",
+          })
+          map({
+            "<leader>cA",
+            require("util.lsp").action.source,
+            desc = "Source Action",
+            has = "codeAction",
+          })
 
-      require("util.lsp").words.setup(opts.document_highlight)
+          -- Setup highlight groups when the cursor stops
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+            local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+              buffer = event.buf,
+              group = highlight_augroup,
+              callback = vim.lsp.buf.document_highlight,
+            })
+
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+              buffer = event.buf,
+              group = highlight_augroup,
+              callback = vim.lsp.buf.clear_references,
+            })
+
+            vim.api.nvim_create_autocmd("LspDetach", {
+              group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+              callback = function(event2)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
+              end,
+            })
+          end
+        end,
+      })
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
+      -- Merge capabilities from all servers
       local servers = opts.servers
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
       local capabilities = vim.tbl_deep_extend(
@@ -88,6 +184,7 @@ return {
         opts.capabilities or {}
       )
 
+      -- Setup function for servers
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
@@ -108,17 +205,16 @@ return {
         require("lspconfig")[server].setup(server_opts)
       end
 
-      -- get all the servers that are available through mason-lspconfig
-      local mlsp = require("mason-lspconfig")
-      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+      -- Get all servers that are installed by mason
+      local all_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
 
-      local ensure_installed = {} ---@type string[]
+      local ensure_installed = {}
       for server, server_opts in pairs(servers) do
         if server_opts then
           server_opts = server_opts == true and {} or server_opts
           if server_opts.enabled ~= false then
             -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-            if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+            if server_opts.mason == false or not vim.tbl_contains(all_servers, server) then
               setup(server)
             else
               ensure_installed[#ensure_installed + 1] = server
@@ -127,7 +223,8 @@ return {
         end
       end
 
-      mlsp.setup({
+      --- Ensure that everything is installed correctly
+      require("mason-lspconfig").setup({
         ensure_installed = vim.tbl_deep_extend(
           "force",
           ensure_installed,

@@ -38,10 +38,15 @@ return {
       },
       setup = {
         ruff = function()
-          require("util.lsp").on_attach(function(client, _)
-            -- Disable hover in favor of Pyright
-            client.server_capabilities.hoverProvider = false
-          end, "ruff")
+          vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(event)
+              local client = vim.lsp.get_client_by_id(event.data.client_id)
+              if client then
+                -- Disable hover in favor of Pyright
+                client.server_capabilities.hoverProvider = false
+              end
+            end,
+          })
         end,
       },
     },

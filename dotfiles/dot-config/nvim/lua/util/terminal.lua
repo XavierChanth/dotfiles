@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 local terminals = {}
 
 M.get_terminals = function()
@@ -42,11 +42,11 @@ end
 
 function M.open_oil_terminal()
   local cwd = require("oil").get_current_dir()
-  require("util.terminal").terminal(nil, { cwd = cwd })
+  M.terminal(nil, { cwd = cwd })
 end
 
 function M.toggle_terminal()
-  require("util.terminal").terminal(nil, { cwd = last })
+  M.terminal(nil, { cwd = last })
 end
 
 return M

@@ -1,3 +1,4 @@
+-- NOTE: unused file
 local function parse_data(data)
   local values = vim.split(data, "\n")
   local out = {}

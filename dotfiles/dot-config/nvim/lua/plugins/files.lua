@@ -28,7 +28,8 @@ return {
       view_options = {
         show_hidden = true,
       },
-      cleanup_delay_ms = 0,
+      cleanup_delay_ms = 1,
+      natural_order = false,
       use_default_keymaps = false,
       keymaps = {
         ["<leader>e"] = "actions.close",

@@ -1,3 +1,5 @@
+-- These utilities are from LazyVim's utility library
+-- Super useful and made it easier to migrate by keeping these in place
 local M = {}
 function M.get_plugin(name)
   return require("lazy.core.config").spec.plugins[name]
