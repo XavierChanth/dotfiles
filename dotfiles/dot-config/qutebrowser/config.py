@@ -9,6 +9,10 @@ import catppuccin
 
 config.load_autoconfig()
 
+neovide = "neovide"
+uname = os.uname()
+if uname[0] == "Darwin":
+    neovide = "/opt/homebrew/bin/neovide"
 
 # Colors
 home = os.getenv("HOME")
@@ -86,7 +90,7 @@ c.content.autoplay = False
 c.content.javascript.clipboard = "access"
 c.content.pdfjs = True
 c.downloads.position = "bottom"
-c.editor.command = ["neovide", "{file}"]
+c.editor.command = [neovide, "{file}"]
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
 c.qt.args = [
