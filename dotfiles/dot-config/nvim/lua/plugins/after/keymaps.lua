@@ -40,6 +40,10 @@ map("i", ";", ";<c-g>u")
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
+-- move lines in visual mode
+map("v", "J", ":m '>+1<cr>gv=gv", { noremap = true, desc = "Move selected lines down" })
+map("v", "K", ":m '<-2<cr>gv=gv", { noremap = true, desc = "Move selected lines up" })
+
 -- lazy
 map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
