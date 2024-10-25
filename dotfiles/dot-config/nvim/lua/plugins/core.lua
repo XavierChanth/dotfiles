@@ -6,7 +6,18 @@ end
 return {
   -- library used by other plugins
   { "nvim-lua/plenary.nvim", lazy = true },
-
+  {
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    build = ":MasonUpdate",
+    opts = {
+      registries = {
+        "github:xavierchanth/mason-registry",
+        "github:mason-org/mason-registry",
+      },
+    },
+  },
   {
     "folke/persistence.nvim",
     event = "BufReadPre",

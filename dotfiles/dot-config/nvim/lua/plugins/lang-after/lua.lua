@@ -1,13 +1,8 @@
 return {
-  {
-    "mason.nvim",
-    opts = {
-      ensure_installed = {
-        "lua-language-server",
-        "stylua",
-      },
-    },
-  },
+  require("util.lazy").ensure_installed({
+    conform = { "stylua" },
+    lsp = { "lua_ls" },
+  }),
   {
     "conform.nvim",
     opts = {
@@ -27,11 +22,6 @@ return {
     opts = {
       servers = {
         lua_ls = {
-          -- mason = false, -- set to false if you don't want this server to be installed with mason
-          -- Use this to add any additional keymaps
-          -- for specific lsp servers
-          -- ---@type LazyKeysSpec[]
-          -- keys = {},
           settings = {
             Lua = {
               workspace = {
@@ -69,8 +59,8 @@ return {
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
-        { path = "LazyVim", words = { "LazyVim" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
+        { path = "LazyVim",            words = { "LazyVim" } },
+        { path = "lazy.nvim",          words = { "LazyVim" } },
       },
     },
   },

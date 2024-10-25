@@ -1,12 +1,9 @@
 return {
-  {
-    "nvim-treesitter",
-    opts = { ensure_installed = { "c_sharp" } },
-  },
-  {
-    "mason.nvim",
-    opts = { ensure_installed = { "csharpier" } },
-  },
+  require("util.lazy").ensure_installed({
+    treesitter = { "c_sharp" },
+    conform  = { "csharpier" },
+    lsp = { "omnisharp", "csharp_ls" },
+  }),
   {
     "conform.nvim",
     optional = true,
@@ -51,6 +48,6 @@ return {
     },
   },
   -- Additional plugins
-  { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
+  { "Hoffs/omnisharp-extended-lsp.nvim",       lazy = true },
   { "Decodetalkers/csharpls-extended-lsp.nvim" },
 }

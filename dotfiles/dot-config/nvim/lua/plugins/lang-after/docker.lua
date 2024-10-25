@@ -1,12 +1,9 @@
 return {
-  {
-    "nvim-treesitter",
-    opts = { ensure_installed = { "dockerfile" } },
-  },
-  {
-    "mason.nvim",
-    opts = { ensure_installed = { "hadolint" } },
-  },
+  require("util.lazy").ensure_installed({
+    treesitter = { "dockerfile" },
+    lint = { "hadolint" },
+    lsp = { "dockerls", "docker_compose_language_service" },
+  }),
   {
     "nvim-lint",
     opts = {
@@ -19,8 +16,8 @@ return {
     "nvim-lspconfig",
     opts = {
       servers = {
-        dockerls = { mason = not require("util.platform").is_linux_arm64() },
-        docker_compose_language_service = { mason = not require("util.platform").is_linux_arm64() },
+        dockerls = {},
+        docker_compose_language_service = {},
       },
     },
   },

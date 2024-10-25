@@ -6,23 +6,16 @@ local diagnostic_icons = {
 }
 return {
   {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-    build = ":MasonUpdate",
-    opts = {
-      registries = {
-        "github:xavierchanth/mason-registry",
-        "github:mason-org/mason-registry",
-      },
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
     dependencies = {
-      "mason.nvim",
-      { "williamboman/mason-lspconfig.nvim", config = function() end },
+      {
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = { "mason.nvim" },
+        opts = {
+          automatic_installation = false,
+        }
+      }
     },
     opts = {
       diagnostics = {
@@ -190,31 +183,8 @@ return {
         require("lspconfig")[server].setup(server_opts)
       end
 
-      -- Get all servers that are installed by mason
-      local all_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-
-      local ensure_installed = {}
-      for server, server_opts in pairs(servers) do
-        if server_opts then
-          server_opts = server_opts == true and {} or server_opts
-          if server_opts.enabled ~= false then
-            -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-            if server_opts.mason == false or not vim.tbl_contains(all_servers, server) then
-              setup(server)
-            else
-              ensure_installed[#ensure_installed + 1] = server
-            end
-          end
-        end
-      end
-
-      -- Everything else can be installed with mason
+      -- local ensure_installed = require("util.lazy").opts("mason-lspconfig.nvim").ensure_installed or {}
       require("mason-lspconfig").setup({
-        ensure_installed = vim.tbl_deep_extend(
-          "force",
-          ensure_installed,
-          require("util.lazy").opts("mason-lspconfig.nvim").ensure_installed or {}
-        ),
         handlers = { setup },
       })
     end,

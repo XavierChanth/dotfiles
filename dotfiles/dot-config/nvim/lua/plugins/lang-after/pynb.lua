@@ -35,5 +35,8 @@ return {
         desc = "Magma (ipynb) commands",
       }
     },
+    config = function()
+      -- vim.g.python3_host_prog = '/Users/chant/.dotfiles/.venv/bin/python'
+    end,
   }
 }

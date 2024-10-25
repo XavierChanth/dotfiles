@@ -1,8 +1,9 @@
 return {
-  {
-    "nvim-treesitter",
-    opts = { ensure_installed = { "cpp" } },
-  },
+  require("util.lazy").ensure_installed({
+    treesitter = { "cpp" },
+    conform  = { "gersemi" },
+    lsp = { "clangd" },
+  }),
   {
     "nvim-cmp",
     opts = function(_, opts)
@@ -44,7 +45,6 @@ return {
           capabilities = {
             offsetEncoding = { "utf-16" },
           },
-          mason = not require("util.platform").is_linux_arm64(),
           cmd = {
             "clangd",
             "--query-driver=/usr/bin/clang",

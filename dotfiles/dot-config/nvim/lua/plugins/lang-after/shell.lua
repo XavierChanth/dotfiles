@@ -1,10 +1,7 @@
 return {
-  {
-    "mason.nvim",
-    opts = {
-      ensure_installed = { "shfmt" },
-    },
-  },
+  require("util.lazy").ensure_installed({
+    conform = { "shfmt" },
+  }),
   {
     "conform.nvim",
     opts = {

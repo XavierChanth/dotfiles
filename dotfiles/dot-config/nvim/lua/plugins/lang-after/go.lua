@@ -1,12 +1,9 @@
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "go", "gomod", "gowork", "gosum" } },
-  },
-  {
-    "mason.nvim",
-    opts = { ensure_installed = { "goimports", "gofumpt" } },
-  },
+  require("util.lazy").ensure_installed({
+    treesitter = { "go", "gomod", "gowork", "gosum" },
+    conform = { "goimports", "gofumpt" },
+    lsp = { "gopls" },
+  }),
   {
     "conform.nvim",
     opts = {
@@ -20,7 +17,6 @@ return {
     opts = {
       servers = {
         gopls = {
-          mason = not require("util.platform").is_linux_arm64(),
           settings = {
             gopls = {
               gofumpt = true,

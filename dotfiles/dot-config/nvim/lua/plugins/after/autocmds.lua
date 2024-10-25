@@ -1,7 +1,7 @@
 local function setup()
   -- LazyVim's autocommands
   local function augroup(name)
-    return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+    return vim.api.nvim_create_augroup("base_" .. name, { clear = true })
   end
 
   -- Check if we need to reload the file when it changed
@@ -148,13 +148,12 @@ local function setup()
 
   -- My autocommands
 
-  local lazy_cmds = vim.api.nvim_create_augroup("lazy_cmds", { clear = true })
   local snapshot_dir = vim.fn.stdpath("data") .. "/plugin-snapshot"
   local lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json"
 
   -- LazyVim Snapshots on Update
   vim.api.nvim_create_autocmd("User", {
-    group = lazy_cmds,
+    group = augroup("lazy_cmds"),
     pattern = "LazyUpdatePre",
     desc = "Backup lazy.nvim lockfile",
     callback = function(_)
@@ -165,20 +164,23 @@ local function setup()
     end,
   })
   -- Browse Snapshots with :LazySnapshots
-  vim.api.nvim_create_user_command("LazySnapshots", "edit " .. snapshot_dir, {})
+      vim.api.nvim_create_user_command("LazySnapshots", "edit " .. snapshot_dir, {})
+
+  -- Format on save
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    group = augroup("autoformat"),
+    callback = function(event)
+      if vim.g.autoformat then
+        require("conform").format({ buf = event.buf, lsp_format = "fallback" })
+      end
+    end,
+  })
 
   -- Save without formatting
   vim.api.nvim_create_user_command("W", "lua vim.g.autoformat = false; vim.cmd.w(); vim.g.autoformat = true", {})
 
   -- Recognize .xaml as xml
   vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = { "*.xaml" }, command = "setf xml" })
-
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    group = vim.api.nvim_create_augroup("LazyFormat", {}),
-    callback = function(event)
-      require("conform").format({ buf = event.buf })
-    end,
-  })
 end
 
 if vim.fn.argc(-1) ~= 0 then

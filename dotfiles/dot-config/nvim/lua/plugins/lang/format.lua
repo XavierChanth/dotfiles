@@ -43,23 +43,6 @@ return {
     cmd = "ConformInfo",
     dependencies = { "mason.nvim" },
     opts = {
-      format_on_save = function(bufnr)
-        if vim.g.autoformat then
-          return
-        end
-
-        local ignore_filetypes = { "sql", "java" }
-        if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-          return
-        end
-
-        local bufname = vim.api.nvim_buf_get_name(bufnr)
-        if bufname:match("/node_modules/") then
-          return
-        end
-
-        return {}
-      end,
       default_format_opts = {
         timeout_ms = 3000,
         async = false,
@@ -74,6 +57,9 @@ return {
         prettier = { prepend_args = { "--prose-wrap", "always" } },
       },
     },
+    config = function()
+      require("mason-conform").setup()
+    end,
   },
   -- Setup prettier for a bunch of file types
   {
@@ -84,5 +70,13 @@ return {
         opts.formatters_by_ft[ft] = { "prettier" }
       end
     end,
+  },
+  {
+    "LittleEndianRoot/mason-conform",
+    dependencies = { "conform.nvim" },
+    opts = {
+      ensure_installed = { "prettier" },
+      automatic_installation = false,
+    },
   },
 }

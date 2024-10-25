@@ -1,4 +1,7 @@
 return {
+  require("util.lazy").ensure_installed({
+    lint = { "pymarkdownlnt" },
+  }),
   {
     "nvim-lint",
     opts = {

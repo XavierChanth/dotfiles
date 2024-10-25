@@ -1,4 +1,7 @@
 return {
+  require("util.lazy").ensure_installed({
+    lsp = { "yamlls" },
+  }),
   {
     "neovim/nvim-lspconfig",
     opts = {

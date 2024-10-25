@@ -159,6 +159,12 @@ if ! $LIGHT; then
 
   # sync nvim
   nvim --headless "+Lazy! sync" +qa
+  # Install python provider for nvim
+  (
+    uv venv
+    source .venv/bin/activate
+    uv pip install pynvim
+  )
 fi
 
 # Do a healthcheck to ensure that everything I want is installed
