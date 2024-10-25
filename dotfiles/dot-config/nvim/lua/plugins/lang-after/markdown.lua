@@ -32,6 +32,7 @@ return {
   -- Additional plugins
   {
     "edluffy/hologram.nvim",
+    ft = { "markdown", "norg", "rmd", "org" },
     opts = {
       auto_display = true,
     },

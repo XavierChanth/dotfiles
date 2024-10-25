@@ -74,9 +74,9 @@ return {
       },
     },
     keys = {
-      { "<leader><space>", telescope.git_files,           desc = "Git files" },
-      { "<leader>rr",      telescope.builtin("commands"), desc = "Run commands" },
-      { "<leader>sf",      telescope.find_files,          desc = "Find files" },
+      { "<leader><space>", telescope.git_files, desc = "Git files" },
+      { "<leader>rr", telescope.builtin("commands"), desc = "Run commands" },
+      { "<leader>sf", telescope.find_files, desc = "Find files" },
       {
         "<leader>sh",
         telescope.builtin("help_tags"),
@@ -150,25 +150,27 @@ return {
         end,
         desc = "Colorscheme with Preview",
       },
+    },
+  },
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    event = "VeryLazy",
+    dependencies = { "telescope.nvim" },
+    build = "make",
+    config = function()
+      require("telescope").load_extension("fzf")
+    end,
+  },
+  {
+    "debugloop/telescope-undo.nvim",
+    config = function()
+      require("telescope").load_extension("undo")
+    end,
+    keys = {
       {
         "<leader>su",
         "<cmd>Telescope undo<cr>",
         desc = "Undo history",
-      },
-    },
-    dependencies = {
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-        config = function()
-          require("telescope").load_extension("fzf")
-        end,
-      },
-      {
-        "debugloop/telescope-undo.nvim",
-        config = function()
-          require("telescope").load_extension("undo")
-        end,
       },
     },
   },
