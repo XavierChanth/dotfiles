@@ -9,21 +9,25 @@ case "$(uname)" in
     if command_exists brew; then
       echo "brew package manager found, installing packages for brew"
 
-      # core apps
-      brew install zen-browser google-chrome chromium qutebrowser neovide
+      # common apps
+      brew install zen-browser google-chrome chromium
       brew install zoom discord spotify
       brew install betterdisplay cleanshot unnaturalscrollwheels the-unarchiver
 
-      # desktop essentials
+      # qutebrowser and dependencies
+      brew install mpv qutebrowser
+
+      # desktop tools & ricing
       brew tap felixkratz/formulae
       brew install aerospace sketchybar
       brew install dmenu-mac bitwarden-cli oath-toolkit
 
       # terminal stuff
-      brew install wezterm asciinema visual-studio-code
+      brew install wezterm asciinema neovide
       brew install font-jetbrains-mono-nerd-font
+
+      # aerc and dependencies
       brew install aerc abook pandoc
-      brew install ffmpegthumbnailer unar poppler
     fi
     ;;
   Linux)

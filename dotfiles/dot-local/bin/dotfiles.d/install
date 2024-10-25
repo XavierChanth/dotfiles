@@ -57,6 +57,8 @@ case "$(uname)" in
       brew install gh jq yazi
     fi
 
+    # additional yazi dependencies
+    brew install ffmpegthumbnailer unar poppler
     $script_dir/configure-macos
     ;;
   Linux)

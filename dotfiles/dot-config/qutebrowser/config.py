@@ -58,6 +58,8 @@ c.aliases = {
     "w": "session-save",
     "wq": "quit --save",
     "wqa": "quit --save",
+    "mpv": "spawn --userscript mpv",
+    "bw": "spawn --userscript bitwarden",
 }
 c.bindings.commands = {
     "normal": {
@@ -80,10 +82,9 @@ c.bindings.commands = {
         "td": "config-cycle colors.webpage.darkmode.enabled true false",
         "tt": "config-cycle tabs.show switching always",
     },
-    "insert": {"<Ctrl-b>": "spawn --userscript bitwarden"},
 }
 c.colors.webpage.bg = "white"
-c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.darkmode.enabled = False
 c.colors.webpage.darkmode.threshold.background = 0
 c.colors.webpage.darkmode.threshold.foreground = 256
 c.content.autoplay = False
