@@ -10,13 +10,6 @@ return {
         end,
         desc = "Oil",
       },
-      {
-        "<leader>E",
-        function()
-          require("oil").open(require("util.root").git())
-        end,
-        desc = "Oil (root dir)",
-      },
     },
     opts = {
       columns = {

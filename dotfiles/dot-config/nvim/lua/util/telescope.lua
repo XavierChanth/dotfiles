@@ -31,14 +31,13 @@ end
 
 -- Finder that allows you to specify a regex filter
 function M.command.finder(opts)
-  local regex = opts.regex or ".*"
   return require("telescope.finders").new_table({
     results = (function()
       local command_iter = vim.api.nvim_get_commands({})
       local commands = {}
 
       for _, cmd in pairs(command_iter) do
-        if cmd.name:find(regex) ~= nil then
+        if opts.regex == nil or cmd.name:find(opts.regex) ~= nil then
           table.insert(commands, cmd)
         end
       end
@@ -49,7 +48,7 @@ function M.command.finder(opts)
         local buf_command_iter = vim.api.nvim_buf_get_commands(0, {})
         buf_command_iter[true] = nil -- remove the redundant entry
         for _, cmd in pairs(buf_command_iter) do
-          if cmd.name:find(regex) ~= nil then
+          if cmd.name:find(opts.regex) ~= nil then
             table.insert(commands, cmd)
           end
         end
@@ -111,6 +110,9 @@ function M.finder_from_table(t)
 end
 
 function M.builtin(builtin, opts)
+  if opts == nil then
+    return require("telescope.builtin")[builtin]
+  end
   return require("telescope.builtin")[builtin](opts)
 end
 
@@ -126,6 +128,7 @@ function M.git_files(opts)
 end
 
 function M.find_files(opts)
+  opts = opts or {}
   return M.builtin("find_files", opts)
 end
 

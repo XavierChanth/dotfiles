@@ -62,7 +62,7 @@ return {
           end
 
           map({
-            "<leader>ul",
+            "<leader>cl",
             "<cmd>LspInfo<cr>",
             desc = "Lsp Info",
           })

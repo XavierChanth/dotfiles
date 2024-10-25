@@ -74,72 +74,44 @@ return {
       },
     },
     keys = {
-      { "<leader><space>", telescope.git_files, desc = "Git files" },
-      { "<leader>ff", telescope.find_files, desc = "Find files" },
+      { "<leader><space>", telescope.git_files,           desc = "Git files" },
+      { "<leader>rr",      telescope.builtin("commands"), desc = "Run commands" },
+      { "<leader>sf",      telescope.find_files,          desc = "Find files" },
       {
         "<leader>sh",
-        function()
-          telescope.builtin("help_tags")
-        end,
+        telescope.builtin("help_tags"),
         desc = "Help Pages",
       },
       {
         "<leader>sk",
-        function()
-          telescope.builtin("keymaps")
-        end,
+        telescope.builtin("keymaps"),
         desc = "Key Maps",
       },
       {
         "<leader>sm",
-        function()
-          telescope.builtin("marks")
-        end,
-        desc = "Jump to Mark",
+        telescope.builtin("marks"),
+        desc = "Marks",
       },
       {
         "<leader>sg",
-        function()
-          telescope.builtin("live_grep")
-        end,
-        desc = "Grep (Root Dir)",
+        telescope.builtin("live_grep"),
+        desc = "Grep",
       },
       {
         "<leader>sc",
-        function()
-          telescope.builtin("resume")
-        end,
-        desc = "Continue (resume)",
+        telescope.builtin("resume"),
+        desc = "Continue",
       },
       {
         "<leader>ss",
-        function()
-          telescope.builtin("lsp_document_symbols")
-        end,
-        desc = "Goto Symbol",
+        telescope.builtin("lsp_document_symbols"),
+        desc = "Symbols (Buffer)",
       },
       {
         "<leader>sS",
-        function()
-          telescope.builtin("lsp_dynamic_workspace_symbols")
-        end,
-        desc = "Goto Symbol (Workspace)",
+        telescope.builtin("lsp_dynamic_workspace_symbols"),
+        desc = "Symbols (Workspace)",
       },
-      {
-        "<leader>fF",
-        function()
-          telescope.find_files({ cwd = vim.uv.cwd() })
-        end,
-        desc = "Find files",
-      },
-      {
-        "<leader>fb",
-        function()
-          telescope.builtin("buffers")
-        end,
-        desc = "Find buffers",
-      },
-      { "<leader>,", false },
       {
         "<leader>m",
         function()
@@ -179,9 +151,9 @@ return {
         desc = "Colorscheme with Preview",
       },
       {
-        "<leader>uh",
+        "<leader>su",
         "<cmd>Telescope undo<cr>",
-        desc = "undo history",
+        desc = "Undo history",
       },
     },
     dependencies = {

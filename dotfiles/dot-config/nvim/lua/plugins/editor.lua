@@ -54,19 +54,6 @@ return {
       },
     },
   },
-  {
-    "debugloop/telescope-undo.nvim",
-    keys = {
-      {
-        "<leader>uh",
-        "<cmd>Telescope undo<cr>",
-        desc = "undo history",
-      },
-    },
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
-  },
 
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -115,6 +102,8 @@ return {
       mappings = vim.tbl_filter(function(m)
         return m[1] and #m[1] > 0
       end, mappings)
+      keys = keys or {}
+      keys[#keys + 1] = { "gs", "", desc = "+surround" }
       return vim.list_extend(mappings, keys)
     end,
     opts = {

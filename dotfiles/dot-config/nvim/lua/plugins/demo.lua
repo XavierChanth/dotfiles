@@ -3,7 +3,7 @@ return {
     "mistricky/codesnap.nvim",
     keys = {
       {
-        "<leader>cs",
+        "<leader>us",
         function()
           local cs = require("codesnap")
           cs.copy_into_clipboard()
