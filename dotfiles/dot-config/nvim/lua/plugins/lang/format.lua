@@ -57,9 +57,6 @@ return {
         prettier = { prepend_args = { "--prose-wrap", "always" } },
       },
     },
-    config = function()
-      require("mason-conform").setup()
-    end,
   },
   -- Setup prettier for a bunch of file types
   {
@@ -73,6 +70,7 @@ return {
   },
   {
     "LittleEndianRoot/mason-conform",
+    event = "VeryLazy",
     dependencies = { "conform.nvim" },
     opts = {
       ensure_installed = { "prettier" },

@@ -51,7 +51,7 @@ function M.ensure_installed(spec)
   }
   for key, plugin in pairs(index) do
     if spec[key] ~= nil then
-      lazy_spec[#lazy_spec+1] = {
+      lazy_spec[#lazy_spec + 1] = {
         plugin,
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
@@ -65,8 +65,6 @@ function M.ensure_installed(spec)
   end
   return lazy_spec
 end
-
-
 
 setmetatable(M, {
   __index = function(_, k)

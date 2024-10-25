@@ -19,11 +19,12 @@ return {
           },
           stream = nil,
           ignore_exitcode = true,
-          ---@diagnostic disable-next-line: missing-fields
-          parser = require("lint.parser").from_errorformat("stdin:%l:%c: %m", {
-            source = "pymarkdownlnt",
-            severity = vim.diagnostic.severity.WARN,
-          }),
+          parser = function()
+            return require("lint.parser").from_errorformat("stdin:%l:%c: %m", {
+              source = "pymarkdownlnt",
+              severity = vim.diagnostic.severity.WARN,
+            })
+          end,
         },
       },
     },

@@ -11,11 +11,12 @@ return {
     dependencies = {
       {
         "williamboman/mason-lspconfig.nvim",
+        event = "VeryLazy",
         dependencies = { "mason.nvim" },
         opts = {
           automatic_installation = false,
-        }
-      }
+        },
+      },
     },
     opts = {
       diagnostics = {
@@ -29,8 +30,8 @@ return {
         },
         severity_sort = true,
       },
-      inlay_hints = { enabled = false, },
-      codelens = { enabled = false, },
+      inlay_hints = { enabled = false },
+      codelens = { enabled = false },
       capabilities = {
         workspace = {
           fileOperations = {

@@ -1,8 +1,5 @@
 # pyright: basic, reportUndefinedVariable=false, reportMissingImports=false
 import os
-
-from qutebrowser.api import interceptor
-
 import catppuccin
 
 # load your autoconfig, use this, if the rest of your config is empty!

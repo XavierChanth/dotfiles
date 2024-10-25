@@ -1,6 +1,6 @@
 return {
   require("util.lazy").ensure_installed({
-    treesitter = { "ninja", "rst" } ,
+    treesitter = { "ninja", "rst" },
     lsp = { "ruff", "basedpyright" },
   }),
   {

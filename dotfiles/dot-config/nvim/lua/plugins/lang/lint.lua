@@ -20,14 +20,13 @@ return {
               vim.schedule_wrap(require("lint").try_lint)()
             end)
           end
-        end
+        end,
       })
-
-      require("mason-nvim-lint").setup()
     end,
   },
   {
     "rshkarin/mason-nvim-lint",
+    event = "VeryLazy",
     dependencies = { "nvim-lint" },
     opts = {
       automatic_installation = false,
