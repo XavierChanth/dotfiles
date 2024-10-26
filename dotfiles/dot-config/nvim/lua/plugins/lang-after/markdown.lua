@@ -1,3 +1,5 @@
+local ft = { "markdown" }
+local ft_quarto = { "markdown", "quarto" }
 return {
   require("util.lazy").ensure_installed({
     lint = { "pymarkdownlnt" },
@@ -32,16 +34,16 @@ return {
   -- Additional plugins
   {
     "edluffy/hologram.nvim",
-    ft = { "markdown", "norg", "rmd", "org" },
+    ft = ft,
     opts = {
       auto_display = true,
     },
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "norg", "rmd", "org" },
+    ft = ft_quarto,
     opts = {
-      file_types = { "markdown", "norg", "rmd", "org" },
+      file_types = ft_quarto,
       code = {
         sign = false,
         width = "block",
@@ -59,6 +61,7 @@ return {
           require("render-markdown").toggle()
         end,
         desc = "Toggle Render markdown",
+        ft = ft_quarto,
       },
     },
   },
@@ -71,10 +74,10 @@ return {
     end,
     keys = {
       {
-        "<leader>cp",
-        ft = "markdown",
+        "<leader>u",
         "<cmd>MarkdownPreviewToggle<cr>",
         desc = "Markdown Preview",
+        ft = ft,
       },
     },
     config = function()
