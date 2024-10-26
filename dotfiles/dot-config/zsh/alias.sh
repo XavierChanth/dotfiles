@@ -5,8 +5,8 @@
 # it makes it so that you can use sudo with other aliases
 alias sudo='sudo '
 
-alias ls='ls --color'
-alias cat='bat'
+# alias ls='ls --color'
+# alias cat='bat'
 
 alias x64='arch -x86_64'
 alias s='source $HOME/.zshenv && source $HOME/.zshrc'
