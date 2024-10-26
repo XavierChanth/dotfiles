@@ -202,4 +202,28 @@ M.defaults = {
   },
 }
 
+function M.colorscheme(opts)
+  opts = opts or {}
+
+  local colors = require("util.colorscheme")
+  vim.notify(vim.inspect(colors))
+  M.builtin("colorscheme", {
+    finder = M.finder_from_table(colors.configured),
+    enable_preview = true,
+    attach_mappings = function(prompt_bufnr, _)
+      local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        colors.switch(action_state.get_selected_entry().value)
+        if opts.exit_on_done == true then
+          vim.schedule(vim.cmd.quit)
+        end
+      end)
+      return true
+    end,
+  })
+end
+
 return M

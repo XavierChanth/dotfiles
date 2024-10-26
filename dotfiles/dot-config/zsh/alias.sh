@@ -13,6 +13,7 @@ alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias v='nvim'
+alias color="nvim --cmd 'lua vim.g.no_dashboard=true' -c 'lua require(\"util.telescope\").colorscheme({ exit_on_done = true })'"
 
 t() {
   if [ $# -gt 0 ]; then

@@ -131,23 +131,7 @@ return {
       },
       {
         "<leader>uc",
-        function()
-          local colors = require("util.colorscheme")
-          telescope.builtin("colorscheme", {
-            finder = require("util.telescope").finder_from_table(colors.configured),
-            enable_preview = true,
-            attach_mappings = function(prompt_bufnr, _)
-              local actions = require("telescope.actions")
-              local action_state = require("telescope.actions.state")
-
-              actions.select_default:replace(function()
-                actions.close(prompt_bufnr)
-                colors.switch(action_state.get_selected_entry().value)
-              end)
-              return true
-            end,
-          })
-        end,
+        require("util.telescope").colorscheme,
         desc = "Colorscheme with Preview",
       },
     },

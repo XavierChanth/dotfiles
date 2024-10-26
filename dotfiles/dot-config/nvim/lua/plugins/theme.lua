@@ -5,6 +5,7 @@ return {
     "nvimdev/dashboard-nvim",
     cmd = "Dashboard",
     lazy = false,
+    cond = not (vim.g.no_dashboard or false),
     opts = function()
       if vim.o.filetype == "lazy" then
         vim.api.nvim_create_autocmd("WinClosed", {
