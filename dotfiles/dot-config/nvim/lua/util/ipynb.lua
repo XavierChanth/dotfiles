@@ -47,31 +47,6 @@ local function new_notebook(filename)
   end
 end
 
-function M.select_kernel(opts)
-  opts = opts or {}
-  opts.kernels = opts.kernels or {}
-
-  require("telescope.pickers")
-    .new(opts, {
-      prompt_title = "Select Kernel",
-      finder = require("util.telescope").finder_from_table(opts.kernels),
-      sorter = require("telescope.config").values.generic_sorter(opts),
-      attach_mappings = function(prompt_bufnr, _)
-        local actions = require("telescope.actions")
-        local action_state = require("telescope.actions.state")
-        actions.select_default:replace(function()
-          actions.close(prompt_bufnr)
-          local choice = action_state.get_selected_entry()[1]
-          vim.cmd("MoltenInit " .. choice)
-          vim.schedule(vim.cmd.startinsert)
-        end)
-
-        return true
-      end,
-    })
-    :find()
-end
-
 function M.autocmd()
   vim.api.nvim_create_user_command("NewNotebook", function(opts)
     new_notebook(opts.args)
@@ -80,4 +55,94 @@ function M.autocmd()
     complete = "file",
   })
 end
+
+function M.buf_enter(event)
+  local map = function(keymap)
+    keymap.mode = keymap.mode or "n"
+    vim.keymap.set(keymap.mode, keymap[1], keymap[2], { buffer = event.buf, desc = "ipynb: " .. keymap.desc })
+  end
+  map({
+    "<localleader>k",
+    function()
+      vim.cmd("MoltenInit")
+    end,
+    desc = "kernel",
+    silent = true,
+  })
+  map({
+    "<localleader>i",
+    function()
+      vim.cmd("MoltenInfo")
+    end,
+    desc = "info",
+    silent = true,
+  })
+  map({
+    "<localleader>p",
+    function()
+      require("quarto").quartoPreview()
+    end,
+    desc = "run cell",
+    silent = true,
+  })
+
+  map({
+    "<localleader>r",
+    function()
+      require("quarto.runner").run_cell()
+    end,
+    desc = "run cell",
+    silent = true,
+  })
+  map({
+    "<localleader>l",
+    function()
+      require("quarto.runner").run_line()
+    end,
+    desc = "run line",
+    silent = true,
+  })
+  map({
+    "<localleader>a",
+    function()
+      require("quarto.runner").run_all()
+    end,
+    desc = "run all cells",
+    silent = true,
+  })
+  map({
+    "<localleader>A",
+    function()
+      require("quarto.runner").run_all(true)
+    end,
+    desc = "run all cells of all languages",
+    silent = true,
+  })
+  map({
+    "<localleader>s",
+    function()
+      vim.cmd("MoltenSave")
+    end,
+    desc = "save output",
+    silent = true,
+  })
+  map({
+    "<localleader>o",
+    function()
+      vim.cmd("MoltenLoad")
+    end,
+    desc = "open output",
+    silent = true,
+  })
+  map({
+    "gr",
+    function()
+      require("quarto.runner").run_range()
+    end,
+    desc = "run visual range",
+    silent = true,
+    mode = "v",
+  })
+end
+
 return M

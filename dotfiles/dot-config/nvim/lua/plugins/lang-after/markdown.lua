@@ -33,13 +33,6 @@ return {
   },
   -- Additional plugins
   {
-    "edluffy/hologram.nvim",
-    ft = ft,
-    opts = {
-      auto_display = true,
-    },
-  },
-  {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = ft_quarto,
     opts = {
