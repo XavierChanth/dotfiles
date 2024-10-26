@@ -42,6 +42,8 @@ return {
         opts = { buffer = true, expr = true },
       },
     },
+    templates = { folder = "templates" },
+    attachments = { img_folder = "attachments" },
     note_id_func = function(title)
       return title
     end,
