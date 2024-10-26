@@ -129,7 +129,7 @@ local function setup()
               and path
               and vim.fn.getfsize(path) > vim.g.bigfile_size
               and "bigfile"
-              or nil
+            or nil
         end,
       },
     },
@@ -164,7 +164,7 @@ local function setup()
     end,
   })
   -- Browse Snapshots with :LazySnapshots
-      vim.api.nvim_create_user_command("LazySnapshots", "edit " .. snapshot_dir, {})
+  vim.api.nvim_create_user_command("LazySnapshots", "edit " .. snapshot_dir, {})
 
   -- Format on save
   vim.api.nvim_create_autocmd("BufWritePre", {
@@ -191,5 +191,7 @@ else
     callback = setup,
   })
 end
+
+require("util.ipynb").autocmd()
 
 return {}

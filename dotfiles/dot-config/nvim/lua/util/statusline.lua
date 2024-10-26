@@ -84,6 +84,13 @@ local function pretty_path(opts)
   end
 end
 
+local function python_kernel()
+  if require("util.lazy").is_loaded("molten-nvim") then
+    return require("molten.status").kernels()
+  end
+  return ""
+end
+
 -- From LazyVim's UI settings
 local command_component = function()
   ---@diagnostic disable-next-line: undefined-field
@@ -174,6 +181,7 @@ local statuslines = {
           lualine_y = {
             "diagnostics",
             lsp_component,
+            python_kernel,
             "filetype",
           },
           lualine_z = {
@@ -207,6 +215,7 @@ local statuslines = {
             command_component,
             mode_component,
             "diagnostics",
+            python_kernel,
             "filetype_lsp",
             "progress",
           },
