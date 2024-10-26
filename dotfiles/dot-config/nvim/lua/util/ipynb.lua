@@ -61,6 +61,7 @@ function M.buf_enter(event)
     keymap.mode = keymap.mode or "n"
     vim.keymap.set(keymap.mode, keymap[1], keymap[2], { buffer = event.buf, desc = "ipynb: " .. keymap.desc })
   end
+
   map({
     "<localleader>k",
     function()
@@ -121,6 +122,7 @@ function M.buf_enter(event)
   map({
     "<localleader>s",
     function()
+      vim.cmd("MoltenExportOutput")
       vim.cmd("MoltenSave")
     end,
     desc = "save output",

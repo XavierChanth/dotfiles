@@ -1,4 +1,7 @@
 local keygroup = vim.api.nvim_create_augroup("MoltenKeys", { clear = true })
+local function create_reloadgroup()
+  return vim.api.nvim_create_augroup("MoltenReload", { clear = true })
+end
 
 -- Manual installation steps
 -- 1. First time setup (Do once)
@@ -17,7 +20,6 @@ local keygroup = vim.api.nvim_create_augroup("MoltenKeys", { clear = true })
 return {
   {
     "GCBallesteros/jupytext.nvim",
-    event = "BufReadPre *.ipynb",
     opts = {
       style = "quarto",
       output_extension = "qmd",
@@ -72,6 +74,7 @@ return {
       vim.g.molten_virt_lines_off_by_1 = true
       vim.g.magma_image_provider = "wezterm"
       vim.g.molten_auto_image_popup = true
+      vim.api.nvim_set_hl(0, "MoltenOutputBorder", { link = "Comment" })
     end,
     config = function()
       vim.api.nvim_create_autocmd("User", {
@@ -82,6 +85,7 @@ return {
       })
 
       vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*.ipynb",
         group = keygroup,
         callback = require("util.ipynb").buf_enter,
       })

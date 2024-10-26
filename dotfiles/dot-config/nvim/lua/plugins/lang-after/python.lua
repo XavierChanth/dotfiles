@@ -45,6 +45,19 @@ return {
             end,
           })
         end,
+        basedpyright = function()
+          vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(event)
+              local filename = vim.api.nvim_buf_get_name(event.buf)
+              local ft = vim.api.nvim_buf_get_var(event.buf, "filetype")
+              local client = vim.lsp.get_client_by_id(event.data.client_id)
+              if client and (ft == "quarto" or #filename:match("*.ipynb") > 0) then
+                --FIXME
+                client.settings.basedpyright.analysis.diagnosticSeverityOverrides.reportUnusedExpression = "none"
+              end
+            end,
+          })
+        end,
       },
     },
   },
