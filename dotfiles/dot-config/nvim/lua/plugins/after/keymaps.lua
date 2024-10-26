@@ -38,7 +38,7 @@ map("n", "<leader>bb", "<cmd>e#<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
 map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
-map("n", "<leader>br", "<cmd>e!<cr>", { desc = "Reload buffer" })
+map("n", "<leader>br", "<cmd>e<cr>", { desc = "Reload buffer" })
 
 -- WINDOWS
 map("n", "<leader>w", "<c-w>", { desc = "Windows", remap = true })
