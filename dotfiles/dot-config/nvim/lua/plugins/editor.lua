@@ -11,25 +11,25 @@ return {
       return {
         -- From LazyVim, with modifications
         custom_textobjects = {
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),       -- class
-          o = ai.gen_spec.treesitter({                                                  -- code block
-            a = { "@block.outer", "@conditional.outer", "@loop.outer" },                --
-            i = { "@block.inner", "@conditional.inner", "@loop.inner" },                --
-          }),                                                                           --
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+          o = ai.gen_spec.treesitter({ -- code block
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" }, --
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" }, --
+          }), --
           f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-          u = ai.gen_spec.function_call(),                                              -- u for "Usage"
-          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }),                    -- without dot in function name
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },           -- tags
-          d = { "%f[%d]%d+" },                                                          -- digits
-          i = extra.gen_ai_spec.indent(),                                               -- indent
-          g = extra.gen_ai_spec.buffer(),                                               -- buffer
-          e = {                                                                         -- Word with case
+          u = ai.gen_spec.function_call(), -- u for "Usage"
+          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+          d = { "%f[%d]%d+" }, -- digits
+          i = extra.gen_ai_spec.indent(), -- indent
+          g = extra.gen_ai_spec.buffer(), -- buffer
+          e = { -- Word with case
             { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
             "^().*()$",
           },
         },
       }
-    end
+    end,
   },
 
   {
@@ -91,12 +91,12 @@ return {
       -- Populate the keys based on the user's options
       local opts = require("util.lazy").opts("mini.surround")
       local mappings = {
-        { opts.mappings.add,            desc = "Add Surrounding",                     mode = { "n", "v" } },
-        { opts.mappings.delete,         desc = "Delete Surrounding" },
-        { opts.mappings.find,           desc = "Find Right Surrounding" },
-        { opts.mappings.find_left,      desc = "Find Left Surrounding" },
-        { opts.mappings.highlight,      desc = "Highlight Surrounding" },
-        { opts.mappings.replace,        desc = "Replace Surrounding" },
+        { opts.mappings.add, desc = "Add Surrounding", mode = { "n", "v" } },
+        { opts.mappings.delete, desc = "Delete Surrounding" },
+        { opts.mappings.find, desc = "Find Right Surrounding" },
+        { opts.mappings.find_left, desc = "Find Left Surrounding" },
+        { opts.mappings.highlight, desc = "Highlight Surrounding" },
+        { opts.mappings.replace, desc = "Replace Surrounding" },
         { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
       }
       mappings = vim.tbl_filter(function(m)
@@ -108,12 +108,12 @@ return {
     end,
     opts = {
       mappings = {
-        add = "gsa",            -- Add surrounding in Normal and Visual modes
-        delete = "gsd",         -- Delete surrounding
-        find = "gsf",           -- Find surrounding (to the right)
-        find_left = "gsF",      -- Find surrounding (to the left)
-        highlight = "gsh",      -- Highlight surrounding
-        replace = "gsr",        -- Replace surrounding
+        add = "gsa", -- Add surrounding in Normal and Visual modes
+        delete = "gsd", -- Delete surrounding
+        find = "gsf", -- Find surrounding (to the right)
+        find_left = "gsF", -- Find surrounding (to the left)
+        highlight = "gsh", -- Highlight surrounding
+        replace = "gsr", -- Replace surrounding
         update_n_lines = "gsn", -- Update `n_lines`
       },
     },
