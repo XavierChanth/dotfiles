@@ -47,11 +47,9 @@ return {
         basedpyright = function()
           vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(event)
-              local filename = vim.api.nvim_buf_get_name(event.buf)
               local ft = vim.api.nvim_buf_get_var(event.buf, "filetype")
               local client = vim.lsp.get_client_by_id(event.data.client_id)
-              if client and (ft == "quarto" or #filename:match("*.ipynb") > 0) then
-                --FIXME
+              if client and not ft then
                 client.settings.basedpyright.analysis.diagnosticSeverityOverrides.reportUnusedExpression = "none"
               end
             end,
@@ -63,17 +61,27 @@ return {
   -- Additional plugins
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp", -- Use this branch for the new version
+    branch = "regexp",
+    ft = "python",
     cmd = "VenvSelect",
+    keys = {
+      { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" },
+    },
     opts = {
       settings = {
         options = {
-          notify_user_on_venv_activation = true,
+          on_venv_activate_callback = nil, -- callback function for after a venv activates
+          enable_default_searches = true, -- switches all default searches on/off
+          enable_cached_venvs = true, -- use cached venvs that are activated automatically when a python file is registered with the LSP.
+          cached_venv_automatic_activation = false, -- if set to false, the VenvSelectCached command becomes available to manually activate them.
+          activate_venv_in_terminal = true, -- activate the selected python interpreter in terminal windows opened from neovim
+          set_environment_variables = true, -- sets VIRTUAL_ENV or CONDA_PREFIX environment variables
+          notify_user_on_venv_activation = true, -- notifies user on activation of the virtual env
+          search_timeout = 5, -- if a search takes longer than this many seconds, stop it and alert the user
+          fd_binary_name = "fd", -- plugin looks for `fd` or `fdfind` but you can set something else here
+          require_lsp_activation = false, -- require activation of an lsp before setting env variables
         },
       },
     },
-    --  Call config for python files and load the cached venv automatically
-    ft = "python",
-    keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
   },
 }

@@ -54,7 +54,7 @@ Darwin)
     # programming languages
     brew install uv python cmake golang rust dotnet-sdk
     # extra tools
-    brew install gh jq yazi tokei
+    brew install gh jq yazi tokei quarto
   fi
 
   # additional yazi dependencies

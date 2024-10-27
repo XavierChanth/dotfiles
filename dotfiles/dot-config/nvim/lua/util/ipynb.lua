@@ -67,7 +67,7 @@ function M.buf_enter(event)
     function()
       vim.cmd("MoltenInit")
     end,
-    desc = "kernel",
+    desc = "select kernel",
     silent = true,
   })
   map({
@@ -147,4 +147,14 @@ function M.buf_enter(event)
   })
 end
 
+function M.buf_delete(event)
+  -- nasty, but otter is hardcoded... so what can you really do...
+  local current = vim.api.nvim_get_current_buf
+  ---@diagnostic disable-next-line: duplicate-set-field
+  vim.api.nvim_get_current_buf = function()
+    return event.buf
+  end
+  require("otter").deactivate()
+  vim.api.nvim_get_current_buf = current
+end
 return M
