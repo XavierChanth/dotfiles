@@ -27,8 +27,13 @@ case "$(uname)" in
       brew install font-jetbrains-mono-nerd-font
 
       # aerc and dependencies
-      brew install aerc abook pandoc msmtp isync notmuch
-      # brew services start isync # we will let aerc manage isync
+      if command_exists aerc; then
+        brew reinstall aerc
+      else
+        brew install aerc --HEAD
+      fi
+      brew install abook pandoc msmtp isync notmuch
+      # brew services start isync # we will let aerc manage syncing
     fi
     ;;
   Linux)
