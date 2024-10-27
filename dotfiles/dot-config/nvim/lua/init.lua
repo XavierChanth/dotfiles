@@ -22,14 +22,14 @@ require("lazy").setup({
     { import = "plugins" },
     { import = "plugins.lang" },
     { import = "plugins.lang-after" },
-    { import = "plugins.after" },
+    { import = "plugins.last" },
   },
+  checker = { enabled = false }, -- disable check for updates
+  change_detection = { enabled = false },
   defaults = {
     lazy = true,
     version = "*",
   },
-  ui = { border = "rounded" },
-  checker = { enabled = false }, -- disable check for updates
   performance = {
     rtp = {
       -- disable some rtp plugins
@@ -44,5 +44,9 @@ require("lazy").setup({
         "zipPlugin",
       },
     },
+  },
+  ui = {
+    border = "rounded",
+    size = { width = 0.85, height = 0.85 },
   },
 })

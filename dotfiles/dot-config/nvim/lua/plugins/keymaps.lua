@@ -1,8 +1,3 @@
--- which-key entries
-if vim.g.vscode then
-  return {}
-end
-
 local map = vim.keymap.set
 
 -- RESETS - modifies default keys with preferred behavior
@@ -54,6 +49,19 @@ map("n", "<leader>td", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 map("n", "<leader>th", "<cmd>tabnext -1<cr>", { desc = "Tab Left" })
 map("n", "<leader>tl", "<cmd>tabnext<cr>", { desc = "Tab Right" })
+
+-- TERMINAL
+map("t", "<S-Space>", "<Space>", { desc = "which_key_ignore", noremap = true })
+map("t", "<c-_>", "<cmd>close<cr>", { desc = "Terminal (Close)" })
+map("n", "<c-_>", function()
+  require("util.terminal").toggle_terminal()
+end, { desc = "Terminal" })
+map("n", "<leader>E", function()
+  require("util.terminal").terminal("yazi", {})
+end, { desc = "Open Yazi" })
+map("n", "<leader>gg", function()
+  require("util.lazygit").lazygit()
+end, { desc = "Lazygit" })
 
 -- UNDO BREAKING POINTS
 map("i", ",", ",<c-g>u")

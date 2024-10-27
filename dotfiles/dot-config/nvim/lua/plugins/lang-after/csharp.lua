@@ -1,7 +1,8 @@
 return {
+  -- ft = "cs",
   require("util.lazy").ensure_installed({
     treesitter = { "c_sharp" },
-    conform  = { "csharpier" },
+    conform = { "csharpier" },
     lsp = { "omnisharp", "csharp_ls" },
   }),
   {
@@ -48,6 +49,6 @@ return {
     },
   },
   -- Additional plugins
-  { "Hoffs/omnisharp-extended-lsp.nvim",       lazy = true },
+  { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
   { "Decodetalkers/csharpls-extended-lsp.nvim" },
 }

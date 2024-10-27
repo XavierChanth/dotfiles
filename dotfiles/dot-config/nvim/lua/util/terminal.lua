@@ -1,6 +1,6 @@
 local M = {}
 
----@type Terminal[]
+---@type LazyFloat[]
 local terminals = {}
 
 M.get_terminals = function()
@@ -12,7 +12,7 @@ function M.remove_terminal_entry(cwd)
   for index, terminal in pairs(terminals) do
     if #index == #cwd and index == cwd then
       terminals[index] = nil
-      terminal:shutdown()
+      terminal:close({ wipe = true })
       if #last == #cwd and last == cwd then
         last = nil
       end
@@ -25,24 +25,27 @@ function M.terminal(cmd, opts)
   if opts.cwd == nil then
     opts.cwd = require("util.root").git(opts)
   end
-  local toggleterm = require("toggleterm.terminal").Terminal
+  if cmd == nil then
+    last = opts.cwd
+  end
+  local term = require("util.lazy")
   local existing = terminals[cmd or opts.cwd]
   if existing ~= nil then
+    existing:on("BufEnter", function()
+      vim.fn.feedkeys("a", "normal")
+    end, { once = true })
     existing:toggle()
     return
   end
 
-  local terminal = toggleterm:new({
-    cmd = cmd,
-    dir = opts.cwd or require("util.root").git(),
-    on_open = function()
-      if cmd == nil then
-        last = opts.cwd
-      end
-    end,
+  ---@type LazyFloat
+  local terminal = term.float_term(cmd, {
+    cwd = opts.cwd or require("util.root").git(),
+    persistent = true,
   })
+
+  terminal:show()
   terminals[cmd or opts.cwd] = terminal
-  terminal:toggle()
 end
 
 function M.open_oil_terminal()

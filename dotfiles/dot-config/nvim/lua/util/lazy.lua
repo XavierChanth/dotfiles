@@ -59,11 +59,16 @@ function M.ensure_installed(spec)
             table.insert(opts.ensure_installed, i)
           end
           return opts
-        end
+        end,
       }
     end
   end
   return lazy_spec
+end
+
+---@return LazyFloat
+function M.float_term(...)
+  return require("lazy.util").float_term(...)
 end
 
 setmetatable(M, {

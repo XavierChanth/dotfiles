@@ -1,7 +1,8 @@
 return {
+  -- ft = { "c", "h", "cpp", "hpp", "cmake" },
   require("util.lazy").ensure_installed({
     treesitter = { "cpp" },
-    conform  = { "gersemi" },
+    conform = { "gersemi" },
     lsp = { "clangd" },
   }),
   {

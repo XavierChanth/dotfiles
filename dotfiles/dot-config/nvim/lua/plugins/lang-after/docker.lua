@@ -1,4 +1,5 @@
 return {
+  -- ft = "dockerfile",
   require("util.lazy").ensure_installed({
     treesitter = { "dockerfile" },
     lint = { "hadolint" },

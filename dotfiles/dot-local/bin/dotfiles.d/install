@@ -54,7 +54,7 @@ case "$(uname)" in
       # programming languages
       brew install uv python cmake golang rust dotnet-sdk
       # extra tools
-      brew install gh jq yazi
+      brew install gh jq yazi tokei
     fi
 
     # additional yazi dependencies
