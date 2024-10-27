@@ -1,6 +1,5 @@
 local M = {}
 
----@type LazyFloat[]
 local terminals = {}
 
 M.get_terminals = function()
@@ -9,15 +8,50 @@ end
 local last = nil
 
 function M.remove_terminal_entry(cwd)
-  for index, terminal in pairs(terminals) do
+  for index, term in pairs(terminals) do
     if #index == #cwd and index == cwd then
+      term.terminal:close({ wipe = true })
       terminals[index] = nil
-      terminal:close({ wipe = true })
       if #last == #cwd and last == cwd then
         last = nil
       end
     end
   end
+end
+
+function M.try_existing(existing)
+  local terminal = existing.terminal
+  if terminal ~= nil and terminal:buf_valid() then
+    terminal:on("BufEnter", function()
+      vim.fn.feedkeys("a", "normal")
+    end, { once = true })
+    terminal:toggle()
+    return true
+  end
+  return false
+end
+
+function M.create_new_term(cmd, opts)
+  local terminal = require("util.lazy").float_term(cmd, {
+    cwd = opts.cwd or require("util.root").git(),
+    persistent = true,
+  })
+
+  terminal:show()
+  terminals[cmd or opts.cwd] = {
+    cmd = cmd,
+    terminal = terminal,
+    opts = opts,
+  }
+end
+
+function M.existing_terminal(index)
+  local existing = terminals[index]
+  if existing and M.try_existing(existing) then
+    return
+  end
+
+  M.create_new_term(existing.cmd, existing.opts)
 end
 
 function M.terminal(cmd, opts)
@@ -28,24 +62,12 @@ function M.terminal(cmd, opts)
   if cmd == nil then
     last = opts.cwd
   end
-  local term = require("util.lazy")
   local existing = terminals[cmd or opts.cwd]
-  if existing ~= nil and existing:buf_valid() then
-    existing:on("BufEnter", function()
-      vim.fn.feedkeys("a", "normal")
-    end, { once = true })
-    existing:toggle()
+  if existing and M.try_existing(existing) then
     return
   end
 
-  ---@type LazyFloat
-  local terminal = term.float_term(cmd, {
-    cwd = opts.cwd or require("util.root").git(),
-    persistent = true,
-  })
-
-  terminal:show()
-  terminals[cmd or opts.cwd] = terminal
+  M.create_new_term(cmd, opts)
 end
 
 function M.open_oil_terminal()

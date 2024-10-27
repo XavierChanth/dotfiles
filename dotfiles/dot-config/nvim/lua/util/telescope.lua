@@ -81,14 +81,15 @@ function M.terminals(opts)
       prompt_title = "Terminals",
       finder = M.finder_from_table(terminals),
       sorter = require("telescope.config").values.generic_sorter(opts),
+      initial_mode = "normal",
       attach_mappings = function(prompt_bufnr, map)
         local actions = require("telescope.actions")
         local action_state = require("telescope.actions.state")
 
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
-          local cwd = action_state.get_selected_entry()[1]
-          util.terminal(nil, { cwd = cwd })
+          local item = action_state.get_selected_entry()[1]
+          util.existing_terminal(item)
           vim.schedule(vim.cmd.startinsert)
         end)
         local function delete_from_telescope()
