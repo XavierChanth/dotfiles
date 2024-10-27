@@ -16,6 +16,28 @@ local keygroup = vim.api.nvim_create_augroup("MoltenKeys", { clear = true })
 
 return {
   {
+    "nvim-lspconfig",
+    opts = {
+      on_attach = {
+        basedpyright = function(client, event)
+          if event.match:match("ipynb.otter") then
+            client.config.settings.basedpyright = vim.tbl_deep_extend("force", client.config.settings.basedpyright, {
+              analysis = { diagnosticSeverityOverrides = { reportUnusedExpression = "none" } },
+            })
+          end
+        end,
+      },
+    },
+  },
+  {
+    "conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        quarto = { "injected" },
+      },
+    },
+  },
+  {
     "benlubas/molten-nvim",
     ft = "ipynb",
     build = ":UpdateRemotePlugins",

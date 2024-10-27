@@ -31,31 +31,15 @@ return {
           },
         },
       },
-      setup = {
-        ruff = function()
-          vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(event)
-              local client = vim.lsp.get_client_by_id(event.data.client_id)
-              if client then
-                vim.opt_local.shiftwidth = 4
-                -- Disable hover in favor of Pyright
-                client.server_capabilities.hoverProvider = false
-              end
-            end,
-          })
-        end,
-        basedpyright = function()
-          vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(event)
-              local ft = vim.api.nvim_buf_get_var(event.buf, "filetype")
-              local client = vim.lsp.get_client_by_id(event.data.client_id)
-              if client and not ft then
-                client.settings.basedpyright.analysis.diagnosticSeverityOverrides.reportUnusedExpression = "none"
-              end
-            end,
-          })
+      on_attach = {
+        ruff = function(client, event)
+          vim.api.nvim_buf_set_var(event.buf, "shiftwidth", 4)
+          -- Disable hover in favor of Pyright
+          client.server_capabilities.hoverProvider = false
         end,
       },
+      -- if you set an on_attach for basedpyright here make sure
+      -- it doesn't override / get overridden by ipynb config
     },
   },
   -- Additional plugins

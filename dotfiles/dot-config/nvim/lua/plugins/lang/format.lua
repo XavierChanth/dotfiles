@@ -63,7 +63,27 @@ return {
         lsp_format = "fallback",
       },
       formatters = {
-        injected = {},
+        injected = {
+          options = {
+            ignore_errors = false,
+            lang_to_ext = {
+              bash = "sh",
+              c_sharp = "cs",
+              elixir = "exs",
+              javascript = "js",
+              julia = "jl",
+              latex = "tex",
+              markdown = "md",
+              python = "py",
+              ruby = "rb",
+              rust = "rs",
+              teal = "tl",
+              r = "r",
+              typescript = "ts",
+            },
+            lang_to_formatters = {},
+          },
+        },
         condition = function(_, ctx)
           return M.has_parser(ctx)
         end,
