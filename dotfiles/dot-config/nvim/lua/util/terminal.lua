@@ -30,7 +30,7 @@ function M.terminal(cmd, opts)
   end
   local term = require("util.lazy")
   local existing = terminals[cmd or opts.cwd]
-  if existing ~= nil then
+  if existing ~= nil and existing:buf_valid() then
     existing:on("BufEnter", function()
       vim.fn.feedkeys("a", "normal")
     end, { once = true })

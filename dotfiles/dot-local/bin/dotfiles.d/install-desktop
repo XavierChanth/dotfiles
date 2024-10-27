@@ -32,6 +32,7 @@ case "$(uname)" in
       else
         brew install aerc --HEAD
       fi
+      # aerc dependencies
       brew install abook pandoc msmtp isync notmuch
       # brew services start isync # we will let aerc manage syncing
     fi
