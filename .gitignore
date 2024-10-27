@@ -2,6 +2,7 @@
 
 # Hidden files
 .zshenv
+.notebook-test
 
 # Lock files
 Brewfile.lock.json
