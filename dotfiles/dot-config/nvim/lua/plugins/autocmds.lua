@@ -1,3 +1,6 @@
+local snapshot_dir = vim.fn.stdpath("data") .. "/plugin-snapshot"
+local lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json"
+
 local function setup()
   -- LazyVim's autocommands
   local function augroup(name)
@@ -92,7 +95,7 @@ local function setup()
   -- wrap and check for spell in text filetypes
   vim.api.nvim_create_autocmd("FileType", {
     group = augroup("wrap_spell"),
-    pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+    pattern = { "text", "plaintex", "typst", "gitcommit", "markdown", "quarto" },
     callback = function()
       vim.opt_local.wrap = true
       vim.opt_local.spell = true
@@ -135,6 +138,7 @@ local function setup()
     },
   })
 
+  -- Handle large files
   vim.api.nvim_create_autocmd({ "FileType" }, {
     group = augroup("bigfile"),
     pattern = "bigfile",
@@ -145,11 +149,6 @@ local function setup()
       end)
     end,
   })
-
-  -- My autocommands
-
-  local snapshot_dir = vim.fn.stdpath("data") .. "/plugin-snapshot"
-  local lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json"
 
   -- LazyVim Snapshots on Update
   vim.api.nvim_create_autocmd("User", {
@@ -165,19 +164,6 @@ local function setup()
   })
   -- Browse Snapshots with :LazySnapshots
   vim.api.nvim_create_user_command("LazySnapshots", "edit " .. snapshot_dir, {})
-
-  -- Format on save
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    group = augroup("autoformat"),
-    callback = function(event)
-      if vim.g.autoformat then
-        require("conform").format({ buf = event.buf, lsp_format = "fallback" })
-      end
-    end,
-  })
-
-  -- Save without formatting
-  vim.api.nvim_create_user_command("W", "lua vim.g.autoformat = false; vim.cmd.w(); vim.g.autoformat = true", {})
 
   -- Recognize .xaml as xml
   vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = { "*.xaml" }, command = "setf xml" })

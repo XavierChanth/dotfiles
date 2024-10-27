@@ -3,7 +3,6 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = "\\"
 
-g.autoformat = true
 g.deprecation_warnings = false -- Hide deprecation warnings
 g.markdown_recommended_style = 0
 g.bigfile_size = 1024 * 1024 * 1.5 -- 1.5 MB
@@ -20,6 +19,7 @@ if vim.env.SSH_TTY and not vim.env.TMUX then
   opt.clipboard = ""
 end
 opt.grepprg = "rg --vimgrep"
+opt.grepformat = "%f:%l:%c:%m"
 
 -- CURSOR
 opt.cursorline = true
@@ -71,9 +71,7 @@ opt.wrap = false -- Disable line wrap
 opt.foldlevel = 99
 
 -- FORMATTING
-opt.formatexpr = "v:lua.require'conform'.formatexpr()"
 opt.formatoptions = "jcroqlnt"
-opt.grepformat = "%f:%l:%c:%m"
 
 -- CMP
 opt.pumblend = 10

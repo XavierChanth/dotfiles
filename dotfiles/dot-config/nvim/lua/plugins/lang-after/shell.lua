@@ -1,12 +1,23 @@
 return {
   require("util.lazy").ensure_installed({
+    lint = { "shellcheck" },
     conform = { "shfmt" },
   }),
   {
     "conform.nvim",
     opts = {
-      formatters = {
-        shfmt = { prepend_args = { "-i", "2", "-ci" } },
+      formatters_by_ft = {
+        sh = { "shfmt" },
+        zsh = { "shfmt" },
+      },
+    },
+  },
+  {
+    "nvim-lint",
+    opts = {
+      linters_by_ft = {
+        sh = { "shellcheck" },
+        zsh = { "shfmt" },
       },
     },
   },

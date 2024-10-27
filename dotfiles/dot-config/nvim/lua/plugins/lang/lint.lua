@@ -17,7 +17,7 @@ return {
           return function()
             timer:start(100, 0, function()
               timer:stop()
-              vim.schedule_wrap(require("lint").try_lint)()
+              vim.schedule(require("lint").try_lint)
             end)
           end
         end,

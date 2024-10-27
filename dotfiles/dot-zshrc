@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-set keyseq-timeout 0 # no key delays
+set keyseq-timeout 0   # no key delays
 setopt COMBINING_CHARS # better paste for emojis
 
 # basic programs

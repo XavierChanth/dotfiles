@@ -19,19 +19,20 @@ function spaceship_mode() {
 # Override default keymap-select
 function zle-keymap-select() { # change cursor when swapping keymaps
   case $KEYMAP in
-    vicmd)
-      echo -ne $_block
-      _mode="N"
-      _color="blue"
-      ;;
-    viins | main)
-      echo -ne $_beam
-      _mode="I"
-      _color="green"
-      ;;
+  vicmd)
+    echo -ne $_block
+    _mode="N"
+    _color="blue"
+    ;;
+  viins | main)
+    echo -ne $_beam
+    _mode="I"
+    _color="green"
+    ;;
   esac
   # refresh spaceship when we change modes
-  spaceship::core::refresh_section "mode" ; zle .reset-prompt && zle -R
+  spaceship::core::refresh_section "mode"
+  zle .reset-prompt && zle -R
 }
 
 # Override default line-init

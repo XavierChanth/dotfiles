@@ -5,46 +5,46 @@ command_exists() {
 }
 
 case "$(uname)" in
-  Darwin)
-    if command_exists brew; then
-      echo "brew package manager found, installing packages for brew"
+Darwin)
+  if command_exists brew; then
+    echo "brew package manager found, installing packages for brew"
 
-      # common apps
-      brew install zen-browser google-chrome chromium
-      brew install zoom discord spotify
-      brew install betterdisplay cleanshot unnaturalscrollwheels the-unarchiver
+    # common apps
+    brew install zen-browser google-chrome chromium
+    brew install zoom discord spotify
+    brew install betterdisplay cleanshot unnaturalscrollwheels the-unarchiver
 
-      # qutebrowser and dependencies
-      brew install mpv qutebrowser
+    # qutebrowser and dependencies
+    brew install mpv qutebrowser
 
-      # desktop tools & ricing
-      brew tap felixkratz/formulae
-      brew install aerospace sketchybar
-      brew install dmenu-mac bitwarden-cli oath-toolkit
+    # desktop tools & ricing
+    brew tap felixkratz/formulae
+    brew install aerospace sketchybar
+    brew install dmenu-mac bitwarden-cli oath-toolkit
 
-      # terminal stuff
-      brew install wezterm asciinema neovide
-      brew install font-jetbrains-mono-nerd-font
+    # terminal stuff
+    brew install wezterm asciinema neovide
+    brew install font-jetbrains-mono-nerd-font
 
-      # aerc and dependencies
-      if command_exists aerc; then
-        brew reinstall aerc
-      else
-        brew install aerc --HEAD
-      fi
-      # aerc dependencies
-      brew install abook pandoc msmtp isync notmuch
-      # brew services start isync # we will let aerc manage syncing
+    # aerc and dependencies
+    if command_exists aerc; then
+      brew reinstall aerc
+    else
+      brew install aerc --HEAD
     fi
-    ;;
-  Linux)
-    if command_exists dnf; then
-      echo "dnf package manager found, installing packages for dnf"
+    # aerc dependencies
+    brew install abook pandoc msmtp isync notmuch
+    # brew services start isync # we will let aerc manage syncing
+  fi
+  ;;
+Linux)
+  if command_exists dnf; then
+    echo "dnf package manager found, installing packages for dnf"
 
-      sudo dnf install -y wezterm
-      sudo dnf install -y aerc abook pandoc msmtp
-    fi
-    ;;
+    sudo dnf install -y wezterm
+    sudo dnf install -y aerc abook pandoc msmtp
+  fi
+  ;;
 esac
 
 # install wezterm terminfo

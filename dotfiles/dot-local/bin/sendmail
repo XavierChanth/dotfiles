@@ -1,5 +1,8 @@
 #!/bin/sh
-# XXX: This does not handle encryption
+# WARN: This does not handle encryption
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+echo $script_dir/hello
 
 # ensure the script ends whenever a command exits with non-zero status
 set -e

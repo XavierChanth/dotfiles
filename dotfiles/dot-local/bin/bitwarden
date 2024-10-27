@@ -170,8 +170,8 @@ pick_totp() {
   local otp_type=$(printf "%s" "$items" | cut -w -f1)
   local otp_secret=$(printf "%s" "$items" | cut -w -f2)
   case "$otp_type" in
-    hotp | totp) local item=$($oath -b --"$otp_type" "$otp_secret") ;;
-    *) return 1 ;; # unrecognized type;;
+  hotp | totp) local item=$($oath -b --"$otp_type" "$otp_secret") ;;
+  *) return 1 ;; # unrecognized type;;
   esac
   printf "%s" "$item"
 }

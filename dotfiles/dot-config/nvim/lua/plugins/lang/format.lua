@@ -42,7 +42,20 @@ return {
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
     cmd = "ConformInfo",
     dependencies = { "mason.nvim" },
+    init = function()
+      vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
+      vim.g.autoformat = true
+      vim.api.nvim_create_user_command("W", "lua vim.g.autoformat = false; vim.cmd.w(); vim.g.autoformat = true", {})
+      vim.api.nvim_create_user_command("WA", "lua vim.g.autoformat = false; vim.cmd.wa(); vim.g.autoformat = true", {})
+      vim.api.nvim_create_user_command("Wa", "lua vim.g.autoformat = false; vim.cmd.wa(); vim.g.autoformat = true", {})
+    end,
     opts = {
+      format_on_save = function(bufnr)
+        if not vim.g.autoformat then
+          return
+        end
+        return { buf = bufnr, lsp_format = "fallback" }
+      end,
       default_format_opts = {
         timeout_ms = 3000,
         async = false,

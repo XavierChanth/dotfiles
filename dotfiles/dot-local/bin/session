@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 function fzf_session() {
   selected=$(
     (

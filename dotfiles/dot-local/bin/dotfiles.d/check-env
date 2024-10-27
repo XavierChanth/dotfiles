@@ -38,7 +38,7 @@ check_commands=(
   uv
   python3
   dotnet
-   # bonus tools
+  # bonus tools
   gh
   jq
 )

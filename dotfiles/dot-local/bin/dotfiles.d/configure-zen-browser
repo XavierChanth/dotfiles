@@ -18,16 +18,16 @@ main() {
   echo "Have you made a profile and quit? [Y/n]"
   read -r input
   case $input in
-    Y | y)
-      stow -d "$DOTFILES" -t "$profile_dir" --dotfiles zen-browser --adopt
-      echo "Please restart the browser"
-      echo "Go to the extensions tab and toggle on and off each extension"
-      echo "It is best to restart the browser again for good measure"
-      ;;
-    *)
-      echo Aborting operation
-      return 1
-      ;;
+  Y | y)
+    stow -d "$DOTFILES" -t "$profile_dir" --dotfiles zen-browser --adopt
+    echo "Please restart the browser"
+    echo "Go to the extensions tab and toggle on and off each extension"
+    echo "It is best to restart the browser again for good measure"
+    ;;
+  *)
+    echo Aborting operation
+    return 1
+    ;;
   esac
 }
 main $@
