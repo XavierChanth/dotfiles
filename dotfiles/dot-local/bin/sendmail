@@ -9,13 +9,11 @@ EMAIL="$TEMP.eml"
 mv "$TEMP" "$EMAIL"
 
 clean_up() {
-    rm -f $EMAIL
+  rm -f $EMAIL
 }
 
-# The account to be used is given as the first argument of this script
 account=$1
 shift
-
 
 # ensure clean_up() is called when we exit abnormally
 trap 'clean_up' 0 1 2 3 15
@@ -26,4 +24,4 @@ cat >$EMAIL
 # First try to send the email, as it can cause more problems (i.e., connection)
 # `set -e` prevents the mail from entering the database in case this fails.
 # msmtp could be called with args from aerc, but --read-recipients already does the job
-msmtp --account=$account --read-recipients --read-envelope-from <$EMAIL
+msmtp --account="$account" --read-recipients --read-envelope-from <$EMAIL
