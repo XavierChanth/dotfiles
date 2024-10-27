@@ -34,6 +34,7 @@ return {
       on_attach = {
         ruff = function(client, event)
           vim.api.nvim_buf_set_var(event.buf, "shiftwidth", 4)
+          vim.api.nvim_buf_set_var(event.buf, "tabstop", 4)
           -- Disable hover in favor of Pyright
           client.server_capabilities.hoverProvider = false
         end,

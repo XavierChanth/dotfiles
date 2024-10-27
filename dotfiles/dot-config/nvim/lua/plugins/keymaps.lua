@@ -81,6 +81,7 @@ for _, indent in ipairs(spaces) do
   local str = tostring(indent)
   map("n", "<leader>c" .. str, function()
     vim.opt_local.shiftwidth = indent
+    vim.opt_local.tabstop = indent
   end, { desc = str .. " spaces" })
 end
 
