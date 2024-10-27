@@ -18,9 +18,9 @@ return {
                 local multi_selections = current_picker:get_multi_selection()
 
                 if next(multi_selections) == nil then
-                  local selection = action_state.get_selected_entry()
-                  actions.close(prompt_bufnr)
-                  vim.api.nvim_buf_delete(selection.bufnr, {})
+                  current_picker:delete_selection(function(selection)
+                    vim.api.nvim_buf_delete(selection.bufnr, {})
+                  end)
                 else
                   actions.close(prompt_bufnr)
                   for _, selection in ipairs(multi_selections) do
