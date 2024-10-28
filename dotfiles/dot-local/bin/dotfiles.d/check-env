@@ -7,40 +7,62 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+LIGHT=false
+if [ "$1" = "--light" ]; then
+  LIGHT=true
+fi
+
 check_commands=(
-  # shell essentials
+  # essentials
+  git
+  curl
+  ps
+  brew
+  # brew stuff
+  bash
   zsh
   git
   sudo
-  ps
-  # core tools
-  parallel
-  clang
-  # net tools
-  curl
+  base32   # coreutils
+  parallel # moreutils
   wget
   openssl
-  # dev tools
   tmux
-  rg
-  fzf
   nvim
+  rg # ripgrep
+  fzf
+  fd
   lazygit
-  delta
+  delta # git-delta
+  bat
   stow
-  # languages
-  flutter
-  dart
-  go
-  node
-  npm
-  cmake
+  go # golang
+  # non-brew stuff
+  spaceship
+  lazygit
+)
+
+extra_commands=(
   uv
-  python3
-  dotnet
-  # bonus tools
+  python3 # python
+  cmake
+  cargo  # rust
+  dotnet # dotnet-sdk
   gh
   jq
+  yazi
+  tokei
+  quarto
+  ffmpegthumbnailer
+  unar
+  pdfinfo # poppler
+  # non-brew stuff
+  dart
+  flutter
+  node
+  yazi
+  # gh dash has special check
+  csharp-ls
 )
 
 missing=""
@@ -50,9 +72,25 @@ for cmd in ${check_commands[@]}; do
   fi
 done
 
+if ! $LIGHT; then
+  for cmd in ${extra_commands[@]}; do
+    if ! command_exists "$cmd"; then
+      missing="$missing $cmd "
+    fi
+  done
+  if ! gh extension list | grep -q 'gh-dash' 2>/dev/null; then
+    missing="$missing gh-dash"
+  fi
+fi
+
 if [ -n "$missing" ]; then
   echo "Missing the following commands:"
   echo "$missing" | xargs -I% echo %
 fi
 
 echo "Done checking environment"
+if [ -z "$missing" ]; then
+  exit 0
+else
+  exit 1
+fi

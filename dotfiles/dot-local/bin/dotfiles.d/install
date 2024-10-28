@@ -51,23 +51,43 @@ if [ "$(uname)" = 'Darwin' ]; then
   $script_dir/configure-macos
 fi
 
-# core tools
-brew install bash zsh coreutils moreutils
-# net tools
-brew install openssl wget
+source $script_dir/include/package-list
 
-# dev tools
-brew install tmux neovim ripgrep fzf fd git-delta bat stow
+brew install <<EOF
+bash
+zsh
+coreutils
+moreutils
+openssl
+wget
+tmux
+neovim
+ripgrep
+fzf
+fd
+git-delta
+bat
+stow
+golang
+EOF
 
 if ! $LIGHT; then
-  # programming languages
-  brew install uv python cmake golang rust dotnet-sdk
-  # extra tools
-  brew install gh jq yazi tokei quarto
+  brew install <<EOF
+uv
+python
+cmake
+rust
+dotnet-sdk
+gh
+jq
+yazi
+tokei
+quarto
+ffmpegthumbnailer
+unar
+poppler
+EOF
 fi
-
-# additional yazi dependencies
-brew install ffmpegthumbnailer unar poppler
 
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
@@ -110,13 +130,14 @@ if ! $LIGHT; then
 
   # sync nvim
   nvim --headless "+Lazy! sync" +qa
-  # Install python provider for nvim
-  (
-    uv venv
-    source .venv/bin/activate
-    uv pip install pynvim
-  )
+# Install python provider for nvim
 fi
 
 # Do a healthcheck to ensure that everything I want is installed
-"$script_dir"/check-env
+
+if ! $LIGHT; then
+  "$script_dir"/check-env
+else
+  "$script_dir"/check-env --light
+fi
+exit $?
