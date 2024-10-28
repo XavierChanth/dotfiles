@@ -132,11 +132,6 @@ if ! $LIGHT; then
   "$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
   "$HOME"/.local/dev/flutter/bin/flutter channel stable
 
-  # install yazi from source
-  if command_exists cargo; then
-    cargo install --locked yazi-fm yazi-cli
-  fi
-
   # gh dash
   if command_exists gh; then
     gh extension install dlvhdr/gh-dash
