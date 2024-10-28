@@ -142,6 +142,16 @@ if ! $LIGHT; then
     dotnet tool install --global csharp-ls
   fi
 
+  # install venv for nvim
+  if ! [ -d "$DOTFILES/.venv" ]; then
+    (
+      cd "$DOTFILES" || return 1
+      uv venv
+      source "$DOTFILES/.venv/bin/activate"
+      uv pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip jupytext
+    )
+  fi
+
   # sync nvim
   nvim --headless "+Lazy! sync" +qa
 # Install python provider for nvim
