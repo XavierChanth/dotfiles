@@ -8,7 +8,7 @@ if [ "$1" = "--light" ]; then
   LIGHT=true
 fi
 
-if [ -f /bin/zsh ]; then
+if [ -f /bin/zsh ] && [ "$SHELL" != "/bin/zsh" ]; then
   chsh -s /bin/zsh
 fi
 
