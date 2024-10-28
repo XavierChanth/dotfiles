@@ -10,7 +10,7 @@ return {
           initial_mode = "normal",
           mappings = {
             n = {
-              ["<C-d>"] = function(prompt_bufnr)
+              ["<c-f><c-d>"] = function(prompt_bufnr)
                 local actions = require("telescope.actions")
                 local action_state = require("telescope.actions.state")
 
