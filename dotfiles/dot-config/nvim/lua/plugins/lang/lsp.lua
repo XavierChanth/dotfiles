@@ -44,7 +44,6 @@ return {
         formatting_options = nil,
         timeout_ms = nil,
       },
-      on_attach = {}, -- Custom on attach handler
     },
     config = function(_, opts)
       -- LSP Attach
@@ -182,12 +181,12 @@ return {
           return
         end
 
-        if opts.on_attach[server] then
+        if opts.override_on_attach[server] then
           vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(event)
               local client = vim.lsp.get_client_by_id(event.data.client_id)
               if client and client.name == server then
-                if opts.on_attach[server](client, event) then
+                if opts.override_on_attach[server](client, event) then
                   return
                 end
               end
