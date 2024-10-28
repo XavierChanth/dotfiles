@@ -46,7 +46,8 @@ extra_commands=(
   uv
   python3 # python
   cmake
-  cargo  # rust
+  cargo # rust
+  node
   dotnet # dotnet-sdk
   gh
   jq
@@ -59,7 +60,6 @@ extra_commands=(
   # non-brew stuff
   dart
   flutter
-  node
   yazi
   # gh dash has special check
   csharp-ls

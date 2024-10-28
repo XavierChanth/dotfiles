@@ -83,6 +83,7 @@ uv
 python
 cmake
 rust
+node
 gh
 jq
 yazi
@@ -130,11 +131,6 @@ if ! $LIGHT; then
   git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT" 2>/dev/null
   "$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
   "$HOME"/.local/dev/flutter/bin/flutter channel stable
-
-  # Install nvm
-  git clone https://github.com/nvm-sh/nvm.git "$HOME/.local/dev/nvm" 2>/dev/null ||
-    git -C "$HOME/.local/dev/nvm" pull
-  "$HOME"/.local/dev/nvm install node
 
   # install yazi from source
   if command_exists cargo; then

@@ -6,9 +6,9 @@ command_exists() {
 
 __path=""
 
-if command_exists vfox; then
-  alias vfox='if [ -z $__VFOX_SHELL ]; then eval "$(\vfox activate zsh)"; fi; vfox'
-fi
+# if command_exists vfox; then
+#   alias vfox='if [ -z $__VFOX_SHELL ]; then eval "$(\vfox activate zsh)"; fi; vfox'
+# fi
 
 # flutter
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"
