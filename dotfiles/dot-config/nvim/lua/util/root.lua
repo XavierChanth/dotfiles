@@ -122,12 +122,14 @@ function M.root(opts)
   return require("util.platform").is_windows() and ret:gsub("/", "\\") or ret
 end
 
+-- Finds git root, or cwd if not in git
+-- When opts.root == true, will try to find a parent .git/ directory if in a worktree
 function M.git(opts)
   opts = opts or {}
-  local root = require("util.root").root()
+  local root = M.cwd()
   local git_root = nil
 
-  if opts.bare then
+  if opts.root then
     git_root = vim.fs.find(".git", { type = "directory", path = root, upward = true })[1]
   end
 

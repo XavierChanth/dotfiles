@@ -1,7 +1,7 @@
 local M = {}
 
 local function set_current(path)
-  local base = require("util.root").git({ bare = true })
+  local base = require("util.root").git({ root = true })
   local c = string.gsub(path, base .. "/", "")
   if c == "" then
     c = "--"
@@ -32,7 +32,7 @@ function M.add(opts)
       end
 
       local name = branch:gsub("^origin/", "", 1)
-      local git_root = require("util.root").git({ bare = true })
+      local git_root = require("util.root").git({ root = true })
       local path = git_root .. "/" .. name
 
       require("plenary.job")
