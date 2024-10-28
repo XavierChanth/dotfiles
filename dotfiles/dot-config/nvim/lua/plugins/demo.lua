@@ -30,6 +30,7 @@ return {
       },
     },
     opts = {
+      excluded_modes = { "t", "i" },
       timeout = 1,
       maxkeys = 3,
       show_count = true,
