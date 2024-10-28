@@ -12,8 +12,7 @@ User setup:
 Dotfiles setup:
 
 - Put ssh keys in place
-- Install git
-- Install GNU stow
+- Install git curl zsh
 - Install
   [brew requirements](https://docs.brew.sh/Homebrew-on-Linux#requirements)
   (Linux)

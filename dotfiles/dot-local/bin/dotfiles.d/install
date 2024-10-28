@@ -1,9 +1,15 @@
 #!/bin/bash
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
+export DOTFILES="$HOME/.dotfiles"
+
 LIGHT=false
 if [ "$1" = "--light" ]; then
   LIGHT=true
+fi
+
+if [ -f /bin/zsh ]; then
+  chsh -s /bin/zsh
 fi
 
 # Make files and directories used but not "owned" by dotfiles
@@ -51,11 +57,10 @@ if [ "$(uname)" = 'Darwin' ]; then
   $script_dir/configure-macos
 fi
 
-source $script_dir/include/package-list
-
-brew install <<EOF
-bash
+brew install $(
+  cat <<EOF
 zsh
+bash
 coreutils
 moreutils
 openssl
@@ -70,9 +75,11 @@ bat
 stow
 golang
 EOF
+)
 
 if ! $LIGHT; then
-  brew install <<EOF
+  brew install $(
+    cat <<EOF
 uv
 python
 cmake
@@ -87,17 +94,15 @@ ffmpegthumbnailer
 unar
 poppler
 EOF
+  )
 fi
 
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
   git -C "$HOME/.config/spaceship-prompt" pull
 
-export DOTFILES="$HOME/.dotfiles"
 # sync dotfiles
 $script_dir/sync || exit $?
-
-chsh -s /bin/zsh
 
 # install lazygit from source
 if command_exists go; then
