@@ -96,6 +96,8 @@ git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$H
 # sync dotfiles
 $script_dir/sync || exit $?
 
+chsh -s /bin/zsh
+
 # install lazygit from source
 if command_exists go; then
   go install github.com/jesseduffield/lazygit@latest
