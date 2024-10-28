@@ -39,14 +39,13 @@ source $XDG_CONFIG_HOME/zsh/alias.sh
 source $XDG_CONFIG_HOME/zsh/atsign.sh
 source $XDG_CONFIG_HOME/zsh/commands.sh
 
-# setup brew and zsh features
-case "$(uname)"
-  Darwin)
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    ;;
-  Linux)
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    ;;
+case "$(uname)" in
+Darwin)
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  ;;
+Linux)
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  ;;
 esac
 
 export HOMEBREW_NO_ENV_HINTS=true
