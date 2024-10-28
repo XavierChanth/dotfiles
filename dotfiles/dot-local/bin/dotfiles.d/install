@@ -46,6 +46,8 @@ if [ "$(uname)" = 'Darwin' ]; then
   brew install bash
   # core tools
   brew install coreutils moreutils
+else
+  brew install zsh
 fi
 
 # net tools
