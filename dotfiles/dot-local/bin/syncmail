@@ -12,8 +12,11 @@ function main() {
     exit 0
   fi
 
-  echo "Deleting messages tagged as *deleted*"
-  notmuch search --format=text0 --output=files tag:deleted | xargs -0 --no-run-if-empty rm -v
+  echo "Syncing maildir"
+  mbsync "$profile"
+
+  echo "Pulling new mails into database"
+  notmuch new
 
   echo "Normalizing tags based on maildir path"
   notmuch tag --batch <<EOF
@@ -23,7 +26,7 @@ function main() {
   +sent -- "path:SENT/**"
 EOF
 
-  mbsync "$profile"
-  notmuch new
+  echo "Deleting messages tagged as *deleted*"
+  notmuch search --format=text0 --output=files tag:deleted | xargs -0 --no-run-if-empty rm -v
 }
 main
