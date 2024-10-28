@@ -56,6 +56,23 @@ function M.autocmd()
   })
 end
 
+function M.molten_wrap(fn)
+  return function()
+    if #require("molten.status").kernels() > 0 then
+      fn()
+    else
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "MoltenInitPost",
+        once = true,
+        callback = function()
+          vim.fn.timer_start(100, vim.schedule_wrap(fn))
+        end,
+      })
+      vim.cmd("MoltenInit")
+    end
+  end
+end
+
 function M.buf_enter(event)
   local map = function(keymap)
     keymap.mode = keymap.mode or "n"
@@ -89,42 +106,42 @@ function M.buf_enter(event)
 
   map({
     "<localleader>r",
-    function()
+    M.molten_wrap(function()
       require("quarto.runner").run_cell()
-    end,
+    end),
     desc = "run cell",
     silent = true,
   })
   map({
     "<localleader>l",
-    function()
+    M.molten_wrap(function()
       require("quarto.runner").run_line()
-    end,
+    end),
     desc = "run line",
     silent = true,
   })
   map({
     "<localleader>a",
-    function()
+    M.molten_wrap(function()
       require("quarto.runner").run_all()
-    end,
+    end),
     desc = "run all cells",
     silent = true,
   })
   map({
     "<localleader>A",
-    function()
+    M.molten_wrap(function()
       require("quarto.runner").run_all(true)
-    end,
+    end),
     desc = "run all cells of all languages",
     silent = true,
   })
   map({
     "<localleader>s",
-    function()
+    M.molten_wrap(function()
       vim.cmd("MoltenExportOutput")
       vim.cmd("MoltenSave")
-    end,
+    end),
     desc = "save output",
     silent = true,
   })
@@ -138,9 +155,9 @@ function M.buf_enter(event)
   })
   map({
     "gr",
-    function()
+    M.molten_wrap(function()
       require("quarto.runner").run_range()
-    end,
+    end),
     desc = "run visual range",
     silent = true,
     mode = "v",

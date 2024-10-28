@@ -11,7 +11,10 @@ return {
       return {
         -- From LazyVim, with modifications
         custom_textobjects = {
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+          c = ai.gen_spec.treesitter({
+            a = { "@code_cell.outer", "@class.outer" },
+            i = { "@code_cell.inner", "@class.inner" },
+          }), -- code_cell / class
           o = ai.gen_spec.treesitter({ -- code block
             a = { "@block.outer", "@conditional.outer", "@loop.outer" }, --
             i = { "@block.inner", "@conditional.inner", "@loop.inner" }, --

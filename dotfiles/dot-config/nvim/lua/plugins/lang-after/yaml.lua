@@ -1,5 +1,6 @@
 return {
   require("util.lazy").ensure_installed({
+    treesitter = { "yaml" },
     lsp = { "yamlls" },
   }),
   {

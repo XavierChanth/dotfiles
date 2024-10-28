@@ -1,6 +1,6 @@
 return {
   require("util.lazy").ensure_installed({
-    treesitter = { "cpp" },
+    treesitter = { "c", "cpp" },
     conform = { "gersemi" },
     lsp = { "clangd" },
   }),

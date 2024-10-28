@@ -1,5 +1,6 @@
 return {
   require("util.lazy").ensure_installed({
+    treesitter = { "lua", "luadoc", "luap" },
     conform = { "stylua" },
     lsp = { "lua_ls" },
   }),
@@ -59,8 +60,8 @@ return {
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
-        { path = "LazyVim",            words = { "LazyVim" } },
-        { path = "lazy.nvim",          words = { "LazyVim" } },
+        { path = "LazyVim", words = { "LazyVim" } },
+        { path = "lazy.nvim", words = { "LazyVim" } },
       },
     },
   },

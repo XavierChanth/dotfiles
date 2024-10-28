@@ -1,5 +1,6 @@
 return {
   require("util.lazy").ensure_installed({
+    treesitter = { "bash" },
     lint = { "shellcheck" },
     conform = { "shfmt" },
   }),
