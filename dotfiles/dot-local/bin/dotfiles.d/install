@@ -83,7 +83,7 @@ uv
 python
 cmake
 rust
-dotnet-sdk
+dotnet
 gh
 jq
 yazi
