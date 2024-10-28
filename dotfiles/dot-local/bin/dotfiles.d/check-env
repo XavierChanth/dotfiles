@@ -61,7 +61,7 @@ extra_commands=(
   dart
   flutter
   yazi
-  # gh dash has special check
+  # gh dash can't be checked
   csharp-ls
 )
 
@@ -78,9 +78,6 @@ if ! $LIGHT; then
       missing="$missing $cmd "
     fi
   done
-  if ! gh extension list | grep -q 'gh-dash' 2>/dev/null; then
-    missing="$missing gh-dash"
-  fi
 fi
 
 if [ -n "$missing" ]; then
