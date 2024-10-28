@@ -29,8 +29,6 @@ command_exists() {
 # ensure git is installed
 if ! command_exists git; then
   echo "git not found, install git before continuing..."
-  echo "how did you even git this onto your machine?"
-  echo "haha... see what I did there..."
   exit 1
 fi
 
@@ -42,14 +40,10 @@ fi
 
 if [ "$(uname)" = 'Darwin' ]; then
   $script_dir/configure-macos
-  # shell essentials
-  brew install bash
-  # core tools
-  brew install coreutils moreutils
-else
-  brew install zsh
 fi
 
+# core tools
+brew install bash zsh coreutils moreutils
 # net tools
 brew install openssl wget
 
