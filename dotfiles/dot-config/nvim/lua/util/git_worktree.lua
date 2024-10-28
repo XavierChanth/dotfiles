@@ -2,9 +2,9 @@ local M = {}
 
 local function set_current(path)
   local base = require("util.root").git({ root = true })
-  local c = string.gsub(path, base .. "/", "")
-  if c == "" then
-    c = "--"
+  local c = "."
+  if #base ~= #path then
+    c = string.gsub(path, base .. "/", "")
   end
   vim.cmd("Dashboard")
   vim.defer_fn(function()
