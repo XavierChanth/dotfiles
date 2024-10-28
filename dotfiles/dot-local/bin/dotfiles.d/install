@@ -93,6 +93,7 @@ fi
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
   git -C "$HOME/.config/spaceship-prompt" pull
 
+export DOTFILES="$HOME/.dotfiles"
 # sync dotfiles
 $script_dir/sync || exit $?
 
