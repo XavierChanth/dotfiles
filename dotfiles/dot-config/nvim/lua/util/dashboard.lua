@@ -2,22 +2,6 @@ local M = {}
 M.actions = {
   {
     action = function()
-      require("oil").open(nil)
-    end,
-    desc = " Explorer",
-    icon = "󰉋 ",
-    key = "e",
-  },
-  {
-    action = function()
-      require("util.telescope").git_files()
-    end,
-    desc = " Find File",
-    icon = " ",
-    key = "f",
-  },
-  {
-    action = function()
       require("util.git_worktree").telescope()
     end,
     desc = " Worktrees",
@@ -32,7 +16,6 @@ M.actions = {
     icon = " ",
     key = "a",
   },
-
   {
     action = function()
       require("util.lazygit").lazygit()
@@ -41,26 +24,6 @@ M.actions = {
     icon = " ",
     key = "g",
   },
-  {
-    action = "Lazy",
-    desc = " Lazy",
-    icon = "󰒲 ",
-    key = "l",
-  },
-  {
-    action = "LazyExtras",
-    desc = " Lazy Extras",
-    icon = " ",
-    key = "x",
-  },
-  -- {
-  --   action = function()
-  --     return require("util.telescope").config()
-  --   end,
-  --   desc = " Config",
-  --   icon = " ",
-  --   key = "c",
-  -- },
   {
     action = function()
       require("persistence").load()
