@@ -83,17 +83,33 @@ uv
 python
 cmake
 rust
-dotnet
 gh
 jq
 yazi
 tokei
-quarto
 ffmpegthumbnailer
 unar
 poppler
 EOF
   )
+
+  case "$(uname)" in
+  Darwin)
+    brew install $(
+      cat <<EOF
+dotnet-sdk
+quarto
+EOF
+    )
+    ;;
+  Linux)
+    brew install $(
+      cat <<EOF
+dotnet
+EOF
+    )
+    ;;
+  esac
 fi
 
 # install spaceship
