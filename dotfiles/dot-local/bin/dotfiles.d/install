@@ -38,23 +38,22 @@ if ! command_exists git; then
   exit 1
 fi
 
-# install brew
-if ! command_exists brew; then
-  echo "brew not found, installing it for you..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
 case "$(uname)" in
 Darwin)
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  $script_dir/configure-macos
+  brew_path=/opt/homebrew/bin/brew
   ;;
 Linux)
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  brew_path=/home/linuxbrew/.linuxbrew/bin/brew
   ;;
 esac
 
-if [ "$(uname)" = 'Darwin' ]; then
-  $script_dir/configure-macos
+# install brew
+if [ -f "$brew_path" ]; then
+  eval "$($brew_path shellenv)"
+else
+  echo "brew not found, installing it for you..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 brew install $(
