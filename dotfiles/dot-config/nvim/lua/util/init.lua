@@ -1,7 +1,6 @@
 ---@class util
 ---@field colorscheme util.colorscheme
 ---@field dashboard util.dashboard
----@field dotenv util.dotenv
 ---@field external util.external
 ---@field ipynb util.ipynb
 ---@field lazy util.lazy
