@@ -11,11 +11,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
--- removed plugins when I migrated from LazyVim
--- - flash.nvim
--- - harpoon.nvim
--- - dap & testing stuff
-
 require("options")
 require("lazy").setup({
   spec = {
