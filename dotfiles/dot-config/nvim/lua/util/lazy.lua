@@ -1,6 +1,17 @@
 -- These utilities are from LazyVim's utility library
 -- Super useful and made it easier to migrate by keeping these in place
+---@class util.lazy: LazyUtilCore
 local M = {}
+
+local LazyUtil = require("lazy.core.util")
+setmetatable(M, {
+  __index = function(_, k)
+    if LazyUtil[k] then
+      return LazyUtil[k]
+    end
+  end,
+})
+
 function M.get_plugin(name)
   return require("lazy.core.config").spec.plugins[name]
 end
@@ -38,8 +49,6 @@ function M.memoize(fn)
   end
 end
 
-local LazyUtil = require("lazy.core.util")
-
 function M.ensure_installed(spec)
   spec = spec or {}
   local lazy_spec = {}
@@ -70,13 +79,5 @@ end
 function M.float_term(...)
   return require("lazy.util").float_term(...)
 end
-
-setmetatable(M, {
-  __index = function(_, k)
-    if LazyUtil[k] then
-      return LazyUtil[k]
-    end
-  end,
-})
 
 return M

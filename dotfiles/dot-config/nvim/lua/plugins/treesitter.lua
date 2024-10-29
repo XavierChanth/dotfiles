@@ -88,8 +88,8 @@ return {
     enabled = true,
     config = function()
       -- If treesitter is already loaded, we need to run config again for textobjects
-      if require("util.lazy").is_loaded("nvim-treesitter") then
-        local opts = require("util.lazy").opts("nvim-treesitter")
+      if Util.lazy.is_loaded("nvim-treesitter") then
+        local opts = Util.lazy.opts("nvim-treesitter")
         ---@diagnostic disable-next-line: missing-fields
         require("nvim-treesitter.configs").setup({ textobjects = opts.textobjects })
       end

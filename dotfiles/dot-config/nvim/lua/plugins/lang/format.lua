@@ -34,7 +34,7 @@ function M.has_parser(ctx)
   return ok and parser and parser ~= vim.NIL
 end
 
-M.has_parser = require("util.lazy").memoize(M.has_parser)
+M.has_parser = Util.lazy.memoize(M.has_parser)
 
 return {
   {

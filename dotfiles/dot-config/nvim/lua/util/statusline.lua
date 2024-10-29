@@ -1,4 +1,20 @@
+---@class util.statusline
 local M = {}
+
+setmetatable(M, {
+  ---@param opts StatusLineOpts
+  __call = function(_, opts)
+    return M.statuslines[opts.plugin](opts.theme)
+  end,
+})
+
+---@class StatusLineOpts
+---@field plugin string
+---|"'lualine'"
+---|"'slimline'"
+---@field theme string
+---|"'minimal'"
+---|"'bubble'"
 
 function M.format(component, text, hl_group)
   text = text:gsub("%%", "%%%%")
@@ -45,8 +61,8 @@ local function pretty_path(opts)
       return ""
     end
 
-    local root = require("util.root").root({ normalize = true })
-    local cwd = require("util.root").cwd()
+    local root = Util.root.root({ normalize = true })
+    local cwd = Util.root.cwd()
 
     if opts.relative == "cwd" and path:find(cwd, 1, true) == 1 then
       path = path:sub(#cwd + 2)
@@ -85,7 +101,7 @@ local function pretty_path(opts)
 end
 
 local function python_kernel()
-  if require("util.lazy").is_loaded("molten-nvim") then
+  if Util.lazy.is_loaded("molten-nvim") then
     return require("molten.status").kernels()
   end
   return ""
@@ -159,7 +175,7 @@ local lualine_themes = {
   },
 }
 
-local statuslines = {
+M.statuslines = {
   lualine = function(selected_theme)
     return {
       "nvim-lualine/lualine.nvim",
@@ -233,20 +249,5 @@ local statuslines = {
     }
   end,
 }
-
----@class StatusLineOpts
----@field statusline string
----|"'lualine'"
----|"'slimline'"
----@field theme string
----|"'minimal'"
----|"'bubble'"
-
----@param opts StatusLineOpts
-function M.get(opts)
-  return {
-    statuslines[opts.statusline](opts.theme),
-  }
-end
 
 return M

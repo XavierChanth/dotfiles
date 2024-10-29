@@ -1,5 +1,15 @@
----@enum  logo
-local logos = {
+---@class util.logos
+local M = {}
+
+setmetatable(M, {
+  ---@param logo Logo
+  __index = function(_, logo)
+    return M.logos[logo]
+  end,
+})
+
+---@enum Logo
+M.logos = {
   doom = [[
 __   __            _           _____ _                 _   _     
 \ \ / /           (_)         /  __ \ |               | | | |    
@@ -34,4 +44,5 @@ __   __            _           _____ _                 _   _
 ██████  █████████████████████ ████ █████ █████ ████ ██████
 ]],
 }
-return logos
+
+return M

@@ -1,8 +1,9 @@
+---@class util.dashboard
 local M = {}
 M.actions = {
   {
     action = function()
-      require("util.git_worktree").telescope()
+      Util.worktree.telescope()
     end,
     desc = " Worktrees",
     icon = " ",
@@ -10,7 +11,7 @@ M.actions = {
   },
   {
     action = function()
-      require("util.git_worktree").add()
+      Util.worktree.add()
     end,
     desc = " Worktree Add",
     icon = " ",
@@ -18,7 +19,7 @@ M.actions = {
   },
   {
     action = function()
-      require("util.lazygit").lazygit()
+      Util.lazygit()
     end,
     desc = " Lazygit",
     icon = " ",

@@ -3,7 +3,7 @@ return {
     "raddari/last-color.nvim",
     lazy = false,
     config = function()
-      require("util.colorscheme").setup()
+      Util.colorscheme.setup()
     end,
   },
   -- Setup catppuccin theme

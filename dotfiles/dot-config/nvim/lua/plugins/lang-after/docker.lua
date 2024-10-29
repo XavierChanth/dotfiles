@@ -1,6 +1,6 @@
 return {
   -- ft = "dockerfile",
-  require("util.lazy").ensure_installed({
+  Util.lazy.ensure_installed({
     treesitter = { "dockerfile" },
     lint = { "hadolint" },
     lsp = { "dockerls", "docker_compose_language_service" },

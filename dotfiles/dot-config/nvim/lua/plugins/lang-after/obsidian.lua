@@ -5,7 +5,7 @@ return {
     {
       "<leader>ro",
       function()
-        return require("util.telescope").command.picker({
+        return Util.telescope.command.picker({
           theme = "dropdown",
           regex = "^Obsidian",
         })
@@ -14,7 +14,7 @@ return {
     },
   },
   ft = function()
-    if require("util.root").git() == path then
+    if Util.root.git() == path then
       return { "markdown" }
     end
     return {}

@@ -1,3 +1,4 @@
+---@class util.ipynb
 local M = {}
 -- Provide a command to create a blank new Python notebook
 -- note: the metadata is needed for Jupytext to understand how to parse the notebook.

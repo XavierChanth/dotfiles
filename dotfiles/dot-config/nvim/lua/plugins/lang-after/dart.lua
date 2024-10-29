@@ -12,7 +12,7 @@ if not flutter_exists then
 end
 
 return {
-  require("util.lazy").ensure_installed({
+  Util.lazy.ensure_installed({
     treesitter = { "dart" },
   }),
   -- Additional plugins

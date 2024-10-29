@@ -1,7 +1,8 @@
+---@class util.worktree
 local M = {}
 
 local function set_current(path)
-  local base = require("util.root").git({ root = true })
+  local base = Util.root.git({ root = true })
   local c = "."
   if #base ~= #path then
     c = string.gsub(path, base .. "/", "")
@@ -32,7 +33,7 @@ function M.add(opts)
       end
 
       local name = branch:gsub("^origin/", "", 1)
-      local git_root = require("util.root").git({ root = true })
+      local git_root = Util.root.git({ root = true })
       local path = git_root .. "/" .. name
 
       require("plenary.job")
@@ -55,7 +56,7 @@ function M.add(opts)
   require("telescope.builtin").git_branches(opts)
 end
 
-function M.is_inside_worktree(path)
+function M.is_inside(path)
   local Job = require("plenary.job")
 
   local res, exit_code = Job:new({
@@ -72,7 +73,7 @@ function M.telescope(opts, callback)
   if callback == nil then
     require("persistence").save()
   else
-    local path = require("util.root").git(opts)
+    local path = Util.root.git(opts)
     M.callbacks[path] = callback
   end
 

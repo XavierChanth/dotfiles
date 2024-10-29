@@ -190,6 +190,6 @@ else
   })
 end
 
-require("util.ipynb").autocmd()
+Util.ipynb.autocmd()
 
 return {}

@@ -1,3 +1,4 @@
+---@class util.telescope
 local M = {}
 M.command = {}
 -- Just the command name, nice and clean
@@ -68,7 +69,7 @@ function M.command.picker(opts)
 end
 
 function M.terminals(opts)
-  local util = require("util.terminal")
+  local util = Util.terminal
   local terminals = {}
   for index, term in pairs(util.get_terminals()) do
     if term ~= nil then
@@ -95,7 +96,7 @@ function M.terminals(opts)
         local function delete_from_telescope()
           ---@diagnostic disable-next-line: redundant-parameter
           local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
-          util.remove_terminal_entry(cwd)
+          util.remove(cwd)
           actions.close(prompt_bufnr)
         end
         map("i", "<C-d>", delete_from_telescope)
@@ -121,9 +122,9 @@ end
 
 function M.git_files(opts)
   opts = opts or {}
-  opts.cwd = opts.cwd or require("util.root").git(opts)
+  opts.cwd = opts.cwd or Util.root.git(opts)
   opts.show_untracked = opts.show_untracked or true
-  if require("util.git_worktree").is_inside_worktree(opts.cwd) then
+  if Util.worktree.is_inside(opts.cwd) then
     return M.builtin("git_files", opts)
   else
     return M.find_files(opts)
@@ -206,8 +207,7 @@ M.defaults = {
 function M.colorscheme(opts)
   opts = opts or {}
 
-  local colors = require("util.colorscheme")
-  vim.notify(vim.inspect(colors))
+  local colors = Util.colorscheme
   M.builtin("colorscheme", {
     finder = M.finder_from_table(colors.configured),
     enable_preview = true,

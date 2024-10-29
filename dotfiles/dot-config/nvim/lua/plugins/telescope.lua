@@ -1,10 +1,9 @@
-local telescope = require("util.telescope")
 return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     opts = {
-      defaults = telescope.defaults,
+      defaults = Util.telescope.defaults,
       pickers = {
         buffers = {
           initial_mode = "normal",
@@ -33,7 +32,7 @@ return {
           },
         },
         commands = {
-          entry_maker = telescope.command.entry_maker({}),
+          entry_maker = Util.telescope.command.entry_maker({}),
         },
         lsp_document_symbols = {
           symbol_width = 48,
@@ -74,55 +73,55 @@ return {
       },
     },
     keys = {
-      { "<leader><space>", telescope.git_files, desc = "Git files" },
-      { "<leader>rr", telescope.builtin("commands"), desc = "Run commands" },
-      { "<leader>sf", telescope.find_files, desc = "Find files" },
+      { "<leader><space>", Util.telescope.git_files, desc = "Git files" },
+      { "<leader>rr", Util.telescope.builtin("commands"), desc = "Run commands" },
+      { "<leader>sf", Util.telescope.find_files, desc = "Find files" },
       {
         "<leader>sh",
-        telescope.builtin("help_tags"),
+        Util.telescope.builtin("help_tags"),
         desc = "Help Pages",
       },
       {
         "<leader>sk",
-        telescope.builtin("keymaps"),
+        Util.telescope.builtin("keymaps"),
         desc = "Key Maps",
       },
       {
         "<leader>sm",
-        telescope.builtin("marks"),
+        Util.telescope.builtin("marks"),
         desc = "Marks",
       },
       {
         "<leader>sg",
-        telescope.builtin("live_grep"),
+        Util.telescope.builtin("live_grep"),
         desc = "Grep",
       },
       {
         "<leader>sc",
-        telescope.builtin("resume"),
+        Util.telescope.builtin("resume"),
         desc = "Continue",
       },
       {
         "<leader>ss",
-        telescope.builtin("lsp_document_symbols"),
+        Util.telescope.builtin("lsp_document_symbols"),
         desc = "Symbols (Buffer)",
       },
       {
         "<leader>sS",
-        telescope.builtin("lsp_dynamic_workspace_symbols"),
+        Util.telescope.builtin("lsp_dynamic_workspace_symbols"),
         desc = "Symbols (Workspace)",
       },
       {
         "<leader>m",
         function()
-          require("util.telescope").terminals()
+          Util.telescope.terminals()
         end,
         desc = "Find terminals",
       },
       {
         "<leader>j",
         function()
-          telescope.builtin("buffers", {
+          Util.telescope.builtin("buffers", {
             sort_lastused = true,
             sort_mru = true,
           })
@@ -131,7 +130,7 @@ return {
       },
       {
         "<leader>uc",
-        require("util.telescope").colorscheme,
+        Util.telescope.colorscheme,
         desc = "Colorscheme with Preview",
       },
     },

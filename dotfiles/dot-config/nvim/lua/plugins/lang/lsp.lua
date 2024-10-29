@@ -123,7 +123,15 @@ return {
           })
           map({
             "<leader>cA",
-            require("util.lsp").action.source,
+            function()
+              vim.lsp.buf.code_action({
+                apply = true,
+                context = {
+                  only = { "source" },
+                  diagnostics = {},
+                },
+              })
+            end,
             desc = "Source Action",
           })
 
@@ -197,7 +205,6 @@ return {
         require("lspconfig")[server].setup(server_opts)
       end
 
-      -- local ensure_installed = require("util.lazy").opts("mason-lspconfig.nvim").ensure_installed or {}
       require("mason-lspconfig").setup({
         handlers = { setup },
       })

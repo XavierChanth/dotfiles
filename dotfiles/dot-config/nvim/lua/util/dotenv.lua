@@ -1,3 +1,5 @@
+---@class util.dotenv
+local M = {}
 -- NOTE: unused file
 local function parse_data(data)
   local values = vim.split(data, "\n")
@@ -35,7 +37,7 @@ local function get_env_file()
   return files[1]
 end
 
-local function load(file)
+function M.load(file)
   if file == nil then
     file = get_env_file()
   end
@@ -53,6 +55,4 @@ local function load(file)
   end
 end
 
-return {
-  load = load,
-}
+return M

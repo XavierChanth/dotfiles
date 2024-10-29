@@ -1,5 +1,5 @@
 return {
-  require("util.lazy").ensure_installed({
+  Util.lazy.ensure_installed({
     treesitter = { "python", "ninja", "rst" },
     lsp = { "ruff", "basedpyright" },
   }),
@@ -20,13 +20,6 @@ return {
           init_options = {
             settings = {
               logLevel = "error",
-            },
-          },
-          keys = {
-            {
-              "<leader>co",
-              require("util.lsp").action["source.organizeImports"],
-              desc = "Organize Imports",
             },
           },
         },

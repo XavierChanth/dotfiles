@@ -1,5 +1,12 @@
 -- Taken mostly from LazyVim's root util
+--- @class util.root
 local M = {}
+
+setmetatable(M, {
+  __call = function(_, ...)
+    M.root(...)
+  end,
+})
 
 M.cache = {}
 
@@ -17,7 +24,7 @@ function M.detectors.lsp(buf)
     return {}
   end
   local roots = {} ---@type string[]
-  local clients = require("util.lsp").get_clients({ bufnr = buf })
+  local clients = vim.lsp.get_clients({ bufnr = buf })
   for _, client in pairs(clients) do
     local workspace = client.config.workspace_folders
     for _, ws in pairs(workspace or {}) do
@@ -28,7 +35,7 @@ function M.detectors.lsp(buf)
     end
   end
   return vim.tbl_filter(function(path)
-    path = require("util.lazy").norm(path)
+    path = Util.lazy.norm(path)
     return path and bufpath:find(path, 1, true) == 1
   end, roots)
 end
@@ -63,7 +70,7 @@ function M.realpath(path)
     return nil
   end
   path = vim.uv.fs_realpath(path) or path
-  return require("util.lazy").norm(path)
+  return Util.lazy.norm(path)
 end
 
 function M.resolve(spec)
@@ -119,7 +126,7 @@ function M.root(opts)
   if opts and opts.normalize then
     return ret
   end
-  return require("util.platform").is_windows() and ret:gsub("/", "\\") or ret
+  return Util.platform.is_windows() and ret:gsub("/", "\\") or ret
 end
 
 -- Finds git root, or cwd if not in git

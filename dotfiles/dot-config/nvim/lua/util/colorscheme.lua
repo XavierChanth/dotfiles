@@ -1,3 +1,4 @@
+---@class util.colorscheme
 local M = {}
 -- A list of colors which have been configured globally across my system.
 -- Other programs use the nvim last-color file to change theme when nvim's color changes
@@ -36,9 +37,9 @@ end
 function M.switch(color)
   if vim.tbl_contains(M.configured, color) then
     vim.cmd.colorscheme(color)
-    require("util.tmux").reload_config()
-    require("util.sketchybar").reload_config()
-    require("util.wezterm").set_lastcolor(color)
+    Util.external.tmux.reload_config()
+    Util.external.sketchybar.reload_config()
+    Util.external.wezterm.set_lastcolor(color)
   end
 end
 

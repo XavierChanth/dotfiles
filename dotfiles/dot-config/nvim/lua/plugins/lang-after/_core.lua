@@ -1,5 +1,5 @@
 return {
-  require("util.lazy").ensure_installed({
+  Util.lazy.ensure_installed({
     treesitter = {
       "css",
       "diff",

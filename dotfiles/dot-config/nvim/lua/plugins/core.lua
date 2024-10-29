@@ -1,5 +1,4 @@
-local platform = require("util.platform")
-if platform.is_gui() or platform.is_windows() then
+if Util.platform.is_gui() or Util.platform.is_windows() then
   return {}
 end
 

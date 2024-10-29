@@ -1,4 +1,11 @@
+---@class util.terminal
 local M = {}
+
+setmetatable(M, {
+  __call = function(_, ...)
+    return M.terminal(...)
+  end,
+})
 
 local terminals = {}
 
@@ -7,7 +14,7 @@ M.get_terminals = function()
 end
 local last = nil
 
-function M.remove_terminal_entry(cwd)
+function M.remove(cwd)
   for index, term in pairs(terminals) do
     if #index == #cwd and index == cwd then
       term.terminal:close({ wipe = true })
@@ -31,9 +38,9 @@ function M.try_existing(existing)
   return false
 end
 
-function M.create_new_term(cmd, opts)
-  local terminal = require("util.lazy").float_term(cmd, {
-    cwd = opts.cwd or require("util.root").git(),
+function M.new(cmd, opts)
+  local terminal = Util.lazy.float_term(cmd, {
+    cwd = opts.cwd or Util.root.git(),
     persistent = true,
   })
 
@@ -51,13 +58,13 @@ function M.existing_terminal(index)
     return
   end
 
-  M.create_new_term(existing.cmd, existing.opts)
+  M.new(existing.cmd, existing.opts)
 end
 
 function M.terminal(cmd, opts)
   opts = opts or {}
   if opts.cwd == nil then
-    opts.cwd = require("util.root").git(opts)
+    opts.cwd = Util.root.git(opts)
   end
   if cmd == nil then
     last = opts.cwd
@@ -67,15 +74,15 @@ function M.terminal(cmd, opts)
     return
   end
 
-  M.create_new_term(cmd, opts)
+  M.new(cmd, opts)
 end
 
-function M.open_oil_terminal()
+function M.from_oil()
   local cwd = require("oil").get_current_dir()
   M.terminal(nil, { cwd = cwd })
 end
 
-function M.toggle_terminal()
+function M.toggle()
   M.terminal(nil, { cwd = last })
 end
 

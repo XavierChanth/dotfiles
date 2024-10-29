@@ -1,5 +1,5 @@
 return {
-  require("util.lazy").ensure_installed({
+  Util.lazy.ensure_installed({
     treesitter = { "go", "gomod", "gowork", "gosum" },
     conform = { "goimports", "gofumpt" },
     lsp = { "gopls" },

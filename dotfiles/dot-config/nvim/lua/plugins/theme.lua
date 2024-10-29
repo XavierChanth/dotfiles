@@ -1,5 +1,4 @@
----@type logo
-local logo = require("util.logos")["nvim_sharp"]
+local logo = Util.logos["nvim_sharp"]
 return {
   {
     "nvimdev/dashboard-nvim",
@@ -22,13 +21,13 @@ return {
         theme = "doom",
         config = {
           header = vim.split("\n\n" .. logo .. "\n\n", "\n"),
-          center = require("util.dashboard").actions,
+          center = Util.dashboard.actions,
         },
       }
     end,
   },
-  require("util.statusline").get({
-    statusline = "lualine",
+  Util.statusline({
+    plugin = "lualine",
     theme = "minimal",
   }),
 }

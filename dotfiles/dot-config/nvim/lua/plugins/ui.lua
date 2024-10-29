@@ -35,8 +35,8 @@ return {
         },
         init = function()
           -- when noice is not enabled, install notify on VeryLazy
-          if not require("util.lazy").has("noice.nvim") then
-            require("util.lazy").on_very_lazy(function()
+          if not Util.lazy.has("noice.nvim") then
+            Util.lazy.on_very_lazy(function()
               vim.notify = require("notify")
             end)
           end

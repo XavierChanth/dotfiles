@@ -35,14 +35,13 @@ return {
         ["g?"] = "actions.show_help",
         ["gx"] = "actions.open_external",
         ["<C-_>"] = function() -- opens the floating terminal at the current dir
-          require("util.terminal").open_oil_terminal()
+          Util.terminal.from_oil()
         end,
         ["<C-t>"] = function() -- opens a new tmux window at the current dir
-          local platform = require("util.platform")
-          if platform.is_gui() or platform.is_windows() then
+          if Util.platform.is_gui() or Util.platform.is_windows() then
             return
           end
-          require("util.tmux").neww({ cwd = require("oil").get_current_dir() })
+          Util.external.tmux.neww({ cwd = require("oil").get_current_dir() })
         end,
       },
       float = {

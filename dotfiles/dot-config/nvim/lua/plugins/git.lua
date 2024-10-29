@@ -27,16 +27,16 @@ return {
     keys = {
       {
         "<leader>ga",
-        require("util.git_worktree").add,
+        Util.worktree.add,
         desc = "Git worktree add",
       },
       {
         "<leader>gw",
-        require("util.git_worktree").telescope,
+        Util.worktree.telescope,
         desc = "Git worktrees",
       },
     },
-    config = require("util.git_worktree").config,
+    config = Util.worktree.config,
   },
 
 }
