@@ -45,6 +45,13 @@ return {
         timeout_ms = nil,
       },
     },
+    keys = {
+      {
+        "<leader>cl",
+        "<cmd>LspInfo<cr>",
+        desc = "Lsp Info",
+      },
+    },
     config = function(_, opts)
       -- LSP Attach
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -54,12 +61,6 @@ return {
             keymap.mode = keymap.mode or "n"
             vim.keymap.set(keymap.mode, keymap[1], keymap[2], { buffer = event.buf, desc = "LSP: " .. keymap.desc })
           end
-
-          map({
-            "<leader>cl",
-            "<cmd>LspInfo<cr>",
-            desc = "Lsp Info",
-          })
           map({
             "gd",
             function()
@@ -189,12 +190,12 @@ return {
           return
         end
 
-        if opts.override_on_attach[server] then
+        if opts.attach_server[server] then
           vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(event)
               local client = vim.lsp.get_client_by_id(event.data.client_id)
               if client and client.name == server then
-                if opts.override_on_attach[server](client, event) then
+                if opts.attach_server[server](client, event, server_opts[server]) then
                   return
                 end
               end

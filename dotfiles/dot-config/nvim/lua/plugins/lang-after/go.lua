@@ -55,7 +55,7 @@ return {
           },
         },
       },
-      override_on_attach = {
+      attach_server = {
         gopls = function(client)
           if client.server_capabilities.semanticTokensProvider then
             local semantic = client.config.capabilities.textDocument.semanticTokens

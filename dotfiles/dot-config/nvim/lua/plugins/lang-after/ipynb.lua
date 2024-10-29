@@ -18,7 +18,7 @@ return {
   {
     "nvim-lspconfig",
     opts = {
-      override_on_attach = {
+      attach = {
         basedpyright = function(client, event)
           if event.match:match("ipynb.otter") then
             client.config.settings.basedpyright = vim.tbl_deep_extend("force", client.config.settings.basedpyright, {

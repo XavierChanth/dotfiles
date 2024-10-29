@@ -27,9 +27,6 @@ return {
       servers = {
         neocmake = {},
         clangd = {
-          keys = {
-            { "<leader>ch", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
-          },
           root_dir = function(fname)
             return require("lspconfig.util").root_pattern(
               "Makefile",
@@ -63,11 +60,16 @@ return {
           },
         },
       },
-      setup = {
-        clangd = function(_, opts)
+      attach_server = {
+        clangd = function(_, event, opts)
           local clangd_ext_opts = Util.lazy.opts("clangd_extensions.nvim")
           require("clangd_extensions").setup(vim.tbl_deep_extend("force", clangd_ext_opts or {}, { server = opts }))
-          return false
+          vim.keymap.set(
+            "n",
+            "<leader>ch",
+            "<cmd>ClangdSwitchSourceHeader<cr>",
+            { buffer = event.buf, desc = "Switch Source/Header (C/C++)" }
+          )
         end,
       },
     },

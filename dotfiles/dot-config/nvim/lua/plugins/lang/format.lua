@@ -10,13 +10,10 @@ local prettier_supported = {
   "json",
   "jsonc",
   "less",
-  "markdown",
-  "markdown.mdx",
   "scss",
   "typescript",
   "typescriptreact",
   "vue",
-  "yaml",
 }
 
 function M.has_parser(ctx)
@@ -49,6 +46,13 @@ return {
       vim.api.nvim_create_user_command("WA", "lua vim.g.autoformat = false; vim.cmd.wa(); vim.g.autoformat = true", {})
       vim.api.nvim_create_user_command("Wa", "lua vim.g.autoformat = false; vim.cmd.wa(); vim.g.autoformat = true", {})
     end,
+    keys = {
+      {
+        "<leader>cc",
+        "<cmd>ConformInfo<cr>",
+        desc = "Conform Info",
+      },
+    },
     opts = {
       format_on_save = function(bufnr)
         if not vim.g.autoformat then

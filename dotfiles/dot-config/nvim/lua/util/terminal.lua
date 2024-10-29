@@ -54,6 +54,10 @@ end
 
 function M.existing_terminal(index)
   local existing = terminals[index]
+  if existing.cmd == nil then
+    last = existing.opts.cwd
+  end
+
   if existing and M.try_existing(existing) then
     return
   end
