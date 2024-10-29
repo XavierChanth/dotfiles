@@ -3,7 +3,7 @@ local M = {}
 -- Provide a command to create a blank new Python notebook
 -- note: the metadata is needed for Jupytext to understand how to parse the notebook.
 -- if you use another language than Python, you should change it in the template.
-local default_notebook = [[
+M.notebook_template = [[
   {
     "cells": [
      {
@@ -36,25 +36,16 @@ local default_notebook = [[
   }
 ]]
 
-local function new_notebook(filename)
+function M.new_notebook(filename)
   local path = filename .. ".ipynb"
   local file = io.open(path, "w")
   if file then
-    file:write(default_notebook)
+    file:write(M.notebook_template)
     file:close()
     vim.cmd("edit " .. path)
   else
     print("Error: Could not open new notebook file for writing.")
   end
-end
-
-function M.autocmd()
-  vim.api.nvim_create_user_command("NewNotebook", function(opts)
-    new_notebook(opts.args)
-  end, {
-    nargs = 1,
-    complete = "file",
-  })
 end
 
 function M.molten_wrap(fn)

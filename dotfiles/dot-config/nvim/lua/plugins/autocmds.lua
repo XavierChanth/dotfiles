@@ -190,6 +190,11 @@ else
   })
 end
 
-Util.ipynb.autocmd()
+vim.api.nvim_create_user_command("NewNotebook", function(opts)
+  Util.ipynb.new_notebook(opts.args)
+end, {
+  nargs = 1,
+  complete = "file",
+})
 
 return {}
