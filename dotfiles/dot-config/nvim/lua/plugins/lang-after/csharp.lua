@@ -1,5 +1,4 @@
 return {
-  -- ft = "cs",
   Util.lazy.ensure_installed({
     treesitter = { "c_sharp" },
     conform = { "csharpier" },
