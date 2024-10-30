@@ -19,7 +19,7 @@ return {
       "query",
       "regex",
       "scss",
-      "tmux",
+      -- "tmux", -- This parser is inaccurate
       "toml",
       "tsx",
       "typescript",
