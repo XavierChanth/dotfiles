@@ -1,3 +1,4 @@
+local wezterm = require("wezterm")
 -- Map of nvim theme names to wezterm theme names
 local themes = {
 	["catppuccin-mocha"] = "Catppuccin Mocha",
@@ -13,13 +14,21 @@ local themes = {
 -- Set the default theme
 local selected = "catppuccin-mocha"
 
--- Try to set the theme from lastcolor
-local lastcolor = require("lastcolor")
-for index, _ in pairs(themes) do
-	if index == lastcolor then
-		selected = lastcolor
+-- Initial load of lastcolor
+local initial = require("lastcolor")
+for theme, _ in pairs(themes) do
+	if theme == initial then
+		selected = initial
 	end
 end
+
+-- Force reload lastcolor every 5 seconds and see if we need to reset the theme
+wezterm.time.call_after(5, function()
+	package.loaded["lastcolor"] = nil
+	if initial ~= require("lastcolor") then
+		wezterm.reload_configuration()
+	end
+end)
 
 -- Return the theme info
 return {
