@@ -26,9 +26,6 @@ require("lazy").setup({
     lazy = true,
     version = "*",
   },
-  install = {
-    -- colorscheme = { require("last-color").recall() },
-  },
   performance = {
     rtp = {
       -- disable some rtp plugins

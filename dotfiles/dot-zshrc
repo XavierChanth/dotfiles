@@ -7,6 +7,9 @@ setopt COMBINING_CHARS # better paste for emojis
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Colored LS output
+export CLICOLOR=true
+
 if command -v bat >/dev/null 2>&1; then
   export PAGER="bat"
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"

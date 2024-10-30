@@ -62,6 +62,9 @@ end, { desc = "Open Yazi" })
 map("n", "<leader>gg", function()
   Util.lazygit()
 end, { desc = "Lazygit" })
+map("n", "<leader>gb", function()
+  Util.lazygit.blame_line()
+end, { desc = "Git blame" })
 
 -- UNDO BREAKING POINTS
 map("i", ",", ",<c-g>u")
