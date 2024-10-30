@@ -19,12 +19,14 @@ local config = {
 	default_prog = default_prog,
 	disable_default_key_bindings = true,
 	enable_tab_bar = false,
-	font = wezterm.font("JetBrainsMono NF"),
+	font = wezterm.font_with_fallback({
+		"JetBrainsMono Nerd Font",
+		"JetBrainsMono NF",
+	}),
 	font_size = 24.0,
 	front_end = front_end,
 	hyperlink_rules = wezterm.default_hyperlink_rules(),
 	max_fps = 144,
-	macos_window_background_blur = 20,
 	quit_when_all_windows_are_closed = false,
 	window_decorations = "RESIZE", -- no title, but window is properly resizable
 	window_padding = {
