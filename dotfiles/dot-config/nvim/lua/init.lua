@@ -14,9 +14,10 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 require("options")
 require("lazy").setup({
   spec = {
-    { import = "plugins" },
-    { import = "plugins.lang" },
-    { import = "plugins.lang-after" },
+    { import = "plugins.core" },
+    { import = "plugins.tui", cond = not vim.g.vscode },
+    { import = "plugins.lang", cond = not vim.g.vscode },
+    { import = "plugins.langs", cond = not vim.g.vscode },
     { import = "plugins.last" },
   },
   checker = { enabled = false }, -- disable check for updates

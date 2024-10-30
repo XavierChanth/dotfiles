@@ -125,6 +125,11 @@ local lsp_component = function()
   return lsp_clients
 end
 
+M.dependencies = {
+  "nvim-lualine/lualine.nvim",
+  "sschleemilch/slimline.nvim",
+}
+
 M.lualine = {
   "lualine.nvim",
   event = "VeryLazy",

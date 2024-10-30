@@ -11,6 +11,7 @@
 ---@field statusline util.statusline
 ---@field telescope util.telescope
 ---@field terminal util.terminal
+---@field vscode util.vscode
 ---@field worktree util.worktree
 local M = {}
 

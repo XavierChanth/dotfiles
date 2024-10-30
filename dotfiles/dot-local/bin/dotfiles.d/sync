@@ -12,4 +12,5 @@ fi
 stow -d "$DOTFILES" -t "$HOME" --dotfiles dotfiles "$@"
 if [ $(uname) = 'Darwin' ]; then
   stow -d "$DOTFILES/dotfiles/dot-config" -t "$HOME/Library/Application Support/Code/User" "vscode"
+  stow -d "$DOTFILES/dotfiles/dot-config" -t "$HOME/Library/Application Support/VSCodium/User" "vscode"
 fi

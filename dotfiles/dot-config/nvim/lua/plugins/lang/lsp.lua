@@ -20,8 +20,8 @@ return {
     },
     opts = {
       diagnostics = {
-        underline = true,
         update_in_insert = false,
+        underline = true,
         virtual_text = {
           spacing = 4,
           prefix = function(diagnostic)
