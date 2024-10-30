@@ -1,12 +1,23 @@
 return {
   {
     "raddari/last-color.nvim",
+    priority = 1000,
     lazy = false,
     config = function()
-      Util.colorscheme.setup()
+      Util.colorscheme.setup({
+        default_theme = "catppucin-mocha",
+        reload_time = 5000,
+        on_switch = function(theme, is_first)
+          if not is_first then
+            Util.external.tmux.reload_config()
+            Util.external.sketchybar.reload()
+            Util.external.wezterm.set_lastcolor(theme)
+          end
+        end,
+      })
     end,
   },
-  -- Setup catppuccin theme
+  { "folke/tokyonight.nvim" },
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -43,8 +54,5 @@ return {
         which_key = true,
       },
     },
-  },
-  {
-    "folke/tokyonight.nvim",
   },
 }

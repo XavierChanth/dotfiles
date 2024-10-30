@@ -15,32 +15,43 @@ M.configured = {
 
 -- Async reloading of colorscheme on change
 local timer = vim.uv.new_timer()
-local prev_color = nil
-
-local function apply()
-  local theme = require("last-color").recall() or prev_color or "catppuccin-mocha"
-  vim.cmd.colorscheme(theme)
-end
-
-local function start_timer()
+local function start_timer(time)
+  M.switch(nil, true)
   if timer ~= nil then
-    timer:start(0, 5000, vim.schedule_wrap(apply)) -- every 5 secs
+    timer:start(0, time, vim.schedule_wrap(M.switch)) -- every 5 secs
   end
 end
 
-function M.setup()
-  apply()
-  start_timer()
+local current = nil
+local default = nil
+function M.get()
+  return require("last-color").recall() or current or default
 end
 
 -- push color changes to everything else
-function M.switch(color)
-  if vim.tbl_contains(M.configured, color) then
-    vim.cmd.colorscheme(color)
-    Util.external.tmux.reload_config()
-    Util.external.sketchybar.reload_config()
-    Util.external.wezterm.set_lastcolor(color)
+local on_switch = nil
+function M.switch(theme, is_first)
+  theme = theme or M.get()
+  if theme ~= current then
+    current = theme
+    if vim.tbl_contains(M.configured, theme) then
+      vim.cmd.colorscheme(theme)
+      if on_switch then
+        on_switch(theme, is_first)
+      end
+    end
   end
+end
+
+function M.setup(opts)
+  opts = vim.tbl_extend("force", {
+    reload_time = 5000,
+    default_theme = "catppuccin-mocha",
+    on_switch = nil,
+  }, opts or {})
+  default = opts.default_theme
+  on_switch = opts.on_switch
+  start_timer(opts.reload_time)
 end
 
 return M
