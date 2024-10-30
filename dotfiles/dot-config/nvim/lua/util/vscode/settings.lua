@@ -30,8 +30,6 @@ return {
   ["git.openDiffOnClick"] = false,
   ["git.openRepositoryInParentFolders"] = "always",
   ["git.suggestSmartCommit"] = false,
-  ["nerdtree.hideSidebarWhenOpenFile"] = true,
-  ["nerdtree.alwaysShowSidebar"] = false,
   ["scm.defaultViewMode"] = "tree",
   ["scm.diffDecorationsIgnoreTrimWhitespace"] = "true", --Vscode wants a string for this one
   ["telemetry.telemetryLevel"] = "off",
