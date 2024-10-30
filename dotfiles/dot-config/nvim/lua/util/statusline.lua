@@ -1,21 +1,6 @@
 ---@class util.statusline
 local M = {}
 
-setmetatable(M, {
-  ---@param opts StatusLineOpts
-  __call = function(_, opts)
-    return M.statuslines[opts.plugin](opts.theme)
-  end,
-})
-
----@class StatusLineOpts
----@field plugin string
----|"'lualine'"
----|"'slimline'"
----@field theme string
----|"'minimal'"
----|"'bubble'"
-
 function M.format(component, text, hl_group)
   text = text:gsub("%%", "%%%%")
   if not hl_group or hl_group == "" then
@@ -140,8 +125,52 @@ local lsp_component = function()
   return lsp_clients
 end
 
-local slimline_themes = {
-  minimal = {
+M.lualine = {
+  "lualine.nvim",
+  event = "VeryLazy",
+  opts = {
+    options = {
+      component_separators = { left = "", right = "" },
+      section_separators = { left = "", right = "" },
+      theme = "auto",
+      globalstatus = vim.o.laststatus == 3,
+      disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter" } },
+    },
+    sections = {
+      lualine_a = { "mode" },
+      lualine_b = { "branch" },
+      lualine_c = { pretty_path() },
+      lualine_x = {
+        command_component,
+        mode_component,
+      },
+      lualine_y = {
+        "diagnostics",
+        lsp_component,
+        python_kernel,
+        "filetype",
+      },
+      lualine_z = {
+        "progress",
+        "location",
+      },
+    },
+    extensions = {
+      "lazy",
+      "mason",
+      "nvim-dap-ui",
+      "oil",
+      "quickfix",
+      "toggleterm",
+      "trouble",
+    },
+  },
+}
+
+M.slimline = {
+  "slimline.nvim",
+  event = "VeryLazy",
+  opts = {
     style = "fg",
     spaces = { left = "", right = "" },
     sep = {
@@ -149,105 +178,30 @@ local slimline_themes = {
       left = "",
       right = "",
     },
-  },
-  bubble = {
-    spaces = { left = "", right = "" },
-    sep = {
-      hide = { first = true, last = true },
-      left = "",
-      right = "",
+    components = {
+      left = {
+        "mode",
+        "path",
+      },
+      right = {
+        command_component,
+        mode_component,
+        "diagnostics",
+        python_kernel,
+        "filetype_lsp",
+        "progress",
+      },
+    },
+    hl = {
+      modes = {
+        normal = "Function", -- blue
+        insert = "String", -- green
+        pending = "error", -- red
+        visual = "Keyword", -- purple
+        command = "Boolean", -- orange
+      },
     },
   },
-}
-
-local lualine_themes = {
-  minimal = {
-    options = {
-      component_separators = { left = "", right = "" },
-      section_separators = { left = "", right = "" },
-    },
-  },
-  bubble = {
-    options = {
-      component_separators = { left = "|", right = "|" },
-      section_separators = { left = "", right = "" },
-    },
-  },
-}
-
-M.statuslines = {
-  lualine = function(selected_theme)
-    return {
-      "nvim-lualine/lualine.nvim",
-      event = "VeryLazy",
-      opts = vim.tbl_deep_extend("force", {
-        options = {
-          theme = "auto",
-          globalstatus = vim.o.laststatus == 3,
-          disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter" } },
-        },
-        sections = {
-          lualine_a = { "mode" },
-          lualine_b = { "branch" },
-          lualine_c = { pretty_path() },
-          lualine_x = {
-            command_component,
-            mode_component,
-          },
-          lualine_y = {
-            "diagnostics",
-            lsp_component,
-            python_kernel,
-            "filetype",
-          },
-          lualine_z = {
-            "progress",
-            "location",
-          },
-        },
-        extensions = {
-          "lazy",
-          "mason",
-          "nvim-dap-ui",
-          "oil",
-          "quickfix",
-          "toggleterm",
-          "trouble",
-        },
-      }, lualine_themes[selected_theme]),
-    }
-  end,
-  slimline = function(selected_theme)
-    return {
-      "sschleemilch/slimline.nvim",
-      event = "VeryLazy",
-      opts = vim.tbl_deep_extend("force", {
-        components = {
-          left = {
-            "mode",
-            "path",
-          },
-          right = {
-            command_component,
-            mode_component,
-            "diagnostics",
-            python_kernel,
-            "filetype_lsp",
-            "progress",
-          },
-        },
-        hl = {
-          modes = {
-            normal = "Function", -- blue
-            insert = "String", -- green
-            pending = "error", -- red
-            visual = "Keyword", -- purple
-            command = "Boolean", -- orange
-          },
-        },
-      }, slimline_themes[selected_theme]),
-    }
-  end,
 }
 
 return M

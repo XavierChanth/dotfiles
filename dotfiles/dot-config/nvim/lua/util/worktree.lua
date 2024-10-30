@@ -70,10 +70,16 @@ function M.is_inside(path)
 end
 
 function M.telescope(opts, callback)
+  local path = Util.root.git()
+
   if callback == nil then
-    require("persistence").save()
+    local root = Util.root.git({ root = true })
+    local in_root = #path == #root and path == root
+    local in_wt = Util.worktree.is_inside(path)
+    if not in_root or not in_wt then
+      require("persistence").save()
+    end
   else
-    local path = Util.root.git(opts)
     M.callbacks[path] = callback
   end
 

@@ -12,9 +12,9 @@ if uname[0] == "Darwin":
     neovide = "/opt/homebrew/bin/neovide"
 
 # Colors
-home = os.getenv("HOME")
+HOME = os.getenv("HOME")
 lastcolor = ""
-with open(f"{home}/.local/share/nvim/last-color", "r") as f:
+with open(f"{HOME}/.local/share/nvim/last-color", "r") as f:
     lastcolor = f.readline().strip()
     f.close()
 
@@ -45,9 +45,14 @@ c.aliases = {
 c.bindings.commands = {
     "normal": {
         "<Ctrl-o>": "back",
+        "<Ctrl-h>": "back",
         "<Ctrl-i>": "forward",
+        "<Ctrl-l>": "forward",
         "<Meta-->": "zoom-out",
         "<Meta-=>": "zoom-in",
+        "<Meta-0>": "zoom",
+        "=": "nop",
+        "gh": "home",
         "<Meta-1>": "tab-focus 1",
         "<Meta-2>": "tab-focus 2",
         "<Meta-3>": "tab-focus 3",
@@ -62,6 +67,7 @@ c.bindings.commands = {
         "<Meta-r>": "config-source",
         "td": "config-cycle colors.webpage.darkmode.enabled true false",
         "tt": "config-cycle tabs.show switching always",
+        "wi": "devtools bottom",
     },
 }
 c.colors.webpage.bg = "white"
@@ -71,6 +77,7 @@ c.colors.webpage.darkmode.threshold.foreground = 256
 c.content.autoplay = False
 c.content.javascript.clipboard = "access"
 c.content.pdfjs = True
+c.content.user_stylesheets = [f"{HOME}/.config/qutebrowser/stylesheets/code.css"]
 c.downloads.position = "bottom"
 c.editor.command = [neovide, "{file}"]
 c.fonts.default_size = "18pt"

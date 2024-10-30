@@ -26,8 +26,9 @@ return {
       }
     end,
   },
-  Util.statusline({
-    plugin = "lualine",
-    theme = "minimal",
-  }),
+  -- Load both statuslines so Lazy doesn't try to clean them
+  "nvim-lualine/lualine.nvim",
+  "sschleemilch/slimline.nvim",
+  -- Explicitly configure and activate the one in use
+  Util.statusline.slimline,
 }
