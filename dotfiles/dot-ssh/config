@@ -7,5 +7,7 @@ Host *
 
 Include config.d/*
 
-Host github.com
+Host github.com localhost
   ControlMaster no
+
+
