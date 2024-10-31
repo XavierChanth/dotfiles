@@ -48,7 +48,6 @@ return {
   },
   {
     "christoomey/vim-tmux-navigator",
-    cond = Util.platform.is_gui() or Util.platform.is_windows(),
     cmd = {
       "TmuxNavigateLeft",
       "TmuxNavigateDown",

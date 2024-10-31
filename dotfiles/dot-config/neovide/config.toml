@@ -1,13 +1,13 @@
 fork = true
 frame = "buttonless"
 idle = true
-srgb = false
+srgb = true
 tabs = false
 theme = "auto"
 vsync = true
 
 [font]
 normal = ["JetbrainsMono Nerd Font"]
-size = 18.0
-edging = "alias"
+size = 20.0
+edging = "antialias"
 hinting = "none"
