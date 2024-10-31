@@ -124,6 +124,7 @@ return {
           Util.telescope.builtin("buffers", {
             sort_lastused = true,
             sort_mru = true,
+            only_cwd = true,
           })
         end,
         desc = "Jump to buffer",

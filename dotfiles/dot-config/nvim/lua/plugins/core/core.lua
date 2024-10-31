@@ -1,7 +1,3 @@
-if Util.platform.is_gui() or Util.platform.is_windows() then
-  return {}
-end
-
 return {
   -- library used by other plugins
   { "nvim-lua/plenary.nvim", lazy = true },
@@ -52,6 +48,7 @@ return {
   },
   {
     "christoomey/vim-tmux-navigator",
+    cond = Util.platform.is_gui() or Util.platform.is_windows(),
     cmd = {
       "TmuxNavigateLeft",
       "TmuxNavigateDown",

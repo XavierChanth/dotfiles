@@ -44,6 +44,11 @@ return {
         all = { view = "popup" },
         history = { view = "popup" },
       },
+      views = {
+        popup = {
+          size = { width = "85%", height = "85%" },
+        },
+      },
       routes = {
         {
           filter = {
