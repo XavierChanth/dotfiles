@@ -94,9 +94,7 @@ end
 
 -- From LazyVim's UI settings
 local command_component = function()
-  ---@diagnostic disable-next-line: undefined-field
-  if require("noice").api.status.command.has() then
-    ---@diagnostic disable-next-line: undefined-field
+  if Util.lazy.has("noice.nvim") and require("noice").api.status.command.has() then
     return require("noice").api.status.command.get()
   end
   return ""
@@ -104,9 +102,7 @@ end
 
 -- From LazyVim's UI settings
 local mode_component = function()
-  ---@diagnostic disable-next-line: undefined-field
-  if require("noice").api.status.mode.has() then
-    ---@diagnostic disable-next-line: undefined-field
+  if Util.lazy.has("noice.nvim") and require("noice").api.status.mode.has() then
     return require("noice").api.status.mode.get()
   end
   return ""

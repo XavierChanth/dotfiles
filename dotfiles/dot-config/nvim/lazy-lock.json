@@ -22,6 +22,7 @@
   "last-color.nvim": { "branch": "main", "commit": "000e3e50047602f4b9725dd33aff631018592595" },
   "lazy.nvim": { "branch": "main", "commit": "077102c5bfc578693f12377846d427f49bc50076" },
   "lazydev.nvim": { "branch": "main", "commit": "491452cf1ca6f029e90ad0d0368848fac717c6d2" },
+  "lualine.nvim": { "branch": "master", "commit": "b431d228b7bbcdaea818bdc3e25b8cdbe861f056" },
   "luvit-meta": { "branch": "main", "commit": "ce76f6f6cdc9201523a5875a4471dcfe0186eb60" },
   "markdown-preview.nvim": { "branch": "master", "commit": "9becceee5740b7db6914da87358a183ad11b2049" },
   "mason-conform": { "branch": "main", "commit": "045065954f2e9d0acfb0bf38e905e3cf6f1e5b67" },
