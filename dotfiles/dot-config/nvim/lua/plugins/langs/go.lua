@@ -13,7 +13,7 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
+    "nvim-lspconfig",
     opts = {
       servers = {
         gopls = {
