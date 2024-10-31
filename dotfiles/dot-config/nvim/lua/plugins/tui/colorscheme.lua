@@ -1,20 +1,26 @@
+local cached = nil
 return {
   {
     "raddari/last-color.nvim",
     priority = 1000,
     lazy = false,
     config = function()
-      Util.colorscheme.setup({
-        default_theme = "catppucin-mocha",
-        reload_time = 5000,
-        on_switch = function(theme, is_first)
-          if not is_first then
-            Util.external.tmux.reload_config()
-            Util.external.sketchybar.reload()
-            Util.external.wezterm.set_lastcolor(theme)
-          end
-        end,
-      })
+      cached = require("last-color").recall() or "catppuccin-mocha"
+      vim.schedule_wrap(vim.cmd.colorscheme)(cached)
+
+      -- vim.api.nvim_create_autocmd("Colorscheme", {
+      --   callback = function(event)
+      --     local theme = event.match
+      --     if theme ~= cached then
+      --       cached = theme
+      --       vim.schedule(function()
+      --         Util.external.tmux.reload_config()
+      --         Util.external.sketchybar.reload()
+      --         Util.external.wezterm.set_lastcolor(theme)
+      --       end)
+      --     end
+      --   end,
+      -- })
     end,
   },
   { "folke/tokyonight.nvim" },

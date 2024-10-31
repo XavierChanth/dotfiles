@@ -167,16 +167,6 @@ local function setup()
 
   -- Recognize .xaml as xml
   vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = { "*.xaml" }, command = "setf xml" })
-
-  -- gd in help files
-  vim.api.nvim_create_autocmd("BufEnter", {
-    group = augroup("help"),
-    callback = function(event)
-      if vim.bo.filetype == "help" then
-        vim.keymap.set("n", "gd", "<c-]>", { buffer = event.buf, desc = "goto help definition" })
-      end
-    end,
-  })
 end
 
 -- Setup immediately if we are entering a file

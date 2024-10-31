@@ -2,6 +2,7 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
+    version = false,
     opts = {
       defaults = Util.telescope.defaults,
       pickers = {
@@ -94,8 +95,16 @@ return {
       {
         "<leader>sg",
         Util.telescope.builtin("live_grep"),
-        desc = "Grep",
+        desc = "Grep workspace",
       },
+      {
+        "<leader>sG",
+        function()
+          Util.telescope.builtin("current_buffer_fuzzy_find")({ skip_empty_lines = true })
+        end,
+        desc = "Find in buffer",
+      },
+
       {
         "<leader>sc",
         Util.telescope.builtin("resume"),
@@ -113,25 +122,32 @@ return {
       },
       {
         "<leader>m",
-        function()
-          Util.telescope.terminals()
-        end,
+        Util.telescope.terminals,
         desc = "Find terminals",
       },
       {
         "<leader>j",
         function()
-          Util.telescope.builtin("buffers", {
-            sort_lastused = true,
-            sort_mru = true,
-            only_cwd = true,
-          })
+          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = true })
         end,
-        desc = "Jump to buffer",
+        desc = "Jump to buffer (cwd)",
       },
       {
+        "<leader>k",
+        function()
+          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = false })
+        end,
+        desc = "Jump to buffer (all)",
+      },
+
+      {
         "<leader>uc",
-        Util.telescope.colorscheme,
+        function()
+          Util.telescope.builtin(
+            "colorscheme",
+            { enable_preview = true, ignore_builtins = true, initial_mode = "normal" }
+          )
+        end,
         desc = "Colorscheme with Preview",
       },
     },

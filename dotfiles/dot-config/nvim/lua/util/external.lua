@@ -17,51 +17,57 @@ function M.sketchybar.reload()
 end
 
 function M.tmux.reload_config()
-  Job:new({
-    command = "tmux",
-    args = { "source-file", os.getenv("XDG_CONFIG_HOME") .. "/tmux/tmux.conf" },
-  }):sync()
+  if Util.platform.supports_terminal() then
+    Job:new({
+      command = "tmux",
+      args = { "source-file", os.getenv("XDG_CONFIG_HOME") .. "/tmux/tmux.conf" },
+    }):sync()
+  end
 end
 
 function M.tmux.reload_plugins()
-  Job:new({
-    command = "./tpm",
-    cwd = os.getenv("XDG_CONFIG_HOME") .. "/tmux/plugins/tpm",
-  }):sync()
+  if Util.platform.supports_terminal() then
+    Job:new({
+      command = "./tpm",
+      cwd = os.getenv("XDG_CONFIG_HOME") .. "/tmux/plugins/tpm",
+    }):sync()
+  end
 end
 
 function M.tmux.neww(opts)
-  local args = { "neww" }
-  if opts.cwd then
-    args = { "neww", "-c", opts.cwd }
+  if Util.platform.supports_terminal() then
+    local args = { "neww" }
+    if opts.cwd then
+      args = { "neww", "-c", opts.cwd }
+    end
+    Job:new({
+      command = "tmux",
+      args = args,
+    }):sync()
   end
-  Job:new({
-    command = "tmux",
-    args = args,
-  }):sync()
 end
 
 function M.tmux.start(opts)
-  if not opts.cmd then
-    return
+  if Util.platform.supports_terminal() then
+    if not opts.cmd then
+      return
+    end
+    local args = { "neww" }
+    if opts.cwd then
+      table.insert(args, "-c")
+      table.insert(args, opts.cwd)
+    end
+    Job:new({
+      command = "tmux",
+      args = args,
+    }):sync()
   end
-  local args = { "neww" }
-  if opts.cwd then
-    table.insert(args, "-c")
-    table.insert(args, opts.cwd)
-  end
-  Job:new({
-    command = "tmux",
-    args = args,
-  }):sync()
 end
 
 function M.wezterm.set_lastcolor(colorscheme)
   local file = string.format("%s/../wezterm/lastcolor.lua", vim.fn.stdpath("config"))
-  local flags = 433
-  local fd = assert(vim.uv.fs_open(file, "w", flags))
-  assert(vim.uv.fs_write(fd, string.format('return "%s"\n', colorscheme), -1))
-  assert(vim.uv.fs_close(fd))
+  local contents = { string.format('return "%s"', colorscheme), "" }
+  vim.fn.writefile(contents, file)
 end
 
 return M

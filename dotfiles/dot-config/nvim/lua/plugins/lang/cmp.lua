@@ -42,8 +42,20 @@ return {
           completeopt = "menu,menuone,preview,noselect,noinsert",
         },
         mapping = {
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-n>"] = function()
+            if cmp.visible then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })()
+            else
+              cmp.complete()
+            end
+          end,
+          ["<C-p>"] = function()
+            if cmp.visible then
+              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })()
+            else
+              cmp.complete()
+            end
+          end,
           ["<C-e>"] = cmp.mapping.abort(),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-u>"] = cmp.mapping.scroll_docs(-4),

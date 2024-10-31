@@ -50,21 +50,26 @@ map("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 map("n", "<leader>th", "<cmd>tabnext -1<cr>", { desc = "Tab Left" })
 map("n", "<leader>tl", "<cmd>tabnext<cr>", { desc = "Tab Right" })
 
--- TERMINAL
-map("t", "<S-Space>", "<Space>", { desc = "which_key_ignore", noremap = true })
-map("t", "<c-_>", "<cmd>close<cr>", { desc = "Terminal (Close)" })
-map("n", "<c-_>", function()
-  Util.terminal.toggle()
-end, { desc = "Terminal" })
-map("n", "<leader>E", function()
-  Util.terminal("yazi", {})
-end, { desc = "Open Yazi" })
-map("n", "<leader>gg", function()
-  Util.lazygit()
-end, { desc = "Lazygit" })
-map("n", "<leader>gb", function()
-  Util.lazygit.blame_line()
-end, { desc = "Git blame" })
+if Util.platform.supports_terminal() then
+  -- TERMINAL
+  map("t", "<S-Space>", "<Space>", { desc = "which_key_ignore", noremap = true })
+  map("t", "<c-_>", "<cmd>close<cr>", { desc = "Terminal (Close)" })
+  map("n", "<c-_>", function()
+    Util.terminal.toggle()
+  end, { desc = "Terminal" })
+  map("n", "<leader>E", function()
+    Util.terminal("yazi", {})
+  end, { desc = "Open Yazi" })
+  map("n", "<leader>gg", function()
+    Util.lazygit()
+  end, { desc = "Lazygit" })
+  map("n", "<leader>gb", function()
+    Util.lazygit.blame_line()
+  end, { desc = "Git blame" })
+
+  -- LAZY
+  map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+end
 
 -- UNDO BREAKING POINTS
 map("i", ",", ",<c-g>u")
@@ -75,8 +80,6 @@ map("i", ";", ";<c-g>u")
 map("v", "J", ":m '>+1<cr>gv=gv", { noremap = true, desc = "Move selected lines down" })
 map("v", "K", ":m '<-2<cr>gv=gv", { noremap = true, desc = "Move selected lines up" })
 
--- LAZY
-map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 -- INDENTATION
 local spaces = { 2, 4, 8 }

@@ -16,7 +16,7 @@ require("lazy").setup({
   spec = {
     { import = "plugins.core" },
     { import = "plugins.tui", cond = not Util.platform.is_gui() },
-    { import = "plugins.lang", cond = not Util.platform.supports_lsp() },
+    { import = "plugins.lang", cond = Util.platform.supports_lsp() },
     { import = "plugins.langs", cond = Util.platform.supports_lsp() },
     { import = "plugins.last" },
   },
