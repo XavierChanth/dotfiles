@@ -15,9 +15,9 @@ require("options")
 require("lazy").setup({
   spec = {
     { import = "plugins.core" },
-    { import = "plugins.tui", cond = not vim.g.vscode },
-    { import = "plugins.lang", cond = not vim.g.vscode },
-    { import = "plugins.langs", cond = not vim.g.vscode },
+    { import = "plugins.tui", cond = not Util.platform.is_gui() },
+    { import = "plugins.lang", cond = not Util.platform.supports_lsp() },
+    { import = "plugins.langs", cond = Util.platform.supports_lsp() },
     { import = "plugins.last" },
   },
   checker = { enabled = false }, -- disable check for updates

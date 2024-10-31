@@ -19,8 +19,19 @@ end
 M.is_windows = Util.lazy.memoize(M.is_windows)
 
 function M.is_gui()
-  return vim.g.vscode or vim.g.neovide
+  -- Don't put neovide here, it's basically a terminal and supports most things
+  return vim.g.vscode
 end
 M.is_gui = Util.lazy.memoize(M.is_gui)
+
+function M.supports_terminal()
+  return not vim.g.vscode
+end
+M.supports_terminal = Util.lazy.memoize(M.supports_terminal)
+
+function M.supports_lsp()
+  return not vim.g.vscode
+end
+M.supports_lsp = Util.lazy.memoize(M.supports_lsp)
 
 return M
