@@ -7,20 +7,6 @@ return {
     config = function()
       cached = require("last-color").recall() or "catppuccin-mocha"
       vim.schedule_wrap(vim.cmd.colorscheme)(cached)
-
-      -- vim.api.nvim_create_autocmd("Colorscheme", {
-      --   callback = function(event)
-      --     local theme = event.match
-      --     if theme ~= cached then
-      --       cached = theme
-      --       vim.schedule(function()
-      --         Util.external.tmux.reload_config()
-      --         Util.external.sketchybar.reload()
-      --         Util.external.wezterm.set_lastcolor(theme)
-      --       end)
-      --     end
-      --   end,
-      -- })
     end,
   },
   { "folke/tokyonight.nvim" },
@@ -49,6 +35,7 @@ return {
             information = { "undercurl" },
           },
         },
+        navic = true,
         neotest = true,
         noice = true,
         notify = true,

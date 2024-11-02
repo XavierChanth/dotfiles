@@ -53,7 +53,6 @@ opt.showmode = false
 -- UI - BARS
 opt.number = true
 opt.relativenumber = true
-opt.laststatus = 3
 opt.signcolumn = "yes"
 
 -- UI - OTHER
