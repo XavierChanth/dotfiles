@@ -34,6 +34,9 @@ alias wgetsite='wget --no-parent -p -r'
 
 alias lg='lazygit'
 alias y='yazi'
+function z() {
+  [ -n "$1" ] && zed $@ || zed .
+}
 
 if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then
   alias code="codium"
