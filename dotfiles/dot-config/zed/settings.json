@@ -12,6 +12,23 @@
     "enabled": false,
     "version": "2"
   },
+  "command_aliases": {
+    "W": "workspace::SaveWithoutFormat"
+  },
+  "features": {
+    "copilot": false,
+    "inline_completion_provider": "none"
+  },
+  "toolbar": {
+    "selections_menu": false,
+    "quick_actions": false
+  },
+  "prettier": {
+    "allowed": true
+  },
+  "show_whitespaces": "all",
+  "unstable.ui_density": "comfortable",
+  "use_auto_surround": false,
   "auto_install_extensions": {},
   "buffer_font_size": 20,
   "buffer_font_family": "JetBrainsMono Nerd Font",

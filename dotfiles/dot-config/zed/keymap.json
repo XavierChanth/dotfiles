@@ -6,7 +6,7 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
-  {
+  { // Global Navigation Binds
     "bindings": {
       "ctrl-h": [
         "workspace::ActivatePaneInDirection",
@@ -23,10 +23,11 @@
       "ctrl-j": [
         "workspace::ActivatePaneInDirection",
         "Down"
-      ]
+      ],
+      "ctrl--": "workspace::ToggleBottomDock"
     }
   },
-  {
+  { // Normal & Visual Mode
     "context": "VimControl && !menu",
     "bindings": {
       "cmd-j": [
@@ -40,52 +41,19 @@
       "space c a": "editor::ToggleCodeActions"
     }
   },
-  {
-    "context": "TabSwitcher",
-    "bindings": {
-      "j": "menu::SelectNext",
-      "k": "menu::SelectPrev",
-      "ctrl-d": "tab_switcher::CloseSelectedItem"
-    }
-  },
-  {
-    "context": "vim_mode == normal || EmptyPane || SharedScreen",
+  { // Navigation: Normal Mode & blank screens
+    "context": "vim_mode == normal && !menu || EmptyPane || SharedScreen",
     "bindings": {
       "space space": "file_finder::Toggle",
-      "space g b": "editor::ToggleGitBlameInline",
       "space j": "tab_switcher::Toggle",
-      "space e": "project_panel::ToggleFocus",
+      "space e": "workspace::ToggleLeftDock",
       "space b n": "workspace::NewFile",
       // "space b b" :"",
       "space b d": "pane::CloseActiveItem",
       "space b o": "pane::CloseInactiveItems",
       "space b r": "workspace::ReloadActiveItem",
       "space \\": "pane::SplitRight",
-      "space -": "pane::SplitDown"
-    }
-  },
-  {
-    "bindings": {
-      "ctrl--": "workspace::ToggleBottomDock"
-    }
-  },
-  {
-    "context": "ProjectPanel",
-    "bindings": {
-      "space e": "workspace::ToggleLeftDock"
-    }
-  },
-  {
-    "context": "vim_mode == normal && !VimWaiting && !menu",
-    "bindings": {
-      "space c r": "editor::Rename",
-      "g d": "editor::GoToDefinition",
-      "g D": "editor::GoToDeclaration",
-      "g I": "editor::GoToImplementation",
-      "g y": "editor::GoToTypeDefinition",
-      "g r": "editor::FindAllReferences",
-      "] d": "editor::GoToDiagnostic",
-      "[ d": "editor::GoToPrevDiagnostic",
+      "space -": "pane::SplitDown",
       "space s g": "workspace::NewSearch",
       "space s s": "outline::Toggle",
       "space s S": "project_symbols::Toggle",
@@ -93,7 +61,21 @@
       "space q q": "zed::Quit"
     }
   },
-  {
+  { // Normal mode in buffer
+    "context": "vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      "space c r": "editor::Rename",
+      "space g b": "editor::ToggleGitBlameInline",
+      "g d": "editor::GoToDefinition",
+      "g D": "editor::GoToDeclaration",
+      "g I": "editor::GoToImplementation",
+      "g y": "editor::GoToTypeDefinition",
+      "g r": "editor::FindAllReferences",
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPrevDiagnostic"
+    }
+  },
+  { // Visual mode in buffer
     "context": "vim_mode == visual && !menu",
     "bindings": {
       "<": [
@@ -108,18 +90,32 @@
       "g >": "vim::Indent"
     }
   },
-  {
+  { // Insert mode in buffer
     "context": "vim_mode == insert && !menu",
     "bindings": {
       "ctrl-n": "editor::ShowCompletions",
       "ctrl-p": "editor::ShowCompletions"
     }
   },
-  {
+  { // cmp triggered
     "context": "vim_mode == insert && menu",
     "bindings": {
       "tab": null,
       "shift-tab": null
+    }
+  },
+  { // "Telescope buffers"
+    "context": "TabSwitcher",
+    "bindings": {
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrev",
+      "ctrl-d": "tab_switcher::CloseSelectedItem"
+    }
+  },
+  { // Project panel
+    "context": "Dock && !Terminal",
+    "bindings": {
+      "space e": "workspace::ToggleLeftDock"
     }
   }
 ]
