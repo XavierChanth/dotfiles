@@ -26,6 +26,7 @@ export DOTFILES="$HOME/.dotfiles"
 
 # history
 source <(fzf --zsh 2>/dev/null)
+setopt hist_ignore_all_dups
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000

@@ -44,14 +44,14 @@ return {
         mapping = {
           ["<C-n>"] = function()
             if cmp.visible then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })()
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
             else
               cmp.complete()
             end
           end,
           ["<C-p>"] = function()
             if cmp.visible then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })()
+              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
             else
               cmp.complete()
             end

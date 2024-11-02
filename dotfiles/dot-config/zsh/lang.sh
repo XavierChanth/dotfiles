@@ -14,7 +14,7 @@ __path=""
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"
 if [ -d $FLUTTER_ROOT ]; then
   export PUB_CACHE="$HOME/.pub-cache"
-  __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$__path"
+  __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$FLUTTER_ROOT/bin/cache/dart-sdk/bin:$__path"
   # dart completions
   [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
   alias pub='dart pub'

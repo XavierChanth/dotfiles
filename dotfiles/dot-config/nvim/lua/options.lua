@@ -26,6 +26,7 @@ opt.cursorline = true
 opt.mouse = "a"
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.smoothscroll = true
+opt.scrolloff = 8
 
 -- UI - EDITOR
 opt.colorcolumn = "81,121"

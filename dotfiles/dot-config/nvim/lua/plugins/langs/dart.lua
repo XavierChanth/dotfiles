@@ -19,13 +19,10 @@ return {
       },
     },
     opts = {
-      closing_tags = { highlight = "Comment", prefix = "󰘟 " },
+      closing_tags = { highlight = "Function", prefix = "󰘟 " },
       dev_log = { open_cmd = "12split" },
-      root_pattern = { ".git" },
+      root_patterns = { ".git" },
       lsp = {
-        init_options = {
-          onlyAnalyzeProjectsWithOpenFiles = false,
-        },
         on_attach = function(client)
           client.config.settings.dart.lineLength = 80
 

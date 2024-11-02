@@ -128,18 +128,17 @@ return {
       {
         "<leader>j",
         function()
-          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = true })
-        end,
-        desc = "Jump to buffer (cwd)",
-      },
-      {
-        "<leader>k",
-        function()
           Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = false })
         end,
         desc = "Jump to buffer (all)",
       },
-
+      {
+        "<leader>k",
+        function()
+          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = true })
+        end,
+        desc = "Jump to buffer (cwd)",
+      },
       {
         "<leader>uc",
         function()

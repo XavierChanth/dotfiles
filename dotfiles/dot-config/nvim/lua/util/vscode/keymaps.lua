@@ -21,6 +21,7 @@ return {
   -- Buffers/Tabs/Windows
   { "<leader>bd", action("workbench.action.closeActiveEditor") },
   { "<leader>bo", action("workbench.action.closeOtherEditors") },
+  -- { "<leader>-", action("workbench.action.splitEditor") }, -- TODO
   { "<leader>\\", action("workbench.action.splitEditor") },
   { "<leader>qq", action("workbench.action.closeWindow") },
   -- LSP
