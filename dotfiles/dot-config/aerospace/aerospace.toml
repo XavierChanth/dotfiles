@@ -11,6 +11,8 @@ exec-on-workspace-change = [
   '/opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
+accordion-padding = 0
+
 [gaps]
 inner.horizontal = 0
 inner.vertical = 0
@@ -91,10 +93,10 @@ alt-r = 'flatten-workspace-tree'
 alt-w = 'close'
 
 # Window movement
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
+alt-h = 'focus left --boundaries-action wrap-around-the-workspace'
+alt-j = 'focus down --boundaries-action wrap-around-the-workspace'
+alt-k = 'focus up --boundaries-action wrap-around-the-workspace'
+alt-l = 'focus right --boundaries-action wrap-around-the-workspace'
 
 alt-shift-h = 'move left'
 alt-shift-j = 'move down'

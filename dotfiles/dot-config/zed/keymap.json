@@ -38,7 +38,13 @@
         "workspace::SendKeystrokes",
         "5 k"
       ],
-      "space c a": "editor::ToggleCodeActions"
+      "space c a": "editor::ToggleCodeActions",
+      "g s a": [
+        "vim::PushOperator",
+        {
+          "AddSurrounds": {}
+        }
+      ]
     }
   },
   { // Navigation: Normal Mode & blank screens
@@ -112,10 +118,26 @@
       "ctrl-d": "tab_switcher::CloseSelectedItem"
     }
   },
-  { // Project panel
+  { // Project panel toggle
     "context": "Dock && !Terminal",
     "bindings": {
       "space e": "workspace::ToggleLeftDock"
+    }
+  },
+  { // Project panel maps
+    "context": "ProjectPanel",
+    "bindings": {
+      "enter": [
+        "workspace::SendKeystrokes",
+        "shift enter space e"
+      ],
+      "shift enter": "project_panel::Open",
+      "o": "project_panel::NewFile",
+      "d": "project_panel::Delete",
+      "y": "project_panel::Copy",
+      "x": "project_panel::Cut",
+      "p": "project_panel::Paste",
+      "c": "project_panel::Rename"
     }
   }
 ]
