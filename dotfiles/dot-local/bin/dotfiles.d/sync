@@ -10,7 +10,11 @@ if ! command_exists stow; then
 fi
 
 stow -d "$DOTFILES" -t "$HOME" --dotfiles dotfiles "$@"
+
+# Like why, nobody cares about macos' stupid library dir, just support XDG base dirs
 if [ $(uname) = 'Darwin' ]; then
   stow -d "$DOTFILES/dotfiles/dot-config" -t "$HOME/Library/Application Support/Code/User" "vscode"
   stow -d "$DOTFILES/dotfiles/dot-config" -t "$HOME/Library/Application Support/VSCodium/User" "vscode"
+  mkdir -p "$HOME/Library/Preferences/clangd"
+  stow -d "$DOTFILES/dotfiles/dot-config" -t "$HOME/Library/Preferences/clangd" "clangd"
 fi

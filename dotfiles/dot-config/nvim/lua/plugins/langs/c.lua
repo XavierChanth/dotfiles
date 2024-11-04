@@ -52,6 +52,7 @@ return {
             "--completion-style=detailed",
             "--function-arg-placeholders",
             "--fallback-style=llvm",
+            "--enable-config",
           },
           init_options = {
             usePlaceholders = true,
