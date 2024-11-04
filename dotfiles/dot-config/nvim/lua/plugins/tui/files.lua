@@ -20,9 +20,10 @@ return {
       },
       view_options = {
         show_hidden = true,
+        natural_order = true,
+        case_insensitive = true,
       },
       cleanup_delay_ms = 1,
-      natural_order = false,
       use_default_keymaps = false,
       keymaps = {
         ["<leader>e"] = "actions.close",

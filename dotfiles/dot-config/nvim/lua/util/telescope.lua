@@ -97,7 +97,6 @@ function M.terminals(opts)
           ---@diagnostic disable-next-line: redundant-parameter
           local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
           util.remove(cwd)
-          actions.close(prompt_bufnr)
         end
         map("i", "<C-d>", delete_from_telescope)
         map("n", "<C-d>", delete_from_telescope)
