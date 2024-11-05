@@ -6,10 +6,10 @@ import catppuccin
 
 config.load_autoconfig()
 
-neovide = "neovide"
+gui_editor = "zed"
 uname = os.uname()
 if uname[0] == "Darwin":
-    neovide = "/opt/homebrew/bin/neovide"
+    gui_editor = "/opt/homebrew/bin/zed"
 
 # Colors
 HOME = os.getenv("HOME")
@@ -79,7 +79,7 @@ c.content.javascript.clipboard = "access"
 c.content.pdfjs = True
 c.content.user_stylesheets = [f"{HOME}/.config/qutebrowser/stylesheets/code.css"]
 c.downloads.position = "bottom"
-c.editor.command = [neovide, "{file}"]
+c.editor.command = [gui_editor, "{file}"]
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
 c.qt.args = [
