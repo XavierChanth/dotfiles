@@ -12,6 +12,16 @@ return {
       end,
       desc = "Obsidian Commands",
     },
+    {
+      "<leader>nn",
+      "<cmd>ObsidianNew<cr>",
+      desc = "New Note",
+    },
+    {
+      "<leader>sn",
+      "<cmd>ObsidianQuickSwitch<cr>",
+      desc = "Search Notes",
+    },
   },
   ft = function()
     if Util.root.git() == path then
@@ -20,6 +30,7 @@ return {
     return {}
   end,
   opts = {
+    strict = false,
     workspaces = {
       {
         name = "notes",

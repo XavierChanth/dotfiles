@@ -39,6 +39,7 @@ Setup `~/.config/aerc/accounts.conf` like so:
 [{DISPLAY NAME}]
 source              = notmuch://~/mail/personal/
 check-mail-cmd      = ~/.local/bin/syncmail personal
+check-mail          = 5m
 outgoing            = ~/.local/bin/sendmail {ACCOUNT}
 query-map           = ~/.config/aerc/map.conf
 maildir-store       = .

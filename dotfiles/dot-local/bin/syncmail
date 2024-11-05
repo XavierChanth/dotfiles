@@ -1,19 +1,30 @@
 #!/bin/bash
 
 NOTMUCH=$(pgrep notmuch)
+MBSYNC=$(pgrep mbsync)
+disable_mbsync=true
 
 profile=$1
 shift
 
 function main() {
+
+  [ "$disable_mbsync" ] && MBSYNC=false
   export NOTMUCH_PROFILE="$profile"
-  if [ -n "$MBSYNC" -o -n "$NOTMUCH" ]; then
-    echo "Already running one instance of mbsync or notmuch. Exiting..."
+  if ! [ "$disable_mbsync" ] && [ -n "$MBSYNC" ]; then
+    echo "Already running one instance of mbsync. Exiting..."
     exit 0
   fi
 
-  echo "Syncing maildir"
-  mbsync "$profile"
+  if [ -n "$NOTMUCH" ]; then
+    echo "Already running one instance of notmuch. Exiting..."
+    exit 0
+  fi
+
+  if ! [ "$disable_mbsync" ]; then
+    echo "Syncing maildir"
+    mbsync "$profile"
+  fi
 
   echo "Pulling new mails into database"
   notmuch new
