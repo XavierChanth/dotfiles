@@ -29,11 +29,7 @@ map(
 
 -- BUFFERS
 map("n", "<leader>bn", "<cmd>enew<cr>", { desc = "Buffer New" })
-map("n", "<leader>bb", "<cmd>e#<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
-map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
-map("n", "<leader>br", "<cmd>e<cr>", { desc = "Reload buffer" })
 
 -- WINDOWS
 map("n", "<leader>w", "<c-w>", { desc = "Windows", remap = true })
@@ -79,7 +75,6 @@ map("i", ";", ";<c-g>u")
 -- MOVE LINES (visual mode)
 map("v", "J", ":m '>+1<cr>gv=gv", { noremap = true, desc = "Move selected lines down" })
 map("v", "K", ":m '<-2<cr>gv=gv", { noremap = true, desc = "Move selected lines up" })
-
 
 -- INDENTATION
 local spaces = { 2, 4, 8 }
