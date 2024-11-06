@@ -83,13 +83,10 @@ alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/qutebrowser.app']
 
 # Layout movement
 alt-s = 'layout tiles horizontal vertical'
-alt-a = 'layout accordion horizontal vertical'
+alt-f = 'layout h_accordion tiles'
 
 alt-q = 'enable off'
-alt-shift-space = 'layout floating tiling'
-
-alt-f = 'fullscreen'
-alt-shift-f = 'macos-native-fullscreen'
+alt-shift-f = 'layout floating tiling'
 
 alt-r = 'flatten-workspace-tree'
 alt-w = 'close'
