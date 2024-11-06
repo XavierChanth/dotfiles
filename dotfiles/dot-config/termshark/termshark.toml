@@ -1,4 +1,5 @@
 [main]
-
-theme-256=base16
-theme-truecolor=base16
+term = "xterm-256color"
+respect-colorterm = true
+ignore-base16-colors = true
+theme-256 = "default"

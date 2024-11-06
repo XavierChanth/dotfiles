@@ -1,7 +1,8 @@
 start-at-login = true
 
 after-startup-command = [
-  'exec-and-forget /opt/bin/sketchybar',
+  'exec-and-forget /opt/homebrew/bin/sketchybar',
+  'exec-and-forget /opt/homebrew/bin/borders style=round width=8.0 hidpi=on active_color=0xffef9f76 inactive_color=0x00babbf1',
   'exec-and-forget bash -c "pgrep dmenu-mac || open -a dmenu-mac"',
 ]
 
@@ -14,12 +15,12 @@ exec-on-workspace-change = [
 accordion-padding = 0
 
 [gaps]
-inner.horizontal = 0
-inner.vertical = 0
-outer.left = 0
-outer.bottom = 0
-outer.top = [{ monitor.built-in = 0 }, { monitor.main = 40 }, 0]
-outer.right = 0
+inner.horizontal = 8
+inner.vertical = 8
+outer.left = 8
+outer.bottom = 8
+outer.top = [{ monitor.built-in = 8 }, { monitor.main = 48 }, 8]
+outer.right = 8
 
 [workspace-to-monitor-force-assignment]
 1 = 'secondary' # '^Sidecar.*$'
@@ -61,6 +62,7 @@ run = 'move-node-to-workspace 3'
 alt-shift-r = [
   'exec-and-forget aerospace reload-config',
   'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload',
+  'exec-and-forget bash -c "killall borders; /opt/homebrew/bin/borders style=round width=8.0 hidpi=on active_color=0xffef9f76 inactive_color=0x00babbf1"',
   'exec-and-forget bash -c "pgrep dmenu-mac || open -a dmenu-mac"',
 ]
 
