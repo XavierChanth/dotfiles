@@ -16,6 +16,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 # Pagers
+export LESS='--mouse'
 if command -v bat >/dev/null 2>&1; then
   export PAGER="bat"
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
