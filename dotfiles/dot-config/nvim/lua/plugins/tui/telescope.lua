@@ -10,7 +10,7 @@ return {
           initial_mode = "normal",
           mappings = {
             n = {
-              ["<c-f><c-d>"] = function(prompt_bufnr)
+              ["<c-x>"] = function(prompt_bufnr)
                 local actions = require("telescope.actions")
                 local action_state = require("telescope.actions.state")
 
@@ -43,73 +43,44 @@ return {
           symbol_width = 48,
         },
       },
-      extensions = {
-        undo = {
-          use_delta = true,
-          mappings = {
-            i = {
-              ["<cr>"] = function(prompt_bufnr)
-                return require("telescope-undo.actions").restore(prompt_bufnr)
-              end,
-              ["<C-y>"] = function(prompt_bufnr)
-                return require("telescope-undo.actions").yank_additions(prompt_bufnr)
-              end,
-              ["<C-Y>"] = function(prompt_bufnr)
-                return require("telescope-undo.actions").yank_deletions(prompt_bufnr)
-              end,
-            },
-            n = {
-              ["<cr>"] = function(prompt_bufnr)
-                return require("telescope-undo.actions").restore(prompt_bufnr)
-              end,
-              ["y"] = function(prompt_bufnr)
-                return require("telescope-undo.actions").yank_additions(prompt_bufnr)
-              end,
-              ["Y"] = function(prompt_bufnr)
-                return require("telescope-undo.actions").yank_deletions(prompt_bufnr)
-              end,
-            },
-          },
-        },
-      },
     },
     keys = {
-      { "<leader><space>", Util.telescope.git_files, desc = "Git files" },
-      { "<leader>rr", Util.telescope.builtin("commands"), desc = "Run commands" },
-      { "<leader>sf", Util.telescope.find_files, desc = "Find files" },
-      {
-        "<leader>sh",
-        Util.telescope.builtin("help_tags"),
-        desc = "Help Pages",
-      },
-      {
-        "<leader>sk",
-        Util.telescope.builtin("keymaps"),
-        desc = "Key Maps",
-      },
-      {
-        "<leader>sm",
-        Util.telescope.builtin("marks"),
-        desc = "Marks",
-      },
-      {
-        "<leader>sg",
-        Util.telescope.builtin("live_grep"),
-        desc = "Grep workspace",
-      },
-      {
-        "<leader>sG",
-        function()
-          Util.telescope.builtin("current_buffer_fuzzy_find")({ skip_empty_lines = true })
-        end,
-        desc = "Find in buffer",
-      },
-
-      {
-        "<leader>sc",
-        Util.telescope.builtin("resume"),
-        desc = "Continue",
-      },
+      --   { "<leader><space>", Util.telescope.git_files, desc = "Git files" },
+      --   { "<leader>rr", Util.telescope.builtin("commands"), desc = "Run commands" },
+      --   { "<leader>sf", Util.telescope.find_files, desc = "Find files" },
+      --   {
+      --     "<leader>sh",
+      --     Util.telescope.builtin("help_tags"),
+      --     desc = "Help Pages",
+      --   },
+      --   {
+      --     "<leader>sk",
+      --     Util.telescope.builtin("keymaps"),
+      --     desc = "Key Maps",
+      --   },
+      --   {
+      --     "<leader>sm",
+      --     Util.telescope.builtin("marks"),
+      --     desc = "Marks",
+      --   },
+      --   {
+      --     "<leader>sg",
+      --     Util.telescope.builtin("live_grep"),
+      --     desc = "Grep workspace",
+      --   },
+      --   {
+      --     "<leader>sG",
+      --     function()
+      --       Util.telescope.builtin("current_buffer_fuzzy_find")({ skip_empty_lines = true })
+      --     end,
+      --     desc = "Find in buffer",
+      --   },
+      --
+      --   {
+      --     "<leader>sc",
+      --     Util.telescope.builtin("resume"),
+      --     desc = "Continue",
+      --   },
       {
         "<leader>ss",
         Util.telescope.builtin("lsp_document_symbols"),
@@ -120,11 +91,11 @@ return {
         Util.telescope.builtin("lsp_dynamic_workspace_symbols"),
         desc = "Symbols (Workspace)",
       },
-      {
-        "<leader>m",
-        Util.telescope.terminals,
-        desc = "Find terminals",
-      },
+      -- {
+      --   "<leader>m",
+      --   Util.telescope.terminals,
+      --   desc = "Find terminals",
+      -- },
       {
         "<leader>j",
         function()
@@ -132,13 +103,13 @@ return {
         end,
         desc = "Jump to buffer (all)",
       },
-      {
-        "<leader>k",
-        function()
-          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = true })
-        end,
-        desc = "Jump to buffer (cwd)",
-      },
+      -- {
+      --   "<leader>k",
+      --   function()
+      --     Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = true })
+      --   end,
+      --   desc = "Jump to buffer (cwd)",
+      -- },
     },
   },
   {
@@ -149,18 +120,5 @@ return {
     config = function()
       require("telescope").load_extension("fzf")
     end,
-  },
-  {
-    "debugloop/telescope-undo.nvim",
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
-    keys = {
-      {
-        "<leader>su",
-        "<cmd>Telescope undo<cr>",
-        desc = "Undo history",
-      },
-    },
   },
 }
