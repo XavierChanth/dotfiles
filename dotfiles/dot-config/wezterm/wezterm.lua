@@ -10,7 +10,7 @@ if wezterm.target_triple == "aarch64-apple-darwin" then
 	path = path .. ":/opt/homebrew/bin"
 end
 
-local colorscheme = require("colorscheme")
+local colorscheme = require("color")
 local config = {
 	check_for_updates = false,
 	color_scheme = colorscheme.current,

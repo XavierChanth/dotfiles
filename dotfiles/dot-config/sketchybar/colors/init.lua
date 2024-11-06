@@ -29,7 +29,7 @@ local themes = {
 local selected = "catppuccin-mocha"
 
 -- Load color file
-local filename = os.getenv("HOME") .. "/.local/share/nvim/last-color"
+local filename = os.getenv("HOME") .. "/.local/state/colorscheme/colorscheme"
 local f = assert(io.open(filename, "r"))
 local lastcolor = f:read("l")
 f:close()

@@ -14,8 +14,10 @@ local themes = {
 -- Set the default theme
 local selected = "catppuccin-mocha"
 
+package.path = os.getenv("HOME") .. "/.local/state/colorscheme/colorscheme.lua;" .. package.path
+
 -- Initial load of lastcolor
-local initial = require("lastcolor")
+local initial = require("colorscheme") or selected
 for theme, _ in pairs(themes) do
 	if theme == initial then
 		selected = initial

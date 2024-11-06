@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+configured=(
+  "catppuccin-mocha"
+  "catppuccin-machiatto"
+  "catppuccin-frappe"
+  "catppuccin-latte"
+  "tokyonight-night"
+  "tokyonight-storm"
+  "tokyonight-moon"
+  "tokyonight-day"
+)
+
+for theme in ${configured[@]}; do
+  echo "$theme"
+done

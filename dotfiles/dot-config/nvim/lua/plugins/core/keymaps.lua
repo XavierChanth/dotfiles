@@ -65,6 +65,11 @@ if Util.platform.supports_terminal() then
 
   -- LAZY
   map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+
+  map("n", "<leader>uc", function()
+    local home = os.getenv("HOME")
+    Util.external.tmux.popup({ args = { "-E", home .. "/.local/bin/color" } })
+  end)
 end
 
 -- UNDO BREAKING POINTS

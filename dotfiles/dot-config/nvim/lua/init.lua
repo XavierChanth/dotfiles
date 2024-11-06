@@ -22,6 +22,7 @@ require("lazy").setup({
   },
   checker = { enabled = false }, -- disable check for updates
   change_detection = { enabled = false },
+  colorscheme = { Util.colorscheme.get(), "catppuccin-mocha" },
   defaults = {
     lazy = true,
     version = "*",

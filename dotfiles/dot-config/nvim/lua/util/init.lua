@@ -1,4 +1,5 @@
 ---@class util
+---@field colorscheme util.colorscheme
 ---@field dashboard util.dashboard
 ---@field external util.external
 ---@field ipynb util.ipynb

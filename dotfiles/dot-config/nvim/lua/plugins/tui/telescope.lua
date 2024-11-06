@@ -139,16 +139,6 @@ return {
         end,
         desc = "Jump to buffer (cwd)",
       },
-      {
-        "<leader>uc",
-        function()
-          Util.telescope.builtin(
-            "colorscheme",
-            { enable_preview = true, ignore_builtins = true, initial_mode = "normal" }
-          )
-        end,
-        desc = "Colorscheme with Preview",
-      },
     },
   },
   {

@@ -1,14 +1,11 @@
-local cached = nil
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    Util.colorscheme.start_timer(3000) -- every 3 seconds
+  end,
+})
+
 return {
-  {
-    "raddari/last-color.nvim",
-    priority = 1000,
-    lazy = false,
-    config = function()
-      cached = require("last-color").recall() or "catppuccin-mocha"
-      vim.schedule_wrap(vim.cmd.colorscheme)(cached)
-    end,
-  },
   { "folke/tokyonight.nvim" },
   {
     "catppuccin/nvim",
