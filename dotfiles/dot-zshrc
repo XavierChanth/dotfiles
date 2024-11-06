@@ -1,15 +1,21 @@
 #!/bin/zsh
 
+# zsh options
 set keyseq-timeout 0   # no key delays
 setopt COMBINING_CHARS # better paste for emojis
+
+setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+setopt hist_ignore_all_dups
+setopt share_history
 
 # basic programs
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-# Colored LS output
-export CLICOLOR=true
-
+# Pagers
 if command -v bat >/dev/null 2>&1; then
   export PAGER="bat"
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -20,15 +26,13 @@ else
 fi
 
 # basic exports
+export CLICOLOR=true # Colored ls output
 export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
 
 # history
 source <(fzf --zsh 2>/dev/null)
-setopt hist_ignore_all_dups
-# setopt share_history
-setopt inc_append_history
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
