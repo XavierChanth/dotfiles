@@ -1,10 +1,6 @@
 start-at-login = true
 
-after-startup-command = [
-  'exec-and-forget /opt/homebrew/bin/sketchybar',
-  'exec-and-forget /opt/homebrew/bin/borders style=round width=8.0 hidpi=on active_color=0xffef9f76 inactive_color=0x00babbf1',
-  'exec-and-forget bash -c "pgrep dmenu-mac || open -a dmenu-mac"',
-]
+after-startup-command = [ 'exec-and-forget ~/.local/bin/aerospace-util startup' ]
 
 exec-on-workspace-change = [
   '/bin/bash',
@@ -59,13 +55,10 @@ if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
 
 [mode.main.binding]
-
 # General bindings
 alt-shift-r = [
   'exec-and-forget aerospace reload-config',
-  'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --reload',
-  'exec-and-forget bash -c "killall borders; /opt/homebrew/bin/borders style=round width=8.0 hidpi=on active_color=0xffef9f76 inactive_color=0x00babbf1"',
-  'exec-and-forget bash -c "pgrep dmenu-mac || open -a dmenu-mac"',
+  'exec-and-forget ~/.local/bin/aerospace-util reload',
 ]
 
 alt-s = 'layout tiles horizontal vertical'
