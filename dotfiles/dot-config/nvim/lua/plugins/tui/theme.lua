@@ -3,7 +3,7 @@ return {
   {
     "nvimdev/dashboard-nvim",
     cmd = "Dashboard",
-    lazy = false,
+    lazy = vim.fn.argc(-1) ~= 0,
     cond = not (vim.g.no_dashboard or false),
     opts = function()
       if vim.o.filetype == "lazy" then
