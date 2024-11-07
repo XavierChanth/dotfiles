@@ -177,27 +177,27 @@ local function setup()
 
   vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = "pubspec.yaml",
-    callback = function(ev)
+    callback = vim.schedule_wrap(function(ev)
       local Job = require("plenary.job")
       local file = vim.api.nvim_buf_get_name(ev.buf)
       local dir = vim.fs.dirname(file)
 
-      local job = Job:new({
+      Job:new({
         command = "flutter",
         args = { "pub", "get" },
         cwd = dir,
         enabled_recording = false,
-      })
-
-      local _, code = job:sync()
-      local level = vim.log.levels.WARN
-      local message = "pub get failed"
-      if code == 0 then
-        level = vim.log.levels.INFO
-        message = "pub get succeeded"
-      end
-      vim.notify(message, level)
-    end,
+        on_exit = function(_, code)
+          local level = vim.log.levels.WARN
+          local message = "pub get failed"
+          if code == 0 then
+            level = vim.log.levels.INFO
+            message = "pub get succeeded"
+          end
+          vim.notify(message, level)
+        end,
+      }):start()
+    end),
   })
 end
 
