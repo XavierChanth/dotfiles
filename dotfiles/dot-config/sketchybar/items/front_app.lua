@@ -11,6 +11,7 @@ local front_app = sbar.add("item", {
 		padding_right = 12,
 	},
 })
+
 front_app:subscribe("front_app_switched", function(env)
 	front_app:set({
 		label = {

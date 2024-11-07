@@ -2,7 +2,7 @@
 
 killall borders
 /opt/homebrew/bin/borders style=round \
-  width=8.0 \
+  width=6.0 \
   hidpi=on \
-  active_color=0xffef9f76 \
-  inactive_color=0x00babbf1
+  active_color=0xffffffff \
+  inactive_color=0x0000000

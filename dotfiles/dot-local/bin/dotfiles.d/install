@@ -81,6 +81,7 @@ if ! $LIGHT; then
     cat <<EOF
 uv
 python
+gcc
 cmake
 rust
 node

@@ -26,11 +26,8 @@ export ANDROID_HOME="/Users/chant/Library/Android/sdk"
 __path="$ANDROID_HOME/cmdline-tools/latest/bin:$__path"
 
 # clang
-if [ "$(uname)" = 'Darwin' ]; then
-  export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
-else
-  export CPATH="/usr/local/include:$CPATH"
-fi
+export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
+__path="$(brew --prefix llvm)/bin:$__path"
 
 # cmake
 alias cmbs='cmake -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'

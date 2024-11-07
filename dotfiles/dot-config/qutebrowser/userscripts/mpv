@@ -26,38 +26,36 @@
 
 set -e
 
-if [ "$(uname)" == 'Darwin' ]; then
-  PATH="/opt/homebrew/bin:$PATH"
-fi
+PATH="/opt/homebrew/bin:$PATH"
 
-if [ -z "$QUTE_FIFO" ] ; then
-    cat 1>&2 <<EOF
+if [ -z "$QUTE_FIFO" ]; then
+  cat 1>&2 <<EOF
 Error: $0 can not be run as a standalone script.
 
 It is a qutebrowser userscript. In order to use it, call it using
 'spawn --userscript' as described in qute://help/userscripts.html
 EOF
-    exit 1
+  exit 1
 fi
 
 msg() {
-    local cmd="$1"
-    shift
-    local msg="$*"
-    if [ -z "$QUTE_FIFO" ] ; then
-        echo "$cmd: $msg" >&2
-    else
-        echo "message-$cmd '${msg//\'/\\\'}'" >> "$QUTE_FIFO"
-    fi
+  local cmd="$1"
+  shift
+  local msg="$*"
+  if [ -z "$QUTE_FIFO" ]; then
+    echo "$cmd: $msg" >&2
+  else
+    echo "message-$cmd '${msg//\'/\\\'}'" >>"$QUTE_FIFO"
+  fi
 }
 
 MPV_COMMAND=${MPV_COMMAND:-mpv}
 # Warning: spaces in single flags are not supported
 MPV_FLAGS=${MPV_FLAGS:- --force-window --quiet --keep-open=yes --ytdl}
-IFS=" " read -r -a video_command <<< "$MPV_COMMAND $MPV_FLAGS"
+IFS=" " read -r -a video_command <<<"$MPV_COMMAND $MPV_FLAGS"
 
 js() {
-cat <<EOF
+  cat <<EOF
 
     function descendantOfTagName(child, ancestorTagName) {
         // tells whether child has some (proper) ancestor
@@ -138,9 +136,9 @@ EOF
 }
 
 printjs() {
-    js | sed 's,//.*$,,' | tr '\n' ' '
+  js | sed 's,//.*$,,' | tr '\n' ' '
 }
-echo "jseval -q -w main $(printjs)" >> "$QUTE_FIFO"
+echo "jseval -q -w main $(printjs)" >>"$QUTE_FIFO"
 
 msg info "Opening $QUTE_URL with mpv"
 "${video_command[@]}" "$@" "$QUTE_URL"

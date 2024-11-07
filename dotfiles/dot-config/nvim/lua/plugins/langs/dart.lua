@@ -21,7 +21,7 @@ return {
     opts = {
       closing_tags = { highlight = "Function", prefix = "󰘟 " },
       dev_log = { open_cmd = "12split" },
-      root_patterns = { ".git" },
+      -- root_patterns = { ".git" },
       lsp = {
         on_attach = function(client)
           client.config.settings.dart.lineLength = 80

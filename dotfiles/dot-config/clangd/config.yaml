@@ -1,4 +1,5 @@
 CompileFlags:
+  Compiler: /opt/homebrew/bin/gcc-14
   Add:
     - "-I/Users/chant/.local/include/"
     - "-I/home/chant/.local/include/"

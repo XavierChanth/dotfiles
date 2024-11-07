@@ -1,7 +1,8 @@
 local sbar = require("sketchybar")
 local opts = require("opts")
 
-sbar.bar({
+local M = {}
+M.bar = sbar.bar({
 	height = 40,
 	color = opts.color.base,
 	margin = 0,
@@ -10,9 +11,10 @@ sbar.bar({
 	padding_right = 0,
 	notch_width = 188,
 	display = "main",
+	position = "bottom",
 })
 
-sbar.default({
+M.default = sbar.default({
 	background = {
 		height = 32,
 		color = opts.color.transparent,
@@ -31,3 +33,5 @@ sbar.default({
 		padding_right = 0,
 	},
 })
+
+return M

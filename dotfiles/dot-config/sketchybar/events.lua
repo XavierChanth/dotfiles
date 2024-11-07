@@ -1,4 +1,5 @@
 local sbar = require("sketchybar")
+local bar = require("bar")
 
 local display_watcher
 local battery_watcher
@@ -14,8 +15,10 @@ local function update_display(_)
 		function(_, exit_code)
 			if exit_code == 0 then
 				sbar.trigger("builtin_display_change", { is_builtin = "true" })
+				bar.bar:set({ position = "top" })
 			else
 				sbar.trigger("builtin_display_change", { is_builtin = "false" })
+				bar.bar:set({ position = "bottom" })
 			end
 		end
 	)

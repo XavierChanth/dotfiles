@@ -46,6 +46,7 @@ extra_commands=(
   uv
   python3 # python
   cmake
+  gcc
   cargo # rust
   node
   dotnet # dotnet-sdk

@@ -20,11 +20,14 @@ end
 
 function M.tmux.popup(opts)
   if Util.platform.supports_terminal() then
+    local args = { "popup", "-w", "85%", "-h", "85%" }
     opts.args = opts.args or {}
-    table.insert(opts.args, 1, "popup")
+    for _, v in ipairs(opts.args) do
+      table.insert(args, v)
+    end
     Job:new({
       command = "tmux",
-      args = opts.args,
+      args = args,
     }):sync()
   end
 end

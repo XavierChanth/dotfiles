@@ -13,6 +13,7 @@ alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias v='nvim'
+alias c='color'
 
 t() {
   if [ $# -gt 0 ]; then
