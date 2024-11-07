@@ -1,29 +1,47 @@
-local cache = {}
+local flutter_root = require("os").getenv("FLUTTER_ROOT")
+if not flutter_root then
+  vim.notify("FLUTTER_ROOT not set", vim.log.levels.WARN)
+end
 
 return {
   Util.lazy.ensure_installed({
     treesitter = { "dart" },
   }),
-  -- Additional plugins
   {
-    "akinsho/flutter-tools.nvim",
-    event = "BufReadPre *.dart,pubspec.yaml",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = {
-      {
-        "<leader>rf",
-        function()
-          require("telescope").extensions.flutter.commands()
-        end,
-        desc = "Flutter Commands",
-      },
-    },
+    "nvim-lspconfig",
     opts = {
-      closing_tags = { highlight = "Function", prefix = "󰘟 " },
-      dev_log = { open_cmd = "12split" },
-      -- root_patterns = { ".git" },
-      lsp = {
-        on_attach = function(client)
+      servers = {
+        dartls = {
+          root_dir = function(_)
+            local roots = Util.root.detect({
+              all = false,
+              spec = { ".git", "melos.yaml", "pubspec.yaml" },
+            })
+            return roots[1] and roots[1].paths[1] or vim.uv.cwd()
+          end,
+          init_options = {
+            onlyAnalyzeProjectsWithOpenFiles = true,
+            suggestFromUnimportedLibraries = true,
+            closingLabels = true,
+            outline = true,
+            flutterOutline = true,
+          },
+          settings = {
+            dart = {
+              analysisExcludedFolders = {},
+              lineLength = 80,
+              completeFunctionCalls = true,
+              showTodos = false,
+              renameFilesWithClasses = "prompt",
+              enableSnippets = false,
+              updateImportsOnRename = true,
+              includeDependenciesInWorkspaceSymbol = false,
+            },
+          },
+        },
+      },
+      attach_server = {
+        dartls = function(client)
           client.config.settings.dart.lineLength = 80
 
           -- Detect if this package is published, if not, set line length to 120
@@ -47,33 +65,24 @@ return {
             file:close()
           end
 
-          client.config.settings.dart.analysisExcludedFolders = {
-            cache.flutter_root .. "/packages",
-            -- cache.flutter_root .. "/.pub-cache",
-          }
+          if flutter_root then
+            client.config.settings.dart.analysisExcludedFolders = {
+              flutter_root .. "/packages",
+              os.getenv("HOME") .. "/.pub-cache",
+            }
+          else
+            client.config.settings.dart.analysisExcludedFolders = {
+              os.getenv("HOME") .. "/.pub-cache",
+            }
+          end
+
           -- notify the client of the
           client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
         end,
-        settings = {
-          dart = {
-            lineLength = 80,
-          },
-        },
       },
     },
-    config = function(_, opts)
-      cache.flutter_root = require("os").getenv("FLUTTER_ROOT")
-      if cache.flutter_root then
-        cache.flutter_path = cache.flutter_root .. "/bin/flutter"
-      else
-        vim.notify("FLUTTER_ROOT not set", vim.log.levels.WARN)
-      end
-      require("flutter-tools").setup(vim.tbl_deep_extend("force", {
-        flutter_path = cache.flutter_path,
-      }, opts))
-      require("telescope").load_extension("flutter")
-    end,
   },
+  -- Additional plugins
   {
     "wa11breaker/flutter-bloc.nvim",
     event = "BufReadPre *.dart,pubspec.yaml",

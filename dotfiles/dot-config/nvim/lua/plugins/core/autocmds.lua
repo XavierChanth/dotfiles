@@ -167,6 +167,38 @@ local function setup()
 
   -- Recognize .xaml as xml
   vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = { "*.xaml" }, command = "setf xml" })
+
+  vim.api.nvim_create_user_command("NewNotebook", function(opts)
+    Util.ipynb.new_notebook(opts.args)
+  end, {
+    nargs = 1,
+    complete = "file",
+  })
+
+  vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = "pubspec.yaml",
+    callback = function(ev)
+      local Job = require("plenary.job")
+      local file = vim.api.nvim_buf_get_name(ev.buf)
+      local dir = vim.fs.dirname(file)
+
+      local job = Job:new({
+        command = "flutter",
+        args = { "pub", "get" },
+        cwd = dir,
+        enabled_recording = false,
+      })
+
+      local _, code = job:sync()
+      local level = vim.log.levels.WARN
+      local message = "pub get failed"
+      if code == 0 then
+        level = vim.log.levels.INFO
+        message = "pub get succeeded"
+      end
+      vim.notify(message, level)
+    end,
+  })
 end
 
 -- Setup immediately if we are entering a file
@@ -179,12 +211,5 @@ else
     callback = setup,
   })
 end
-
-vim.api.nvim_create_user_command("NewNotebook", function(opts)
-  Util.ipynb.new_notebook(opts.args)
-end, {
-  nargs = 1,
-  complete = "file",
-})
 
 return {}
