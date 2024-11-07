@@ -15,10 +15,8 @@ local function update_display(_)
 		function(_, exit_code)
 			if exit_code == 0 then
 				sbar.trigger("builtin_display_change", { is_builtin = "true" })
-				bar.bar:set({ position = "top" })
 			else
 				sbar.trigger("builtin_display_change", { is_builtin = "false" })
-				bar.bar:set({ position = "bottom" })
 			end
 		end
 	)
@@ -52,7 +50,8 @@ return {
 		})
 	end,
 	trigger_events = function()
-		display_watcher.subscribe("display_change", update_display())
+		display_watcher:subscribe("display_change", update_display)
+		display_watcher:subscribe("forced", update_display)
 
 		battery_watcher:subscribe("routine", update_battery)
 		battery_watcher:subscribe("forced", update_battery)
