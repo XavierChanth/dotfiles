@@ -32,12 +32,6 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
 
-# history
-source <(fzf --zsh 2>/dev/null)
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
-
 # vi-mode - must be set before prompt
 source $XDG_CONFIG_HOME/zsh/vi-mode.sh
 
@@ -62,6 +56,19 @@ esac
 export HOMEBREW_NO_ENV_HINTS=true
 FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 [[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# history
+source <(fzf --zsh 2>/dev/null)
+MAINHISTFILE="$HOME/.local/state/zsh_history"
+HISTFILE="$MAINHISTFILE"
+if [ -n "$TMUX" ]; then
+  TMUXHISTFILE="$(tmux showenv | grep "TMUXHISTFILE=" | cut -d= -f2)"
+  [ -n "$TMUXHISTFILE" ] && HISTFILE="$TMUXHISTFILE" &&
+    mkdir -p $(dirname $TMUXHISTFILE) &&
+    cp -f $MAINHISTFILE $TMUXHISTFILE
+fi
+HISTSIZE=10000
+SAVEHIST=10000
 
 # Programming language setup
 source $XDG_CONFIG_HOME/zsh/lang.sh
