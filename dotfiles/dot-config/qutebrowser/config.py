@@ -82,6 +82,7 @@ c.downloads.position = "bottom"
 c.editor.command = [gui_editor, "--wait", "{file}"]
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
+c.fonts.web.family.fixed = "JetBrainsMono Nerd Font"
 c.qt.args = [
     "disable-logging",
     "disable-reading-from-canvas",
