@@ -14,8 +14,6 @@ accordion-padding = 0
 inner.horizontal = 8
 inner.vertical = 8
 outer.left = 8
-# outer.bottom = 8
-# outer.top = [{ monitor.built-in = 8 }, { monitor.main = 48 }, 8]
 outer.top = 8
 outer.bottom = [{ monitor.built-in = 8 }, { monitor.main = 48 }, 8]
 outer.right = 8
