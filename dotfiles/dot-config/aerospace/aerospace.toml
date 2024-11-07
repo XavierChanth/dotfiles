@@ -1,6 +1,9 @@
 start-at-login = true
 
-after-startup-command = [ 'exec-and-forget ~/.local/bin/aerospace-util startup' ]
+after-startup-command = [
+  'exec-and-forget ~/.local/bin/aerospace-util startup',
+  'move-workspace-to-monitor --workspace 2 prev' # start workspace 2 on secondary monitor
+]
 
 exec-on-workspace-change = [
   '/bin/bash',
@@ -19,7 +22,6 @@ outer.bottom = [{ monitor.built-in = 8 }, { monitor.main = 48 }, 8]
 outer.right = 8
 
 [workspace-to-monitor-force-assignment]
-2 = ['secondary', 'main']
 1 = 'secondary' # '^Sidecar.*$'
 
 # See https://nikitabobko.github.io/AeroSpace/guide#exec-env-vars
