@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/oil.nvim",
-    lazy = false, -- load at startup since we override netrw with oil
+    lazy = vim.fn.argc(-1) == 0, -- lazy load if we don't need it at startup
     keys = {
       {
         "<leader>e",
