@@ -10,19 +10,27 @@ return {
         default = "bat",
       },
     },
-    actions = {},
+    grep = {
+      actions = {
+        ["ctrl-q"] = {
+          function(...)
+            require("fzf-lua.actions").file_edit_or_qf(...)
+          end,
+        },
+      },
+    },
     fzf_tmux_opts = { ["-p"] = "85%,85%", ["--margin"] = "0,0" },
   },
-
   keys = {
     {
       "<leader><space>",
       function()
-        if
-          not require("fzf-lua").git_files({
+        if Util.worktree.is_inside(Util.root.cwd()) then
+          require("fzf-lua").git_files({
             cmd = "git ls-files --others --cached --exclude-standard",
+            git_icons = false,
           })
-        then
+        else
           require("fzf-lua").files({})
         end
       end,
