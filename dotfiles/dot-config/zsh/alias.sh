@@ -5,23 +5,20 @@
 # it makes it so that you can use sudo with other aliases
 alias sudo='sudo '
 
-# alias ls='ls --color'
-# alias cat='bat'
-
 alias x64='arch -x86_64'
 alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias v='nvim'
 alias c='color'
+alias c='aerc'
 
-t() {
-  if [ $# -gt 0 ]; then
-    tmux $@
-  else
-    tmux new -A -s 'main'
-  fi
+# provides a fallback set of arguments for the command if no arguments are provided
+wrapped_alias() {
+  eval "function $1() { if [ \$# -gt 0 ]; then $2 \$@; else $2 $3; fi; }"
 }
+wrapped_alias "t" "tmux" "new -A -s 'main'"
+wrapped_alias "z" "zed" "."
 
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
@@ -34,9 +31,6 @@ alias wgetsite='wget --no-parent -p -r'
 
 alias lg='lazygit'
 alias y='yazi'
-function z() {
-  [ -n "$1" ] && zed $@ || zed .
-}
 
 if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then
   alias code="codium"
