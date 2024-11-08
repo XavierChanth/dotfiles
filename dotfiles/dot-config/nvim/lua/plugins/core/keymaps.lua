@@ -69,7 +69,9 @@ if Util.platform.supports_terminal() then
   map("n", "<leader>uc", function()
     local home = os.getenv("HOME")
     Util.external.tmux.popup({ args = { "-E", home .. "/.local/bin/color" } })
-  end)
+  end, {
+    desc = "Colorscheme",
+  })
 end
 
 -- UNDO BREAKING POINTS

@@ -68,7 +68,7 @@ return {
     end,
     keys = {
       {
-        "<leader>u",
+        "<leader>up",
         "<cmd>MarkdownPreviewToggle<cr>",
         desc = "Markdown Preview",
         ft = ft,
