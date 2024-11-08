@@ -35,6 +35,7 @@ alias cmbb='cmake --build build'
 alias cmbt='cmake --build build --target'
 alias cmcc='ln -s build/compile_commands.json .; [ -d "./tests" ] && ln -s build/compile_commands.json ./tests'
 alias ctb='ctest --test-dir build --output-on-failure'
+alias ccc='cmbs; cmbb; cmcc'
 
 # golang
 if command_exists go; then
