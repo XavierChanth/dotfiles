@@ -51,6 +51,8 @@ c.bindings.commands = {
         "<Meta-->": "zoom-out",
         "<Meta-=>": "zoom-in",
         "<Meta-0>": "zoom",
+        "<Meta-w>": "close",
+        "<Meta-q>": "quit --save",
         "=": "nop",
         "gh": "home",
         "<Meta-1>": "tab-focus 1",
