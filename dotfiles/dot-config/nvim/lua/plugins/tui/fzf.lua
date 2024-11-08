@@ -18,9 +18,13 @@ return {
     {
       "<leader><space>",
       function()
-        require("fzf-lua").git_files({
-          cmd = "git ls-files --others --cached --exclude-standard",
-        })
+        if
+          not require("fzf-lua").git_files({
+            cmd = "git ls-files --others --cached --exclude-standard",
+          })
+        then
+          require("fzf-lua").files({})
+        end
       end,
       desc = "Git files",
     },

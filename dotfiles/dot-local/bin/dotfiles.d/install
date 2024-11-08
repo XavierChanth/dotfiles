@@ -13,13 +13,17 @@ if [ -f /bin/zsh ] && [ "$SHELL" != "/bin/zsh" ]; then
 fi
 
 # Make files and directories used but not "owned" by dotfiles
-touch "$HOME"/.zshenv
-
+zsh_state_dir="$HOME/.local/state/zsh"
+mkdir -p "$zsh_state_dir/history/"
 mkdir -p "$HOME/src"
 mkdir -p "$HOME/.ssh/config.d" # ssh profiles that I don't want tracked in git go here
 mkdir -p "$HOME/dev/local"
 mkdir -p "$HOME/.local/bin"
 mkdir -p "$HOME/.config"
+
+touch "$HOME/.zshenv"
+touch "$zsh_state_dir/main_history"
+touch "$zsh_state_dir/tmux_history_cache"
 
 # Prevent stow from adopting certain folders, and instead only link the files
 touch "$HOME/.ssh/.stowkeep"

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-HISTFILE="$HOME/.local/state/zsh/history/$1"
-MAINHISTFILE="$HOME/.local/state/zsh_history"
-
-if [ -n "$HISTFILE" ] && [ -n "$MAINHISTFILE" ] && ! [ "$HISTFILE" = "$MAINHISTFILE" ]; then
-  cat "$HISTFILE" >>"$MAINHISTFILE"
-fi

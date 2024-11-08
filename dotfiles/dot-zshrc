@@ -9,7 +9,9 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 
 setopt hist_ignore_all_dups
+setopt inc_append_history
 setopt share_history
+setopt extended_history
 
 # basic programs
 export EDITOR="nvim"
@@ -58,15 +60,12 @@ FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 [[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # history
-source <(fzf --zsh 2>/dev/null)
-MAINHISTFILE="$HOME/.local/state/zsh_history"
-HISTFILE="$MAINHISTFILE"
+HISTFILE="$HOME/.local/state/zsh/main_history"
 if [ -n "$TMUX" ]; then
-  TMUXHISTFILE="$(tmux showenv | grep "TMUXHISTFILE=" | cut -d= -f2)"
-  [ -n "$TMUXHISTFILE" ] && HISTFILE="$TMUXHISTFILE" &&
-    mkdir -p $(dirname $TMUXHISTFILE) &&
-    cp -f $MAINHISTFILE $TMUXHISTFILE
+  TMUXHISTFILE="$(tmux showenv -h hist_file | cut -d= -f2)"
+  [ -n "$TMUXHISTFILE" ] && HISTFILE="$TMUXHISTFILE"
 fi
+source <(fzf --zsh 2>/dev/null)
 HISTSIZE=10000
 SAVEHIST=10000
 

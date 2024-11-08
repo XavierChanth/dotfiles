@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+src="$1"
+dst="$2"
+
+# merge the history files, if zsh extended history is on
+# then commands are prefixed with `: <timestamp>`
+if [ -n "$src" ] && [ -n "$dst" ]; then
+  cat "$dst" "$src" | sort -u >$dst
+fi
