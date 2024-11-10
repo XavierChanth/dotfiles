@@ -43,13 +43,13 @@ return {
       end,
       desc = "Find files",
     },
-    -- {
-    --   "<leader>j",
-    --   function()
-    --     require("fzf-lua").buffers({})
-    --   end,
-    --   desc = "Buffers",
-    -- },
+    {
+      "<leader>sb",
+      function()
+        require("fzf-lua").buffers({})
+      end,
+      desc = "Buffers",
+    },
     {
       "<leader>sh",
       function()
