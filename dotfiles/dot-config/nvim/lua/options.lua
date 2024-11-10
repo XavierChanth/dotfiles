@@ -26,7 +26,6 @@ opt.cursorline = true
 opt.mouse = "a"
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.smoothscroll = true
-opt.scrolloff = 8
 
 -- UI - EDITOR
 opt.colorcolumn = "81,121"
@@ -48,6 +47,7 @@ opt.listchars = {
   precedes = "…",
   space = "·",
 }
+opt.showbreak = "󱞩 "
 opt.showmode = false
 
 -- UI - BARS
@@ -86,6 +86,7 @@ opt.inccommand = "nosplit"
 opt.ignorecase = true
 opt.jumpoptions = "view"
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.scrolloff = 8
 opt.sidescrolloff = 8
 opt.smartcase = true
 opt.smartindent = true

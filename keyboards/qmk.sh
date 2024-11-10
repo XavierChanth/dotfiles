@@ -26,16 +26,26 @@ qmk_init() {
   qmk config user.qmk_home="$script_dir/qmk_firmware"
 }
 
+# added this so the program waits for you to put the keyboard in dfu mode before flashing
+qmk_confirm_dialog() {
+  local res=$(osascript -e 'display dialog "Ready to flash?"' | cut -d: -f2)
+  [ "$res" = 'OK' ] && return true || return false
+}
+
 # xavierchanth/qmk_firmware branch: xavierchanth
 qmk_air75() {
-  (qmk_init
-    git switch xavierchanth || return 1
-  qmk compile -kb nuphy/air75_v2/ansi -km xavierchanth)
+  (qmk_init &&
+    git switch xavierchanth || return 1 &&
+  qmk compile -kb nuphy/air75_v2/ansi -km xavierchanth &&
+  qmk_confirm_dialog &&
+  qmk flash -kb nuphy/air75_v2/ansi -km xavierchanth)
 }
 
 # zsa/qmk_firmware branch: firmware24
 qmk_voyager() {
-  (qmk_init
-  git switch firmware24
-  qmk compile -kb voyager -km xavierchanth)
+  (qmk_init &&
+  git switch firmware24 || return 1 &&
+  qmk compile -kb voyager -km xavierchanth &&
+  qmk_confirm_dialog &&
+  qmk flash -kb voyager -km xavierchanth)
 }

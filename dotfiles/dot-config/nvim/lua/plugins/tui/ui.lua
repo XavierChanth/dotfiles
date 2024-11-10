@@ -47,6 +47,9 @@ return {
       views = {
         popup = {
           size = { width = "85%", height = "85%" },
+          win_options = {
+            wrap = true,
+          },
         },
       },
       routes = {
