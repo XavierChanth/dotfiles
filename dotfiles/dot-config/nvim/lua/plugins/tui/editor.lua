@@ -59,4 +59,34 @@ return {
       },
     },
   },
+  {
+    "smithbm2316/centerpad.nvim",
+    commit = "f0fb9225ab0d4be504a1b7e185a0b0955e11d0ef",
+    config = function()
+      -- Make sure to disable before saving session, otherwise jank happens
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "PersistenceSavePre",
+        callback = function()
+          if vim.g.center_buf_enabled then
+            require("centerpad").toggle()
+          end
+        end,
+      })
+    end,
+    keys = {
+      {
+        "<leader>uz",
+        function()
+          local width = vim.fn.winwidth(0)
+          local size = vim.fn.max({ width / 2, 80 })
+          local leftpad = (width - size) / 2
+          require("centerpad").toggle({
+            leftpad = leftpad,
+            rightpad = size - leftpad,
+          })
+        end,
+        desc = "Toggle zen mode",
+      },
+    },
+  },
 }

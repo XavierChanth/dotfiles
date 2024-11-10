@@ -11,7 +11,7 @@ alias q='exit'
 
 alias v='nvim'
 alias c='color'
-alias c='aerc'
+alias m='aerc'
 
 # provides a fallback set of arguments for the command if no arguments are provided
 wrapped_alias() {
