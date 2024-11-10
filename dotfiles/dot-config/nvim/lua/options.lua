@@ -54,6 +54,7 @@ opt.showmode = false
 opt.number = true
 opt.relativenumber = true
 opt.signcolumn = "yes"
+opt.laststatus = 3
 
 -- UI - OTHER
 opt.termguicolors = true -- True color support
