@@ -3,3 +3,7 @@ CompileFlags:
   Add:
     - "-I/Users/chant/.local/include/"
     - "-I/home/chant/.local/include/"
+    - "-Wall"
+    - "-Wextra"
+    - "-Werror"
+    - "-Werror-implicit-function-declaration"
