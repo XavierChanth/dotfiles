@@ -1,4 +1,3 @@
-local logo = Util.logos["nvim_sharp"]
 return {
   {
     "nvimdev/dashboard-nvim",
@@ -20,7 +19,7 @@ return {
       return {
         theme = "doom",
         config = {
-          header = vim.split("\n\n" .. logo .. "\n\n", "\n"),
+          header = vim.split("\n\n" .. Util.logo .. "\n\n", "\n"),
           center = Util.dashboard.actions,
         },
       }

@@ -5,7 +5,7 @@
 ---@field ipynb util.ipynb
 ---@field lazy util.lazy
 ---@field lazygit util.lazygit
----@field logos util.logos
+---@field logo string
 ---@field platform util.platform
 ---@field root util.root
 ---@field statusline util.statusline
