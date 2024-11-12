@@ -11,7 +11,7 @@ M.actions = {
   },
   {
     action = function()
-      Util.worktree.add()
+      require("arbor").add()
     end,
     desc = " Worktree Add",
     icon = " ",

@@ -23,13 +23,35 @@ return {
     },
   },
   {
-    "polarmutex/git-worktree.nvim",
+    "xavierchanth/arbor.nvim",
+    ---@type arbor.config
+    opts = {
+      worktree = { bare = { path = "../" } },
+      settings = { add = { base = "smart" } },
+      actions = {
+        add = {
+          ["add new branch"] = function()
+            require("arbor").actions.add_new_branch()
+          end,
+        },
+      },
+    },
+    config = function(_, opts)
+      require("arbor").setup(opts)
+    end,
     keys = {
       {
-        "<leader>gc",
-        Util.worktree.add,
-        desc = "Git worktree add",
+        "<leader>ga",
+        function()
+          require("arbor").add()
+        end,
+        desc = "Git Worktree Add",
       },
+    },
+  },
+  {
+    "polarmutex/git-worktree.nvim",
+    keys = {
       {
         "<leader>gw",
         Util.worktree.telescope,
