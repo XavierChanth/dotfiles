@@ -1,34 +1,6 @@
 ---@class util.telescope
 local M = {}
 M.command = {}
--- Just the command name, nice and clean
-function M.command.entry_maker(opts)
-  local make_display = function(entry)
-    return require("telescope.pickers.entry_display").create({
-      separator = "▏",
-      items = {
-        { width = 100 },
-        { remaining = true },
-      },
-    })({
-      { entry.name, "TelescopeResultsIdentifier" },
-    })
-  end
-
-  return function(entry)
-    return require("telescope.make_entry").set_default_entry_mt({
-      name = entry.name,
-      bang = entry.bang,
-      nargs = entry.nargs,
-      complete = entry.complete,
-      definition = entry.definition,
-      --
-      value = entry,
-      ordinal = entry.name,
-      display = make_display,
-    }, opts)
-  end
-end
 
 -- Finder that allows you to specify a regex filter
 function M.command.finder(opts)
@@ -163,44 +135,5 @@ function M.buffers(opts)
   }, opts or {})
   M.builtin("buffers", opts)
 end
-
-M.defaults = {
-  mappings = {
-    n = {
-      ["q"] = function(prompt_bufnr)
-        require("telescope.actions").close(prompt_bufnr)
-      end,
-      ["o"] = function(bufnr)
-        require("telescope.actions.layout").toggle_preview(bufnr)
-      end,
-    },
-
-    i = {
-      ["<C-o>"] = function(bufnr)
-        require("telescope.actions.layout").toggle_preview(bufnr)
-      end,
-    },
-  },
-  get_selection_window = function()
-    -- open files in the first window that is an actual file.
-    -- use the current window if no other window is available.
-    local wins = vim.api.nvim_list_wins()
-    table.insert(wins, 1, vim.api.nvim_get_current_win())
-    for _, win in ipairs(wins) do
-      local buf = vim.api.nvim_win_get_buf(win)
-      if vim.bo[buf].buftype == "" then
-        return win
-      end
-    end
-    return 0
-  end,
-  results_title = false,
-  sorting_strategy = "ascending",
-  layout_strategy = "flex",
-  layout_config = {
-    anchor = "top",
-    prompt_position = "top",
-  },
-}
 
 return M

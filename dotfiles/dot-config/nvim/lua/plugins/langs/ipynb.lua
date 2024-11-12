@@ -95,13 +95,17 @@ return {
       vim.api.nvim_create_autocmd("Filetype", {
         pattern = "quarto",
         group = keygroup,
-        callback = Util.ipynb.buf_enter,
+        callback = function(...)
+          Util.ipynb.buf_enter(...)
+        end,
       })
 
       vim.api.nvim_create_autocmd("BufDelete", {
         pattern = "*.ipynb",
         group = keygroup,
-        callback = Util.ipynb.buf_delete,
+        callback = function(...)
+          Util.ipynb.buf_delete(...)
+        end,
       })
 
       -- Activate quarto when MoltenInit is finished

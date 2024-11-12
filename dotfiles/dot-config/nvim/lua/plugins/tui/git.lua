@@ -30,8 +30,8 @@ return {
       settings = { add = { base = "smart" } },
       actions = {
         add = {
-          ["add new branch"] = function()
-            require("arbor").actions.add_new_branch()
+          ["add new branch"] = function(info)
+            require("arbor").actions.add_new_branch(info)
           end,
         },
       },
@@ -54,10 +54,14 @@ return {
     keys = {
       {
         "<leader>gw",
-        Util.worktree.telescope,
+        function(...)
+          Util.worktree.telescope(...)
+        end,
         desc = "Git worktrees",
       },
     },
-    config = Util.worktree.config,
+    config = function()
+      Util.worktree.config()
+    end,
   },
 }
