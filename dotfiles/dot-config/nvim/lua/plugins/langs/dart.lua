@@ -68,11 +68,11 @@ return {
           if flutter_root then
             client.config.settings.dart.analysisExcludedFolders = {
               flutter_root .. "/packages",
-              os.getenv("HOME") .. "/.pub-cache",
+              Util.platform.home .. "/.pub-cache",
             }
           else
             client.config.settings.dart.analysisExcludedFolders = {
-              os.getenv("HOME") .. "/.pub-cache",
+              Util.platform.home .. "/.pub-cache",
             }
           end
 

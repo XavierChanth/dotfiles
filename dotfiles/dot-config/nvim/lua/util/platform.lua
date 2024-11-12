@@ -1,6 +1,8 @@
 ---@class util.platform
 local M = {}
 
+M.home = os.getenv("HOME")
+
 function M.is_linux_arm64()
   local uname = vim.uv.os_uname()
   return uname.sysname == "Linux" and uname.machine == "aarch64"

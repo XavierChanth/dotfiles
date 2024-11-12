@@ -22,11 +22,11 @@ return {
       },
     },
   },
-{
+  {
     "polarmutex/git-worktree.nvim",
     keys = {
       {
-        "<leader>ga",
+        "<leader>gc",
         Util.worktree.add,
         desc = "Git worktree add",
       },
@@ -38,5 +38,4 @@ return {
     },
     config = Util.worktree.config,
   },
-
 }

@@ -1,4 +1,4 @@
-local path = os.getenv("HOME") .. "/src/xc/notes"
+local path = Util.platform.home .. "/src/xc/notes"
 return {
   "epwalsh/obsidian.nvim",
   keys = {

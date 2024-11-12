@@ -44,6 +44,7 @@ c.aliases = {
 }
 c.bindings.commands = {
     "normal": {
+        "<Enter>": "nop",
         "<Ctrl-o>": "back",
         "<Ctrl-h>": "back",
         "<Ctrl-i>": "forward",
@@ -77,7 +78,7 @@ c.colors.webpage.darkmode.enabled = False
 c.colors.webpage.darkmode.threshold.background = 0
 c.colors.webpage.darkmode.threshold.foreground = 256
 c.content.autoplay = False
-c.content.javascript.clipboard = "access"
+c.content.javascript.clipboard = "none"
 c.content.pdfjs = True
 c.content.user_stylesheets = [f"{HOME}/.config/qutebrowser/stylesheets/code.css"]
 c.downloads.position = "bottom"
@@ -85,13 +86,15 @@ c.editor.command = [gui_editor, "--wait", "{file}"]
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
 c.fonts.web.family.fixed = "JetBrainsMono Nerd Font"
+c.prompt.filebrowser = False
 c.qt.args = [
     "disable-logging",
     "disable-reading-from-canvas",
 ]
 c.scrolling.smooth = True
-c.statusbar.padding = {"top": 8, "bottom": 8, "left": 0, "right": 8}
-c.statusbar.position = "top"
+c.statusbar.padding = {"top": 8, "bottom": 8, "left": 8, "right": 8}
+c.statusbar.position = "bottom"
+c.statusbar.show = "in-mode"
 c.statusbar.widgets = [
     "progress",
     "history",
@@ -112,4 +115,5 @@ c.tabs.width = "15%"
 c.url.searchengines["s"] = "https://duckduckgo.com/?q={}"
 c.url.searchengines["gh"] = "https://github.com/{}"
 c.url.searchengines["ghs"] = "https://github.com/search?q={}"
+c.window.hide_decoration = False  # Incompatible with aerospace
 c.zoom.default = "120%"
