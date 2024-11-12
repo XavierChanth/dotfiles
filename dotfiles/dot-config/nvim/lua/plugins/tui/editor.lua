@@ -1,3 +1,4 @@
+local zen_loaded = false
 return {
   {
     "folke/flash.nvim",
@@ -60,32 +61,41 @@ return {
     },
   },
   {
-    "smithbm2316/centerpad.nvim",
-    commit = "f0fb9225ab0d4be504a1b7e185a0b0955e11d0ef",
-    config = function()
-      -- Make sure to disable before saving session, otherwise jank happens
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "PersistenceSavePre",
-        callback = function()
-          if vim.g.center_buf_enabled then
-            require("centerpad").toggle()
+    "folke/zen-mode.nvim",
+    opts = {
+      window = {
+        width = function()
+          local wininfo = vim.fn.getwininfo(vim.fn.win_getid())
+          if not (wininfo and wininfo[1]) then
+            vim.notify("Failed to get wininfo", vim.log.levels.WARN)
+            return
           end
+          local width = wininfo[1].width
+          return vim.fn.max({
+            vim.fn.floor(width / 2),
+            121 + wininfo[1].textoff,
+          })
         end,
-      })
-    end,
+      },
+      plugins = {
+        options = { laststatus = nil },
+        tmux = { enabled = false },
+      },
+    },
     keys = {
       {
         "<leader>uz",
         function()
-          local width = vim.fn.winwidth(0)
-          local size = vim.fn.max({ width / 2, 80 })
-          local leftpad = (width - size) / 2
-          require("centerpad").toggle({
-            leftpad = leftpad,
-            rightpad = size - leftpad,
-          })
+          if not zen_loaded then
+            vim.api.nvim_create_autocmd("User", {
+              pattern = "PersistenceSavePre",
+              callback = require("zen-mode").close,
+            })
+            zen_loaded = true
+          end
+          require("zen-mode").toggle()
         end,
-        desc = "Toggle zen mode",
+        desc = "Toggle Zen Mode",
       },
     },
   },
