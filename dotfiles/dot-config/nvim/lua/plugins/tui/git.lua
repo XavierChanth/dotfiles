@@ -26,7 +26,7 @@ return {
     "xavierchanth/arbor.nvim",
     ---@type arbor.config
     opts = {
-      worktree = { bare = { path = "../" } },
+      worktree = { bare = { path = ".." } },
       settings = { add = { base = "smart" } },
       actions = {
         add = {
