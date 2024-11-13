@@ -27,16 +27,21 @@ return {
     ---@type arbor.config
     opts = {
       worktree = { bare = { path = ".." } },
-      settings = { add = { base = "smart" } },
+      settings = {
+        add = {
+          base = "smart",
+          switch_hooks = {
+            post = Util.worktree.arbor_post_switch,
+          },
+        },
+      },
       actions = {
         add = {
           ["add new branch"] = function(info)
             require("arbor").actions.add_new_branch(info, {
               preserve_default_hooks = true,
               hooks = {
-                post = function(i)
-                  require("arbor").actions.push_upstream(i, { workdir = "new_path" })
-                end,
+                post = Util.worktree.arbor_post_add,
               },
             })
           end,
@@ -44,12 +49,10 @@ return {
       },
       hooks = {
         pre_add = function(info)
-          require("arbor").actions.fetch(info)
+          Util.worktree.arbor_pre_add(info)
         end,
         post_add = function(info)
-          require("arbor").actions.cd_new_path(info)
-          require("arbor").actions.push_upstream(info)
-          Util.worktree.arbor_set_dashboard(info)
+          Util.worktree.arbor_post_add(info)
         end,
       },
     },

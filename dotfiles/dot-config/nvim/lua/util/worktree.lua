@@ -3,18 +3,46 @@ local M = {}
 
 ---@param info arbor.git.info
 function M.arbor_set_dashboard(info)
-  if not info.new_path or not info.resolved_base then
-    return
-  end
-  local base = info.resolved_base
-  local c = "<root>"
-  if #base ~= #info.new_path then
-    c = string.gsub(info.new_path, base .. "/", "")
-  end
-  vim.cmd("Dashboard")
+  info = info or {}
+  local worktree = info.branch_info and info.branch_info.display_name or info.cwd or vim.fn.getcwd()
   vim.defer_fn(function()
-    vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
+    vim.cmd("Dashboard")
   end, 10)
+  vim.defer_fn(function()
+    vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. worktree } })
+  end, 20)
+end
+
+function M.arbor_save(info)
+  local is_wt = require("arbor._lib.git.worktree").is_inside(info.cwd)
+  if not is_wt or info.cwd ~= info.resolved_base then
+    require("persistence").save()
+  end
+end
+
+---@param info arbor.git.info
+function M.arbor_pre_switch(info)
+  M.arbor_save(info)
+end
+
+function M.arbor_pre_add(info)
+  M.arbor_save(info)
+  require("arbor").actions.fetch(info)
+end
+
+function M.arbor_post_switch(info)
+  if info.new_path then
+    require("arbor").actions.cd_new_path(info)
+  else
+    require("arbor").actions.cd_existing_worktree(info)
+  end
+  vim.cmd("bufdo bd")
+  M.arbor_set_dashboard(info)
+end
+
+function M.arbor_post_add(info)
+  require("arbor").actions.push_upstream(info)
+  M.arbor_post_switch(info)
 end
 
 local function set_current(path)
@@ -26,7 +54,7 @@ local function set_current(path)
   vim.cmd("Dashboard")
   vim.defer_fn(function()
     vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
-  end, 10)
+  end, 20)
 end
 
 -- Simpler flow for git wt add - automatically names the wt to match the branch name
@@ -90,7 +118,7 @@ function M.telescope(opts, callback)
 
   if callback == nil then
     local root = Util.root.git({ root = true })
-    local in_root = #path == #root and path == root
+    local in_root = path == root
     local in_wt = Util.worktree.is_inside(path)
     if not in_root or not in_wt then
       require("persistence").save()
