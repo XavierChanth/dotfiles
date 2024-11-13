@@ -14,7 +14,6 @@ function M.arbor_set_dashboard(info)
   vim.cmd("Dashboard")
   vim.defer_fn(function()
     vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
-    vim.cmd("hi DashboardFooter ctermfg=14")
   end, 10)
 end
 
