@@ -3,6 +3,8 @@ if not flutter_root then
   vim.notify("FLUTTER_ROOT not set", vim.log.levels.WARN)
 end
 
+local lsp_global_root_mode = false
+
 return {
   Util.lazy.ensure_installed({
     treesitter = { "dart" },
@@ -13,10 +15,18 @@ return {
       servers = {
         dartls = {
           root_dir = function(_)
-            local roots = Util.root.detect({
-              all = false,
-              spec = { ".git", "melos.yaml", "pubspec.yaml" },
-            })
+            local roots
+            if lsp_global_root_mode then
+              roots = Util.root.detect({
+                all = false,
+                spec = { ".git", "melos.yaml", "pubspec.yaml" },
+              })
+            else
+              roots = Util.root.detect({
+                all = false,
+                spec = { "pubspec.yaml", ".git", "melos.yaml" },
+              })
+            end
             return roots[1] and roots[1].paths[1] or vim.uv.cwd()
           end,
           init_options = {
@@ -41,8 +51,22 @@ return {
         },
       },
       attach_server = {
-        dartls = function(client)
+        dartls = function(client, event)
           client.config.settings.dart.lineLength = 80
+          vim.keymap.set("n", "<leader>ct", function()
+            local mode
+            if lsp_global_root_mode then
+              mode = "package"
+            else
+              mode = "workspace"
+            end
+            lsp_global_root_mode = not lsp_global_root_mode
+            vim.notify("Toggled root mode to: " .. mode)
+            vim.cmd("LspRestart")
+          end, {
+            buffer = event.buf,
+            desc = "DartLS toggle root mode",
+          })
 
           -- Detect if this package is published, if not, set line length to 120
           local pubspec_file = client.config.root_dir .. "/pubspec.yaml"
