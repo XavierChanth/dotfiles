@@ -1,6 +1,23 @@
 ---@class util.worktree
 local M = {}
 
+---@param info arbor.git.info
+function M.arbor_set_dashboard(info)
+  if not info.new_path or not info.resolved_base then
+    return
+  end
+  local base = info.resolved_base
+  local c = "<root>"
+  if #base ~= #info.new_path then
+    c = string.gsub(info.new_path, base .. "/", "")
+  end
+  vim.cmd("Dashboard")
+  vim.defer_fn(function()
+    vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. c } })
+    vim.cmd("hi DashboardFooter ctermfg=14")
+  end, 10)
+end
+
 local function set_current(path)
   local base = Util.root.git({ root = true })
   local c = "."

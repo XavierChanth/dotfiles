@@ -31,9 +31,25 @@ return {
       actions = {
         add = {
           ["add new branch"] = function(info)
-            require("arbor").actions.add_new_branch(info)
+            require("arbor").actions.add_new_branch(info, {
+              preserve_default_hooks = true,
+              hooks = {
+                post = function(i)
+                  require("arbor").actions.push_upstream(i, { workdir = "new_path" })
+                end,
+              },
+            })
           end,
         },
+      },
+      hooks = {
+        pre_add = function(info)
+          require("arbor").actions.fetch(info)
+        end,
+        post_add = function(info)
+          require("arbor").actions.cd_new_path(info)
+          Util.worktree.arbor_set_dashboard(info)
+        end,
       },
     },
     config = function(_, opts)
