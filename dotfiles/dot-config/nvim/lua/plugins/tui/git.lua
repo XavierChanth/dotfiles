@@ -48,6 +48,7 @@ return {
         end,
         post_add = function(info)
           require("arbor").actions.cd_new_path(info)
+          require("arbor").actions.push_upstream(info)
           Util.worktree.arbor_set_dashboard(info)
         end,
       },
