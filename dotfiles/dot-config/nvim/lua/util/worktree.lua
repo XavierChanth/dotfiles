@@ -60,7 +60,7 @@ function M.arbor_pre_remove(info)
 end
 
 function M.is_inside(path)
-  return require("arbor._lib.git.worktree").is_inside(path)
+  return require("arbor").git.is_inside_worktree(path)
 end
 
 return M
