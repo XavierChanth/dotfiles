@@ -8,10 +8,18 @@ setmetatable(M, {
 
     local iswt = Util.worktree.is_inside(opts.cwd)
     if not iswt then
-      Util.worktree.telescope(opts, function(path, _)
-        opts.cwd = path
-        Util.terminal("lazygit", opts)
-      end)
+      require("arbor").pick({
+        show_actions = false,
+        preserve_default_hooks = false,
+        hooks = {
+          pre = function() end,
+          ---@param info arbor.git.info
+          post = function(info)
+            opts.cwd = info.branch_info.worktree_path
+            Util.terminal("lazygit", opts)
+          end,
+        },
+      })
     else
       Util.terminal("lazygit", opts)
     end
