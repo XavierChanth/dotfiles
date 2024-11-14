@@ -30,29 +30,36 @@ return {
       settings = {
         add = {
           base = "smart",
-          switch_hooks = {
-            post = Util.worktree.arbor_post_switch,
-          },
+          on_existing = Util.worktree.arbor_post_switch,
         },
       },
       actions = {
         add = {
           ["add new branch"] = function(info)
-            require("arbor").actions.add_new_branch(info, {
-              preserve_default_hooks = true,
-              hooks = {
-                post = Util.worktree.arbor_post_add,
-              },
-            })
+            require("arbor").actions.add_new_branch(info)
+          end,
+        },
+        pick = {
+          ["remove worktree"] = function()
+            require("arbor").remove()
           end,
         },
       },
       hooks = {
         pre_add = function(info)
-          Util.worktree.arbor_pre_add(info)
+          return Util.worktree.arbor_pre_add(info)
         end,
         post_add = function(info)
-          Util.worktree.arbor_post_add(info)
+          return Util.worktree.arbor_post_add(info)
+        end,
+        pre_pick = function(info)
+          return Util.worktree.arbor_pre_switch(info)
+        end,
+        post_pick = function(info)
+          return Util.worktree.arbor_post_switch(info)
+        end,
+        pre_remove = function(info)
+          return Util.worktree.arbor_pre_remove(info)
         end,
       },
     },
@@ -67,21 +74,13 @@ return {
         end,
         desc = "Git Worktree Add",
       },
-    },
-  },
-  {
-    "polarmutex/git-worktree.nvim",
-    keys = {
       {
         "<leader>gw",
-        function(...)
-          Util.worktree.telescope(...)
+        function()
+          require("arbor").pick()
         end,
-        desc = "Git worktrees",
+        desc = "Git Worktree",
       },
     },
-    config = function()
-      Util.worktree.config()
-    end,
   },
 }

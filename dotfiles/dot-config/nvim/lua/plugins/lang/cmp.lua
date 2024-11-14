@@ -10,6 +10,7 @@ return {
       "hrsh7th/cmp-path",
       {
         "garymjr/nvim-snippets",
+        commit = "b29b16daaeb44c7b370ea9a4a9468229155c1adb",
         opts = { friendly_snippets = true },
         dependencies = { "rafamadriz/friendly-snippets" },
       },

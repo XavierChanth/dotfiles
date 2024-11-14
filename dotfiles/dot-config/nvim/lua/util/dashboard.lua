@@ -3,7 +3,7 @@ local M = {}
 M.actions = {
   {
     action = function()
-      Util.worktree.telescope()
+      require("arbor").pick()
     end,
     desc = " Worktrees",
     icon = " ",

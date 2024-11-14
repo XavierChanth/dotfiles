@@ -9,6 +9,7 @@ return {
       local ai = require("mini.ai")
       local extra = require("mini.extra")
       return {
+        n_lines = 200,
         -- From LazyVim, with modifications
         custom_textobjects = {
           c = ai.gen_spec.treesitter({
