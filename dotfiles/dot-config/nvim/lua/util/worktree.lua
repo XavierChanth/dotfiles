@@ -27,7 +27,6 @@ end
 
 function M.arbor_pre_add(info)
   M.arbor_save(info)
-  require("arbor").actions.fetch(info)
 end
 
 function M.arbor_post_add(info)

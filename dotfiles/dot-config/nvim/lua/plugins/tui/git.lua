@@ -24,12 +24,29 @@ return {
   },
   {
     "xavierchanth/arbor.nvim",
+    keys = {
+      {
+        "<leader>ga",
+        function()
+          require("arbor").add()
+        end,
+        desc = "Git Worktree Add",
+      },
+      {
+        "<leader>gw",
+        function()
+          require("arbor").pick()
+        end,
+        desc = "Git Worktree",
+      },
+    },
     ---@type arbor.config
     opts = {
+      apply_recommended = false,
+      select = "telescope",
       worktree = { bare = { path = ".." } },
       settings = {
         add = {
-          base = "smart",
           on_existing = Util.worktree.arbor_post_switch,
         },
       },
@@ -61,25 +78,6 @@ return {
         pre_remove = function(info)
           return Util.worktree.arbor_pre_remove(info)
         end,
-      },
-    },
-    config = function(_, opts)
-      require("arbor").setup(opts)
-    end,
-    keys = {
-      {
-        "<leader>ga",
-        function()
-          require("arbor").add()
-        end,
-        desc = "Git Worktree Add",
-      },
-      {
-        "<leader>gw",
-        function()
-          require("arbor").pick()
-        end,
-        desc = "Git Worktree",
       },
     },
   },

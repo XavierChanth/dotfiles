@@ -14,7 +14,6 @@
   "flutter-bloc.nvim": { "branch": "main", "commit": "2052a74ee112f09c0de6b6e836811981d87cd9a6" },
   "friendly-snippets": { "branch": "main", "commit": "de8fce94985873666bd9712ea3e49ee17aadb1ed" },
   "fzf-lua": { "branch": "main", "commit": "8af7f00a11fbeb33a88cf95c951460eb8b1fb531" },
-  "git-worktree.nvim": { "branch": "main", "commit": "604ab2dd763776a36d1aad9fd81a3c513c1d4d94" },
   "goplements.nvim": { "branch": "main", "commit": "a3291c4db092d5bc95ec0e6e2bcfc14587d06dfc" },
   "grug-far.nvim": { "branch": "main", "commit": "26415d3cc2fef99ccefa019cbc3969f404a83e70" },
   "indent-blankline.nvim": { "branch": "master", "commit": "7871a88056f7144defca9c931e311a3134c5d509" },

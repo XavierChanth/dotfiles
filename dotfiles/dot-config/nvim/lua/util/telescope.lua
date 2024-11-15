@@ -91,22 +91,6 @@ function M.builtin(builtin, opts)
   return require("telescope.builtin")[builtin](opts)
 end
 
-function M.git_files(opts)
-  opts = opts or {}
-  opts.cwd = opts.cwd or Util.root.git(opts)
-  opts.show_untracked = opts.show_untracked or true
-  if Util.worktree.is_inside(opts.cwd) then
-    return M.builtin("git_files", opts)
-  else
-    return M.find_files(opts)
-  end
-end
-
-function M.find_files(opts)
-  opts = opts or {}
-  return M.builtin("find_files", opts)
-end
-
 function M.buffers(opts)
   opts = vim.tbl_extend("force", {
     sort_lastused = true,
