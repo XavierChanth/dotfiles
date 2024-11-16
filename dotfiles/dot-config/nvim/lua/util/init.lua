@@ -1,6 +1,5 @@
 ---@class util
 ---@field colorscheme util.colorscheme
----@field commands util.commands
 ---@field dashboard util.dashboard
 ---@field ipynb util.ipynb
 ---@field lazy util.lazy

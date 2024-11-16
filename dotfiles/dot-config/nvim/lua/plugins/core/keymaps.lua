@@ -67,7 +67,7 @@ if Util.platform.supports_terminal() then
   map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
   map("n", "<leader>uc", function()
-    Util.external.tmux.popup({ args = { "-E", Util.platform.home .. "/.local/bin/color" } })
+    Util.tmux.popup({ args = { "-E", Util.platform.home .. "/.local/bin/color" } })
   end, {
     desc = "Colorscheme",
   })

@@ -14,7 +14,7 @@ return {
   { "<leader>xx", action("workbench.actions.view.problems") },
   { "<leader>gg", action("workbench.view.scm") },
 
-  -- Telescope Replacements
+  -- File finders
   { "<leader><space>", action("workbench.action.quickOpen") },
   { "<leader>j", action("workbench.action.quickOpen") },
 

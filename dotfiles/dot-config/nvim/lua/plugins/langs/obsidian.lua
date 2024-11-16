@@ -3,16 +3,6 @@ return {
   "epwalsh/obsidian.nvim",
   keys = {
     {
-      "<leader>ro",
-      function()
-        return Util.commands.picker({
-          theme = "dropdown",
-          regex = "^Obsidian",
-        })
-      end,
-      desc = "Obsidian Commands",
-    },
-    {
       "<leader>nn",
       "<cmd>ObsidianNew<cr>",
       desc = "New Note",
@@ -53,6 +43,7 @@ return {
         opts = { buffer = true, expr = true },
       },
     },
+    picker = { name = "fzf-lua" },
     templates = { folder = "templates" },
     attachments = { img_folder = "attachments" },
     note_id_func = function(title)

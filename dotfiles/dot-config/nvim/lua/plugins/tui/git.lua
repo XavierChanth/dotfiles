@@ -43,7 +43,7 @@ return {
     ---@type arbor.config
     opts = {
       apply_recommended = false,
-      select = "telescope",
+      select = "fzf",
       worktree = { bare = { path = ".." } },
       settings = {
         add = {

@@ -38,7 +38,6 @@ return {
         notify = true,
         render_markdown = true,
         semantic_tokens = true,
-        telescope = { enabled = true },
         treesitter = true,
         treesitter_context = true,
         which_key = true,

@@ -8,7 +8,6 @@ return {
         require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.input(...)
       end
-      -- Use telescope for vim.ui.select
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
         require("lazy").load({ plugins = { "dressing.nvim" } })
@@ -100,7 +99,6 @@ return {
         vim.cmd([[messages clear]])
       end
       require("noice").setup(opts)
-      require("telescope").load_extension("noice")
     end,
   },
 }

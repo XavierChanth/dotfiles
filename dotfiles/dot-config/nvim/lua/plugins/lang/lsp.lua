@@ -64,7 +64,7 @@ return {
           map({
             "gd",
             function()
-              require("telescope.builtin").lsp_definitions({ reuse_win = true })
+              require("fzf-lua").lsp_definitions()
             end,
             desc = "Goto Definition",
             has = "definition",
@@ -72,21 +72,21 @@ return {
           map({
             "gr",
             function()
-              require("telescope.builtin").lsp_references()
+              require("fzf-lua").lsp_references()
             end,
             desc = "References",
           })
           map({
             "gI",
             function()
-              require("telescope.builtin").lsp_implementations({ reuse_win = true })
+              require("fzf-lua").lsp_implementations()
             end,
             desc = "Goto Implementation",
           })
           map({
             "gy",
             function()
-              require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+              require("fzf-lua").lsp_typedefs()
             end,
             desc = "Goto T[y]pe Definition",
           })

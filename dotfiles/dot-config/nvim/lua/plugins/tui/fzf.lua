@@ -10,6 +10,14 @@ return {
         default = "bat",
       },
     },
+    keymap = {
+      fzf = {
+        ["ctrl-d"] = "preview-page-down",
+        ["ctrl-u"] = "preview-page-up",
+        ["ctrl-o"] = "toggle-preview",
+      },
+    },
+    lsp = { jump_to_single_result = true },
     grep = {
       actions = {
         ["ctrl-q"] = {
@@ -92,20 +100,20 @@ return {
       end,
       desc = "Grep buffer",
     },
-    -- {
-    --   "<leader>ss",
-    --   function()
-    --     require("fzf-lua").lsp_document_symbols({})
-    --   end,
-    --   desc = "Symbols (Buffer)",
-    -- },
-    -- {
-    --   "<leader>sS",
-    --   function()
-    --     require("fzf-lua").lsp_live_workspace_symbols({})
-    --   end,
-    --   desc = "Symbols (Workspace)",
-    -- },
+    {
+      "<leader>ss",
+      function()
+        require("fzf-lua").lsp_document_symbols({})
+      end,
+      desc = "Symbols (Buffer)",
+    },
+    {
+      "<leader>sS",
+      function()
+        require("fzf-lua").lsp_live_workspace_symbols({})
+      end,
+      desc = "Symbols (Workspace)",
+    },
     {
       "<leader>rr",
       function()
@@ -124,6 +132,7 @@ return {
           vim.notify("No opened terminals", vim.log.levels.WARN)
           return
         end
+
         require("fzf-lua").fzf_exec(terminals, {
           winopts = {
             header = "<ctrl-x> to close",
@@ -140,6 +149,22 @@ return {
         })
       end,
       desc = "Find terminals",
+    },
+    {
+      "<leader>j",
+      function()
+        require("fzf-lua").buffers()
+      end,
+      desc = "Jump to buffer (all)",
+    },
+    {
+      "<leader>k",
+      function()
+        require("fzf-lua").buffers({
+          cwd_only = true,
+        })
+      end,
+      desc = "Jump to buffer (cwd)",
     },
   },
 }

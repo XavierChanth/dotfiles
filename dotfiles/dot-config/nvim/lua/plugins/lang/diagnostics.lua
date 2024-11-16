@@ -38,8 +38,8 @@ return {
         "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>",
         desc = "Todo/Fix/Fixme (Trouble)",
       },
-      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
-      { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+      { "<leader>st", "<cmd>TodoFzfLua<cr>", desc = "Todo" },
+      { "<leader>sT", "<cmd>TodoFzfLua keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
     },
     opts = {
       -- Had to override all of them so I could add highlighting to plurals
