@@ -110,25 +110,29 @@ return {
     keys = {
       {
         "<leader>ss",
-        Util.telescope.builtin("lsp_document_symbols"),
+        function()
+          require("telescope.builtin")["lsp_document_symbols"]()
+        end,
         desc = "Symbols (Buffer)",
       },
       {
         "<leader>sS",
-        Util.telescope.builtin("lsp_dynamic_workspace_symbols"),
+        function()
+          require("telescope.builtin")["lsp_dynamic_workspace_symbols"]()
+        end,
         desc = "Symbols (Workspace)",
       },
       {
         "<leader>j",
         function()
-          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = false })
+          require("telescope.builtin")["buffers"]({ sort_lastused = true, sort_mru = true, only_cwd = false })
         end,
         desc = "Jump to buffer (all)",
       },
       {
         "<leader>k",
         function()
-          Util.telescope.builtin("buffers", { sort_lastused = true, sort_mru = true, only_cwd = true })
+          require("telescope.builtin")["buffers"]({ sort_lastused = true, sort_mru = true, only_cwd = true })
         end,
         desc = "Jump to buffer (cwd)",
       },

@@ -2,7 +2,7 @@
 local M = {}
 
 function M.colorscheme()
-  Util.telescope.builtin("colorscheme", {
+  require("telescope.builtin")["colorscheme"]({
     enable_preview = true,
     ignore_builtins = true,
     initial_mode = "normal",

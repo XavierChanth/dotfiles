@@ -5,7 +5,7 @@ return {
     {
       "<leader>ro",
       function()
-        return Util.telescope.command.picker({
+        return Util.commands.picker({
           theme = "dropdown",
           regex = "^Obsidian",
         })

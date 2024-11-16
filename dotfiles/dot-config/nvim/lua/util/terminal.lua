@@ -90,4 +90,41 @@ function M.toggle()
   M.terminal(nil, { cwd = last })
 end
 
+function M.telescope(opts)
+  local names = {}
+  for name, term in pairs(M.get_terminals()) do
+    if term ~= nil then
+      names[#names + 1] = name
+    end
+  end
+
+  require("telescope.pickers")
+    .new(opts, {
+      prompt_title = "Terminals",
+      finder = require("telescope.finders").new_table(names),
+      sorter = require("telescope.config").values.generic_sorter(opts),
+      initial_mode = "normal",
+      attach_mappings = function(prompt_bufnr, map)
+        local actions = require("telescope.actions")
+        local action_state = require("telescope.actions.state")
+
+        actions.select_default:replace(function()
+          actions.close(prompt_bufnr)
+          local item = action_state.get_selected_entry()[1]
+          M.existing_terminal(item)
+          vim.schedule(vim.cmd.startinsert)
+        end)
+        local function delete_from_telescope()
+          ---@diagnostic disable-next-line: redundant-parameter
+          local cwd = action_state.get_selected_entry(prompt_bufnr)[1]
+          M.remove(cwd)
+        end
+        map("i", "<C-d>", delete_from_telescope)
+        map("n", "<C-d>", delete_from_telescope)
+        return true
+      end,
+    })
+    :find()
+end
+
 return M

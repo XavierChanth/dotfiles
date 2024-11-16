@@ -1,11 +1,10 @@
----@class util.external
+---@class util.tmux
 local M = {
   tmux = {},
 }
 
-local Job = require("plenary.job")
-
-function M.tmux.neww(opts)
+function M.neww(opts)
+  local Job = require("plenary.job")
   if Util.platform.supports_terminal() then
     local args = { "neww" }
     if opts.cwd then
@@ -18,7 +17,8 @@ function M.tmux.neww(opts)
   end
 end
 
-function M.tmux.popup(opts)
+function M.popup(opts)
+  local Job = require("plenary.job")
   if Util.platform.supports_terminal() then
     local args = { "popup", "-w", "85%", "-h", "85%" }
     opts.args = opts.args or {}

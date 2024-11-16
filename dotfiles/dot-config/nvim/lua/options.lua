@@ -28,7 +28,7 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.smoothscroll = true
 
 -- UI - EDITOR
-opt.colorcolumn = "81,121"
+-- opt.colorcolumn = "81,121"
 opt.conceallevel = 2
 opt.fillchars = {
   foldopen = "",
