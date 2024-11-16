@@ -34,7 +34,9 @@ return {
   },
   {
     "jiaoshijie/undotree",
-    config = true,
+    opts = {
+      ignore_filetype = { "undotree", "undotreeDiff", "qf", "dashboard" },
+    },
     keys = {
       {
         "<leader>uh",
