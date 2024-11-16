@@ -1,9 +1,7 @@
 return {
-  {
-    "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
-    version = false,
-    opts = {},
-    keys = {},
-  },
+  "nvim-telescope/telescope.nvim",
+  cmd = "Telescope",
+  cond = false,
+  version = false,
+  opts = {},
 }
