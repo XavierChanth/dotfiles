@@ -52,6 +52,13 @@ return {
         "<cmd>ConformInfo<cr>",
         desc = "Conform Info",
       },
+      {
+        "<leader>cf",
+        function()
+          require("conform").format()
+        end,
+        desc = "Code Format",
+      },
     },
     opts = {
       format_on_save = function(bufnr)

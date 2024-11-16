@@ -13,7 +13,7 @@ main() {
     return
   fi
 
-  source $HOME/.local/bin/bitwarden
+  source $HOME/.local/bin/pass-util
   if [ -z "$QUTE_URL" ]; then
     local items=$(pick_username_and_password)
   else

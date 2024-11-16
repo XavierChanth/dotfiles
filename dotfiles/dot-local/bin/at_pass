@@ -1,0 +1,375 @@
+#!/usr/bin/env bash
+
+script_name="at_pass"
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+commands=(add rm ls get get_all import_from_bw wipe_entries sync)
+
+declare -A config
+
+# aux functions
+
+uuidv4() {
+  echo "$(uuidgen | tr '[:upper:]' '[:lower:]')"
+}
+
+get_conf_path() {
+  local conf_path=""
+  if [ -f "$HOME/.config/at_pass/config.toml" ]; then
+    conf_path="$HOME/.config/at_pass/config.toml"
+  fi
+  echo "$conf_path"
+}
+
+set_default_config_value() {
+  local key="$1"
+  local value="$2"
+  if [ -z "${config[$key]}" ]; then
+    config[$key]="$value"
+  fi
+}
+
+load_default_config() {
+  set_default_config_value "jq_path" "jq"
+  set_default_config_value "at_cli_path" "at_cli"
+}
+
+load_config() {
+  load_default_config
+  local conf_path="$(get_conf_path)"
+  if [ -n "$conf_path" ]; then
+    while IFS='=' read -r lhs rhs; do
+      [ -z "$lhs" ] && continue
+      lhs="$(echo "$lhs" | tr -d '[:space:]')"
+      rhs="$(echo "$rhs" | tr -d '[:space:]')"
+      rhs="$(echo "$rhs" | tr -d '"')"
+      config["$lhs"]="$rhs"
+    done <"$conf_path"
+  fi
+}
+
+# This is slow, but safer than using eval statements to parse it all at once
+get_conf_value() {
+  local key="$1"
+  echo "${config[$key]}"
+}
+
+check_env() {
+  local valid=0
+
+  # jq installed
+  if ! command -v "$(get_conf_value jq_path)" 2>&1 >/dev/null; then
+    echo "jq not found"
+    valid=1
+  fi
+
+  if ! command -v "$(get_conf_value at_cli_path)" 2>&1 >/dev/null; then
+    echo "at_cli not found"
+    valid=1
+  fi
+
+  if [ -z "$(get_conf_value atsign)" ]; then
+    echo "no atsign set"
+    valid=1
+  fi
+
+  return $valid
+}
+
+usage() {
+  echo "Usage:"
+  echo "$script_name <command>"
+  echo
+  echo "Available commands:"
+  for cmd in ${commands[@]}; do
+    echo $cmd
+  done
+}
+
+add_usage() {
+  echo "$script_name add [OPTIONS]"
+  echo "Options (*required):"
+  echo "-n, --name : string* display name for the item"
+  echo "-u, --user : string  login username"
+  echo "-p, --pass : string  login password"
+  echo "-t, --totp : string  totp secret"
+  echo "-t, --totp : string  totp secret"
+  echo "-u, --uri  : string  with format of <match>=<uri>"
+  echo "                     either side of '=' may be left blank"
+  echo "                     can be passed multiple times"
+}
+
+rm_usage() {
+  echo "$script_name rm <uuid>"
+}
+
+get_usage() {
+  echo "$script_name get <uuid>"
+}
+
+json_wrap_string() {
+  if [ -z "$1" ]; then
+    printf "null"
+  else
+    printf '"%s"' "$1"
+  fi
+}
+
+# setup config
+
+load_config
+check_env
+[ $? -eq 0 ] || {
+  echo check env failed
+  exit 1
+}
+jq="$(get_conf_value jq_path)"
+atsign="$(get_conf_value atsign)"
+keyfile="$(get_conf_value keyfile)"
+if [ -z "$keyfile" ]; then
+  keyfile="$HOME/.atsign/keys/${atsign}_key.atKeys"
+fi
+at_cli="$(get_conf_value at_cli_path) -a --atsign $atsign --cache --cache-dir $HOME/.atsign/at_cli/storage/$atsign -f $keyfile"
+
+masteritem="master_item.at_pass"
+# JSON format (subset of bitwarden)
+# {
+#   "id": uuidv4,
+#   "name": string,
+#   "login": {
+#     "uris" : [
+#       {
+#         "match": string | null,
+#         "uri": string (uri)
+#       }
+#     ],
+#     "username": string,
+#     "password": string,
+#     "totp": string
+#   }
+# }
+
+# ATKEY format
+# <id>.items.<at_pass>@<atsign>
+# value: compacted json
+
+add_for_id() {
+  local id="$1"
+  local json="$2"
+  local atkey="$id.items.at_pass"
+
+  $at_cli -k "$atkey" -v update --value "$json"
+}
+
+# operations
+add_cmd() {
+  local id=$(uuidv4)
+  local name
+  local username
+  local password
+  local totp
+  local matches=()
+  local uris=()
+
+  local uri
+  while [ "$#" -gt 0 ]; do
+    case $1 in
+    -i | --id)
+      shift
+      [ "$#" -gt 0 ] || {
+        add_usage
+        return 1
+      }
+      id="$1"
+      shift
+      ;;
+    -n | --name)
+      shift
+      [ "$#" -gt 0 ] || {
+        add_usage
+        return 1
+      }
+      name="$1"
+      shift
+      ;;
+    -u | --user | --username)
+      shift
+      [ "$#" -gt 0 ] || {
+        add_usage
+        return 1
+      }
+      username="$1"
+      shift
+      ;;
+    -p | --pass | --password)
+      shift
+      [ "$#" -gt 0 ] || {
+        add_usage
+        return 1
+      }
+      password="$1"
+      shift
+      ;;
+    -t | --totp)
+      shift
+      [ "$#" -gt 0 ] || {
+        add_usage
+        return 1
+      }
+      totp="$1"
+      shift
+      ;;
+    --uri)
+      shift
+      [ "$#" -gt 0 ] || {
+        add_usage
+        return 1
+      }
+      uri="$1"
+      shift
+      matches+=("$(echo "$uri" | cut -d= -f1)")
+      uris+=("$(echo "$uri" | cut -d= -f2-)")
+      ;;
+    esac
+  done
+  # verify required args
+  [ -z "$id" ] && {
+    echo "error creating id"
+    return 1
+  }
+  [ -z "$name" ] && {
+    add_usage
+    return 1
+  }
+
+  # create json value
+  local json="{"
+  json="$json$(json_wrap_string id):$(json_wrap_string "$id"),"
+  json="$json$(json_wrap_string name):$(json_wrap_string "$name"),"
+  json="$json$(json_wrap_string login):{"
+  json="$json$(json_wrap_string uris):["
+  for i in "${!uris[@]}"; do
+    json="$json{$(json_wrap_string match):$(json_wrap_string "${matches[$i]}"),"
+    json="$json$(json_wrap_string uri):$(json_wrap_string "${uris[$i]}")"
+    [ "$i" -ne "$n_uris" ] && json="$json,"
+  done
+  json="$json]"
+  json="$json,$(json_wrap_string username):$(json_wrap_string "$username"),"
+  json="$json$(json_wrap_string password):$(json_wrap_string "$password"),"
+  json="$json$(json_wrap_string totp):$(json_wrap_string "$totp")}}"
+
+  echo "$json" | jq >/dev/null || {
+    echo "malformed json"
+    return 1
+  }
+
+  local master=$($at_cli -k "$masteritem" -v llookup)
+  master=$(echo $master | jq ". |= [.[], $json]")
+  $at_cli -k "$masteritem" -v update --value "$master"
+  add_for_id "$id" "$json"
+}
+
+rm_cmd() {
+  local id="$1"
+  [ -z "$id" ] && {
+    rm_usage
+    return 1
+  }
+  local atkey="$id.items.at_pass"
+  $at_cli -k "$atkey" -v delete
+}
+
+ls_cmd() {
+  $at_cli -v scan -r ".*\.items\.at_pass@" |
+    jq -r ".[]" |
+    sed -e 's/^public://' |
+    cut -d. -f1
+}
+
+get_cmd() {
+  local id="$1"
+  [ -z "$id" ] && {
+    get_usage
+    return 1
+  }
+  local atkey="$id.items.at_pass"
+  $at_cli -k "$atkey" -v llookup |
+    jq -c
+}
+
+get_all_cmd() {
+  local value=$($at_cli -k "$masteritem" -v llookup)
+  echo $value | jq -c
+}
+
+sync_cmd() {
+  echo Starting sync... >&2
+  $at_cli -v sync -r "at_pass" && echo success || echo sync failed
+  echo Caching local entries... >&2
+  local json="["
+  for id in $(ls_cmd); do
+    item=$(get_cmd "$id")
+    if [ $? -eq 0 ]; then
+      echo "Caching item: $id" >&2
+      json="$json$item,"
+    fi
+  done
+  json="$(echo "$json" | sed -e 's/,$//')]"
+  $at_cli -k "$masteritem" -v update --value "$json"
+}
+
+import_from_bw_cmd() {
+  if ! command -v "bw" 2>&1 >/dev/null; then
+    echo "bitwarden not available"
+    return 1
+  fi
+
+  # prone to breaking if they change the message but good enough for now
+  list_command=$(bw unlock | tail -n 1 | sed -e 's/^\$ //')
+  items=$($list_command | jq -r '.[]? | "\(.)"')
+
+  IFS=$'\n'
+  for json in $items; do
+    local id=$(uuidv4)
+    local bwid=$(echo $json | jq -r '.id')
+    json=$(echo $json | jq -c ". + { bitwarden_id: \"$bwid\", id: \"$id\" }")
+    add_for_id "$id" "$json"
+    printf "Added id %s\n" "$id" >&2
+  done
+}
+
+wipe_entries_cmd() {
+  echo "Type 'confirm' to wipe entries" >&2
+  read -r confirm_input
+  if [ "$confirm_input" = 'confirm' ]; then
+    ids="$(ls_cmd)"
+    for id in $ids; do
+      rm_cmd "$id"
+      printf "Deleted id %s \n" "$id" >&2
+    done
+  fi
+}
+
+# main fn
+main() {
+  local command=$1
+  shift 1
+
+  if [ -z $command ]; then
+    usage
+    return 1
+  fi
+
+  local found=false
+  for cmd in ${commands[@]}; do
+    if [ "$command" = "$cmd" ]; then
+      local res=$(${cmd}_cmd $@)
+      local code=$?
+      echo $res
+      return $code
+    fi
+  done
+
+  usage
+  return 1
+}
+main $@

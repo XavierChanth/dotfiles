@@ -28,7 +28,7 @@ outer.right = 8
 [exec]
 inherit-env-vars = true
 [exec.env-vars]
-PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin/:${PATH}'
 
 [[on-window-detected]] # "Waiting for host" window on zoom
 if.app-id = 'us.zoom.xos'
@@ -80,9 +80,9 @@ alt-shift-enter = [
 ]
 
 # Password manager
-alt-p = ['exec-and-forget ~/.local/bin/bitwarden pick_password_to_clipboard']
-alt-u = ['exec-and-forget ~/.local/bin/bitwarden pick_username_to_clipboard']
-alt-o = ['exec-and-forget ~/.local/bin/bitwarden pick_totp_to_clipboard']
+alt-p = ['exec-and-forget ~/.local/bin/pass-util pick_password_to_clipboard']
+alt-u = ['exec-and-forget ~/.local/bin/pass-util pick_username_to_clipboard']
+alt-o = ['exec-and-forget ~/.local/bin/pass-util pick_totp_to_clipboard']
 
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']

@@ -40,7 +40,7 @@ c.aliases = {
     "wq": "quit --save",
     "wqa": "quit --save",
     "mpv": "spawn --userscript mpv",
-    "bw": "spawn --userscript bitwarden",
+    "pass": "spawn --userscript passutil",
 }
 c.bindings.commands = {
     "normal": {
