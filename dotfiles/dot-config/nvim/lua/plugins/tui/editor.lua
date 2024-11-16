@@ -32,4 +32,17 @@ return {
       },
     },
   },
+  {
+    "jiaoshijie/undotree",
+    config = true,
+    keys = {
+      {
+        "<leader>uh",
+        function()
+          require("undotree").toggle()
+        end,
+        desc = "Undo history",
+      },
+    },
+  },
 }
