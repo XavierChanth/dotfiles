@@ -41,11 +41,12 @@ opt.fillchars = {
 opt.list = true
 opt.listchars = {
   -- eol = "↓",
-  tab = "  ┊",
+  -- tab = "  ┊",
+  space = "·",
+  lead = " ",
   trail = "●",
   extends = "…",
   precedes = "…",
-  space = "·",
 }
 opt.showbreak = "󱞩 "
 opt.showmode = false

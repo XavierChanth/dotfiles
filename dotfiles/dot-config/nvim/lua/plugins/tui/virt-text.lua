@@ -3,8 +3,8 @@ return {
     "lukas-reineke/virt-column.nvim",
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
     opts = {
-      char = { "┆" },
-      virtcolumn = "80,120",
+      char = { "▏" },
+      virtcolumn = "81,121",
       highlight = { "NonText" },
     },
   },
@@ -14,7 +14,7 @@ return {
     opts = {
       indent = {
         char = "│",
-        tab_char = "│",
+        tab_char = "┆",
       },
       scope = { show_start = false, show_end = false },
       exclude = {
