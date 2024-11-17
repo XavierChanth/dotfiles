@@ -279,8 +279,16 @@ rm_cmd() {
 }
 
 ls_cmd() {
-  $at_cli -v scan -r ".*\.items\.at_pass@" |
-    jq -r ".[]" |
+  local records=$(
+    $at_cli -v scan -r ".*\.items\.at_pass@"
+  )
+  local public=$(echo $records | grep 'public:')
+  if [ -n "$public" ]; then
+    echo [WARN] Detected public records:
+    echo $public
+  fi
+  echo $records |
+    jq -r '.[]' |
     sed -e 's/^public://' |
     cut -d. -f1
 }
