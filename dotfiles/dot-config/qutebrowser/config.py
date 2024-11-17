@@ -94,7 +94,7 @@ c.qt.args = [
 c.scrolling.smooth = True
 c.statusbar.padding = {"top": 8, "bottom": 8, "left": 8, "right": 8}
 c.statusbar.position = "bottom"
-c.statusbar.show = "in-mode"
+c.statusbar.show = "always"  # "in-mode"
 c.statusbar.widgets = [
     "progress",
     "history",
