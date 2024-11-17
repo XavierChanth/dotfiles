@@ -29,10 +29,10 @@ end
 function M.try_existing(existing)
   local terminal = existing.terminal
   if terminal ~= nil and terminal:buf_valid() then
+    terminal:toggle()
     terminal:on("BufEnter", function()
       vim.fn.feedkeys("a", "normal")
     end, { once = true })
-    terminal:toggle()
     return true
   end
   return false
@@ -45,6 +45,8 @@ function M.new(cmd, opts)
   })
 
   terminal:show()
+  -- let zsh handle normal mode in floating terminal
+  vim.keymap.set({ "n", "v" }, "<esc>", "<esc>i", { noremap = true, buffer = terminal.buf })
   terminals[cmd or opts.cwd] = {
     cmd = cmd,
     terminal = terminal,
