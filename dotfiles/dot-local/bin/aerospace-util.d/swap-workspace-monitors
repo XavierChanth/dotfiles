@@ -31,6 +31,7 @@ prev) rev_direction="next" ;;
   ;;
 esac
 
+undo=false
 # Get the focused workspace
 focused_workspace=$(aerospace list-workspaces --focused)
 
@@ -39,14 +40,31 @@ focused_workspace=$(aerospace list-workspaces --focused)
 # Move the other workspace to the originally focused monitor
 aerospace focus-monitor "$wrap_around" "$main_direction"
 other_workspace=$(aerospace list-workspaces --focused)
-aerospace move-workspace-to-monitor "$wrap_around" "$rev_direction"
+aerospace move-workspace-to-monitor "$wrap_around" "$rev_direction" || undo=true
+
+if $undo; then
+  # focus back the original, can't be swapped
+  aerospace focus-monitor "$wrap_around" "$rev_direction"
+  echo "ERROR: can't move workspace $other_workspace"
+  exit 1
+fi
 
 # Go back to the original workspace
 # Move it to the other monitor
 aerospace workspace "$focused_workspace"
-aerospace move-workspace-to-monitor "$wrap_around" "$main_direction"
+aerospace move-workspace-to-monitor "$wrap_around" "$main_direction" || undo=true
 
-# Focus both workspaces so they are in the foreground
-# Focus the originally workspace second so it is focused
-aerospace workspace "$other_workspace"
+ret=0
+if $undo; then
+  echo "ERROR: can't move workspace $focused_workspace"
+  aerospace workspace "$other_workspace"
+  aerospace move-workspace-to-monitor "$wrap_around" "$main_direction"
+  ret=1
+else
+  # Focus other workspaces so it's in the foreground
+  aerospace workspace "$other_workspace"
+fi
+
+# Focus the original workspace so it ends focused
 aerospace workspace "$focused_workspace"
+exit $ret
