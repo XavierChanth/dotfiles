@@ -69,7 +69,7 @@ alt-f = 'layout h_accordion tiles'
 
 alt-q = 'enable off'
 alt-shift-f = 'layout floating tiling'
-alt-shift-space = 'move-workspace-to-monitor --wrap-around next'
+alt-shift-space = 'exec-and-forget ~/.local/bin/aerospace-util swap-workspace-monitors --wrap-around next'
 alt-r = 'flatten-workspace-tree'
 alt-w = 'close'
 

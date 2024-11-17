@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+usage() {
+  echo "USAGE: $0 [--wrap-around] (next|prev)"
+}
+
+wrap_around=''
+while [ $# -gt 1 ]; do
+  case "$1" in
+  --wrap-around) wrap_around='--wrap-around' ;;
+  *) usage exit 1 ;;
+  esac
+  shift
+done
+
+main_direction="$1"
+
+case "$main_direction" in
+next) rev_direction="prev" ;;
+prev) rev_direction="next" ;;
+# These directions won't work right now since move-workspace-to-monitor only
+# takes next or prev:
+# right) rev_direction="left" ;;
+# left) rev_direction="right" ;;
+# up) rev_direction="down" ;;
+# down) rev_direction="up" ;;
+*)
+  usage
+  echo "ERROR: Argument '(next|prev)' is mandatory"
+  exit 1
+  ;;
+esac
+
+# Get the focused workspace
+focused_workspace=$(aerospace list-workspaces --focused)
+
+# Switch to the other monitor
+# Get the other workspace name
+# Move the other workspace to the originally focused monitor
+aerospace focus-monitor "$wrap_around" "$main_direction"
+other_workspace=$(aerospace list-workspaces --focused)
+aerospace move-workspace-to-monitor "$wrap_around" "$rev_direction"
+
+# Go back to the original workspace
+# Move it to the other monitor
+aerospace workspace "$focused_workspace"
+aerospace move-workspace-to-monitor "$wrap_around" "$main_direction"
+
+# Focus both workspaces so they are in the foreground
+# Focus the originally workspace second so it is focused
+aerospace workspace "$other_workspace"
+aerospace workspace "$focused_workspace"
