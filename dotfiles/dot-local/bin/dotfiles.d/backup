@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 _brew_file="$HOME/.local/brew/Brewfile"
 rm "$_brew_file"

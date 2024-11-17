@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "Copying over the internal keyboard to /etc/kmonad"
 sudo mkdir -p /etc/kmonad

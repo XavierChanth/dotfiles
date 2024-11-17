@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 main() {
   defaults -currentHost write -g AppleFontSmoothing -int 0

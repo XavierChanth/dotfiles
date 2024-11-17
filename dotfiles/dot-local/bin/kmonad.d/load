@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/usr/bin/env bash
 sudo launchctl load /Library/LaunchDaemons/local.kmonad.plist

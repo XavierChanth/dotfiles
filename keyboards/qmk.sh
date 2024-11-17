@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # https://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced
 (
