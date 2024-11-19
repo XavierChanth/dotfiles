@@ -42,7 +42,7 @@ return {
           if Util.platform.is_gui() or Util.platform.is_windows() then
             return
           end
-          Util.external.tmux.neww({ cwd = require("oil").get_current_dir() })
+          Util.tmux.neww({ cwd = require("oil").get_current_dir() })
         end,
       },
       float = {

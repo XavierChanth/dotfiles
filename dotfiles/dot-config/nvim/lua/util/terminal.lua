@@ -29,10 +29,10 @@ end
 function M.try_existing(existing)
   local terminal = existing.terminal
   if terminal ~= nil and terminal:buf_valid() then
-    terminal:toggle()
     terminal:on("BufEnter", function()
       vim.fn.feedkeys("a", "normal")
     end, { once = true })
+    terminal:toggle()
     return true
   end
   return false

@@ -1,13 +1,24 @@
+local normal_mode = {
+  fzf = {
+    j = "down",
+    k = "up",
+    -- if you chose to enter insert mode, you can't go back
+    i = "enable-search+unbind(j)+unbind(k)+unbind(i)+unbind(a)",
+    a = "enable-search+unbind(j)+unbind(k)+unbind(i)+unbind(a)",
+  },
+}
 return {
   "ibhagwan/fzf-lua",
+  cmd = "FzfLua",
   opts = {
-    "fzf-tmux",
+    -- "fzf-tmux", -- has an initial overhead which doesn't feel great
     winopts = {
       width = 0.85,
       height = 0.85,
       preview = {
         layout = "flex",
         default = "bat",
+        wrap = "wrap",
       },
     },
     keymap = {
@@ -29,6 +40,14 @@ return {
     },
     fzf_tmux_opts = { ["-p"] = "85%,85%", ["--margin"] = "0,0" },
   },
+  init = function()
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.ui.select = function(...)
+      require("lazy").load({ plugins = { "fzf-lua" } })
+      require("fzf-lua.providers.ui_select").register()
+      return vim.ui.select(...)
+    end
+  end,
   keys = {
     {
       "<leader><space>",
@@ -153,7 +172,9 @@ return {
     {
       "<leader>j",
       function()
-        require("fzf-lua").buffers()
+        require("fzf-lua").buffers({
+          keymap = normal_mode,
+        })
       end,
       desc = "Jump to buffer (all)",
     },
@@ -161,6 +182,7 @@ return {
       "<leader>k",
       function()
         require("fzf-lua").buffers({
+          keymap = normal_mode,
           cwd_only = true,
         })
       end,

@@ -67,7 +67,7 @@ opt.linebreak = true
 opt.shiftround = true
 opt.shiftwidth = 2
 opt.tabstop = 2
-opt.wrap = false -- Disable line wrap
+-- opt.wrap = false -- Disable line wrap
 
 -- FOLDS
 opt.foldlevel = 99
