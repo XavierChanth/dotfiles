@@ -40,14 +40,6 @@ return {
     },
     fzf_tmux_opts = { ["-p"] = "85%,85%", ["--margin"] = "0,0" },
   },
-  init = function()
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.ui.select = function(...)
-      require("lazy").load({ plugins = { "fzf-lua" } })
-      require("fzf-lua.providers.ui_select").register()
-      return vim.ui.select(...)
-    end
-  end,
   keys = {
     {
       "<leader><space>",
