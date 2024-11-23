@@ -170,15 +170,5 @@ return {
       end,
       desc = "Jump to buffer (all)",
     },
-    {
-      "<leader>k",
-      function()
-        require("fzf-lua").buffers({
-          keymap = normal_mode,
-          cwd_only = true,
-        })
-      end,
-      desc = "Jump to buffer (cwd)",
-    },
   },
 }

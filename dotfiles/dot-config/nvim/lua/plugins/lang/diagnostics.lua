@@ -41,7 +41,7 @@ return {
       { "<leader>st", "<cmd>TodoFzfLua<cr>", desc = "Todo" },
       { "<leader>sT", "<cmd>TodoFzfLua keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
       {
-        "<leader>xk",
+        "<leader>k",
         function()
           vim.diagnostic.open_float({
             border = "rounded",
