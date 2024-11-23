@@ -13,7 +13,6 @@ return {
     },
     opts = {
       graph_style = "unicode",
-      -- commit_editor = { kind = "floating" },
       integrations = {
         diffview = true,
         fzf_lua = true,
