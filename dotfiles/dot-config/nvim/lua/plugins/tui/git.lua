@@ -1,5 +1,34 @@
 return {
   {
+    "NeogitOrg/neogit",
+    dependencies = { "sindrets/diffview.nvim" },
+    keys = {
+      {
+        "<leader>gg",
+        function() end,
+        desc = "Neogit",
+      },
+    },
+    opts = {
+      graph_style = "unicode",
+      kind = "replace",
+      commit_editor = { kind = "replace" },
+      commit_select_view = { kind = "replace" },
+      log_view = { kind = "replace" },
+      ref_log_view = { kind = "replace" },
+      integrations = {
+        diffview = true,
+        fzf_lua = true,
+      },
+    },
+  },
+  {
+    "FabijanZulj/blame.nvim",
+    cmd = "BlameToggle",
+    keys = { { "<leader>gb", "<cmd>BlameToggle window<cr>", desc = "git blame" } },
+    opts = { merge_consecutive = false },
+  },
+  {
     "echasnovski/mini.diff",
     event = "VeryLazy",
     keys = {

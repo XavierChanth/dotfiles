@@ -19,7 +19,7 @@ M.actions = {
   },
   {
     action = function()
-      Util.lazygit()
+      Util.git.open()
     end,
     desc = " Lazygit",
     icon = " ",

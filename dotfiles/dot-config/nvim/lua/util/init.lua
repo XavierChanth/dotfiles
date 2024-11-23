@@ -3,7 +3,7 @@
 ---@field dashboard util.dashboard
 ---@field ipynb util.ipynb
 ---@field lazy util.lazy
----@field lazygit util.lazygit
+---@field git util.git
 ---@field logo string
 ---@field platform util.platform
 ---@field root util.root

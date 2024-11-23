@@ -56,15 +56,6 @@ if Util.platform.supports_terminal() then
   map("n", "<leader>E", function()
     Util.terminal("yazi", {})
   end, { desc = "Open Yazi" })
-  map("n", "<leader>gg", function()
-    Util.lazygit()
-  end, { desc = "Lazygit" })
-  map("n", "<leader>gj", function()
-    Util.tmux.popup({ args = { "zsh", "-c", "jj log; zsh -i" } })
-  end, { desc = "jj" })
-  map("n", "<leader>gb", function()
-    Util.lazygit.blame_line()
-  end, { desc = "Git blame" })
 
   -- LAZY
   map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
