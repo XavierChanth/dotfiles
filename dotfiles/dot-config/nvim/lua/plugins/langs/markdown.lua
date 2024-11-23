@@ -7,8 +7,7 @@ return {
     lint = { "pymarkdownlnt" },
   }),
   -- Vim has built in folding but it doesn't work with yaml frontmatter
-  -- vim.g.markdown_folding = 1
-  { "masukomi/vim-markdown-folding" },
+  { "masukomi/vim-markdown-folding", ft = ft },
   {
     "nvim-lint",
     opts = {
