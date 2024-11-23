@@ -35,6 +35,9 @@ require("lazy").setup({
   --   patterns = { "xavierchanth" },
   --   fallback = true,
   -- },
+  install = {
+    missing = false,
+  },
   performance = {
     rtp = {
       -- disable some rtp plugins

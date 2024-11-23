@@ -1,4 +1,4 @@
-package.path = Util.platform.home .. "/.local/state/colorscheme/colorscheme.lua;" .. package.path
+package.path = Util.platform.home .. "/.local/state/colorscheme/?.lua;" .. package.path
 
 ---@class util.colorscheme
 local M = {}
