@@ -15,9 +15,6 @@ return {
       graph_style = "unicode",
       kind = "replace",
       commit_editor = { kind = "floating" },
-      commit_select_view = { kind = "replace" },
-      log_view = { kind = "replace" },
-      ref_log_view = { kind = "replace" },
       integrations = {
         diffview = true,
         fzf_lua = true,
