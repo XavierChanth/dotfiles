@@ -1,10 +1,14 @@
 local ft = { "markdown" }
 local ft_quarto = { "markdown", "quarto" }
+
 return {
   Util.lazy.ensure_installed({
     treesitter = { "markdown", "markdown_inline" },
     lint = { "pymarkdownlnt" },
   }),
+  -- Vim has built in folding but it doesn't work with yaml frontmatter
+  -- vim.g.markdown_folding = 1
+  { "masukomi/vim-markdown-folding" },
   {
     "nvim-lint",
     opts = {

@@ -71,6 +71,7 @@ opt.tabstop = 2
 
 -- FOLDS
 opt.foldlevel = 99
+opt.foldmethod = "expr"
 
 -- FORMATTING
 opt.formatoptions = "jcroqlnt"
