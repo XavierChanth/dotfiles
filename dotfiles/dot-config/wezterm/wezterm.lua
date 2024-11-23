@@ -120,6 +120,7 @@ local hyper_to_tmux_prefix_key = {
 	["x"] = "x",
 	["w"] = "w",
 	["z"] = "z",
+	["f"] = "f",
 	-- weird mappings
 	["q"] = "d",
 	["Tab"] = "L",
