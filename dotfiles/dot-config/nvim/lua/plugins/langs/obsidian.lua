@@ -1,4 +1,8 @@
 local path = Util.platform.home .. "/src/xc/notes"
+local function is_notes_dir()
+  local buf_dir = vim.fs.dirname(vim.fn.expand("%"))
+  return Util.root.git({ cwd = buf_dir }) == path
+end
 return {
   "epwalsh/obsidian.nvim",
   keys = {
@@ -13,12 +17,7 @@ return {
       desc = "Search Notes",
     },
   },
-  ft = function()
-    if Util.root.git() == path then
-      return { "markdown" }
-    end
-    return {}
-  end,
+  ft = { "markdown" },
   opts = {
     strict = false,
     workspaces = {
@@ -31,14 +30,18 @@ return {
       -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
       ["gf"] = {
         action = function()
-          return require("obsidian").util.gf_passthrough()
+          if is_notes_dir() then
+            return require("obsidian").util.gf_passthrough()
+          end
         end,
         opts = { noremap = false, expr = true, buffer = true },
       },
       -- Smart action depending on context, either follow link or toggle checkbox.
       ["<cr>"] = {
         action = function()
-          return require("obsidian").util.smart_action()
+          if is_notes_dir() then
+            return require("obsidian").util.smart_action()
+          end
         end,
         opts = { buffer = true, expr = true },
       },
@@ -49,6 +52,7 @@ return {
     note_id_func = function(title)
       return title
     end,
+    ui = { enable = false },
     note_frontmatter_func = function(note)
       note.metadata = note.metadata or {}
       if note.metadata.atom == nil then
@@ -78,6 +82,5 @@ return {
       end
       return out
     end,
-    ui = nil,
   },
 }

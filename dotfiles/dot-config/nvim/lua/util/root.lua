@@ -133,7 +133,7 @@ end
 -- When opts.root == true, will try to find a parent .git/ directory if in a worktree
 function M.git(opts)
   opts = opts or {}
-  local root = M.cwd()
+  local root = opts.cwd or M.cwd()
   local git_root = nil
 
   if opts.root then

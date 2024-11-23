@@ -47,6 +47,13 @@ return {
         sign = false,
         icons = {},
       },
+      checkbox = {
+        custom = {
+          rightarrow = { raw = "[>]", rendered = " ", highlight = "RenderMarkdownInfo", scope_highlight = nil },
+          tilde = { raw = "[~]", rendered = "󰰱 ", highlight = "RenderMarkdownError", scope_highlight = nil },
+          important = { raw = "[!]", rendered = " ", highlight = "RenderMarkdownWarn", scope_highlight = nil },
+        },
+      },
     },
     keys = {
       {
