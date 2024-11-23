@@ -5,14 +5,16 @@ return {
     keys = {
       {
         "<leader>gg",
-        function() end,
+        function()
+          Util.git.open()
+        end,
         desc = "Neogit",
       },
     },
     opts = {
       graph_style = "unicode",
       kind = "replace",
-      commit_editor = { kind = "replace" },
+      commit_editor = { kind = "floating" },
       commit_select_view = { kind = "replace" },
       log_view = { kind = "replace" },
       ref_log_view = { kind = "replace" },
