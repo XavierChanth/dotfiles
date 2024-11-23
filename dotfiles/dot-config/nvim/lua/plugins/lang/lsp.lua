@@ -98,11 +98,7 @@ return {
           map({
             "K",
             function()
-              if not vim.diagnostic.open_float({
-                border = "rounded",
-              }) then
-                vim.lsp.buf.hover()
-              end
+              vim.lsp.buf.hover()
             end,
             desc = "Hover",
           })

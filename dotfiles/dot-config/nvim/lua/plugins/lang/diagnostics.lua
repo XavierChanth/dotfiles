@@ -40,6 +40,15 @@ return {
       },
       { "<leader>st", "<cmd>TodoFzfLua<cr>", desc = "Todo" },
       { "<leader>sT", "<cmd>TodoFzfLua keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+      {
+        "<leader>xk",
+        function()
+          vim.diagnostic.open_float({
+            border = "rounded",
+          })
+        end,
+        desc = "Show diagnostic",
+      },
     },
     opts = {
       -- Had to override all of them so I could add highlighting to plurals

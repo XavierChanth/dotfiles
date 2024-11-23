@@ -1,7 +1,7 @@
 {
   "Debug print": {
     "prefix": "printvar",
-    "body": ["print('$1 => ${$1}');", "$2"],
+    "body": ["print('$1 => \\${$1}');", "$2"],
     "description": "Log output to console"
   },
   "Stateless Widget": {

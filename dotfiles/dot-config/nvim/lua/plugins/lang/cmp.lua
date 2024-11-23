@@ -8,11 +8,13 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      -- "zbirenbaum/copilot.lua",
+      -- "zbirenbaum/copilot-cmp",
       {
         "garymjr/nvim-snippets",
         commit = "b29b16daaeb44c7b370ea9a4a9468229155c1adb",
-        opts = { friendly_snippets = true },
         dependencies = { "rafamadriz/friendly-snippets" },
+        opts = { friendly_snippets = true },
       },
     },
     keys = {
@@ -43,32 +45,37 @@ return {
           completeopt = "menu,menuone,preview,noselect,noinsert",
         },
         mapping = {
-          ["<C-n>"] = function()
-            if cmp.visible then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-            else
-              cmp.complete()
-            end
-          end,
-          ["<C-p>"] = function()
-            if cmp.visible then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-            else
-              cmp.complete()
-            end
-          end,
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-d>"] = cmp.mapping.scroll_docs(4),
-          ["<CR>"] = cmp.mapping.confirm({ select = false }),
+          ["<C-n>"] = {
+            i = function()
+              if cmp.visible() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+              else
+                cmp.complete()
+              end
+            end,
+          },
+          ["<C-p>"] = {
+            i = function()
+              if cmp.visible() then
+                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+              else
+                cmp.complete()
+              end
+            end,
+          },
+          ["<C-e>"] = { i = cmp.mapping.abort() },
+          ["<C-b>"] = { i = cmp.mapping.scroll_docs(-4) },
+          ["<C-u>"] = { i = cmp.mapping.scroll_docs(-4) },
+          ["<C-f>"] = { i = cmp.mapping.scroll_docs(4) },
+          ["<C-d>"] = { i = cmp.mapping.scroll_docs(4) },
+          ["<CR>"] = { i = cmp.mapping.confirm({ select = false }) },
         },
         sources = cmp.config.sources({
+          -- { name = "copilot" },
           { name = "nvim_lsp" },
-          { name = "path" },
-          { name = "buffer" },
           { name = "snippets" },
+          { name = "buffer" },
+          { name = "path" },
         }),
         sorting = defaults.sorting,
         performance = {

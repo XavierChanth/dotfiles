@@ -27,14 +27,14 @@ require("lazy").setup({
     lazy = true,
     version = "*",
   },
-  dev = {
-    -- To add a plugin to this folder use the following command
-    -- ln -s /path/to/plugin/worktree ~/src/xc/local_nvim_plugins/plugin_name
-    path = "~/src/xc/local_nvim_plugins",
-    -- which plugins should be pulled locally
-    patterns = { "xavierchanth" },
-    fallback = true,
-  },
+  -- dev = {
+  --   -- To add a plugin to this folder use the following command
+  --   -- ln -s /path/to/plugin/worktree ~/src/xc/local_nvim_plugins/plugin_name
+  --   path = "~/src/xc/local_nvim_plugins",
+  --   -- which plugins should be pulled locally
+  --   patterns = { "xavierchanth" },
+  --   fallback = true,
+  -- },
   performance = {
     rtp = {
       -- disable some rtp plugins

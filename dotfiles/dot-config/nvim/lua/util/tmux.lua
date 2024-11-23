@@ -28,7 +28,7 @@ function M.popup(opts)
     Job:new({
       command = "tmux",
       args = args,
-    }):sync()
+    }):start()
   end
 end
 

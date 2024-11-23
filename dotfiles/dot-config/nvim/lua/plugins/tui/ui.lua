@@ -1,6 +1,11 @@
 return {
   { -- input & select
     "stevearc/dressing.nvim",
+    opts = {
+      select = {
+        backend = { "fzf_lua", "telescope", "builtin" },
+      },
+    },
     init = function()
       -- This supports normal mode, whereas noice doesn't
       ---@diagnostic disable-next-line: duplicate-set-field
@@ -33,6 +38,9 @@ return {
     opts = {
       cmdline = { format = { filter = { title = "Shell" } } },
       lsp = {
+        progress = {
+          enabled = false,
+        },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
