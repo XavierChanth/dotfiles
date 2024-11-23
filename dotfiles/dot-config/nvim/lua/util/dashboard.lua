@@ -21,7 +21,7 @@ M.actions = {
     action = function()
       Util.git.open()
     end,
-    desc = " Lazygit",
+    desc = " Neogit",
     icon = " ",
     key = "g",
   },
