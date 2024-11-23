@@ -11,14 +11,14 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+require("globals")
 require("options")
 require("lazy").setup({
   spec = {
-    { import = "plugins.core" },
-    { import = "plugins.tui", cond = not Util.platform.is_gui() },
-    { import = "plugins.lang", cond = Util.platform.supports_lsp() },
-    { import = "plugins.langs", cond = Util.platform.supports_lsp() },
-    { import = "plugins.last" },
+    { import = "core" },
+    { import = "editor" },
+    { import = "lang" },
+    { import = "plugins" },
   },
   checker = { enabled = false }, -- disable check for updates
   change_detection = { enabled = false },

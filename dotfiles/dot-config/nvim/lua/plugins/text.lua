@@ -1,5 +1,16 @@
 return {
   {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+    },
+  },
+  {
     "echasnovski/mini.ai",
     event = "VeryLazy",
     dependencies = {
@@ -70,21 +81,25 @@ return {
     },
   },
   {
-    "mistricky/codesnap.nvim",
+    "MagicDuck/grug-far.nvim",
+    opts = { headerMaxWidth = 80 },
+    cmd = "GrugFar",
     keys = {
       {
-        "<leader>us",
+        "<leader>sr",
         function()
-          local cs = require("codesnap")
-          cs.copy_into_clipboard()
+          local grug = require("grug-far")
+          local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+          grug.open({
+            transient = true,
+            prefills = {
+              filesFilter = ext and ext ~= "" and "*." .. ext or nil,
+            },
+          })
         end,
-        mode = "v",
-        desc = "Codesnap (clipboard)",
+        mode = { "n", "v" },
+        desc = "Search and Replace",
       },
-    },
-    opts = {
-      save_path = vim.env.HOME .. "/Desktop",
-      watermark = "",
     },
   },
 }
