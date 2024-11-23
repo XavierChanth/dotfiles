@@ -30,7 +30,7 @@ end
 
 function M.branch_component()
   if Util.lazy.has("neogit") then
-    return require("neogit").lib.git.branch.current()
+    return require("neogit").lib.git.branch.current() or ""
   end
   return ""
 end

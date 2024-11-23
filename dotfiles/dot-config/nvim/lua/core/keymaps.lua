@@ -56,6 +56,14 @@ if Util.platform.supports_terminal() then
     Util.terminal("yazi", {})
   end, { desc = "Open Yazi" })
 
+  -- Git stuff
+  map("n", "<leader>gl", function()
+    Util.floats.lazygit()
+  end, { desc = "Lazygit" })
+  map("n", "<leader>gj", function()
+    Util.floats.lazyjj()
+  end, { desc = "Lazyjj" })
+
   -- LAZY
   map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 

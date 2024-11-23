@@ -4,13 +4,13 @@
 ---@field ipynb util.ipynb
 ---@field lazy util.lazy
 ---@field git util.git
+---@field floats util.floats
 ---@field logo string
 ---@field platform util.platform
 ---@field root util.root
 ---@field statusline util.statusline
 ---@field terminal util.terminal
 ---@field tmux util.tmux
----@field vscode util.vscode
 ---@field worktree util.worktree
 local M = {}
 
