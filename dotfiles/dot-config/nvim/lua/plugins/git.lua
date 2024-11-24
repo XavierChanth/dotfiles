@@ -24,6 +24,9 @@ return {
         diffview = true,
         fzf_lua = true,
       },
+      commit_editor = {
+        spell_check = false,
+      },
     },
   },
   {
