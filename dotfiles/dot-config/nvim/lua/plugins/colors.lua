@@ -5,6 +5,12 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+-- transparent background
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  command = "highlight Normal ctermbg=NONE guibg=NONE",
+})
+
 return {
   { "folke/tokyonight.nvim" },
   {

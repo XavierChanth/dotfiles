@@ -12,6 +12,8 @@ end
 
 local colorscheme = require("color")
 local config = {
+	window_background_opacity = 0.97,
+	macos_window_background_blur = 20,
 	check_for_updates = false,
 	color_scheme = colorscheme.current,
 	cursor_blink_ease_in = "Constant",
