@@ -28,7 +28,7 @@ map(
 )
 
 -- BUFFERS
-map("n", "<leader>bn", "<cmd>enew<cr>", { desc = "Buffer New" })
+map("n", "<leader>bc", "<cmd>enew<cr>", { desc = "Buffer Create" })
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
 map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
 
@@ -36,14 +36,12 @@ map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
 map("n", "<leader>w", "<c-w>", { desc = "Windows", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = true })
-map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
--- If I miss this I will add it back, I probably will...
--- LazyVim.toggle.map("<leader>wm", LazyVim.toggle.maximize)
 
 -- TABS
+map("n", "<leader>tt", "<cmd>FzfLua tabs<cr>", { desc = "Search Tabs" })
 map("n", "<leader>tc", "<cmd>tabnew<cr>", { desc = "Tab Create" })
-map("n", "<leader>td", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-map("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
+map("n", "<leader>td", "<cmd>tabclose<cr>", { desc = "Delete Tab" })
+map("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Tab Only" })
 map("n", "<leader>th", "<cmd>tabnext -1<cr>", { desc = "Tab Left" })
 map("n", "<leader>tl", "<cmd>tabnext<cr>", { desc = "Tab Right" })
 
