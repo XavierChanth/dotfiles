@@ -1,12 +1,12 @@
 return {
   {
     "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<BS>", desc = "Decrement Selection", mode = "x" },
-        { "<c-space>", desc = "Increment Selection", mode = { "x", "n" } },
-      },
-    },
+    opts = function(_, opts)
+      opts.spec = opts.spec or {}
+      table.insert(opts.spec, { "<BS>", desc = "Decrement Selection", mode = "x" })
+      table.insert(opts.spec, { "<c-space>", desc = "Increment Selection", mode = { "x", "n" } })
+      return opts
+    end,
   },
 
   -- Treesitter is a new parser generator tool that we can

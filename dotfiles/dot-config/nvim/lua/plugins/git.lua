@@ -10,6 +10,13 @@ return {
         end,
         desc = "Neogit",
       },
+      {
+        "<leader>gc",
+        function()
+          Util.git.open({ cwd = vim.fs.dirname(vim.fn.expand("%")) })
+        end,
+        desc = "Neogit (current file)",
+      },
     },
     opts = {
       graph_style = "unicode",

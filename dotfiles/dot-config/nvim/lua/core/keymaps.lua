@@ -30,6 +30,7 @@ map(
 -- BUFFERS
 map("n", "<leader>bn", "<cmd>enew<cr>", { desc = "Buffer New" })
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
+map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
 
 -- WINDOWS
 map("n", "<leader>w", "<c-w>", { desc = "Windows", remap = true })
