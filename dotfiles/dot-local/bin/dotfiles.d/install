@@ -96,6 +96,7 @@ tokei
 ffmpegthumbnailer
 unar
 poppler
+imagemagick
 EOF
   )
 

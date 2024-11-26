@@ -64,6 +64,7 @@ extra_commands=(
   yazi
   # gh dash can't be checked
   csharp-ls
+  magick
 )
 
 missing=""

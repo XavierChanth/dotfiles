@@ -58,6 +58,7 @@ require("lazy").setup({
       },
     },
   },
+  rocks = { hererocks = true },
   ui = {
     border = "rounded",
     size = { width = 0.85, height = 0.85 },
