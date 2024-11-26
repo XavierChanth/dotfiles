@@ -14,12 +14,9 @@ fqdn=$($script_dir/atdirectory "${atsign:1}" | tr -d '\r\n\t ')
 
 atkeys="$HOME/.atsign/keys/${atsign}_key.atKeys"
 
-echo Connecting to: ${fqdn:1}
-
 coproc { openssl s_client -brief -connect "${fqdn:1}"; }
 
 echo "from:$atsign" >&${COPROC[1]}
-sleep 1
 echo "from:$atsign"
 read -r line <&${COPROC[0]}
 echo $line
@@ -27,7 +24,7 @@ echo $line
 challenge=$line
 pkamres="pkam:$(at_pkam -p $atkeys -r ${challenge:6})"
 echo $pkamres >&${COPROC[1]}
-echo $pkamres
+echo "@$pkamres"
 
 # Connect stdout/stdin to terminal foreground
 exec {OUT}<&${COPROC[0]}-
