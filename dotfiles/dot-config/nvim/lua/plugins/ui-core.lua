@@ -93,9 +93,9 @@ return {
     },
     keys = {
       {
-        "<leader>sn",
+        "<leader>na",
         function()
-          require("noice").cmd("fzf")
+          require("noice").cmd("all")
         end,
         desc = "Noice Messages",
       },

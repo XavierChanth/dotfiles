@@ -1,7 +1,17 @@
 return {
   {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen" },
+    config = function(_, opts)
+      require("diffview").setup(opts)
+      -- load neogit with diffview always
+      require("lazy").load({ plugins = { "neogit" } })
+    end,
+  },
+  {
     "NeogitOrg/neogit",
-    dependencies = { "sindrets/diffview.nvim" },
+    cmd = "Neogit",
+    dependencies = { "diffview.nvim" },
     keys = {
       {
         "<leader>gg",
@@ -16,6 +26,25 @@ return {
           Util.git.open({ cwd = vim.fs.dirname(vim.fn.expand("%")) })
         end,
         desc = "Neogit (current file)",
+      },
+      {
+        "<leader>gd",
+        function()
+          require("arbor").pick({
+            show_remote_branches = true,
+            preserve_default_hooks = false,
+            show_actions = false,
+            select_opts = {
+              prompt = "Diff against:",
+            },
+            hooks = {
+              post = function(info)
+                require("neogit.integrations.diffview").open("range", info.branch_info.display_name)
+              end,
+            },
+          })
+        end,
+        desc = "Git diff",
       },
     },
     opts = {

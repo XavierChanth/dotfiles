@@ -11,6 +11,18 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+local dev = false
+local dev_table = dev
+    and {
+      -- To add a plugin to this folder use the following command
+      -- ln -s /path/to/plugin/worktree ~/src/xc/local_nvim_plugins/plugin_name
+      path = "~/src/xc/local_nvim_plugins",
+      -- which plugins should be pulled locally
+      patterns = { "xavierchanth" },
+      fallback = true,
+    }
+  or {}
+
 require("globals")
 require("options")
 require("lazy").setup({
@@ -27,14 +39,7 @@ require("lazy").setup({
     lazy = true,
     version = "*",
   },
-  -- dev = {
-  --   -- To add a plugin to this folder use the following command
-  --   -- ln -s /path/to/plugin/worktree ~/src/xc/local_nvim_plugins/plugin_name
-  --   path = "~/src/xc/local_nvim_plugins",
-  --   -- which plugins should be pulled locally
-  --   patterns = { "xavierchanth" },
-  --   fallback = true,
-  -- },
+  dev = dev_table,
   install = {
     missing = false,
   },

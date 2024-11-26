@@ -7,9 +7,9 @@ function M.arbor_set_dashboard(info)
   local worktree = info.new_path or info.branch_info and info.branch_info.display_name or info.cwd or vim.fn.getcwd()
   worktree = string.gsub(worktree, info.resolved_base .. "/", "")
   worktree = string.gsub(worktree, info.resolved_base, "")
-  vim.defer_fn(function()
+  vim.schedule(function()
     vim.cmd("Dashboard")
-  end, 10)
+  end)
   vim.defer_fn(function()
     vim.cmd({ cmd = "DashboardUpdateFooter", args = { "Worktree: " .. worktree } })
   end, 20)
@@ -47,8 +47,8 @@ function M.arbor_post_switch(info)
     else
       require("arbor").actions.cd_existing_worktree(info)
     end
-    M.arbor_set_dashboard(info)
     vim.cmd("bufdo bd")
+    M.arbor_set_dashboard(info)
   else
     vim.notify("Already on this worktree")
   end

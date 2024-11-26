@@ -70,6 +70,17 @@ return {
     },
   },
   {
+    "adelarsq/image_preview.nvim",
+    ft = ft_quarto,
+    keys = {
+      {
+        "<leader>up",
+        function() end,
+        desc = "Image preview",
+      },
+    },
+  },
+  {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     build = function()
