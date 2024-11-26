@@ -43,7 +43,6 @@ SPACESHIP_PROMPT_ORDER=(dir git exec_time async line_sep jobs exit_code sudo mod
 
 # custom commands
 source $XDG_CONFIG_HOME/zsh/alias.sh
-source $XDG_CONFIG_HOME/zsh/atsign.sh
 source $XDG_CONFIG_HOME/zsh/commands.sh
 
 case "$(uname)" in
