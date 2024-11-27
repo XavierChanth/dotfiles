@@ -93,7 +93,6 @@ add_usage() {
   echo "-u, --user : string  login username"
   echo "-p, --pass : string  login password"
   echo "-t, --totp : string  totp secret"
-  echo "-t, --totp : string  totp secret"
   echo "-u, --uri  : string  with format of <match>=<uri>"
   echo "                     either side of '=' may be left blank"
   echo "                     can be passed multiple times"
