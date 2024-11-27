@@ -12,7 +12,7 @@
     "version": "2"
   },
   "command_aliases": {
-    "W": "workspace::SaveWithoutFormat"
+    "W": "write"
   },
   "features": {
     "copilot": false,
@@ -37,7 +37,7 @@
   "gutter": {
     "code_actions": false,
     "runnables": false,
-    "folds": false,
+    "folds": false
   },
   "projects_online_by_default": false,
   "ui_font_size": 16,

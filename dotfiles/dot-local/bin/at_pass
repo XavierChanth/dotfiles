@@ -86,6 +86,7 @@ usage() {
 }
 
 add_usage() {
+  unset IFS
   echo "$script_name add [OPTIONS]"
   echo "Options (*required):"
   echo "-n, --name : string* display name for the item"
@@ -370,10 +371,8 @@ main() {
   local found=false
   for cmd in ${commands[@]}; do
     if [ "$command" = "$cmd" ]; then
-      local res=$(${cmd}_cmd $@)
-      local code=$?
-      echo $res
-      return $code
+      ${cmd}_cmd $@
+      return $?
     fi
   done
 
