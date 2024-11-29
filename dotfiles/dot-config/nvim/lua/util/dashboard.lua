@@ -27,6 +27,14 @@ M.actions = {
   },
   {
     action = function()
+      Util.floats.lazyjj()
+    end,
+    desc = " LazyJJ",
+    icon = " ",
+    key = "j",
+  },
+  {
+    action = function()
       require("persistence").load()
     end,
     desc = " Restore Session",
