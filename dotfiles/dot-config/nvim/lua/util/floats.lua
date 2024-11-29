@@ -27,7 +27,15 @@ end
 function M.lazyjj(_, opts)
   opts = opts or {}
   opts.cwd = opts.cwd or Util.root.git(opts)
-  Util.terminal("lazyjj", opts)
+  local terminal = Util.terminal("lazyjj", opts)
+  vim.keymap.set("t", "<C-_>", function()
+    Util.lazy.float_term({ "zsh", "-c", "jj log; zsh -i" }, {
+      cwd = Util.root.git(),
+      persistent = true,
+    })
+  end, {
+    buffer = terminal.buf,
+  })
 end
 
 return M

@@ -33,7 +33,7 @@ function M.try_existing(existing)
       vim.fn.feedkeys("a", "normal")
     end, { once = true })
     terminal:toggle()
-    return true
+    return terminal
   end
   return false
 end
@@ -52,6 +52,7 @@ function M.new(cmd, opts)
     terminal = terminal,
     opts = opts,
   }
+  return terminal
 end
 
 function M.existing_terminal(index)
@@ -60,11 +61,7 @@ function M.existing_terminal(index)
     last = existing.opts.cwd
   end
 
-  if existing and M.try_existing(existing) then
-    return
-  end
-
-  M.new(existing.cmd, existing.opts)
+  return existing and M.try_existing(existing) or M.new(existing.cmd, existing.opts)
 end
 
 function M.terminal(cmd, opts)
@@ -76,11 +73,7 @@ function M.terminal(cmd, opts)
     last = opts.cwd
   end
   local existing = terminals[cmd or opts.cwd]
-  if existing and M.try_existing(existing) then
-    return
-  end
-
-  M.new(cmd, opts)
+  return existing and M.try_existing(existing) or M.new(cmd, opts)
 end
 
 function M.from_oil()
