@@ -52,5 +52,9 @@ if command_exists dotnet; then
   __path="$HOME/.dotnet/tools:$__path"
 fi
 
+if command_exists arduino-cli; then
+  alias ard='arduino-cli'
+fi
+
 # append local path to PATH
 export PATH="$__path:$PATH"
