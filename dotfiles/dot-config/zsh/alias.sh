@@ -30,6 +30,7 @@ fi
 alias wgetsite='wget --no-parent -p -r'
 
 alias lg='lazygit'
+alias lj='lazyjj'
 alias y='yazi'
 
 if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then

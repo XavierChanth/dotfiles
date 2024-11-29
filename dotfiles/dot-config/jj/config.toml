@@ -1,2 +1,24 @@
 [ui]
 default-command = "log"
+# diff.tool = [ "delta",  "$left", "$right" ]
+
+# [revsets]
+# short-prefixes = "(trunk..@)::"
+
+[snapshot]
+max-new-file-size = "10MiB"
+
+[signing]
+sign-all = true
+backend = "ssh"
+key = "~/.ssh/id_ed25519.pub"
+
+[git]
+auto-local-bookmark = true
+push-bookmark-prefix = "xc-"
+git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
+
+[template-aliases]
+# 'format_timestamp(timestamp)' = 'timestamp'
+'format_timestamp(timestamp)' = 'timestamp.ago()'
+'format_short_signature(signature)' = 'signature.name()'
