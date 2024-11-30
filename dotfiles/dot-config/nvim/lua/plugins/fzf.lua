@@ -44,14 +44,10 @@ return {
     {
       "<leader><space>",
       function()
-        if Util.worktree.is_inside(Util.root.cwd()) then
-          require("fzf-lua").git_files({
-            cmd = "git ls-files --others --cached --exclude-standard",
-            git_icons = false,
-          })
-        else
-          require("fzf-lua").files({})
-        end
+        _ = require("fzf-lua").git_files({
+          cmd = "git ls-files --others --cached --exclude-standard",
+          git_icons = false,
+        }) or require("fzf-lua").files({})
       end,
       desc = "Git files",
     },
