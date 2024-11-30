@@ -88,6 +88,7 @@ python
 gcc
 cmake
 rust
+rust-analyzer
 node
 gh
 jq

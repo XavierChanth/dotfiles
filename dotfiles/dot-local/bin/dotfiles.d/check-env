@@ -48,6 +48,7 @@ extra_commands=(
   cmake
   gcc
   cargo # rust
+  rust-analyzer
   node
   dotnet # dotnet-sdk
   gh
