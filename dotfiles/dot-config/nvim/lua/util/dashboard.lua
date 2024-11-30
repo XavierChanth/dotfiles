@@ -3,35 +3,11 @@ local M = {}
 M.actions = {
   {
     action = function()
-      require("arbor").pick()
-    end,
-    desc = " Worktrees",
-    icon = " ",
-    key = "w",
-  },
-  {
-    action = function()
-      require("arbor").add()
-    end,
-    desc = " Worktree Add",
-    icon = " ",
-    key = "a",
-  },
-  {
-    action = function()
-      Util.git.open()
-    end,
-    desc = " Neogit",
-    icon = " ",
-    key = "g",
-  },
-  {
-    action = function()
       Util.floats.lazyjj()
     end,
     desc = " LazyJJ",
-    icon = " ",
-    key = "j",
+    icon = " ",
+    key = "g",
   },
   {
     action = function()

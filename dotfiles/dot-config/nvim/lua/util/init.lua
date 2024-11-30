@@ -3,7 +3,6 @@
 ---@field dashboard util.dashboard
 ---@field ipynb util.ipynb
 ---@field lazy util.lazy
----@field git util.git
 ---@field floats util.floats
 ---@field logo string
 ---@field platform util.platform
@@ -11,7 +10,6 @@
 ---@field statusline util.statusline
 ---@field terminal util.terminal
 ---@field tmux util.tmux
----@field worktree util.worktree
 local M = {}
 
 setmetatable(M, {
