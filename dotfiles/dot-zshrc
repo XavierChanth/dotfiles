@@ -40,7 +40,9 @@ source $XDG_CONFIG_HOME/zsh/vi-mode.sh
 
 # prompt
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
-SPACESHIP_PROMPT_ORDER=(dir git exec_time async line_sep jobs exit_code sudo mode char)
+# SPACESHIP_PROMPT_ORDER=(dir git exec_time async line_sep jobs exit_code sudo mode char)
+# disable git cuz jj
+SPACESHIP_PROMPT_ORDER=(dir exec_time async line_sep jobs exit_code sudo mode char)
 
 # custom commands
 source $XDG_CONFIG_HOME/zsh/alias.sh
