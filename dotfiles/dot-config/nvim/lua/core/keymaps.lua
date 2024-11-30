@@ -60,6 +60,7 @@ if Util.platform.supports_terminal() then
   map("n", "<leader>gl", function()
     Util.floats.lazygit()
   end, { desc = "Lazygit" })
+
   map("n", "<leader>gj", function()
     Util.floats.lazyjj()
   end, { desc = "Lazyjj" })
