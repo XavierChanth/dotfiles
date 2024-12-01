@@ -129,7 +129,7 @@ return {
     opts = {},
   },
 
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = {
       "css",
       "diff",

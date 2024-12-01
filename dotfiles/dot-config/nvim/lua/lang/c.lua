@@ -1,5 +1,5 @@
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "c", "cpp" },
     conform = { "gersemi" },
     lsp = { "clangd", "neocmake" },

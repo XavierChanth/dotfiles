@@ -1,6 +1,6 @@
 return {
   -- ft = "dockerfile",
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "dockerfile" },
     lint = { "hadolint" },
     lsp = { "dockerls", "docker_compose_language_service" },

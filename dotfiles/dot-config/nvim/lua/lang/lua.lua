@@ -1,5 +1,5 @@
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "lua", "luadoc", "luap" },
     conform = { "stylua" },
     lsp = { "lua_ls" },

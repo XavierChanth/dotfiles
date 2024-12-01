@@ -6,7 +6,7 @@ end
 local lsp_global_root_mode = false
 
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "dart" },
   }),
   {

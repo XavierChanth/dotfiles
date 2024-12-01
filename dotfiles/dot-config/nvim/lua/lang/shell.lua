@@ -1,5 +1,5 @@
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "bash" },
     lint = { "shellcheck" },
     conform = { "shfmt" },

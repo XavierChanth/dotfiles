@@ -1,5 +1,5 @@
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "python", "ninja", "rst" },
     lsp = { "ruff", "basedpyright" },
   }),

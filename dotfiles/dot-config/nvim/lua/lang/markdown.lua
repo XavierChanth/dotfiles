@@ -2,7 +2,7 @@ local ft = { "markdown" }
 local ft_quarto = { "markdown", "quarto" }
 
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "markdown", "markdown_inline" },
     lint = { "pymarkdownlnt" },
   }),

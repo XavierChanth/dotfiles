@@ -52,32 +52,6 @@ function M.memoize(fn)
   end
 end
 
-function M.ensure_installed(spec)
-  spec = spec or {}
-  local lazy_spec = {}
-  local index = {
-    treesitter = "nvim-treesitter",
-    conform = "mason-conform",
-    lsp = "mason-lspconfig.nvim",
-    lint = "mason-nvim-lint",
-  }
-  for key, plugin in pairs(index) do
-    if spec[key] ~= nil then
-      lazy_spec[#lazy_spec + 1] = {
-        plugin,
-        opts = function(_, opts)
-          opts.ensure_installed = opts.ensure_installed or {}
-          for _, i in ipairs(spec[key]) do
-            table.insert(opts.ensure_installed, i)
-          end
-          return opts
-        end,
-      }
-    end
-  end
-  return lazy_spec
-end
-
 ---@return LazyFloat
 function M.float_term(...)
   return require("lazy.util").float_term(...)

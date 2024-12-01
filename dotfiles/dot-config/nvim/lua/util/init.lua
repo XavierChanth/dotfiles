@@ -5,6 +5,7 @@
 ---@field lazy util.lazy
 ---@field floats util.floats
 ---@field logo string
+---@field packages util.packages
 ---@field platform util.platform
 ---@field root util.root
 ---@field statusline util.statusline

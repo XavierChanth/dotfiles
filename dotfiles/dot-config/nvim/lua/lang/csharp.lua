@@ -1,5 +1,5 @@
 return {
-  Util.lazy.ensure_installed({
+  Util.packages.ensure_installed({
     treesitter = { "c_sharp" },
     conform = { "csharpier" },
     lsp = { "omnisharp", "csharp_ls" },
