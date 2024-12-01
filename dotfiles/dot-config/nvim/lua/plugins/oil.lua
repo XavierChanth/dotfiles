@@ -13,9 +13,10 @@ return {
       {
         "<leader>E",
         function()
-          Util.terminal("yazi", {})
+          if Util.platform.supports_terminal() then
+            Util.terminal("yazi", {})
+          end
         end,
-        cond = Util.platform.supports_terminal(),
         desc = "Open Yazi",
       },
     },
