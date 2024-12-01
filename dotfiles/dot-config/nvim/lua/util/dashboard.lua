@@ -3,23 +3,31 @@ local M = {}
 M.actions = {
   {
     action = function()
-      Util.floats.lazyjj()
+      Util.floats.lazygit()
     end,
-    desc = " LazyJJ",
+    desc = " git",
     icon = " ",
     key = "g",
   },
   {
     action = function()
+      Util.floats.lazyjj()
+    end,
+    desc = " jj",
+    icon = " ",
+    key = "j",
+  },
+  {
+    action = function()
       require("persistence").load()
     end,
-    desc = " Restore Session",
+    desc = " session",
     icon = " ",
     key = "s",
   },
   {
     action = "qa",
-    desc = " Quit",
+    desc = " quit",
     icon = " ",
     key = "q",
   },
