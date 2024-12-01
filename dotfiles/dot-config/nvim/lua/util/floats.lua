@@ -1,3 +1,4 @@
+---Floating windows that I want embedded in my workflow
 ---@class util.floats
 local M = {}
 

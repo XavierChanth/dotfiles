@@ -1,3 +1,7 @@
+---Custom wrapper around Lazy's float_term which:
+---1. tracks the last used terminal by path so it can be reopened quickly
+---2. keeps a cache of all terminals so they can be fuzzy found
+
 ---@class util.terminal
 local M = {}
 

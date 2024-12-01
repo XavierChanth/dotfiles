@@ -8,8 +8,6 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      -- "zbirenbaum/copilot.lua",
-      -- "zbirenbaum/copilot-cmp",
       {
         "garymjr/nvim-snippets",
         commit = "b29b16daaeb44c7b370ea9a4a9468229155c1adb",

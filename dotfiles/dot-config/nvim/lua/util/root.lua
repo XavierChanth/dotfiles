@@ -1,4 +1,4 @@
--- Taken mostly from LazyVim's root util
+-- Taken from LazyVim's root util with some modifications
 --- @class util.root
 local M = {}
 

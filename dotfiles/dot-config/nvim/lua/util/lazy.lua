@@ -1,5 +1,4 @@
--- These utilities are from LazyVim's utility library
--- Super useful and made it easier to migrate by keeping these in place
+-- Utilities around lazy.nvim
 ---@class util.lazy: LazyUtilCore
 local M = {}
 

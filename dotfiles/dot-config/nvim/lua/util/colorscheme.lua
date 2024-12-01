@@ -1,3 +1,5 @@
+-- A wrapper which reloads the colorscheme based on the contents of the file
+-- stored in $HOME/.local/state/colorscheme/colorscheme.lua
 package.path = Util.platform.home .. "/.local/state/colorscheme/?.lua;" .. package.path
 
 ---@class util.colorscheme

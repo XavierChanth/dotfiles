@@ -1,3 +1,4 @@
+-- Global keymaps and which-key
 local map = vim.keymap.set
 
 -- RESETS - modifies default keys with preferred behavior
