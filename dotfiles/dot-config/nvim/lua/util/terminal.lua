@@ -69,6 +69,11 @@ function M.terminal(cmd, opts)
   if opts.cwd == nil then
     opts.cwd = Util.root.git(opts)
   end
+  if opts.args then
+    local base = cmd
+    cmd = opts.args
+    table.insert(cmd, 1, base)
+  end
   if cmd == nil then
     last = opts.cwd
   end

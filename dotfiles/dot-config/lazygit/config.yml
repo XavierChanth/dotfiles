@@ -3,22 +3,9 @@ git:
   paging:
     pager: delta --paging=never --syntax-theme ansi -s --no-gitconfig
 
-customCommands:
-  - key: "N"
-    context: "localBranches"
-    prompts:
-      - type: "input"
-        title: "What is the new branch name?"
-        key: "BranchName"
-        initialValue: ""
-    command: "git branch {{.Form.BranchName}} {{.SelectedLocalBranch.Name}}"
-    loadingText: "Creating branch"
-  - key: "<c-f>"
-    context: "commits"
-    command: "git show {{.SelectedLocalCommit.Sha}}"
-    subprocess: true
-    description: "Show selected commit"
-    stream: true
+os:
+  editPreset: nvim-remote
+
 gui:
   filterMode: fuzzy
   nerdFontsVersion: "3"
@@ -27,10 +14,3 @@ gui:
       - bold
   authorColors:
     "*": "cyan"
-
-keybinding:
-  universal:
-    prevBlock-alt: ""
-    nextBlock-alt: ""
-    nextTab: l
-    prevTab: h

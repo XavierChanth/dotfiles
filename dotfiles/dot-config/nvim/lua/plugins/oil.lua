@@ -10,6 +10,14 @@ return {
         end,
         desc = "Oil",
       },
+      {
+        "<leader>E",
+        function()
+          Util.terminal("yazi", {})
+        end,
+        cond = Util.platform.supports_terminal(),
+        desc = "Open Yazi",
+      },
     },
     opts = {
       columns = {

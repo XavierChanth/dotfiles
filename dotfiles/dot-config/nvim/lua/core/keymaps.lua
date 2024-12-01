@@ -56,20 +56,6 @@ if Util.platform.supports_terminal() then
     Util.terminal("yazi", {})
   end, { desc = "Open Yazi" })
 
-  -- Git stuff
-  map("n", "<leader>gl", function()
-    Util.floats.lazygit()
-  end, { desc = "Lazygit" })
-
-  map("n", "<leader>gg", function()
-    Util.floats.lazyjj()
-  end, { desc = "LazyJJ" })
-
-  map("n", "<leader>gc", function()
-    local opts = { cwd = vim.fs.dirname(vim.fn.expand("%")) }
-    Util.floats.lazyjj(opts)
-  end, { desc = "LazyJJ (current file)" })
-
   -- LAZY
   map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
