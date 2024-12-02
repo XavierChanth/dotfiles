@@ -21,6 +21,7 @@ local config = {
 	default_prog = default_prog,
 	disable_default_key_bindings = true,
 	enable_tab_bar = false,
+	enable_kitty_graphics = true,
 	font = wezterm.font_with_fallback({
 		"JetBrainsMono Nerd Font",
 		"JetBrainsMono NF",

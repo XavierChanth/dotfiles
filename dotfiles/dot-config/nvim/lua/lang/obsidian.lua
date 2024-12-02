@@ -98,14 +98,17 @@ return {
         if atom_index ~= 0 and not note.metadata.atom then
           note.tags[atom_index] = nil
         end
+        note.metadata.id = note.id
+        note.metadata.aliases = note.aliases
+        note.metadata.tags = note.tags
 
-        local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-          for k, v in pairs(note.metadata) do
-            out[k] = v
-          end
-        end
-        return out
+        -- local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+        -- if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+        --   for k, v in pairs(note.metadata) do
+        --     out[k] = v
+        --   end
+        -- end
+        return note.metadata
       end,
     },
   },
