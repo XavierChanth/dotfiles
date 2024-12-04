@@ -1,3 +1,11 @@
+vim.filetype.add({
+  extension = {
+    ctemplate = "c",
+    cpptemplate = "cpp",
+    htemplate = "c",
+  },
+})
+
 return {
   Util.packages.ensure_installed({
     treesitter = { "c", "cpp" },
@@ -27,6 +35,7 @@ return {
       servers = {
         neocmake = {},
         clangd = {
+          filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "arduino" },
           root_dir = function(fname)
             return require("lspconfig.util").root_pattern(
               "Makefile",

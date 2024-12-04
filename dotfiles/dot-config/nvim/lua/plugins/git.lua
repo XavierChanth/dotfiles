@@ -4,6 +4,10 @@ map("n", "<leader>gl", function()
 end, { desc = "LazyGit" })
 
 map("n", "<leader>gg", function()
+  Util.jj.float()
+end, { desc = "JJ terminal" })
+
+map("n", "<leader>gj", function()
   Util.floats.lazyjj()
 end, { desc = "LazyJJ" })
 

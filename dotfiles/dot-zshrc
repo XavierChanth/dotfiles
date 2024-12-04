@@ -79,9 +79,9 @@ autoload -Uz compinit
 compinit
 
 # jj completion
-if command -v jj 2>&1 >/dev/null; then
-  source <(jj util completion zsh)
-fi
+# if command -v jj 2>&1 >/dev/null; then
+#   source <(jj util completion zsh)
+# fi
 
 # Export last so it's prioritized over other paths
 export PATH="$HOME/.local/bin:$PATH"

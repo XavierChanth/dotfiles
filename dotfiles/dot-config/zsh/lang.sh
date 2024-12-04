@@ -54,6 +54,19 @@ fi
 
 if command_exists arduino-cli; then
   alias ard='arduino-cli'
+  function ard-upload() {
+    p="$1"
+    if [ -z "$p" ]; then
+      echo "Usage: ard-upload <path>"
+      return 1
+    fi
+    selected="$(arduino-cli board list | tail -n +2 | fzf)"
+    if [ -z "$selected" ]; then
+      echo Nothing selected
+      return 0
+    fi
+    arduino-cli upload "$p" -b "$(echo $selected | rev | cut -w -f2 | rev)" -p "$(echo $selected | cut -w -f1)"
+  }
 fi
 
 # append local path to PATH

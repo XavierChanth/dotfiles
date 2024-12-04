@@ -11,7 +11,8 @@ M.actions = {
   },
   {
     action = function()
-      Util.floats.lazyjj()
+      Util.jj.float()
+      -- Util.floats.lazyjj()
     end,
     desc = " jj",
     icon = " ",
