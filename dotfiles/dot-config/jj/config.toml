@@ -29,8 +29,10 @@ git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')
 log = 'builtin_log_comfortable'
 
 [template-aliases]
-'format_timestamp(timestamp)' = 'timestamp'
-# 'format_timestamp(timestamp)' = 'timestamp.ago()'
+'format_timestamp(timestamp)' = 'rel_time(timestamp)'
+'full_time(timestamp)' = 'timestamp'
+'short_time(timestamp)' = 'timestamp.format("%H:%M %D")'
+'rel_time(timestamp)' = 'timestamp.ago()'
 'format_short_signature(signature)' = 'signature.name()'
 
 # Small number of columns available

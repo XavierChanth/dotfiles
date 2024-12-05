@@ -1,9 +1,10 @@
 ---@class util.jj
 local M = {}
 
-local lines_cache = {}
+local lines_cache = nil
 
 function M.float()
+  -- Setup popups and layout
   local Popup = require("nui.popup")
   local Layout = require("nui.layout")
   local popups = {
@@ -23,6 +24,15 @@ function M.float()
     }, { dir = "row" })
   )
 
+  -- Setup log timer
+  local timer = vim.uv.new_timer()
+  local close = function()
+    lines_cache = nil
+    timer:stop()
+    layout:unmount()
+  end
+
+  -- Handle popup closure
   for _, popup in pairs(popups) do
     popup:on("BufLeave", function()
       vim.schedule(function()
@@ -32,15 +42,13 @@ function M.float()
             return
           end
         end
-        layout:unmount()
+        close()
       end)
     end)
   end
-
   layout:mount()
 
-  -- Setup popup a
-  -- vim.api.nvim_set_option_value("wrap", false, { buf = popups.a.bufnr })
+  -- Setup log
   local refresh_log = function()
     require("plenary.job")
       :new({
@@ -50,7 +58,7 @@ function M.float()
           "log",
           "--color=always",
           "--config-toml",
-          "'template-aliases.format_timestamp(timestamp)' = 'timestamp'",
+          "[template-aliases]\n'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
           "--template",
           "narrow_log_comfortable",
         },
@@ -62,7 +70,7 @@ function M.float()
             ---@diagnostic disable-next-line: param-type-mismatch
             local lines = job:result() or job:error_result()
             for i, line in ipairs(lines) do
-              if lines_cache[i] ~= line then
+              if not lines_cache or lines_cache[i] ~= line then
                 lines_cache = lines
                 Util.ansi_colors.baleia().buf_set_lines(popups.a.bufnr, 0, -1, false, lines)
                 return
@@ -73,14 +81,16 @@ function M.float()
       end)
       :start()
   end
-  refresh_log()
+  timer:start(0, 50, vim.schedule_wrap(refresh_log))
 
+  -- Setup terminal
   local chan = vim.fn.termopen(vim.o.shell, vim.empty_dict())
+  -- autocmds must be right after termopen or they won't work
   vim.api.nvim_create_autocmd("TermClose", {
     once = true,
     buffer = popups.b.bufnr,
     callback = function()
-      layout:unmount()
+      close()
       vim.cmd.checktime()
     end,
   })
@@ -90,10 +100,12 @@ function M.float()
       vim.cmd.startinsert()
     end,
   })
+  -- Then start insert mode in the terminal
   vim.cmd.startinsert()
 
+  -- Useful keybinds
   vim.keymap.set("t", "<CR>", function()
-    vim.fn.timer_start(50, vim.schedule(refresh_log), vim.empty_dict())
+    refresh_log()
     vim.api.nvim_chan_send(chan, "\x0D")
   end, { buffer = popups.b.bufnr })
 
