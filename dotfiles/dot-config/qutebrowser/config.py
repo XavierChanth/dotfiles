@@ -9,7 +9,8 @@ config.load_autoconfig()
 gui_editor = "zed"
 uname = os.uname()
 if uname[0] == "Darwin":
-    gui_editor = "/opt/homebrew/bin/zed"
+    gui_editor = "/opt/homebrew/bin/nvim"
+editor_command = [gui_editor, "-w", "{file}"]
 
 # Colors
 HOME = os.getenv("HOME")
@@ -82,7 +83,7 @@ c.content.javascript.clipboard = "access"  # "none"
 c.content.pdfjs = True
 c.content.user_stylesheets = [f"{HOME}/.config/qutebrowser/stylesheets/code.css"]
 c.downloads.position = "bottom"
-c.editor.command = [gui_editor, "--wait", "{file}"]
+c.editor.command = editor_command
 c.fonts.default_size = "18pt"
 c.fonts.statusbar = "default_size JetBrainsMono Nerd Font"
 c.fonts.web.family.fixed = "JetBrainsMono Nerd Font"

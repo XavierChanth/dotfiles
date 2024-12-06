@@ -6,6 +6,7 @@
 // To see all of Zed's default settings without changing your
 // custom settings, run `zed: open default settings` from the // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "when_closing_with_no_tabs": "close_window",
   "always_treat_brackets_as_autoclosed": false,
   "assistant": {
     "enabled": false,

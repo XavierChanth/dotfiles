@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# a unique folder name that is very unlikely to be in other repositories
+script_dir=".xavierchanth"
+base="$(git rev-parse --show-toplevel || printf "")"
+
+if [ -z "$base" ]; then
+  echo "Couldn't find git top level"
+  exit 1
+fi
+
+scripts_path="$base/$script_dir"
+
+fzf_scripts() {
+  local scripts=$(
+    cd $scripts_path 2>/dev/null || return 1
+    ls * 2>/dev/null
+  )
+  if [ -z "$scripts" ]; then
+    echo "Failed to find scripts"
+    return 1
+  fi
+  local selected=$(
+    fzf --scheme=path --tiebreak=end,index --header "Run repo script:" <<<$scripts
+  )
+  if [ -n "$selected" ]; then
+    $scripts_path/$selected
+  fi
+}
+
+init_scripts() {
+  if [ -f "$scripts_path" ] || [ -d "$scripts_path" ]; then
+    echo "$scripts_path already exists"
+    exit 1
+  fi
+  mkdir -p "$scripts_path"
+  echo "*" >"$scripts_path/.gitignore"
+}
+
+case "$1" in
+init)
+  init_scripts
+  ;;
+*)
+  fzf_scripts
+  ;;
+esac

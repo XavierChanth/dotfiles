@@ -33,6 +33,8 @@ alias lg='lazygit'
 alias lj='lazyjj'
 alias y='yazi'
 
+alias rr="$HOME/.local/bin/repo_scripts"
+
 if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then
   alias code="codium"
 fi
