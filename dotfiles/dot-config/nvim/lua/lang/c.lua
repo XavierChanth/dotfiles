@@ -35,7 +35,7 @@ return {
       servers = {
         neocmake = {},
         clangd = {
-          filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "arduino" },
+          filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
           root_dir = function(fname)
             return require("lspconfig.util").root_pattern(
               "Makefile",
@@ -54,7 +54,7 @@ return {
           },
           cmd = {
             "clangd",
-            "--query-driver=/usr/bin/clang",
+            "--query-driver=/usr/bin/clang++",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=iwyu",

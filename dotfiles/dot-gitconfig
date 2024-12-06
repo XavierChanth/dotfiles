@@ -13,9 +13,9 @@
 	format = ssh
 
 [alias]
+  st = status
 	wt = worktree
 	wtls = worktree list
-	cb = clone --no-checkout -c core.bare=true
 
 [include]
   path = ~/.config/git/user-default

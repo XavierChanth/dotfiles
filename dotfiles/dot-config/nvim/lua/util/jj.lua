@@ -3,6 +3,8 @@ local M = {}
 
 local lines_cache = nil
 
+-- A float which puts JJ log on the left
+-- and a terminal in vim cwd on the right
 function M.float()
   -- Setup popups and layout
   local Popup = require("nui.popup")
@@ -53,14 +55,13 @@ function M.float()
     require("plenary.job")
       :new({
         command = "jj",
-        -- args = { "config", "p", "--user" },
         args = {
           "log",
           "--color=always",
           "--config-toml",
           "[template-aliases]\n'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
           "--template",
-          "narrow_log_comfortable",
+          "narrow_log_comfortable", -- This template can be found in my jj config: dotfiles/dot-config/jj/config.toml
         },
         enabled_recording = true,
       })

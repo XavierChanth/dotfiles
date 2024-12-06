@@ -25,6 +25,12 @@ auto-local-bookmark = false
 push-bookmark-prefix = "xc-"
 git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
 
+[aliases]
+e = ["edit"]
+gp = ["git", "push"]
+gf = ["git", "fetch"]
+
+
 [templates]
 log = 'builtin_log_comfortable'
 
