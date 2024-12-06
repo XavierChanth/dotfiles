@@ -12,6 +12,10 @@ if command_exists brew; then
   brew install zoom discord spotify
   brew install betterdisplay cleanshot unnaturalscrollwheels the-unarchiver
 
+  if [ $(uname) = 'Darwin' ]; then
+    brew install mas
+  fi
+
   # qutebrowser and dependencies
   brew install mpv qutebrowser
 
