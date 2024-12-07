@@ -90,16 +90,11 @@ function M.float()
   vim.api.nvim_create_autocmd("TermClose", {
     once = true,
     buffer = popups.b.bufnr,
-    callback = function()
-      close()
-      vim.cmd.checktime()
-    end,
+    callback = close,
   })
   vim.api.nvim_create_autocmd("BufEnter", {
     buffer = popups.b.bufnr,
-    callback = function()
-      vim.cmd.startinsert()
-    end,
+    callback = vim.cmd.startinsert,
   })
   -- Then start insert mode in the terminal
   vim.cmd.startinsert()

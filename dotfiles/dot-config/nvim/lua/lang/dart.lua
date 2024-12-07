@@ -17,17 +17,11 @@ return {
           root_dir = function(_)
             local roots
             if lsp_global_root_mode then
-              roots = Util.root.detect({
-                all = false,
-                spec = { ".git", "melos.yaml", "pubspec.yaml" },
-              })
+              roots = Util.root.git()
             else
-              roots = Util.root.detect({
-                all = false,
-                spec = { "pubspec.yaml", ".git", "melos.yaml" },
-              })
+              roots = vim.fs.find("pubspec.yaml", { type = "file" })
+              return roots[1] or vim.uv.cwd()
             end
-            return roots[1] and roots[1].paths[1] or vim.uv.cwd()
           end,
           init_options = {
             onlyAnalyzeProjectsWithOpenFiles = true,

@@ -1,5 +1,11 @@
 local keygroup = vim.api.nvim_create_augroup("MoltenKeys", { clear = true })
 
+vim.api.nvim_create_user_command("NewNotebook", function(opts)
+  Util.ipynb.new_notebook(opts.args)
+end, {
+  nargs = 1,
+  complete = "file",
+})
 -- Manual installation steps
 -- 1. First time setup (Do once)
 --    brew install quarto

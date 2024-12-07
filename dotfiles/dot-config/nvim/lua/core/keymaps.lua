@@ -30,7 +30,9 @@ map(
 
 -- BUFFERS
 map("n", "<leader>bc", "<cmd>enew<cr>", { desc = "Buffer Create" })
-map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete Other Buffers" })
+map("n", "<leader>bo", function()
+  require("snacks.bufdelete").other()
+end, { desc = "Delete Other Buffers" })
 map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
 
 -- WINDOWS

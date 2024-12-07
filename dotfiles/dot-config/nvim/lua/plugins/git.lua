@@ -7,19 +7,10 @@ map("n", "<leader>gg", function()
   Util.jj.float()
 end, { desc = "JJ terminal" })
 
-map("n", "<leader>gj", function()
-  Util.floats.lazyjj()
-end, { desc = "LazyJJ" })
-
 map("n", "<leader>gh", function()
   local opts = { args = { "-f", vim.fn.expand("%") } }
   Util.floats.lazygit(opts)
 end, { desc = "File history" })
-
-map("n", "<leader>gc", function()
-  local opts = { cwd = vim.fs.dirname(vim.fn.expand("%")) }
-  Util.floats.lazyjj(opts)
-end, { desc = "LazyJJ (file's cwd)" })
 
 return {
   {

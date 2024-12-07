@@ -3,9 +3,7 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = "\\"
 
-g.deprecation_warnings = false -- Hide deprecation warnings
 g.markdown_recommended_style = 0
-g.bigfile_size = 1024 * 1024 * 1.5 -- 1.5 MB
 
 local opt = vim.opt
 
