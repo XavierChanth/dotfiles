@@ -44,7 +44,7 @@ git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')
 e = ["edit"]
 gp = ["git", "push"]
 gf = ["git", "fetch"]
-v = ["util", "exec", "bash -c 'jj '"]
+bs = ["bookmark", "set"]
 
 [templates]
 log = 'builtin_log_comfortable'
