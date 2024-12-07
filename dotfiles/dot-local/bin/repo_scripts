@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # a unique folder name that is very unlikely to be in other repositories
-script_dir=".xavierchanth"
+local_dir=".xavierchanth/"
 base="$(git rev-parse --show-toplevel || printf "")"
 
 if [ -z "$base" ]; then
@@ -9,7 +9,7 @@ if [ -z "$base" ]; then
   exit 1
 fi
 
-scripts_path="$base/$script_dir"
+scripts_path="$base/$local_dir/scripts"
 
 query="$1"
 
