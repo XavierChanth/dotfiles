@@ -17,7 +17,16 @@ diff.tool = [
 
 diff-editor = "nvim"
 
+# Remove things you want in the child commit
+# Keep changes you want in the parent commit
 [merge-tools.nvim]
+program = "nvim"
+edit-args = ["$right"]
+
+# Parent commit on left
+# Child commit on right
+# But you only want to edit the child commit
+[merge-tools.nvimdiff]
 program = "nvim"
 edit-args = ["-d", "$left", "$right"]
 
