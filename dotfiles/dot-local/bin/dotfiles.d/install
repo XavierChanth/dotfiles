@@ -63,6 +63,8 @@ fi
 brew install $(
   cat <<EOF
 zsh
+zsh-completions
+zsh-syntax-highlighting
 bash
 coreutils
 moreutils
@@ -123,6 +125,9 @@ fi
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
   git -C "$HOME/.config/spaceship-prompt" pull
+
+# install starship
+curl -sS https://starship.rs/install.sh | sh
 
 # sync dotfiles
 $script_dir/sync || exit $?

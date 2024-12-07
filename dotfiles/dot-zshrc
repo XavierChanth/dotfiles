@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# enable profiling
+# zmodload zsh/zprof
+
 # zsh options
 set keyseq-timeout 0   # no key delays
 setopt COMBINING_CHARS # better paste for emojis
@@ -35,8 +38,8 @@ export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
 export JJ_CONFIG="$XDG_CONFIG_HOME/jj/config.toml"
 
-# vi-mode - must be set before prompt
-source $XDG_CONFIG_HOME/zsh/vi-mode.sh
+# vi mode - must be set before prompt
+source $XDG_CONFIG_HOME/zsh/vi_mode.sh
 
 # prompt
 source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
@@ -48,6 +51,7 @@ SPACESHIP_PROMPT_ORDER=(dir exec_time async line_sep jobs exit_code sudo mode ch
 source $XDG_CONFIG_HOME/zsh/alias.sh
 source $XDG_CONFIG_HOME/zsh/commands.sh
 
+#environment
 case "$(uname)" in
 Darwin)
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -57,11 +61,12 @@ Linux)
   ;;
 esac
 
-export HOMEBREW_NO_ENV_HINTS=true
-FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-[[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# syntax highlighting
+[[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# history
+# history - load asynchronously
+
 HISTFILE="$HOME/.local/state/zsh/main_history"
 if [ -n "$TMUX" ]; then
   TMUXHISTFILE="$(tmux showenv -h hist_file | cut -d= -f2)"
@@ -74,14 +79,16 @@ SAVEHIST=10000
 # Programming language setup
 source $XDG_CONFIG_HOME/zsh/lang.sh
 
+#completion
+export HOMEBREW_NO_ENV_HINTS=true
+FPATH="$XDG_CONFIG_HOME/zsh/cmp:$(brew --prefix)/share/zsh-completions:$FPATH"
+
 # Final setup of zsh completion
 autoload -Uz compinit
 compinit
 
-# jj completion
-# if command -v jj 2>&1 >/dev/null; then
-#   source <(jj util completion zsh)
-# fi
-
 # Export last so it's prioritized over other paths
 export PATH="$HOME/.local/bin:$PATH"
+
+# enable profiling
+# zprof
