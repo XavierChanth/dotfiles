@@ -1,11 +1,11 @@
 ---@class util
 ---@field ansi_colors util.ansi_colors
 ---@field colorscheme util.colorscheme
----@field dashboard util.dashboard
----@field ipynb util.ipynb
----@field lazy util.lazy
 ---@field floats util.floats
+---@field git util.git
+---@field ipynb util.ipynb
 ---@field jj util.jj
+---@field lazy util.lazy
 ---@field logo string
 ---@field packages util.packages
 ---@field platform util.platform

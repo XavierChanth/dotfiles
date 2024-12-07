@@ -6,13 +6,16 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     build = "make tiktoken", -- Only on MacOS or Linux
+    init = function()
+      vim.treesitter.language.register("markdown", "copilot-chat")
+    end,
     opts = {
       -- config
       model = "claude-3.5-sonnet",
       -- auto_insert_mode = true,
       -- style
-      question_header = "  You ",
-      answer_header = "  Copilot ",
+      question_header = "##   You ",
+      answer_header = "##   Copilot ",
       window = {
         layout = "float",
         border = "rounded",

@@ -3,7 +3,7 @@
 local M = {}
 
 function M.git(opts)
-  return require("snacks.git").get_root(opts and opts.cwd)
+  return Snacks.git.get_root(opts and opts.cwd)
 end
 
 return M

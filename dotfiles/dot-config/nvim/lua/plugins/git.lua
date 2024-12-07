@@ -1,22 +1,10 @@
-local map = vim.keymap.set
-map("n", "<leader>gl", function()
-  Util.floats.lazygit()
-end, { desc = "LazyGit" })
-
-map("n", "<leader>gg", function()
-  Util.jj.float()
-end, { desc = "JJ terminal" })
-
-map("n", "<leader>gh", function()
-  local opts = { args = { "-f", vim.fn.expand("%") } }
-  Util.floats.lazygit(opts)
-end, { desc = "File history" })
+Util.git.keymaps()
 
 return {
   {
     "FabijanZulj/blame.nvim",
     cmd = "BlameToggle",
-    keys = { { "<leader>gb", "<cmd>BlameToggle window<cr>", desc = "Blame" } },
+    keys = { { "<leader>gB", "<cmd>BlameToggle window<cr>", desc = "Blame" } },
     opts = { merge_consecutive = false },
   },
   {
