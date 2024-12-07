@@ -11,6 +11,8 @@ fi
 
 scripts_path="$base/$script_dir"
 
+query="$1"
+
 fzf_scripts() {
   local scripts=$(
     cd $scripts_path 2>/dev/null || return 1
@@ -21,7 +23,11 @@ fzf_scripts() {
     return 1
   fi
   local selected=$(
-    fzf --scheme=path --tiebreak=end,index --header "Run repo script:" <<<$scripts
+    fzf --scheme=path --tiebreak=end,index \
+      --header "Run repo script:" \
+      --query="$query" \
+      --select-1 \
+      <<<$scripts
   )
   if [ -n "$selected" ]; then
     $scripts_path/$selected
@@ -38,7 +44,7 @@ init_scripts() {
 }
 
 case "$1" in
-init)
+--init)
   init_scripts
   ;;
 *)
