@@ -1,11 +1,3 @@
-vim.filetype.add({
-  extension = {
-    ctemplate = "c",
-    cpptemplate = "cpp",
-    htemplate = "c",
-  },
-})
-
 return {
   Util.packages.ensure_installed({
     treesitter = { "c", "cpp" },
