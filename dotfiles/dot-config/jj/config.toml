@@ -4,7 +4,22 @@ email = "xchanthavong@gmail.com"
 
 [ui]
 default-command = "log"
-diff.tool = [ "delta", "$left", "$right" ]
+
+conflict-marker-style = "snapshot"
+# conflict-marker-style = "diff" # shows +/- at start of line
+
+diff.tool = [
+  "delta",
+  "--paging=always",
+  "--file-transformation", 's\^.*(left|right)/\\\',
+  "$left", "$right",
+]
+
+diff-editor = "nvim"
+
+[merge-tools.nvim]
+program = "nvim"
+edit-args = ["-d", "$left", "$right"]
 
 [lazyjj]
 diff-format = "git"
@@ -29,7 +44,7 @@ git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')
 e = ["edit"]
 gp = ["git", "push"]
 gf = ["git", "fetch"]
-
+v = ["util", "exec", "bash -c 'jj '"]
 
 [templates]
 log = 'builtin_log_comfortable'
