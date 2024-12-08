@@ -3,29 +3,6 @@ local M = {}
 
 local lines_cache = nil
 
--- function M.log_one()
---   local res, code = require("plenary.job")
---     :new({
---       command = "jj",
---       args = {
---         "log",
---         -- "--no-pager",
---         "-r",
---         "@",
---       },
---       enabled_recording = true,
---     })
---     :sync()
---   if code ~= 0 then
---     return ""
---   end
---   local out = ""
---   for _, line in ipairs(res) do
---     out = out .. "\n" .. line
---   end
---   return out
--- end
-
 -- A float which puts JJ log on the left
 -- and a terminal in vim cwd on the right
 function M.float()
@@ -117,7 +94,9 @@ function M.float()
   })
   vim.api.nvim_create_autocmd("BufEnter", {
     buffer = popups.b.bufnr,
-    callback = vim.cmd.startinsert,
+    callback = function()
+      vim.schedule(vim.cmd.startinsert)
+    end,
   })
   -- Then start insert mode in the terminal
   vim.cmd.startinsert()
