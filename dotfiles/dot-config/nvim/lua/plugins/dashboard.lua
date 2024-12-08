@@ -35,7 +35,7 @@ return {
                 action = Util.git.browse,
               },
               {
-                desc = "jj changeset",
+                desc = "jj term",
                 icon = " ",
                 action = function()
                   Util.jj.float()
