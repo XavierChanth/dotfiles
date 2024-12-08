@@ -48,10 +48,13 @@ return {
           Util.terminal.from_oil()
         end,
         ["<C-t>"] = function() -- opens a new tmux window at the current dir
-          if Util.platform.is_gui() or Util.platform.is_windows() then
-            return
-          end
           Util.tmux.neww({ cwd = require("oil").get_current_dir() })
+        end,
+        ["\\"] = function()
+          Util.tmux.splitw({ cwd = require("oil").get_current_dir() })
+        end,
+        ["-"] = function()
+          Util.tmux.splitw({ cwd = require("oil").get_current_dir(), vertical = true })
         end,
       },
       float = {

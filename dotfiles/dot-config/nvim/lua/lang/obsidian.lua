@@ -55,9 +55,7 @@ return {
         -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
         ["gf"] = {
           action = function()
-            if is_notes_dir() then
-              return require("obsidian").util.gf_passthrough()
-            end
+            return require("obsidian").util.gf_passthrough()
           end,
           opts = { noremap = false, expr = true, buffer = true },
         },
@@ -67,6 +65,7 @@ return {
             if is_notes_dir() then
               return require("obsidian").util.smart_action()
             end
+            return "<cr>"
           end,
           opts = { buffer = true, expr = true },
         },

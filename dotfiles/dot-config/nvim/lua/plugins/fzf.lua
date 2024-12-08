@@ -129,7 +129,7 @@ return {
       desc = "Run commands",
     },
     {
-      "<leader>m",
+      "<leader>sj",
       function()
         local terminals = {}
         for k, _ in pairs(Util.terminal.get_terminals()) do

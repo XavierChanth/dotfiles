@@ -1,11 +1,22 @@
 local ft = { "markdown" }
 local ft_quarto = { "markdown", "quarto" }
 
+Util.presenterm.keymaps()
+
 return {
   Util.packages.ensure_installed({
     treesitter = { "markdown", "markdown_inline" },
     lint = { "pymarkdownlnt" },
   }),
+  {
+    "folke/which-key.nvim",
+    opts = function(_, opts)
+      opts.spec = opts.spec or {}
+      table.insert(opts.spec, { "<leader>m", group = "+markdown", icon = "󱞁 " })
+      table.insert(opts.spec, { "<leader>mp", group = "+preview/present", icon = "󰐨 " })
+      return opts
+    end,
+  },
   -- Vim has built in folding but it doesn't work with yaml frontmatter
   { "masukomi/vim-markdown-folding", ft = ft },
   {
@@ -57,14 +68,22 @@ return {
           important = { raw = "[!]", rendered = " ", highlight = "RenderMarkdownWarn", scope_highlight = nil },
         },
       },
+      html = {
+        -- Turn on / off all HTML rendering
+        enabled = true,
+        comment = {
+          -- Turn on / off HTML comment concealing
+          conceal = false,
+        },
+      },
     },
     keys = {
       {
-        "<leader>um",
+        "<leader>mr",
         function()
           require("render-markdown").toggle()
         end,
-        desc = "Toggle Render markdown",
+        desc = "Toggle Render",
         ft = ft_quarto,
       },
     },
@@ -78,9 +97,9 @@ return {
     end,
     keys = {
       {
-        "<leader>up",
+        "<leader>mpb",
         "<cmd>MarkdownPreviewToggle<cr>",
-        desc = "Markdown Preview",
+        desc = "Preview in Browser",
         ft = ft,
       },
     },

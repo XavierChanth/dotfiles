@@ -4,6 +4,7 @@
 ---@field floats util.floats
 ---@field git util.git
 ---@field ipynb util.ipynb
+---@field presenterm util.presenterm
 ---@field jj util.jj
 ---@field lazy util.lazy
 ---@field logo string
