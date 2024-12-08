@@ -15,23 +15,17 @@ diff.tool = [
   "$left", "$right",
 ]
 
-diff-editor = "nvim"
+diff-editor = "nvim-hunk"
 
-# Remove things you want in the child commit
-# Keep changes you want in the parent commit
+# hunk.nvim plugin
+[merge-tools.nvim-hunk]
+program = "nvim"
+edit-args = ["-c", "DiffEditor $left $right $output"]
+
+# Pure nvim is not good with dir diffs
 [merge-tools.nvim]
 program = "nvim"
-edit-args = ["$right"]
-
-# Parent commit on left
-# Child commit on right
-# But you only want to edit the child commit
-[merge-tools.nvimdiff]
-program = "nvim"
 edit-args = ["-d", "$left", "$right"]
-
-[lazyjj]
-diff-format = "git"
 
 # [revsets]
 # short-prefixes = "(trunk..@)::"

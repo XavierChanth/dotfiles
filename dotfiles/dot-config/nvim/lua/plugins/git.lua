@@ -2,6 +2,10 @@ Util.git.keymaps()
 
 return {
   {
+    "julienvincent/hunk.nvim",
+    cmd = { "DiffEditor" },
+  },
+  {
     "FabijanZulj/blame.nvim",
     cmd = "BlameToggle",
     keys = { { "<leader>gB", "<cmd>BlameToggle window<cr>", desc = "Blame" } },
