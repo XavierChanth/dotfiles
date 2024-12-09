@@ -5,6 +5,10 @@ end
 
 local lsp_global_root_mode = false
 
+Util.packages.ensure_installed({
+  treesitter = { "yaml", "pubspec.yaml" },
+})
+
 return {
   Util.packages.ensure_installed({
     treesitter = { "dart" },
@@ -17,11 +21,10 @@ return {
           root_dir = function(_)
             local roots
             if lsp_global_root_mode then
-              roots = Util.root.git()
-            else
-              roots = vim.fs.find("pubspec.yaml", { type = "file" })
-              return roots[1] or vim.uv.cwd()
+              return Util.root.git()
             end
+            roots = vim.fs.find({ "pubspec.yaml" }, { type = "file", upward = true, path = vim.fn.expand("%") })
+            return vim.fs.dirname(roots[1]) or vim.uv.cwd()
           end,
           init_options = {
             onlyAnalyzeProjectsWithOpenFiles = true,
@@ -63,24 +66,26 @@ return {
           })
 
           -- Detect if this package is published, if not, set line length to 120
-          local pubspec_file = client.config.root_dir .. "/pubspec.yaml"
-          local file = io.open(pubspec_file, "r")
-          if file ~= nil then
-            ---@type string | nil
-            local line = ""
-            while line do
-              line = file:read("*L")
-              if line ~= nil then
-                local _, pos = line:find("publish_to:", 1, true)
-                if pos ~= nil then
-                  if line:find("['\"%s]?none['\"%s]", pos) ~= nil then
-                    client.config.settings.dart.lineLength = 120
+          if client and client.config and client.config.root_dir then
+            local pubspec_file = client.config.root_dir .. "/pubspec.yaml"
+            local file = io.open(pubspec_file, "r")
+            if file ~= nil then
+              ---@type string | nil
+              local line = ""
+              while line do
+                line = file:read("*L")
+                if line ~= nil then
+                  local _, pos = line:find("publish_to:", 1, true)
+                  if pos ~= nil then
+                    if line:find("['\"%s]?none['\"%s]", pos) ~= nil then
+                      client.config.settings.dart.lineLength = 120
+                    end
+                    line = nil
                   end
-                  line = nil
                 end
               end
+              file:close()
             end
-            file:close()
           end
 
           if flutter_root then
