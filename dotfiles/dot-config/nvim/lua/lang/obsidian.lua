@@ -1,7 +1,6 @@
 local path = Util.platform.home .. "/src/xc/notes"
 local function is_notes_dir()
-  local buf_dir = vim.fs.dirname(vim.fn.expand("%"))
-  return Util.root.git({ cwd = buf_dir }) == path
+  return Util.root.git() == path
 end
 
 return {

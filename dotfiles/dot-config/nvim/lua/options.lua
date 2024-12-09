@@ -58,6 +58,7 @@ opt.laststatus = 3
 -- UI - OTHER
 opt.termguicolors = true -- True color support
 opt.winminwidth = 5 -- Minimum window width
+opt.completeopt = "menu,menuone,preview,noselect,noinsert"
 
 -- WHITESPACE / LINES
 opt.expandtab = true

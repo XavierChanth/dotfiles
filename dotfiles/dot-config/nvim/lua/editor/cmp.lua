@@ -1,7 +1,51 @@
 -- Completion and snippets
+vim.g.cmp_use_blink = true
+
 return {
   {
+    "saghen/blink.cmp",
+    cond = vim.g.cmp_use_blink,
+    lazy = false, -- lazy loading handled internally
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = {
+      completion = {
+        list = { selection = "auto_insert" },
+      },
+      sources = {
+        completion = {
+          enabled_providers = function(ctx)
+            local ok, node = pcall(vim.treesitter.get_node, ctx)
+            if ok and node and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type()) then
+              return { "buffer" }
+            end
+            return { "lsp", "path", "snippets", "buffer" }
+          end,
+        },
+      },
+      keymap = {
+        preset = "default",
+        ["<Esc>"] = {
+          function()
+            require("blink.cmp").hide()
+            return false -- always call fallback after
+          end,
+          "fallback",
+        },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<C-n>"] = { "show", "select_next", "fallback" },
+        ["<C-p>"] = { "show", "select_prev", "fallback" },
+        ["<C-u>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+      },
+
+      documentation = {
+        auto_show = true,
+      },
+    },
+  },
+  {
     "hrsh7th/nvim-cmp",
+    cond = not vim.g.cmp_use_blink,
     version = false,
     event = "InsertEnter",
     dependencies = {
@@ -69,7 +113,6 @@ return {
           ["<CR>"] = { i = cmp.mapping.confirm({ select = false }) },
         },
         sources = cmp.config.sources({
-          -- { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "snippets" },
           { name = "buffer" },
