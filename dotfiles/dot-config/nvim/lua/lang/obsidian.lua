@@ -51,6 +51,12 @@ return {
           path = path,
         },
       },
+      follow_url_func = function(url)
+        vim.fn.jobstart({ "open", url })
+      end,
+      follow_img_func = function(img)
+        vim.fn.jobstart({ "qlmanage", "-p", img })
+      end,
       mappings = {
         -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
         ["gf"] = {

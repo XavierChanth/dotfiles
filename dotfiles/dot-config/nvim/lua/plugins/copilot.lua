@@ -1,14 +1,13 @@
 return {
   {
-    "github/copilot.vim",
-    cmd = "Copilot",
-  },
-  {
     "CopilotC-Nvim/CopilotChat.nvim",
     build = "make tiktoken", -- Only on MacOS or Linux
     init = function()
       vim.treesitter.language.register("markdown", "copilot-chat")
     end,
+    dependencies = {
+      { "github/copilot.vim", cmd = "Copilot" },
+    },
     opts = {
       -- config
       model = "claude-3.5-sonnet",
