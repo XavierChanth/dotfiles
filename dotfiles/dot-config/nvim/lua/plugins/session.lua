@@ -13,7 +13,7 @@ return {
   },
   config = function(_, opts)
     local fname = vim.fn.argv(-1)[1]
-    if fname and vim.fs.basename(fname) == ".jjdescription" then
+    if fname and string.find(vim.fs.basename(fname), ".jjdescription") then
       return
     end
     require("persistence").setup(opts)
