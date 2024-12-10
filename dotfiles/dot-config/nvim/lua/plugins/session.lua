@@ -11,4 +11,11 @@ return {
     { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
     { "<leader>qd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
   },
+  config = function(_, opts)
+    local ignore_dirs = { ".jj", ".git" }
+    if vim.fs.find(ignore_dirs, { type = "directory", upward = true }) then
+      return
+    end
+    require("persistence").setup(opts)
+  end,
 }
