@@ -12,8 +12,8 @@ return {
     { "<leader>qd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
   },
   config = function(_, opts)
-    local ignore_dirs = { ".jj", ".git" }
-    if vim.fs.find(ignore_dirs, { type = "directory", upward = true }) then
+    local fname = vim.fn.argv(-1)[1]
+    if fname and vim.fs.basename(fname) == ".jjdescription" then
       return
     end
     require("persistence").setup(opts)
