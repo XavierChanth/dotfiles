@@ -18,7 +18,7 @@ function M.float()
     {
       relative = "editor",
       position = "50%",
-      size = "90%",
+      size = "100%",
     },
     Layout.Box({
       Layout.Box(popups.a, { size = 45 }),

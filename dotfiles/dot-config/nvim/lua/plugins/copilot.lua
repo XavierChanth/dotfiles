@@ -18,8 +18,8 @@ return {
       window = {
         layout = "float",
         border = "rounded",
-        width = 0.85,
-        height = 0.85,
+        width = 1,
+        height = 1,
       },
       -- maps
       mappings = {

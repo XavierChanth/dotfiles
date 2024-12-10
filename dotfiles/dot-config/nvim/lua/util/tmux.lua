@@ -83,7 +83,7 @@ end
 function M.popup(opts)
   local Job = require("plenary.job")
   if Util.platform.supports_terminal() then
-    local args = { "popup", "-w", "85%", "-h", "85%" }
+    local args = { "popup", "-w", "100%", "-h", "100%" }
     opts.args = opts.args or {}
     for _, v in ipairs(opts.args) do
       table.insert(args, v)
