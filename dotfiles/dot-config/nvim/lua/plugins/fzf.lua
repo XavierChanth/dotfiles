@@ -122,7 +122,7 @@ return {
       desc = "Symbols (Workspace)",
     },
     {
-      "<leader>rr",
+      "<leader>rc",
       function()
         require("fzf-lua").commands({})
       end,

@@ -40,14 +40,6 @@ map("n", "<leader>w", "<c-w>", { desc = "Windows", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = true })
 
--- TABS
-map("n", "<leader>tt", "<cmd>FzfLua tabs<cr>", { desc = "Search Tabs" })
-map("n", "<leader>tc", "<cmd>tabnew<cr>", { desc = "Tab Create" })
-map("n", "<leader>td", "<cmd>tabclose<cr>", { desc = "Delete Tab" })
-map("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Tab Only" })
-map("n", "<leader>th", "<cmd>tabnext -1<cr>", { desc = "Tab Left" })
-map("n", "<leader>tl", "<cmd>tabnext<cr>", { desc = "Tab Right" })
-
 if Util.platform.supports_terminal() then
   -- TERMINAL
   map("t", "<S-Space>", "<Space>", { desc = "which_key_ignore", noremap = true })
@@ -67,6 +59,18 @@ if Util.platform.supports_terminal() then
   end, {
     desc = "Colorscheme",
   })
+
+  map("n", "<leader>rr", function()
+    Util.tmux.splitw({
+      cmd = {
+        "zsh",
+        "-c",
+        Util.platform.home .. "/.local/bin/repo_scripts; read -sk 1",
+      },
+      vertical = true,
+      size = "20%",
+    })
+  end, { desc = "Run Repo Scripts" })
 end
 
 -- UNDO BREAKING POINTS
@@ -124,7 +128,6 @@ return {
           --   return require("which-key.extras").expand.win()
           -- end,
         },
-        { "<leader>t", group = "tabs" },
 
         -- Better descriptions
         { "gx", desc = "Open with system app" },

@@ -6,6 +6,7 @@ return {
     "saghen/blink.cmp",
     cond = vim.g.cmp_use_blink,
     lazy = false, -- lazy loading handled internally
+    version = "v0.7.3",
     dependencies = { "rafamadriz/friendly-snippets" },
     opts = {
       completion = {

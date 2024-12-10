@@ -52,6 +52,11 @@ function M.splitw(opts)
       args[#args + 1] = opts.cwd
     end
 
+    if opts.size then
+      args[#args + 1] = "-l"
+      args[#args + 1] = opts.size
+    end
+
     if opts.cmd then
       if type(opts.cmd) == "string" then
         opts.cmd = { opts.cmd }
