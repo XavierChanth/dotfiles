@@ -29,8 +29,17 @@ return {
       },
     },
     lsp = { jump_to_single_result = true },
-    grep = {
-      actions = {
+    actions = {
+      files = {
+        true,
+        ["ctrl-q"] = {
+          function(...)
+            require("fzf-lua.actions").file_edit_or_qf(...)
+          end,
+        },
+      },
+      grep = {
+        true,
         ["ctrl-q"] = {
           function(...)
             require("fzf-lua.actions").file_edit_or_qf(...)

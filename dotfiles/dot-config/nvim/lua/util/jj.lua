@@ -31,6 +31,7 @@ function M.float()
   local close = function()
     lines_cache = nil
     timer:stop()
+    -- TODO: consider using hide in some situations and preserving the layout
     layout:unmount()
   end
 

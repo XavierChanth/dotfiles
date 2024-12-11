@@ -65,10 +65,9 @@ if Util.platform.supports_terminal() then
       cmd = {
         "zsh",
         "-c",
-        Util.platform.home .. "/.local/bin/repo_scripts; read -sk 1",
+        Util.platform.home .. "/.local/bin/repo_scripts",
       },
-      vertical = true,
-      size = "20%",
+      size = "40%",
     })
   end, { desc = "Run Repo Scripts" })
 end

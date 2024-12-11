@@ -24,10 +24,11 @@ export VISUAL="nvim"
 export LESS='--mouse'
 if command -v bat >/dev/null 2>&1; then
   export PAGER="bat"
+  export BAT_PAGER="less -RF"
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
   export FZF_CTRL_T_OPTS="--preview 'bat --line-range :50 {}'"
 else
-  export PAGER="less"
+  export PAGER="less -RF"
   export MANPAGER="less"
 fi
 

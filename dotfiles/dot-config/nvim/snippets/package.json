@@ -25,6 +25,14 @@
           "eml"
         ],
         "path": "./mail.json"
+      },
+      {
+        "language": "c",
+        "path": "./c.json"
+      },
+      {
+        "language": "cpp",
+        "path": "./c.json"
       }
     ]
   }

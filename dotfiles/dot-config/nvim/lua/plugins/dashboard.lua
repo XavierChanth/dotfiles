@@ -1,22 +1,3 @@
-local function term(opts)
-  return {
-    {
-      pane = opts.pane,
-      title = opts.title,
-      desc = opts.desc,
-      icon = opts.icon,
-      key = opts.key,
-      action = opts.action,
-    },
-    {
-      pane = opts.pane,
-      section = "terminal",
-      cmd = opts.cmd,
-      height = opts.height,
-      padding = opts.padding,
-    },
-  }
-end
 return {
   "snacks.nvim",
   opts = {
