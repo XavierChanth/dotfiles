@@ -3,12 +3,17 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    version = "15f0607fb74bbbbaa8f712a26afc37abeb28756b",
     opts = {
       bigfile = { enabled = true },
       indent = {
         enabled = true,
-        indent = { char = "│" },
+        indent = {
+          char = "│",
+          blank = "∙",
+        },
+        scope = {
+          animate = { easing = "inOutQuad" },
+        },
         chunk = { enabled = true },
       },
       quickfile = { enabled = true },

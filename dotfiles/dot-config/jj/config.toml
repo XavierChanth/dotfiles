@@ -44,6 +44,9 @@ e = ["edit"]
 gp = ["git", "push"]
 gf = ["git", "fetch"]
 bs = ["bookmark", "set"]
+ls = ["diff", "-s"]
+sp = ["split"]
+sq = ["squash"]
 
 [templates]
 log = 'builtin_log_comfortable'

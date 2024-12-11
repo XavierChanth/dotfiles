@@ -73,6 +73,10 @@ c.bindings.commands = {
         "tt": "config-cycle tabs.show switching always",
         "wi": "devtools bottom",
     },
+    "command": {
+        "<Ctrl+p>": "completion-item-focus prev",
+        "<Ctrl+n>": "completion-item-focus next",
+    },
 }
 c.colors.webpage.bg = "white"
 c.colors.webpage.darkmode.enabled = False

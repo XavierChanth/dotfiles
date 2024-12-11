@@ -2,6 +2,7 @@ local ft = { "markdown", "vimwiki", "quarto" }
 return {
   {
     "3rd/image.nvim",
+    cond = false, -- Disable as it's causing issues
     ft = ft,
     build = false,
     version = false,

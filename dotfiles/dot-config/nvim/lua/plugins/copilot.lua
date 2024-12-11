@@ -6,7 +6,14 @@ return {
       vim.treesitter.language.register("markdown", "copilot-chat")
     end,
     dependencies = {
-      { "github/copilot.vim", cmd = "Copilot" },
+      {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        opts = {
+          suggestions = { enabled = false },
+          panel = { enabled = false },
+        },
+      },
     },
     opts = {
       -- config
@@ -23,8 +30,8 @@ return {
       },
       -- maps
       mappings = {
-        submit_prompt = {
-          insert = "<C-CR>",
+        complete = {
+          insert = "<C-n>",
         },
       },
     },
@@ -33,13 +40,7 @@ return {
         "<leader>a",
         function()
           local mode = vim.api.nvim_get_mode().mode
-          local input = vim.fn.input("Ask Copilot: ")
-
-          if input == "" then
-            require("CopilotChat").open()
-            return
-          end
-          require("CopilotChat").ask(input, {
+          require("CopilotChat").open({
             selection = function(source)
               local select = require("CopilotChat.select")
               if mode == "v" then
