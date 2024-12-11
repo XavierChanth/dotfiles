@@ -6,12 +6,12 @@ return {
     version = "15f0607fb74bbbbaa8f712a26afc37abeb28756b",
     opts = {
       bigfile = { enabled = true },
-      quickfile = { enabled = true },
       indent = {
         enabled = true,
         indent = { char = "│" },
         chunk = { enabled = true },
       },
+      quickfile = { enabled = true },
       statuscolumn = {
         enabled = true,
       },
