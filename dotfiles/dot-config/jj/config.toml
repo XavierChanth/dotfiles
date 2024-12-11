@@ -15,25 +15,13 @@ diff.tool = [
   "$left", "$right",
 ]
 
-diff-editor = "nvim-hunk"
+diff-editor = ":builtin"
+# diff-editor = "nvim"
 
 # hunk.nvim plugin
-[merge-tools.nvim-hunk]
-program = "nvim"
-edit-args = ["-c", "DiffEditor $left $right $output"]
-
-[merge-tools.nvim-hunk-tmux]
-program = "zsh"
-edit-args = [
-  "-c",
-  "mkdir -p /tmp/hunk && name=\"/tmp/hunk/$(basename $(dirname $left))\" && mkfifo $name && tmux neww \"nvim -c 'DiffEditor $left $right $output' 9> $name\" && cat $name; rm $name"
-]
-
-
-# Pure nvim is not good with dir diffs
 [merge-tools.nvim]
 program = "nvim"
-edit-args = ["-d", "$left", "$right"]
+edit-args = ["-c", "DiffEditor $left $right $output"]
 
 # [revsets]
 # short-prefixes = "(trunk..@)::"

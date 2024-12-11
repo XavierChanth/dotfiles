@@ -101,7 +101,7 @@ function M.float()
       vim.schedule(vim.cmd.startinsert)
     end,
   })
-  vim.api.nvim_chan_send(chan, 'alias jj=\'jj --config-toml="[ui]\ndiff-editor=\\"nvim-hunk-tmux\\""\';clear\x0D')
+  -- vim.api.nvim_chan_send(chan, 'alias jj=\'jj --config-toml="[ui]\ndiff-editor=\\"nvim-hunk-tmux\\""\';clear\x0D')
   -- Then start insert mode in the terminal
   vim.cmd.startinsert()
 
