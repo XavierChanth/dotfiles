@@ -26,7 +26,7 @@ local config = {
 		"JetBrainsMono Nerd Font",
 		"JetBrainsMono NF",
 	}),
-	font_size = 24.0,
+	font_size = 18.0,
 	front_end = front_end,
 	hyperlink_rules = wezterm.default_hyperlink_rules(),
 	max_fps = 240,

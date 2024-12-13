@@ -89,6 +89,7 @@ uv
 python
 gcc
 cmake
+zig
 rust
 rust-analyzer
 node

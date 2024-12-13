@@ -4,6 +4,7 @@ script_name="at_pass"
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 commands=(add rm ls get get_all import_from_bw wipe_entries sync)
 
+# todo replace config with keychain data
 declare -A config
 
 # aux functions
@@ -114,6 +115,19 @@ json_wrap_string() {
   fi
 }
 
+# This is terrible, pin code is saved to a plain text file
+# but at least it requires physical human input to use the tool
+macos_get_password() {
+  local prompt="$1"
+  [ -z "$prompt" ] && prompt="Password"
+  echo $(osascript -e "set dialogText to text returned of (display dialog \"$prompt:\" default answer \"\" hidden answer true)
+  return dialogText" 2>/dev/null)
+}
+
+macos_bad_password() {
+  osascript -e "display dialog \"Password authentication failed\" with icon caution" >/dev/null 2>&1
+}
+
 # setup config
 
 load_config
@@ -124,6 +138,7 @@ check_env
 }
 jq="$(get_conf_value jq_path)"
 atsign="$(get_conf_value atsign)"
+pin="$(get_conf_value pin)"
 keyfile="$(get_conf_value keyfile)"
 if [ -z "$keyfile" ]; then
   keyfile="$HOME/.atsign/keys/${atsign}_key.atKeys"
@@ -152,7 +167,21 @@ masteritem="master_item.at_pass"
 # <id>.items.<at_pass>@<atsign>
 # value: compacted json
 
+validated=1
+validate_password() {
+  if [ $validated -eq 0 ]; then
+    return 0
+  fi
+  if [ "$(macos_get_password)" = "$pin" ]; then
+    validated=0
+    return 0
+  fi
+  macos_bad_password
+  return 1
+}
+
 add_for_id() {
+  validate_password || return 1
   local id="$1"
   local json="$2"
   local atkey="$id.items.at_pass"
@@ -162,6 +191,7 @@ add_for_id() {
 
 # operations
 add_cmd() {
+  validate_password || return 1
   local id=$(uuidv4)
   local name
   local username
@@ -269,6 +299,7 @@ add_cmd() {
 }
 
 rm_cmd() {
+  validate_password || return 1
   local id="$1"
   [ -z "$id" ] && {
     rm_usage
@@ -279,6 +310,7 @@ rm_cmd() {
 }
 
 ls_cmd() {
+  validate_password || return 1
   local records=$(
     $at_cli -v scan -r ".*\.items\.at_pass@"
   )
@@ -294,6 +326,7 @@ ls_cmd() {
 }
 
 get_cmd() {
+  validate_password || return 1
   local id="$1"
   [ -z "$id" ] && {
     get_usage
@@ -305,11 +338,13 @@ get_cmd() {
 }
 
 get_all_cmd() {
+  validate_password || return 1
   local value=$($at_cli -k "$masteritem" -v llookup)
   echo $value | jq -c
 }
 
 sync_cmd() {
+  validate_password || return 1
   echo Starting sync... >&2
   $at_cli -v sync -r "at_pass" && echo success || echo sync failed
   echo Caching local entries... >&2
@@ -326,6 +361,7 @@ sync_cmd() {
 }
 
 import_from_bw_cmd() {
+  validate_password || return 1
   if ! command -v "bw" 2>&1 >/dev/null; then
     echo "bitwarden not available"
     return 1
@@ -346,6 +382,7 @@ import_from_bw_cmd() {
 }
 
 wipe_entries_cmd() {
+  validate_password || return 1
   echo "Type 'confirm' to wipe entries" >&2
   read -r confirm_input
   if [ "$confirm_input" = 'confirm' ]; then

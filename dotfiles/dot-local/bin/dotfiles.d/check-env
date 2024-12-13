@@ -47,6 +47,7 @@ extra_commands=(
   python3 # python
   cmake
   gcc
+  zig
   cargo # rust
   rust-analyzer
   node

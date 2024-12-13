@@ -61,7 +61,7 @@ if Util.platform.supports_terminal() then
   })
 
   map("n", "<leader>rr", function()
-    Util.tmux.splitw({
+    Util.tmux.neww({
       cmd = {
         "zsh",
         "-c",
