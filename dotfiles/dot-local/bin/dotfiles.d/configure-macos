@@ -7,8 +7,8 @@ main() {
 
   # Configure the dock
   defaults write com.apple.dock orientation -string bottom
-  defaults write com.apple.dock tilesize -float 32
-  defaults write com.apple.dock largesize -float 64
+  defaults write com.apple.dock tilesize -float 96
+  defaults write com.apple.dock largesize -float 128
   defaults write com.apple.dock magnification -int 1
   defaults write com.apple.dock autohide -bool true
   defaults write com.apple.dock autohide-time-modifier -int 0
