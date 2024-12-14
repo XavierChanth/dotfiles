@@ -60,8 +60,6 @@ function M.float()
           "log",
           "--color=always",
           "--config-toml",
-          "[ui]\n'diff-editor'='nvim-hunk-tmux'",
-          "--config-toml",
           "[template-aliases]\n'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
           "--template",
           "narrow_log_comfortable", -- This template can be found in my jj config: dotfiles/dot-config/jj/config.toml
