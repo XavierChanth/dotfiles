@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# temp change
+
 main() {
   defaults -currentHost write -g AppleFontSmoothing -int 0
   defaults write -g NSWindowShouldDragOnGesture -bool true
