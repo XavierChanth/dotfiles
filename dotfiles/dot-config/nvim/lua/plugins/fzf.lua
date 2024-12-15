@@ -10,6 +10,13 @@ local normal_mode = {
 return {
   "ibhagwan/fzf-lua",
   cmd = "FzfLua",
+  init = function()
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.ui.select = function(...)
+      require("fzf-lua.providers.ui_select").register({}, true, {})
+      return vim.ui.select(...)
+    end
+  end,
   opts = {
     -- "fzf-tmux", -- has an initial overhead which doesn't feel great
     winopts = {

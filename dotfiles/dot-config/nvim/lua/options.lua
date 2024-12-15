@@ -3,8 +3,6 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = "\\"
 
-g.markdown_recommended_style = 0
-
 local opt = vim.opt
 
 -- BUFFER
@@ -38,14 +36,15 @@ opt.fillchars = {
 }
 opt.list = true
 opt.listchars = {
-  -- eol = "↓",
-  tab = "  ",
+  -- eol = "",
+  tab = "┆ ",
   space = "·",
   lead = " ",
   trail = "●",
   extends = "…",
   precedes = "…",
 }
+
 opt.showbreak = "󱞩 "
 opt.showmode = false
 

@@ -31,7 +31,6 @@ function M.ensure_installed(spec)
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
-        require("mason-core.installer")
         local reg = require("mason-registry")
         for _, id in ipairs(spec.mason) do
           local ok, package = pcall(reg.get_package, id)

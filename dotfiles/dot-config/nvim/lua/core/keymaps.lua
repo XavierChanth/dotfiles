@@ -96,6 +96,7 @@ return {
   event = "VeryLazy",
   opts_extend = { "spec" },
   opts = {
+    preset = "helix",
     defaults = {},
     spec = {
       {

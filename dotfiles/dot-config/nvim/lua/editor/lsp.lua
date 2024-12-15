@@ -174,18 +174,11 @@ return {
 
       -- Merge capabilities from all servers
       local servers = opts.servers
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        vim.g.cmp_use_blink and {} or require("cmp_nvim_lsp").default_capabilities({}),
-        opts.capabilities or {}
-      )
+      local capabilities =
+        vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
 
       -- Setup cmp capabilities
-      if vim.g.cmp_use_blink then
-        capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-      end
+      capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
       -- Setup function for servers
       local function setup(server)

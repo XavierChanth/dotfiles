@@ -105,9 +105,4 @@ return {
       },
     },
   },
-  -- Additional plugins
-  {
-    "wa11breaker/flutter-bloc.nvim",
-    event = "BufReadPre *.dart,pubspec.yaml",
-  },
 }

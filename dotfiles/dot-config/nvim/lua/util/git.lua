@@ -12,7 +12,11 @@ function M.keymaps()
   map("n", "<leader>gh", function()
     local opts = { args = { "-f", vim.fn.expand("%") } }
     Util.floats.lazygit(opts)
-  end, { desc = "File history" })
+  end, { desc = "Commit history (file)" })
+  map("n", "<leader>gH", function()
+    local opts = { args = { "-f", "*" } }
+    Util.floats.lazygit(opts)
+  end, { desc = "Commit history" })
   map("n", "<leader>gb", M.browse, { desc = "Browse repo" })
   map("n", "<leader>gp", M.prs, { desc = "Pull requests" })
   map("n", "<leader>gi", M.issues, { desc = "Issues" })
