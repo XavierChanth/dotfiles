@@ -4,7 +4,7 @@ return {
     lsp = { "yamlls" },
   }),
   {
-    "neovim/nvim-lspconfig",
+    "nvim-lspconfig",
     opts = {
       servers = {
         yamlls = {

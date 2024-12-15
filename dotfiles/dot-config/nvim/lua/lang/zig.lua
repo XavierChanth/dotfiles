@@ -4,9 +4,17 @@ return {
     lsp = { "zls" },
   }),
   {
-    "neovim/nvim-lspconfig",
+    "nvim-lspconfig",
     opts = {
       servers = { zls = {} },
+    },
+  },
+  {
+    "conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        zig = { "zigfmt" },
+      },
     },
   },
 }
