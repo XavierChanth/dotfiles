@@ -5,12 +5,6 @@ return {
     lsp = { "clangd", "neocmake" },
   }),
   {
-    "nvim-cmp",
-    opts = function(_, opts)
-      table.insert(opts.sorting.comparators, 1, require("clangd_extensions.cmp_scores"))
-    end,
-  },
-  {
     "conform.nvim",
     opts = {
       formatters_by_ft = {

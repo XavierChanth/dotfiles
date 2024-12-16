@@ -13,10 +13,14 @@ return {
     },
   },
   {
-    "nvim-cmp",
-    opts = function(_, opts)
-      table.insert(opts.sources, { name = "lazydev", group_index = 0 })
-    end,
+    "blink.cmp",
+    opts = {
+      providers = {
+        -- dont show LuaLS require statements when lazydev has items
+        lsp = { fallback_for = { "lazydev" } },
+        lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+      },
+    },
   },
   {
     "nvim-lspconfig",
