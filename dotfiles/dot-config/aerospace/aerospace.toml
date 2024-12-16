@@ -91,7 +91,7 @@ alt-o = ['exec-and-forget ~/.local/bin/pass-util pick_totp_to_clipboard']
 
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
-alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/qutebrowser.app']
+alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Zen\ Browser.app/']
 
 # Window movement
 alt-h = 'focus left --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
