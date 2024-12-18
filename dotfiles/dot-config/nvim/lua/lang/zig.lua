@@ -1,7 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "zig" },
-    lsp = { "zls" },
+    mason = { "zls" },
   }),
   {
     "nvim-lspconfig",

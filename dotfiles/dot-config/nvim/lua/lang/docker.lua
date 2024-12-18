@@ -1,9 +1,7 @@
 return {
-  -- ft = "dockerfile",
   Util.packages.ensure_installed({
     treesitter = { "dockerfile" },
-    lint = { "hadolint" },
-    lsp = { "dockerls", "docker_compose_language_service" },
+    mason = { "hadolint", "dockerls", "docker_compose_language_service" },
   }),
   {
     "nvim-lint",

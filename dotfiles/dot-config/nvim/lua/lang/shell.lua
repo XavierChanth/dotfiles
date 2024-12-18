@@ -1,8 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "bash" },
-    lint = { "shellcheck" },
-    conform = { "shfmt" },
+    mason = { "shellcheck", "shfmt" },
   }),
   {
     "conform.nvim",
@@ -18,7 +17,7 @@ return {
     opts = {
       linters_by_ft = {
         sh = { "shellcheck" },
-        zsh = { "shfmt" },
+        -- zsh = { "shellcheck" },
       },
     },
   },

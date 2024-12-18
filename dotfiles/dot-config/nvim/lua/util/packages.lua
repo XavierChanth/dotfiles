@@ -8,9 +8,9 @@ function M.ensure_installed(spec)
   -- which will be the resolved in the final opts
   local index = {
     treesitter = "nvim-treesitter",
-    conform = "mason-conform",
-    lsp = "mason-lspconfig.nvim",
-    lint = "mason-nvim-lint",
+    -- conform = "mason-conform",
+    -- lsp = "mason-lspconfig.nvim",
+    -- lint = "mason-nvim-lint",
   }
   for key, plugin in pairs(index) do
     if spec[key] ~= nil then

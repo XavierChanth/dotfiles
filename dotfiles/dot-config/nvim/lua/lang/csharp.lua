@@ -1,8 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "c_sharp" },
-    conform = { "csharpier" },
-    lsp = { "omnisharp", "csharp_ls" },
+    mason = { "csharpier", "omnisharp", "csharp_ls" },
   }),
   {
     "conform.nvim",

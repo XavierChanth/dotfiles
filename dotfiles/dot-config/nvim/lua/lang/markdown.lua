@@ -6,7 +6,7 @@ Util.presenterm.keymaps()
 return {
   Util.packages.ensure_installed({
     treesitter = { "markdown", "markdown_inline" },
-    lint = { "pymarkdownlnt" },
+    mason = { "pymarkdownlnt" },
   }),
   {
     "folke/which-key.nvim",
@@ -29,18 +29,14 @@ return {
         pymarkdownlnt = {
           cmd = "pymarkdownlnt",
           stdin = true,
-          args = {
-            "-s",
-            "plugins.md012.maximum=$#2",
-            "scan-stdin",
-          },
+          args = { "scan-stdin" },
           stream = nil,
           ignore_exitcode = true,
-          parser = function()
+          parser = function(...)
             return require("lint.parser").from_errorformat("stdin:%l:%c: %m", {
               source = "pymarkdownlnt",
               severity = vim.diagnostic.severity.WARN,
-            })
+            })(...)
           end,
         },
       },

@@ -1,8 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "c", "cpp" },
-    conform = { "gersemi" },
-    lsp = { "clangd", "neocmake" },
+    mason = { "gersemi", "clangd", "neocmake" },
   }),
   {
     "conform.nvim",

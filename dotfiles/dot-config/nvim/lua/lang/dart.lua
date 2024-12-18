@@ -5,13 +5,9 @@ end
 
 local lsp_global_root_mode = false
 
-Util.packages.ensure_installed({
-  treesitter = { "yaml", "pubspec.yaml" },
-})
-
 return {
   Util.packages.ensure_installed({
-    treesitter = { "dart" },
+    treesitter = { "dart", "yaml" },
   }),
   {
     "nvim-lspconfig",

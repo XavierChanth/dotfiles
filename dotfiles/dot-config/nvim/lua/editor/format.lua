@@ -38,7 +38,6 @@ return {
     "stevearc/conform.nvim",
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
     cmd = "ConformInfo",
-    dependencies = { "mason.nvim" },
     init = function()
       vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
       vim.g.autoformat = true
@@ -102,7 +101,11 @@ return {
       },
     },
   },
+
   -- Setup prettier for a bunch of file types
+  Util.packages.ensure_installed({
+    mason = { "prettier" },
+  }),
   {
     "stevearc/conform.nvim",
     opts = function(_, opts)
@@ -111,14 +114,5 @@ return {
         opts.formatters_by_ft[ft] = { "prettier" }
       end
     end,
-  },
-  {
-    "LittleEndianRoot/mason-conform",
-    event = "VeryLazy",
-    dependencies = { "conform.nvim" },
-    opts = {
-      ensure_installed = { "prettier" },
-      automatic_installation = false,
-    },
   },
 }

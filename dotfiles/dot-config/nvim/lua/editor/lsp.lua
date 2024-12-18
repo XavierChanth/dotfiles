@@ -8,16 +8,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
-    dependencies = {
-      {
-        "williamboman/mason-lspconfig.nvim",
-        event = "VeryLazy",
-        dependencies = { "mason.nvim" },
-        opts = {
-          automatic_installation = false,
-        },
-      },
-    },
     opts = {
       diagnostics = {
         update_in_insert = false,
@@ -204,16 +194,11 @@ return {
 
         require("lspconfig")[server].setup(server_opts)
       end
-      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
       for server, server_opts in pairs(servers) do
-        if server_opts and not vim.tbl_contains(all_mslp_servers, server) then
+        if server_opts then
           setup(server)
         end
       end
-
-      require("mason-lspconfig").setup({
-        handlers = { setup },
-      })
     end,
   },
 }

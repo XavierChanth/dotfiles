@@ -1,8 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "go", "gomod", "gowork", "gosum" },
-    conform = { "goimports", "gofumpt" },
-    lsp = { "gopls" },
+    mason = { "goimports", "gofumpt", "gopls" },
   }),
   {
     "conform.nvim",

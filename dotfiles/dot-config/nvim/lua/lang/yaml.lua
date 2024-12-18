@@ -1,7 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "yaml" },
-    lsp = { "yamlls" },
+    mason = { "yamlls" },
   }),
   {
     "nvim-lspconfig",

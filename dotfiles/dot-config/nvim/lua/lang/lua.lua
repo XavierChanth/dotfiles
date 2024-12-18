@@ -1,8 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "lua", "luadoc", "luap" },
-    conform = { "stylua" },
-    lsp = { "lua_ls" },
+    mason = { "stylua", "lua_ls" },
   }),
   {
     "conform.nvim",

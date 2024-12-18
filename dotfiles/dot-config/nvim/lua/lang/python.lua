@@ -1,7 +1,7 @@
 return {
   Util.packages.ensure_installed({
     treesitter = { "python", "ninja", "rst" },
-    lsp = { "ruff", "basedpyright" },
+    mason = { "ruff", "basedpyright" },
   }),
   {
     "nvim-lspconfig",
