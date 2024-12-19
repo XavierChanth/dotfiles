@@ -47,6 +47,14 @@ bs = ["bookmark", "set"]
 ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
+log-watch = [
+  "log",
+  "--color=always",
+  "--config-toml",
+  "[template-aliases]\n'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
+  "--template",
+  "narrow_log_comfortable"
+]
 
 [templates]
 log = 'builtin_log_comfortable'

@@ -101,6 +101,7 @@ ffmpegthumbnailer
 unar
 poppler
 imagemagick
+hwatch
 EOF
   )
 

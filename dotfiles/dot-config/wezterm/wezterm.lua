@@ -109,27 +109,7 @@ local config = {
 	},
 }
 
--- A list of keys to map hyper + key to tmux prefix + key
-local hyper_to_tmux_prefix_key = {
-	-- 1:1 mappings
-	["a"] = "a",
-	["s"] = "s",
-	["d"] = "d",
-	["r"] = "r",
-	["c"] = "c",
-	["p"] = "p",
-	["l"] = "l",
-	["v"] = "v",
-	["x"] = "x",
-	["w"] = "w",
-	["z"] = "z",
-	["f"] = "f",
-	-- weird mappings
-	["q"] = "d",
-	["Tab"] = "L",
-}
-
-for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
+local function map_hyper_to_tmux_prefix_key(key_in, key_out)
 	config.keys[#config.keys + 1] = {
 		key = key_in,
 		mods = "CTRL|OPT|SHIFT|CMD",
@@ -143,6 +123,37 @@ for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
 			}),
 		}),
 	}
+end
+
+-- A list of keys to map hyper + key to tmux prefix + key
+local one_to_one_hyper_to_tmux_prefix_key = {
+	"a",
+	"s",
+	"d",
+	"r",
+	"c",
+	"p",
+	"l",
+	"v",
+	"x",
+	"w",
+	"z",
+	"f",
+	"g",
+	"n",
+	"p",
+}
+for _, key in ipairs(one_to_one_hyper_to_tmux_prefix_key) do
+	map_hyper_to_tmux_prefix_key(key, key)
+end
+
+local hyper_to_tmux_prefix_key = {
+	-- weird mappings
+	["q"] = "d",
+	["Tab"] = "L",
+}
+for key_in, key_out in pairs(hyper_to_tmux_prefix_key) do
+	map_hyper_to_tmux_prefix_key(key_in, key_out)
 end
 
 -- map CMD + 1-9 to tmux panes

@@ -57,12 +57,7 @@ function M.float()
       :new({
         command = "jj",
         args = {
-          "log",
-          "--color=always",
-          "--config-toml",
-          "[template-aliases]\n'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
-          "--template",
-          "narrow_log_comfortable", -- This template can be found in my jj config: dotfiles/dot-config/jj/config.toml
+          "log-watch", -- This alias can be found in my jj config: dotfiles/dot-config/jj/config.toml
         },
         enabled_recording = true,
       })

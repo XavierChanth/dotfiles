@@ -67,6 +67,7 @@ extra_commands=(
   # gh dash can't be checked
   csharp-ls
   magick
+  hwatch
 )
 
 missing=""
