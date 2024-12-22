@@ -21,7 +21,6 @@ check_commands=(
   # brew stuff
   bash
   zsh
-  git
   sudo
   base32   # coreutils
   parallel # moreutils
@@ -33,6 +32,8 @@ check_commands=(
   fzf
   fd
   lazygit
+  git
+  jj
   delta # git-delta
   bat
   stow

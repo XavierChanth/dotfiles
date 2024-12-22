@@ -63,7 +63,6 @@ fi
 brew install $(
   cat <<EOF
 zsh
-zsh-completions
 zsh-syntax-highlighting
 bash
 coreutils
@@ -75,6 +74,8 @@ neovim
 ripgrep
 fzf
 fd
+git
+jj
 git-delta
 bat
 stow

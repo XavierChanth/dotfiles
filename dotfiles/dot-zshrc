@@ -33,6 +33,7 @@ else
 fi
 
 # basic exports
+export LANG="en_CA.UTF-8"
 export CLICOLOR=true # Colored ls output
 export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
