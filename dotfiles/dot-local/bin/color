@@ -13,6 +13,7 @@ if [ -n "$theme" ]; then
   echo "return '$theme'" >$colorscheme_dir/colorscheme.lua
   echo "$theme" >$colorscheme_dir/colorscheme
   echo "theme=$theme" >$XDG_CONFIG_HOME/ghostty/colorscheme
+  # ghostty +reload_config # not supported yet
   sketchybar --reload
   tmux source ~/.config/tmux/tmux.conf
 fi
