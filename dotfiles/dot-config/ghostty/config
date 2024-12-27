@@ -4,14 +4,16 @@ config-file = colorscheme
 font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 18
 
-window-decoration = false
-window-padding-x = 0
+macos-titlebar-style = hidden
+window-padding-x = 6
 window-padding-y = 0
 
 background-opacity = 0.95
 background-blur-radius = 20
 
 command = "/opt/homebrew/bin/tmux new -A -s main"
+
+link-url = true
 
 # keybinds
 
