@@ -12,6 +12,7 @@ theme=$($script_dir/list-colors | fzf -d "\n")
 if [ -n "$theme" ]; then
   echo "return '$theme'" >$colorscheme_dir/colorscheme.lua
   echo "$theme" >$colorscheme_dir/colorscheme
+  echo "theme=$theme" >$XDG_CONFIG_HOME/ghostty/colorscheme
   sketchybar --reload
   tmux source ~/.config/tmux/tmux.conf
 fi

@@ -57,7 +57,7 @@ if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]] # Terminals on 3
-if.app-name-regex-substring = '^alacritty$|^WezTerm$|^wezterm-gui$'
+if.app-name-regex-substring = '^alacritty$|^WezTerm$|^wezterm-gui$|^Ghostty$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
 
@@ -79,9 +79,10 @@ alt-r = 'flatten-workspace-tree'
 alt-w = 'close'
 
 # Terminal openers (always new)
-alt-enter = ['exec-and-forget open -n /Applications/WezTerm.app']
+alt-enter = ['exec-and-forget open -n /Applications/Ghostty.app']
 alt-shift-enter = [
-  'exec-and-forget open -n /Applications/WezTerm.app --args start zsh',
+  # 'exec-and-forget open -n /Applications/WezTerm.app --args start zsh',
+  'exec-and-forget open -n /Applications/Ghostty.app --args -e zsh',
 ]
 
 # Password manager

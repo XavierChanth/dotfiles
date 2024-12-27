@@ -1,0 +1,25 @@
+title = "Ghostty"
+config-file = colorscheme
+
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 18
+
+window-decoration = false
+window-padding-x = 0
+window-padding-y = 0
+
+background-opacity = 0.95
+background-blur-radius = 20
+
+command = "/opt/homebrew/bin/tmux new -A -s main"
+
+# keybinds
+
+macos-option-as-alt = true
+
+keybind = super+r=reload_config
+keybind = super+j=text:5j
+keybind = super+k=text:5k
+
+config-file = tmux-binds
+
