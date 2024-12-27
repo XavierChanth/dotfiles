@@ -59,17 +59,6 @@ if Util.platform.supports_terminal() then
   end, {
     desc = "Colorscheme",
   })
-
-  map("n", "<leader>rr", function()
-    Util.tmux.neww({
-      cmd = {
-        "zsh",
-        "-c",
-        Util.platform.home .. "/.local/bin/repo_scripts",
-      },
-      size = "40%",
-    })
-  end, { desc = "Run Repo Scripts" })
 end
 
 -- UNDO BREAKING POINTS
