@@ -91,7 +91,7 @@ alt-u = ['exec-and-forget ~/.local/bin/pass-util pick_username_to_clipboard']
 alt-o = ['exec-and-forget ~/.local/bin/pass-util pick_totp_to_clipboard']
 
 # Go to workspace + app
-alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/WezTerm.app']
+alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/Ghostty.app']
 alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Zen\ Browser.app/']
 
 # Window movement
