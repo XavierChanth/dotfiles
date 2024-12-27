@@ -1,19 +1,25 @@
-title = "Ghostty"
+# styling
 config-file = colorscheme
 
 font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 18
 
 macos-titlebar-style = hidden
-window-padding-x = 6
-window-padding-y = 0
+# window-padding-x = 6
+# window-padding-y = 0
+window-padding-balance = true
 
 background-opacity = 0.95
 background-blur-radius = 20
 
+# behaviour
+
+title = "Ghostty"
 command = "/opt/homebrew/bin/tmux new -A -s main"
 
-link-url = true
+confirm-close-surface = false
+quit-after-last-window-closed = true
+mouse-hide-while-typing = true
 
 # keybinds
 
