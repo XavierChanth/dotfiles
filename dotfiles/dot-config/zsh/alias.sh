@@ -13,6 +13,8 @@ alias v='nvim'
 alias c='color'
 alias m='aerc'
 
+alias fetch='fastfetch'
+
 # provides a fallback set of arguments for the command if no arguments are provided
 wrapped_alias() {
   eval "function $1() { if [ \$# -gt 0 ]; then $2 \$@; else $2 $3; fi; }"
