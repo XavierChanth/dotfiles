@@ -10,7 +10,10 @@ return {
         scope = {
           animate = { easing = "inOutQuad" },
         },
-        chunk = { enabled = true },
+        chunk = {
+          enabled = true,
+          char = { arrow = "" },
+        },
       },
       quickfile = { enabled = true },
       statuscolumn = {
