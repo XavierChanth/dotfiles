@@ -20,3 +20,6 @@ tmux rename-window $name
 # move the window to #2 and focus
 tmux movew -b -t :2
 tmux selectw -t :2
+
+# set a hook to clean up after
+tmux set-hook -w pane-exited kill-window
