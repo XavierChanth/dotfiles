@@ -19,7 +19,7 @@ return {
                 desc = "jj term",
                 icon = " ",
                 action = function()
-                  Util.jj.float()
+                  vim.system({ Util.platform.home .. "/.local/bin/jj-term" })
                 end,
                 key = "j",
               },
