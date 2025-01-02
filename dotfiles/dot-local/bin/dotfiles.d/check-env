@@ -69,6 +69,7 @@ extra_commands=(
   csharp-ls
   magick
   hwatch
+  just
 )
 
 missing=""
