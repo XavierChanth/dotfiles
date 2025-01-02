@@ -50,8 +50,8 @@ sq = ["squash"]
 log-watch = [
   "log",
   "--color=always",
-  "--config-toml",
-  "[template-aliases]\n'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
+  "--config",
+  "template-aliases.'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
   "--template",
   "narrow_log_comfortable"
 ]
