@@ -15,6 +15,14 @@ alias m='aerc'
 
 alias fetch='fastfetch'
 
+wrapped_man() {
+  /usr/bin/man $1 ||
+    if command $1 2>/dev/null; then
+      $1 --help | $PAGER
+    fi
+}
+alias man='wrapped_man'
+
 # provides a fallback set of arguments for the command if no arguments are provided
 wrapped_alias() {
   eval "function $1() { if [ \$# -gt 0 ]; then $2 \$@; else $2 $3; fi; }"
