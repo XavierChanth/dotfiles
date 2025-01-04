@@ -39,7 +39,7 @@ mas
 moreutils
 mpv
 msmtp
-neovide
+neovim
 nmap
 node
 oath-toolkit
