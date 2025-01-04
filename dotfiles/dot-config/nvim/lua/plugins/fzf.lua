@@ -18,7 +18,9 @@ return {
     end
   end,
   opts = {
-    -- "fzf-tmux", -- has an initial overhead which doesn't feel great
+    fzf_opts = {
+      ["--tmux"] = "center,100%,100%",
+    },
     winopts = {
       width = 1,
       height = 1,
@@ -54,7 +56,6 @@ return {
         },
       },
     },
-    fzf_tmux_opts = { ["-p"] = "100%,100%", ["--margin"] = "0,0" },
   },
   keys = {
     {
