@@ -30,11 +30,6 @@ inherit-env-vars = true
 [exec.env-vars]
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin/:${PATH}'
 
-[[on-window-detected]] # "Waiting for host" window on zoom
-if.app-id = 'us.zoom.xos'
-if.window-title-regex-substring = '^$'
-run = "layout floating"
-
 [[on-window-detected]] # mpv windows are buggy when working with multiple monitors
 if.app-name-regex-substring = '^mpv$'
 run = "layout floating"
