@@ -59,6 +59,17 @@ if Util.platform.supports_terminal() then
   end, {
     desc = "Colorscheme",
   })
+
+  local baleia = nil
+  map("n", "<leader>ua", function()
+    if not baleia then
+      baleia = require("baleia").setup({})
+    end
+    local buf = vim.api.nvim_get_current_buf()
+    baleia.once(buf)
+  end, {
+    desc = "Colorize ANSI escape codes",
+  })
 end
 
 -- UNDO BREAKING POINTS

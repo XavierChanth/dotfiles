@@ -19,7 +19,7 @@ return {
   end,
   opts = {
     fzf_opts = {
-      ["--tmux"] = "center,100%,100%",
+      -- ["--tmux"] = "center,100%,100%",
     },
     winopts = {
       width = 1,
