@@ -47,6 +47,7 @@ extra_commands=(
   uv
   python3 # python
   cmake
+  ninja
   gcc
   zig
   cargo # rust

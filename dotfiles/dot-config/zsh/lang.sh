@@ -30,8 +30,8 @@ export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/in
 __path="$(brew --prefix llvm)/bin:$__path"
 
 # cmake
-alias cmbs='cmake -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
-alias cmbr='cmake -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
+alias cmbs='cmake -G Ninja -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
+alias cmbr='cmake -G Ninja -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
 alias cmbb='cmake --build build'
 alias cmcc='ln -s build/compile_commands.json .; [ -d "./tests" ] && ln -s build/compile_commands.json ./tests'
 alias ctb='ctest --test-dir build --output-on-failure'

@@ -90,6 +90,7 @@ uv
 python
 gcc
 cmake
+ninja
 zig
 rust
 rust-analyzer
