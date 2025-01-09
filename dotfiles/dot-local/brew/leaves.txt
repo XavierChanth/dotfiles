@@ -40,6 +40,7 @@ moreutils
 mpv
 msmtp
 neovim
+ninja
 nmap
 node
 oath-toolkit
