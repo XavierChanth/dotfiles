@@ -43,7 +43,9 @@ return {
         true,
         ["ctrl-q"] = {
           function(...)
-            require("fzf-lua.actions").file_edit_or_qf(...)
+            local actions = require("fzf-lua.actions")
+            actions.file_edit_or_qf(...)
+            -- TODO: close fzf after
           end,
         },
       },
@@ -51,7 +53,9 @@ return {
         true,
         ["ctrl-q"] = {
           function(...)
-            require("fzf-lua.actions").file_edit_or_qf(...)
+            local actions = require("fzf-lua.actions")
+            actions.file_edit_or_qf(...)
+            -- TODO: close fzf after
           end,
         },
       },

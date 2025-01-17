@@ -32,7 +32,7 @@ return {
               "build.ninja"
             )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
               fname
-            ) or require("lspconfig.util").find_git_ancestor(fname)
+            ) or Snacks.git.get_root(fname)
           end,
           capabilities = {
             offsetEncoding = { "utf-16" },
