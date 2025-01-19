@@ -23,7 +23,7 @@ link-url = true
 
 # mouse behaviour
 mouse-hide-while-typing = true
-mouse-shift-capture = always
+mouse-shift-capture = false
 
 # keybinds
 
