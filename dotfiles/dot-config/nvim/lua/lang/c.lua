@@ -39,7 +39,7 @@ return {
           },
           cmd = {
             "clangd",
-            "--query-driver=/usr/bin/clang",
+            "--query-driver=/usr/bin/clang++",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=iwyu",
@@ -56,9 +56,7 @@ return {
         },
       },
       attach_server = {
-        clangd = function(_, event, opts)
-          local clangd_ext_opts = Util.lazy.opts("clangd_extensions.nvim")
-          require("clangd_extensions").setup(vim.tbl_deep_extend("force", clangd_ext_opts or {}, { server = opts }))
+        clangd = function(_, event)
           vim.keymap.set(
             "n",
             "<leader>ch",
@@ -66,36 +64,6 @@ return {
             { buffer = event.buf, desc = "Switch Source/Header (C/C++)" }
           )
         end,
-      },
-    },
-  },
-  -- Additional plugins
-  {
-    "p00f/clangd_extensions.nvim",
-    lazy = true,
-    config = function() end,
-    opts = {
-      inlay_hints = {
-        inline = false,
-      },
-      ast = {
-        role_icons = {
-          type = "",
-          declaration = "",
-          expression = "",
-          specifier = "",
-          statement = "",
-          ["template argument"] = "",
-        },
-        kind_icons = {
-          Compound = "",
-          Recovery = "",
-          TranslationUnit = "",
-          PackExpansion = "",
-          TemplateTypeParm = "",
-          TemplateTemplateParm = "",
-          TemplateParamObject = "",
-        },
       },
     },
   },

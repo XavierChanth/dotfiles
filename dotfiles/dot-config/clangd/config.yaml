@@ -3,6 +3,8 @@ CompileFlags:
   Add:
     - "-I/Users/chant/.local/include/"
     - "-I/home/chant/.local/include/"
+    - "-isystem/opt/homebrew/opt/llvm/include/c++/v1"
+    - "-isystem/Applications/XCode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
     - "-Wall"
     - "-Wextra"
     - "-Werror"
