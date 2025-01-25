@@ -16,6 +16,7 @@ main() {
   defaults write com.apple.dock show-recents -bool false
   defaults write com.apple.dock minimize-to-application -bool true
   defaults write com.apple.dock mineffect -string scale
+  defaults write com.apple.dock workspaces-auto-swoosh -bool NO
   # Empties dock and only shows open apps
   defaults write com.apple.dock static-only -bool true
 
