@@ -60,6 +60,8 @@ else
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+brew analytics off
+
 if [ "$(uname)" = 'Darwin' ]; then
   brew install orbstack
 fi
