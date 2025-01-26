@@ -25,29 +25,12 @@ Change 'chant' to your username:
 passwd chant
 ```
 
-## Brew / zsh setup
+## Link to /Users
 
-I prefer using brew as my package manager so that my dotfiles scripts remain
-portable and minimal. If you don't want to install brew, then skip that step
-and install zsh through the system package manager (and change zsh paths
-accordingly).
-
-Install git on your orbstack machine (assumes your package manager is apt):
+Install git and zsh through your package manager:
 
 ```sh
-apt install git
-```
-
-Install brew from `https://brew.sh`:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Install zsh through brew:
-
-```sh
-/home/linuxbrew/.linuxbrew/bin/brew install zsh
+sudo apt install git zsh
 ```
 
 Edit the `/home/$USER/.zshrc` file:

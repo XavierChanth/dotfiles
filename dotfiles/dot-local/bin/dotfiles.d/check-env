@@ -13,12 +13,9 @@ if [ "$1" = "--light" ]; then
 fi
 
 check_commands=(
-  # essentials
   git
   curl
   ps
-  brew
-  # brew stuff
   bash
   zsh
   sudo
@@ -41,9 +38,6 @@ check_commands=(
   # non-brew stuff
   spaceship
   lazygit
-)
-
-extra_commands=(
   uv
   python3 # python
   cmake
@@ -79,14 +73,6 @@ for cmd in ${check_commands[@]}; do
     missing="$missing $cmd "
   fi
 done
-
-if ! $LIGHT; then
-  for cmd in ${extra_commands[@]}; do
-    if ! command_exists "$cmd"; then
-      missing="$missing $cmd "
-    fi
-  done
-fi
 
 if [ -n "$missing" ]; then
   echo "Missing the following commands:"

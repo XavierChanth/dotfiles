@@ -1,12 +1,45 @@
 #!/usr/bin/env bash
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
-export DOTFILES="$HOME/.dotfiles"
+# brew && fedora 41
+PACKAGES=$(
+  cat <<EOF
+zsh
+zsh-syntax-highlighting
+bash
+coreutils
+moreutils
+openssl
+wget
+tmux
+neovim
+ripgrep
+fzf
+git
+git-delta
+bat
+stow
+golang
+rust
+uv
+python
+gcc
+cmake
+ninja
+zig
+rust-analyzer
+node
+gh
+jq
+tokei
+ffmpegthumbnailer
+unar
+poppler
+just
+EOF
+)
 
-LIGHT=false
-if [ "$1" = "--light" ]; then
-  LIGHT=true
-fi
+export DOTFILES="$HOME/.dotfiles"
 
 if [ -f /bin/zsh ] && [ "$SHELL" != "/bin/zsh" ]; then
   chsh -s /bin/zsh
@@ -48,97 +81,100 @@ Darwin)
   brew_path=/opt/homebrew/bin/brew
   ;;
 Linux)
-  brew_path=/home/linuxbrew/.linuxbrew/bin/brew
+  case "$(uname -m)" in
+  aarch64)
+    brew_path=''
+    ;;
+  arm64 | x64_86)
+    brew_path=/home/linuxbrew/.linuxbrew/bin/brew
+    ;;
+  esac
   ;;
 esac
 
 # install brew
 if [ -f "$brew_path" ]; then
   eval "$($brew_path shellenv)"
-else
+elif [ -n "$brew_path" ]; then
   echo "brew not found, installing it for you..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+  echo "not installing brew - unsupported"
 fi
 
-brew analytics off
-
-if [ "$(uname)" = 'Darwin' ]; then
-  brew install orbstack
-fi
-
-brew install $(
-  cat <<EOF
-zsh
-zsh-syntax-highlighting
-bash
-coreutils
-moreutils
-openssl
-wget
-tmux
-neovim
-ripgrep
-fzf
-fd
-git
-jj
-git-delta
-bat
-stow
-golang
-EOF
-)
-
-if ! $LIGHT; then
-  brew install $(
-    cat <<EOF
-uv
-python
-gcc
-cmake
-ninja
-zig
-rust
-rust-analyzer
-node
-gh
-jq
-yazi
-tokei
-ffmpegthumbnailer
-unar
-poppler
-imagemagick
-hwatch
-just
-EOF
-  )
-
-  case "$(uname)" in
-  Darwin)
-    brew install $(
-      cat <<EOF
-dotnet-sdk
-quarto
-EOF
-    )
+if [ -n "$brew_path" ]; then
+  pkg="$brew_path"
+else
+  case "$(source /etc/os-release && echo $ID)" in
+  ubuntu)
+    pkg="apt"
     ;;
-  Linux)
-    brew install $(
-      cat <<EOF
-dotnet
-EOF
-    )
+  fedora)
+    pkg="dnf"
     ;;
   esac
 fi
+
+case "$pkg" in
+brew)
+  brew analytics off
+
+  if [ "$(uname)" = 'Darwin' ]; then
+    brew install orbstack
+  fi
+  brew install "$PACKAGES" \
+    fd \
+    jj \
+    imagemagick \
+    hwatch \
+    yazi
+
+  case "$(uname)" in
+  Darwin)
+    brew install dotnet-sdk \
+      quarto
+    ;;
+  Linux)
+    brew install dotnet
+    ;;
+  esac
+  ;;
+apt)
+  sudo -v
+  sudo apt install "$LIGHT_PACKAGES"
+  sudo apt install -y libssl-dev openssl pkg-config build-essential
+  # TODO install:
+  # - fd
+  # - jj
+  # - hwatch
+  # - yazi
+  # - imagemagick
+  ;;
+dnf)
+  sudo -v
+  sudo dnf install -y "$LIGHT_PACKAGES" \
+    cargo \
+    fd \
+    ImageMagick \
+    parallel \
+    poppler-utils \
+    dotnet-sdk-9.0
+
+  (curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
+  cargo binstall -y --strategies crate-meta-data \
+    jj-cli \
+    yazi-fm \
+    yazi-cli \
+    hwatch
+  ;;
+esac
 
 # install spaceship
 git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
   git -C "$HOME/.config/spaceship-prompt" pull
 
 # sync dotfiles
-$script_dir/sync || exit $?
+"$script_dir"/sync || exit $?
 
 if ! $LIGHT; then
   if command_exists go; then

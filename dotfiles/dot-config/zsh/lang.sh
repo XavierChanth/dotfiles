@@ -27,7 +27,9 @@ __path="$ANDROID_HOME/cmdline-tools/latest/bin:$__path"
 
 # clang
 export CPATH="/usr/local/include:/opt/homebrew/include:/opt/homebrew/opt/llvm/include:$CPATH"
-__path="$(brew --prefix llvm)/bin:$__path"
+if command_exists brew; then
+  __path="$(brew --prefix llvm)/bin:$__path"
+fi
 
 # cmake
 alias cmbs='cmake -G Ninja -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'

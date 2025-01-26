@@ -61,13 +61,15 @@ Darwin)
   eval "$(/opt/homebrew/bin/brew shellenv)"
   ;;
 Linux)
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   ;;
 esac
 
 # syntax highlighting
-[[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
-  source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if command -v brew 2>&1 >/dev/null; then
+  [[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 # history - load asynchronously
 
