@@ -109,3 +109,6 @@ opt.updatetime = 200 -- Save swap file and trigger CursorHold
 -- UNDO
 opt.undofile = true
 opt.undolevels = 10000
+
+-- JUMPLIST
+opt.jumpoptions = "clean,stack"
