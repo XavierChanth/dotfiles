@@ -206,6 +206,7 @@ if ! [ -d "$DOTFILES/.venv" ]; then
 fi
 
 # sync nvim
+$script_dir/../color.d/apply-color tokyonight-storm
 nvim --headless "+Lazy! sync" +qa
 # Install python provider for nvim
 

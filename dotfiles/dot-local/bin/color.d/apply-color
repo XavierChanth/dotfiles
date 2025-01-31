@@ -1,0 +1,8 @@
+#!/bin/bash
+
+theme=$1
+colorscheme_dir="$HOME/.local/state/colorscheme/"
+
+echo "return '$theme'" >$colorscheme_dir/colorscheme.lua
+echo "$theme" >$colorscheme_dir/colorscheme
+echo "theme=$theme" >$HOME/.config/ghostty/colorscheme

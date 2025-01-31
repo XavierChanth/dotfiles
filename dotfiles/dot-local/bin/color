@@ -10,9 +10,7 @@ color="$1"
 theme=$($script_dir/list-colors | fzf -d "\n")
 
 if [ -n "$theme" ]; then
-  echo "return '$theme'" >$colorscheme_dir/colorscheme.lua
-  echo "$theme" >$colorscheme_dir/colorscheme
-  echo "theme=$theme" >$HOME/.config/ghostty/colorscheme
+  $script_dir/color.d/apply-color $theme
   # ghostty +reload_config # not supported yet
   sketchybar --reload
   tmux source ~/.config/tmux/tmux.conf
