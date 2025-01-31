@@ -117,6 +117,9 @@ else
   esac
 fi
 
+(curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
+cargo binstall --disable-telemetry
+
 case "$pkg" in
 brew)
   brew analytics off
@@ -162,8 +165,7 @@ dnf)
     poppler-utils \
     dotnet-sdk-9.0
 
-  (curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
-  cargo binstall -y --strategies crate-meta-data \
+  cargo binstall -y --strategies crate-meta-data,quick-install,compile \
     jj-cli \
     yazi-fm \
     yazi-cli \
