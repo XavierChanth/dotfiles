@@ -52,6 +52,8 @@ mkdir -p "$HOME/src"
 mkdir -p "$HOME/.ssh/config.d" # ssh profiles that I don't want tracked in git go here
 mkdir -p "$HOME/dev/local"
 mkdir -p "$HOME/.local/bin"
+mkdir -p "$HOME/.local/dev"
+mkdir -p "$HOME/.cargo/bin"
 mkdir -p "$HOME/.config"
 
 touch "$HOME/.zshenv"
@@ -176,36 +178,34 @@ git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$H
 # sync dotfiles
 "$script_dir"/sync || exit $?
 
-if ! $LIGHT; then
-  if command_exists go; then
-    go install github.com/jesseduffield/lazygit@latest
-  fi
-
-  # Install flutter
-  export FLUTTER_ROOT="$HOME/.local/dev/flutter"
-  git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT" 2>/dev/null
-  "$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
-  "$HOME"/.local/dev/flutter/bin/flutter channel stable
-
-  # csharp-ls
-  if command_exists dotnet; then
-    dotnet tool install --global csharp-ls
-  fi
-
-  # install venv for nvim
-  if ! [ -d "$DOTFILES/.venv" ]; then
-    (
-      cd "$DOTFILES" || return 1
-      uv venv
-      source "$DOTFILES/.venv/bin/activate"
-      uv pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip jupytext
-    )
-  fi
-
-  # sync nvim
-  nvim --headless "+Lazy! sync" +qa
-# Install python provider for nvim
+if command_exists go; then
+  go install github.com/jesseduffield/lazygit@latest
 fi
+
+# Install flutter
+export FLUTTER_ROOT="$HOME/.local/dev/flutter"
+git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT" 2>/dev/null
+"$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
+"$HOME"/.local/dev/flutter/bin/flutter channel stable
+
+# csharp-ls
+if command_exists dotnet; then
+  dotnet tool install --global csharp-ls
+fi
+
+# install venv for nvim
+if ! [ -d "$DOTFILES/.venv" ]; then
+  (
+    cd "$DOTFILES" || return 1
+    uv venv
+    source "$DOTFILES/.venv/bin/activate"
+    uv pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip jupytext
+  )
+fi
+
+# sync nvim
+nvim --headless "+Lazy! sync" +qa
+# Install python provider for nvim
 
 # Do a healthcheck to ensure that everything I want is installed
 
