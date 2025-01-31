@@ -1,7 +1,7 @@
 #!/bin/bash
 
 theme=$1
-colorscheme_dir="$HOME/.local/state/colorscheme/"
+colorscheme_dir="$HOME/.local/state/colorscheme"
 
 echo "return '$theme'" >$colorscheme_dir/colorscheme.lua
 echo "$theme" >$colorscheme_dir/colorscheme

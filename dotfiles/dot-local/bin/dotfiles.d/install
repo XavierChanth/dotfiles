@@ -53,6 +53,7 @@ mkdir -p "$HOME/.ssh/config.d" # ssh profiles that I don't want tracked in git g
 mkdir -p "$HOME/dev/local"
 mkdir -p "$HOME/.local/bin"
 mkdir -p "$HOME/.local/dev"
+mkdir -p "$HOME/.local/state/colorscheme"
 mkdir -p "$HOME/.cargo/bin"
 mkdir -p "$HOME/.config"
 
