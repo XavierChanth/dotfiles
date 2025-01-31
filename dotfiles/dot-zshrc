@@ -91,7 +91,10 @@ source $XDG_CONFIG_HOME/zsh/lang.sh
 # compinit
 
 # Export last so it's prioritized over other paths
-export PATH="$HOME/.local/bin:$(brew --prefix):$PATH"
+if command -v brew >/dev/null 2>&1; then
+  export PATH="$(brew --prefix):$PATH"
+fi
+export PATH="$HOME/.local/bin:$PATH"
 
 # enable profiling
 # zprof
