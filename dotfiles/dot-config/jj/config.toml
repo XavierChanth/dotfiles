@@ -37,7 +37,8 @@ key = "~/.ssh/id_ed25519.pub"
 [git]
 auto-local-bookmark = false
 push-bookmark-prefix = "xc-"
-git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
+private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
+subprocess = true
 
 [aliases]
 e = ["edit"]

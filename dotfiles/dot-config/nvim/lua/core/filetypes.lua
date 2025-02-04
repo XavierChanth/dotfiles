@@ -2,9 +2,7 @@ vim.filetype.add({
   extension = {
     xaml = "xml",
   },
-  filename = {
-    ["pubspec.yaml"] = "pubspec",
-  },
+  filename = {},
 })
 
 -- close some filetypes with <q>
