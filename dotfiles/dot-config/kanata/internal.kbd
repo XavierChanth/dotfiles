@@ -12,7 +12,7 @@
 )
 
 (defvar
-  tap_time 150
+  tap_time 225
   hold_time 225
 )
 
