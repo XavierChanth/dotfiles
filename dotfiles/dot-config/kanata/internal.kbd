@@ -1,0 +1,31 @@
+(defcfg
+  process-unmapped-keys yes
+  macos-dev-names-include ("Apple Internal Keyboard / Trackpad")
+)
+
+(defsrc
+   caps a s d f j k l ;
+)
+
+(deflayer base
+  @caps @a @s @d @f @j @k @l @;
+)
+
+(defvar
+  tap_time 150
+  hold_time 225
+)
+
+(defalias
+    caps (tap-hold $tap_time $hold_time esc (multi lctl lsft lalt lmet))
+    a (tap-hold $tap_time $hold_time a lctl)
+    s (tap-hold $tap_time $hold_time s lsft)
+    d (tap-hold $tap_time $hold_time d lalt)
+    f (tap-hold $tap_time $hold_time f lmet)
+    j (tap-hold $tap_time $hold_time j lmet)
+    k (tap-hold $tap_time $hold_time k lalt)
+    l (tap-hold $tap_time $hold_time l lsft)
+    ; (tap-hold $tap_time $hold_time ; lctl)
+)
+
+

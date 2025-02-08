@@ -4,4 +4,3 @@ script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
 /opt/homebrew/bin/sketchybar
 $script_dir/borders
-pgrep dmenu-mac || open -a dmenu-mac

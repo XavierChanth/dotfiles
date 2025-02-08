@@ -14,10 +14,14 @@ return {
   {
     "blink.cmp",
     opts = {
-      providers = {
-        -- dont show LuaLS require statements when lazydev has items
-        lsp = { fallback_for = { "lazydev" } },
-        lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+      sources = {
+        per_filetype = {
+          lsp = { "LazyDev", "path", "snippets", "buffer" },
+        },
+        providers = {
+          -- dont show LuaLS require statements when lazydev has items
+          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", fallbacks = "lsp" },
+        },
       },
     },
   },

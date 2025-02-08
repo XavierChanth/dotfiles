@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-echo "Copying over the internal keyboard to /etc/kmonad"
-sudo mkdir -p /etc/kmonad
-sudo cp $DOTFILES/keyboards/kmonad/internal.kbd /etc/kmonad/default.kbd

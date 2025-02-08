@@ -19,11 +19,14 @@ function _stow() {
   stow -d "$DOTFILES/dotfiles/dot-config" -t "$dest" "$name"
 }
 
-# Like why, nobody cares about macos' stupid library dir, just support XDG base dirs
-if [ $(uname) = 'Darwin' ]; then
+# MacOS
+if [ "$(uname)" = 'Darwin' ]; then
   _stow "$HOME/Library/Application Support/Code/User" "vscode"
   _stow "$HOME/Library/Application Support/VSCodium/User" "vscode"
   _stow "$HOME/Library/Application Support/presenterm" "presenterm"
   _stow "$HOME/Library/Preferences/clangd" "clangd"
+  sudo cp "$DOTFILES/dotfiles/dot-config/kanata/local.kanata.plist" /Library/LaunchDaemons/
+  sudo launchctl unload /Library/LaunchDaemons/local.kanata.plist 2>/dev/null
+  sudo launchctl load /Library/LaunchDaemons/local.kanata.plist
 fi
 unset _stow

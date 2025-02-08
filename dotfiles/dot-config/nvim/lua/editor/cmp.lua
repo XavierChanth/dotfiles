@@ -3,21 +3,30 @@ return {
     "saghen/blink.cmp",
     -- lazy = false, -- lazy loading handled internally
     event = "InsertEnter",
-    version = "v0.7.3",
-    dependencies = { "rafamadriz/friendly-snippets" },
+    dependencies = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
     opts = {
       completion = {
-        list = { selection = "auto_insert" },
+        list = { selection = { auto_insert = true, preselect = false } },
       },
       sources = {
-        completion = {
-          enabled_providers = function(ctx)
-            local ok, node = pcall(vim.treesitter.get_node, ctx)
-            if ok and node and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type()) then
-              return { "buffer" }
-            end
-            return { "lsp", "path", "snippets", "buffer" }
-          end,
+        default = { "lsp", "copilot", "path", "snippets", "buffer" },
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-copilot",
+            score_offset = 100,
+            async = true,
+          },
+        },
+      },
+      appearance = {
+        kind_icons = {
+          Copilot = "",
+        },
+      },
+      signature = {
+        window = {
+          show_documentation = false,
         },
       },
       keymap = {
@@ -34,10 +43,6 @@ return {
         ["<C-p>"] = { "show", "select_prev", "fallback" },
         ["<C-u>"] = { "scroll_documentation_up", "fallback" },
         ["<C-d>"] = { "scroll_documentation_down", "fallback" },
-      },
-
-      documentation = {
-        auto_show = true,
       },
     },
   },
