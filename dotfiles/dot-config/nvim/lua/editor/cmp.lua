@@ -7,6 +7,11 @@ return {
     opts = {
       completion = {
         list = { selection = { auto_insert = true, preselect = false } },
+        menu = {
+          auto_show = function(ctx)
+            return ctx.mode ~= "cmdline"
+          end,
+        },
       },
       sources = {
         default = { "lsp", "copilot", "path", "snippets", "buffer" },
@@ -34,7 +39,12 @@ return {
         ["<Esc>"] = {
           function()
             require("blink.cmp").hide()
-            return false -- always call fallback after
+            if vim.fn.getcmdtype() ~= "" then
+              -- replace <Esc> with <C-c> if it's the command line, otherwise the command is submitted
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+              return true
+            end
+            return false -- call fallback
           end,
           "fallback",
         },
