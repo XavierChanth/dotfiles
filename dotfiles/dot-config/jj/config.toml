@@ -50,6 +50,7 @@ bf = ["bookmark", "forget"]
 ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
+nt = ["new", "trunk"]
 log-watch = [
   "log",
   "--color=always",
