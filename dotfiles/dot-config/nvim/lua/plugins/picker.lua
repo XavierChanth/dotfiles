@@ -119,7 +119,12 @@ return {
     {
       "<leader>j",
       function()
-        Snacks.picker.buffers({})
+        Snacks.picker.buffers({
+          focus = "list",
+          on_show = function()
+            vim.api.nvim_feedkeys("j", "n", false) -- focus alt buffer on show
+          end,
+        })
       end,
       desc = "Jump to buffer (all)",
     },
