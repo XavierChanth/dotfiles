@@ -54,7 +54,7 @@ return {
           map({
             "gd",
             function()
-              require("fzf-lua").lsp_definitions()
+              Snacks.picker.lsp_definitions()
             end,
             desc = "Goto Definition",
             has = "definition",
@@ -62,21 +62,21 @@ return {
           map({
             "gr",
             function()
-              require("fzf-lua").lsp_references()
+              Snacks.picker.lsp_references()
             end,
             desc = "References",
           })
           map({
             "gI",
             function()
-              require("fzf-lua").lsp_implementations()
+              Snacks.picker.lsp_implementations()
             end,
             desc = "Goto Implementation",
           })
           map({
             "gy",
             function()
-              require("fzf-lua").lsp_typedefs()
+              Snacks.picker.lsp_type_definitions()
             end,
             desc = "Goto T[y]pe Definition",
           })
