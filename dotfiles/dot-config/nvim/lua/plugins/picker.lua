@@ -124,6 +124,9 @@ return {
           on_show = function()
             vim.api.nvim_feedkeys("j", "n", false) -- focus alt buffer on show
           end,
+          win = {
+            list = { keys = { ["<c-x>"] = { "bufdelete", mode = { "n", "i" } } } },
+          },
         })
       end,
       desc = "Jump to buffer (all)",
