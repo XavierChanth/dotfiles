@@ -51,6 +51,10 @@ ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
 nt = ["new", "trunk"]
+
+l10 = ["log", "-r", "ancestors(@, 10)"]
+l20 = ["log", "-r", "ancestors(@, 20)"]
+
 log-watch = [
   "log",
   "--color=always",
