@@ -120,6 +120,7 @@ return {
       "<leader>j",
       function()
         Snacks.picker.buffers({
+          sort_lastused = true,
           focus = "list",
           on_show = function()
             vim.api.nvim_feedkeys("j", "n", false) -- focus alt buffer on show

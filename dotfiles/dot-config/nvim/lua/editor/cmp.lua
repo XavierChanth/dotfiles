@@ -3,7 +3,10 @@ return {
     "saghen/blink.cmp",
     -- lazy = false, -- lazy loading handled internally
     event = "InsertEnter",
-    dependencies = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      -- "fang2hou/blink-copilot"
+    },
     opts = {
       completion = {
         list = { selection = { auto_insert = true, preselect = false } },
@@ -14,14 +17,23 @@ return {
         },
       },
       sources = {
-        default = { "lsp", "copilot", "path", "snippets", "buffer" },
+        default = { "lsp", "path", "snippets", "buffer" },
         providers = {
-          copilot = {
-            name = "copilot",
-            module = "blink-copilot",
-            score_offset = 100,
-            async = true,
+          -- copilot = {
+          --   name = "copilot",
+          --   module = "blink-copilot",
+          --   score_offset = 90,
+          --   async = true,
+          -- },
+          snippets = {
+            score_offset = 40,
+            -- function(ctx, enabled_sources)
+            --
+            --             end
           },
+          lsp = { score_offset = 50 },
+          buffer = { score_offset = 30 },
+          path = { score_offset = 10 },
         },
       },
       appearance = {
