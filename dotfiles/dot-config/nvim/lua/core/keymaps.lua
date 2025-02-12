@@ -52,7 +52,7 @@ if Util.platform.supports_terminal() then
   end, { desc = "Open Yazi" })
 
   -- LAZY
-  map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+  map("n", "<leader>z", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
   map("n", "<leader>uc", function()
     Util.tmux.popup({ args = { "-E", Util.platform.home .. "/.local/bin/color" } })

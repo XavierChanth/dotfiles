@@ -110,6 +110,12 @@ return {
             mode = { "n", "v" },
           })
           map({
+            "<leader>a",
+            vim.lsp.buf.code_action,
+            desc = "Code Action",
+            mode = { "n", "v" },
+          })
+          map({
             "<leader>cr",
             vim.lsp.buf.rename,
             desc = "Rename",

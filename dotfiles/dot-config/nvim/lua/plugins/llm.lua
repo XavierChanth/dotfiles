@@ -36,7 +36,7 @@ return {
     },
     keys = {
       {
-        "<leader>a",
+        "<leader>ll",
         function()
           local mode = vim.api.nvim_get_mode().mode
           require("CopilotChat").open({
@@ -50,7 +50,7 @@ return {
           })
         end,
         mode = { "n", "v" },
-        desc = "Copilot - Quick Chat",
+        desc = "Copilot",
       },
     },
   },
