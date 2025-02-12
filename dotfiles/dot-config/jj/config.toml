@@ -38,7 +38,7 @@ key = "~/.ssh/id_ed25519.pub"
 auto-local-bookmark = false
 push-bookmark-prefix = "xc-"
 private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
-subprocess = true
+# subprocess = true
 
 [aliases]
 e = ["edit"]
