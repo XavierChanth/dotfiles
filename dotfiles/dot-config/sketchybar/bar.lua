@@ -12,6 +12,7 @@ sbar.bar({
 	padding_right = 0,
 	notch_width = 188,
 	display = "main",
+	topmost = "window",
 })
 
 sbar.default({
