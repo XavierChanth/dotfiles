@@ -1,8 +1,14 @@
 # styling
 config-file = colorscheme
 
-font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 18
+
+# font-family = "JetBrainsMono Nerd Font Mono"
+
+font-family = "CommitMonoArrows"
+adjust-cell-height = 15%
+
+# font-family = "CommitMonoLigatures"
 
 macos-titlebar-style = hidden
 # window-padding-x = 6
