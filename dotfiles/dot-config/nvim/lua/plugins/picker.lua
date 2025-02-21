@@ -120,6 +120,10 @@ return {
       "<leader>j",
       function()
         Snacks.picker.buffers({
+          hidden = false,
+          unloaded = true,
+          current = true,
+          nofile = false,
           sort_lastused = true,
           focus = "list",
           on_show = function()

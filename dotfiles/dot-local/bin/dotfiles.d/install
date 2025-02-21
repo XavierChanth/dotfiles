@@ -106,7 +106,7 @@ else
 fi
 
 if [ -n "$brew_path" ]; then
-  pkg="$brew_path"
+  pkg="brew"
 else
   case "$(source /etc/os-release && echo $ID)" in
   ubuntu)
@@ -119,7 +119,6 @@ else
 fi
 
 (curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
-cargo binstall --disable-telemetry
 
 case "$pkg" in
 brew)
@@ -128,7 +127,7 @@ brew)
   if [ "$(uname)" = 'Darwin' ]; then
     brew install orbstack
   fi
-  brew install "$PACKAGES" \
+  brew install $PACKAGES \
     fd \
     jj \
     imagemagick \
@@ -147,7 +146,7 @@ brew)
   ;;
 apt)
   sudo -v
-  sudo apt install "$LIGHT_PACKAGES"
+  sudo apt install $LIGHT_PACKAGES
   sudo apt install -y libssl-dev openssl pkg-config build-essential
   # TODO install:
   # - fd
@@ -158,7 +157,7 @@ apt)
   ;;
 dnf)
   sudo -v
-  sudo dnf install -y "$LIGHT_PACKAGES" \
+  sudo dnf install -y $LIGHT_PACKAGES \
     cargo \
     fd \
     ImageMagick \
@@ -166,7 +165,8 @@ dnf)
     poppler-utils \
     dotnet-sdk-9.0
 
-  cargo binstall -y --strategies crate-meta-data,quick-install,compile \
+  cargo binstall --disable-telemetry -y \
+    --strategies crate-meta-data,quick-install,compile \
     jj-cli \
     yazi-fm \
     yazi-cli \
