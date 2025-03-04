@@ -84,9 +84,9 @@ alt-shift-enter = [
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/Ghostty.app']
 alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Zen\ Browser.app/']
-alt-g = ['workspace 2', 'exec-and-forget open -a /Applications/Notion.app/']
-alt-c = ['workspace 2', 'exec-and-forget open -a /Applications/Notion\ Calendar.app/']
 alt-v = ['workspace 2', 'exec-and-forget open -a /Applications/zoom.us.app/']
+alt-g = ['workspace 1', 'exec-and-forget open -a /Applications/Notion.app/']
+alt-c = ['workspace 1', 'exec-and-forget open -a /Applications/Notion\ Calendar.app/']
 
 
 # Window movement
