@@ -40,10 +40,15 @@ if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
 # Startup layout
-[[on-window-detected]] # Everything on 1
+[[on-window-detected]] # Everything on 4
 if.app-name-regex-substring = '.'
 if.during-aerospace-startup = true
 check-further-callbacks = true
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]] # Notion on 1
+if.app-name-regex-substring = '^Notion$|^Notion Calendar$'
+if.during-aerospace-startup = true
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]] # Browsers and Zed on 2
@@ -55,6 +60,7 @@ run = 'move-node-to-workspace 2'
 if.app-name-regex-substring = '^alacritty$|^WezTerm$|^wezterm-gui$|^Ghostty$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
+
 
 [mode.main.binding]
 # General bindings
