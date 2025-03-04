@@ -6,8 +6,8 @@ config-file = colorscheme
 # font-size = 18
 
 font-family = "CommitMonoDottedZero"
-font-size = 20
-adjust-cell-height = 15%
+font-size = 18
+adjust-cell-height = 20%
 
 macos-titlebar-style = hidden
 # window-padding-x = 6
