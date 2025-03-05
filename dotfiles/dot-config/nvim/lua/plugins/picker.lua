@@ -1,6 +1,9 @@
 return {
   "folke/snacks.nvim",
   opts = {
+    matcher = {
+      sort_empty = false,
+    },
     picker = {
       ui_select = true,
       layout = {
@@ -126,9 +129,7 @@ return {
           nofile = false,
           sort_lastused = true,
           focus = "list",
-          on_show = function()
-            vim.api.nvim_feedkeys("j", "n", false) -- focus alt buffer on show
-          end,
+          layout = { preview = false, preset = "select" },
           win = {
             list = { keys = { ["<c-x>"] = { "bufdelete", mode = { "n", "i" } } } },
           },
