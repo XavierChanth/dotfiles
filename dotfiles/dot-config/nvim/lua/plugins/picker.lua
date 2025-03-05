@@ -130,6 +130,9 @@ return {
           sort_lastused = true,
           focus = "list",
           layout = { preview = false, preset = "select" },
+          on_show = function()
+            vim.api.nvim_feedkeys("j", "n", false) -- focus alt buffer on show
+          end,
           win = {
             list = { keys = { ["<c-x>"] = { "bufdelete", mode = { "n", "i" } } } },
           },

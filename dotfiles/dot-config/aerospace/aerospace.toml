@@ -35,7 +35,7 @@ if.app-name-regex-substring = '^mpv$'
 run = "layout floating"
 
 [[on-window-detected]] # Firefox (and friends) Picture-in-Picture floats
-if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen Browser$'
+if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen$'
 if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
@@ -52,7 +52,7 @@ if.during-aerospace-startup = true
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]] # Browsers and Zed on 2
-if.app-name-regex-substring = '^qutebrowser$|^LibreWolf$|^Firefox$|^Zen Browser$|^Safari$|^Zed$'
+if.app-name-regex-substring = '^qutebrowser$|^LibreWolf$|^Firefox$|^Zen$|^Safari$|^Zed$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
