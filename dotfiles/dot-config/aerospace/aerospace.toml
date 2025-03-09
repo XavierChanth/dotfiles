@@ -94,7 +94,6 @@ alt-v = ['workspace 2', 'exec-and-forget open -a /Applications/zoom.us.app/']
 alt-g = ['workspace 1', 'exec-and-forget open -a /Applications/Notion.app/']
 alt-c = ['workspace 1', 'exec-and-forget open -a /Applications/Notion\ Calendar.app/']
 
-
 # Window movement
 alt-h = 'focus left --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
 alt-j = 'focus down --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
