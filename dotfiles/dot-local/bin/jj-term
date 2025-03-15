@@ -13,7 +13,9 @@ fi
 
 # create a vertical split in the sshnpd dir
 tmux neww -c "$root"
-tmux splitw -l "45" -hbc "$root" "hwatch -tc -n 1 JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
+# command="hwatch -tc -n 1 JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
+command="watch -tc -n 1 JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
+tmux splitw -l "45" -hbc "$root" "$command"
 tmux select-pane -R
 tmux rename-window $name
 
