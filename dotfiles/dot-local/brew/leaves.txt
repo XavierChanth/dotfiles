@@ -6,11 +6,13 @@ bash
 bat
 btop
 caddy
+chase/tap/awrit
 cmake
 cmatrix
 coreutils
 fastfetch
 fd
+felinks
 felixkratz/formulae/borders
 felixkratz/formulae/sketchybar
 ffmpegthumbnailer
@@ -25,7 +27,6 @@ gnu-sed
 go
 grep
 gum
-haskell-stack
 htop
 hwatch
 imagemagick
@@ -34,6 +35,7 @@ isync
 jj
 jq
 just
+kanata
 libsixel
 mas
 moreutils

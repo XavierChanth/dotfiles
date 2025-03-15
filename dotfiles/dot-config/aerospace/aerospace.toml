@@ -39,6 +39,11 @@ if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen$'
 if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
+[[on-window-detected]] # Firefox (and friends) Picture-in-Picture floats
+if.app-name-regex-substring = '^LuLu$'
+if.window-title-regex-substring = '^LuLu Alert$'
+run = "layout floating"
+
 # Startup layout
 [[on-window-detected]] # Everything on 4
 if.app-name-regex-substring = '.'
