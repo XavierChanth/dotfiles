@@ -57,7 +57,7 @@ if.during-aerospace-startup = true
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]] # Browsers and Zed on 2
-if.app-name-regex-substring = '^qutebrowser$|^LibreWolf$|^Firefox$|^Zen$|^Safari$|^Zed$'
+if.app-name-regex-substring = '^Zed$|^qutebrowser$|^LibreWolf$|^Firefox$|^Zen$|^Safari$|^Orion$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 2'
 
@@ -94,11 +94,11 @@ alt-shift-enter = [
 
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/Ghostty.app']
-alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Zen\ Browser.app/']
-alt-v = ['workspace 2', 'exec-and-forget open -a /Applications/zoom.us.app/']
-alt-g = ['workspace 1', 'exec-and-forget open -a /Applications/Notion.app/']
-alt-c = ['workspace 1', 'exec-and-forget open -a /Applications/Notion\ Calendar.app/']
-alt-p = ['workspace 1', 'exec-and-forget open -a /Applications/KeePassXC.app/']
+alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Orion.app']
+alt-v = ['workspace 2', 'exec-and-forget open -a /Applications/zoom.us.app']
+# alt-g = ['workspace 1', 'exec-and-forget open -a /Applications/Notion.app']
+# alt-c = ['workspace 1', 'exec-and-forget open -a /Applications/Notion\ Calendar.app/']
+alt-p = ['workspace 1', 'exec-and-forget open -a /Applications/KeePassXC.app']
 
 # Window movement
 alt-h = 'focus left --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
