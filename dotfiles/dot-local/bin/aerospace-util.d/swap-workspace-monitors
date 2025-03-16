@@ -1,70 +1,67 @@
 #!/usr/bin/env bash
 
 usage() {
-  echo "USAGE: $0 [--wrap-around] (next|prev)"
+  echo "USAGE: $(basename "$0") [--wrap-around] (left|down|up|right|next|prev|<monitor-pattern>)"
 }
 
-wrap_around=''
+if [ $# -lt 1 ]; then
+  usage
+  exit 1
+fi
+
+is_debug=false
+focus_args=''
 while [ $# -gt 1 ]; do
   case "$1" in
-  --wrap-around) wrap_around='--wrap-around' ;;
-  *) usage exit 1 ;;
+  --debug) is_debug=true ;;
+  --wrap-around) focus_args=' --wrap-around' ;;
+  *) {
+    usage
+    exit 1
+  } ;;
   esac
   shift
 done
 
-main_direction="$1"
+debug() {
+  $is_debug && echo "$@" >>/tmp/aerowrap
+}
 
-case "$main_direction" in
-next) rev_direction="prev" ;;
-prev) rev_direction="next" ;;
-# These directions won't work right now since move-workspace-to-monitor only
-# takes next or prev:
-# right) rev_direction="left" ;;
-# left) rev_direction="right" ;;
-# up) rev_direction="down" ;;
-# down) rev_direction="up" ;;
-*)
-  usage
-  echo "ERROR: Argument '(next|prev)' is mandatory"
+summon() {
+  aerospace summon-workspace --fail-if-noop $1
+}
+
+debug "grabbing w1, m1"
+w1=$(aerospace list-workspaces --focused)
+m1=$(aerospace list-monitors --focused | sed -E 's/^(.*) \| .*$/\1/')
+debug "w1: $w1, m1: $m1"
+
+debug "going to m2 (direction $1)"
+aerospace focus-monitor $focus_args $1
+
+debug "grabbing w2"
+w2=$(aerospace list-workspaces --focused)
+debug "w2: $w2"
+
+aerospace workspace $w2
+
+debug "summoning w1: $w1"
+summon $w1 || {
+  echo "ERROR[summon w1]: can't move workspace $w1"
   exit 1
-  ;;
-esac
+}
+debug "summoned w1"
 
-undo=false
-# Get the focused workspace
-focused_workspace=$(aerospace list-workspaces --focused)
+debug "going back to m1: $m1"
+aerospace focus-monitor "$m1"
+debug "focused monitor m1"
 
-# Switch to the other monitor
-# Get the other workspace name
-# Move the other workspace to the originally focused monitor
-aerospace focus-monitor "$wrap_around" "$main_direction"
-other_workspace=$(aerospace list-workspaces --focused)
-aerospace move-workspace-to-monitor "$wrap_around" "$rev_direction" || undo=true
-
-if $undo; then
-  # focus back the original, can't be swapped
-  aerospace focus-monitor "$wrap_around" "$rev_direction"
-  echo "ERROR: can't move workspace $other_workspace"
-  exit 1
-fi
-
-# Go back to the original workspace
-# Move it to the other monitor
-aerospace workspace "$focused_workspace"
-aerospace move-workspace-to-monitor "$wrap_around" "$main_direction" || undo=true
-
-ret=0
-if $undo; then
-  echo "ERROR: can't move workspace $focused_workspace"
-  aerospace workspace "$other_workspace"
-  aerospace move-workspace-to-monitor "$wrap_around" "$main_direction"
-  ret=1
-else
-  # Focus other workspaces so it's in the foreground
-  aerospace workspace "$other_workspace"
-fi
-
-# Focus the original workspace so it ends focused
-aerospace workspace "$focused_workspace"
-exit $ret
+debug "summoning w2: $w2"
+summon $w2 || {
+  echo "ERROR[summon w2]: can't move workspace $w2"
+  debug "attempting to restore w1"
+  summon $w1 || {
+    echo "ERROR[restore w1]: failed to restore the original layout"
+  }
+}
+debug "summoned w2"
