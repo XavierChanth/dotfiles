@@ -4,6 +4,7 @@
   "baleia.nvim": { "branch": "main", "commit": "880e97c02edf3148ba2bdc6305ac03eb3c3711e0" },
   "blame.nvim": { "branch": "main", "commit": "39bb4cda9e658d053a43919b10ca52c0a4d738e1" },
   "blink.cmp": { "branch": "main", "commit": "dcda20d3aa345025699a920c45b0a0603551f41d" },
+  "bullets.vim": { "branch": "master", "commit": "af7e7adfd0d9b349cd48eb730e337fe3628b12b2" },
   "catppuccin": { "branch": "main", "commit": "c9e205fe035d622b3c2d66ee42edf368c0c31fd5" },
   "conform.nvim": { "branch": "master", "commit": "a6f5bdb78caa305496357d17e962bbc4c0b392e2" },
   "copilot.lua": { "branch": "master", "commit": "30321e33b03cb924fdcd6a806a0dc6fa0b0eafb9" },
