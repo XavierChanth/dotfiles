@@ -52,8 +52,16 @@ sp = ["split"]
 sq = ["squash"]
 nt = ["new", "trunk"]
 
-l10 = ["log", "-r", "ancestors(@, 10)"]
-l20 = ["log", "-r", "ancestors(@, 20)"]
+llog = [
+  "log",
+  "-r",
+  "ancestors(@, 200)",
+  "--color=always",
+  "--config",
+  "template-aliases.'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
+  "--template",
+  "narrow_log_comfortable"
+]
 
 log-watch = [
   "log",
@@ -63,6 +71,10 @@ log-watch = [
   "--template",
   "narrow_log_comfortable"
 ]
+
+[revset-aliases]
+'working(x)' = "all:x+ & mine()"
+'w(x)' = 'working(x)'
 
 [templates]
 log = 'builtin_log_comfortable'
