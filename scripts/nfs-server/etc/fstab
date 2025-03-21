@@ -1,0 +1,2 @@
+# If you are hosting your nfs server in a container on proxmox
+# you must mount the drive from the host, not from in the container

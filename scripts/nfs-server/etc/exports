@@ -1,0 +1,27 @@
+# for a server:
+# /nfs/<dir-name> <host or *>(rw,sync,no_subtree_check)
+#
+# example:
+/nfs/proxmox-nfs *(rw,sync,no_subtree_check)
+
+# for a client (to share with macos / windows):
+# /nfs/<dir-name> <host or *>(rw,sync,no_subtree_check,insecure,all_squash,anonuid=<uid>,anongid=<gid>)
+#
+# notes:
+# make sure to create a non-root user, and uid/gid must match anon above
+# macos is easy, just put the server/path in finder:
+# e.g. nfs://<nfs-host>/nfs/shared-drive
+#
+# windows is pain, see the nfs.bat script in the windows/ dir
+# For windows you also need to install NFS Client from optional features
+#
+# example:
+/nfs/shared-drive *(rw,sync,no_subtree_check,insecure,all_squash,anonuid=1000,anongid=1000)
+
+# Other setup information:
+#
+# packages which need to be installed:
+# apt install nfs-kernel-server
+#
+# after changing the config export the filesystem again:
+# exportfs -a

@@ -1,0 +1,17 @@
+---
+services:
+  soft-serve:
+    image: charmcli/soft-serve:latest
+    container_name: soft-serve
+    volumes:
+      # /mnt/data is the mounted drive which stores the soft-serve repos & other data
+      - /mnt/data:/soft-serve
+    ports:
+      - 222:23231
+      - 80:23232
+      - 23233:23233
+      - 9418:9418
+    environment:
+      SOFT_SERVE_INITIAL_ADMIN_KEYS: "<Your SSH Public Key goes here>"
+      SOFT_SERVE_NAME: "Xavier's soft serve"
+    restart: unless-stopped
