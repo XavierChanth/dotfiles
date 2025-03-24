@@ -16,25 +16,21 @@ if command_exists brew; then
     brew install mas
   fi
 
-  # qutebrowser and dependencies
-  brew install mpv qutebrowser
-
   # desktop tools & ricing
   brew tap felixkratz/formulae
   brew install aerospace sketchybar
-  brew install dmenu-mac bitwarden-cli oath-toolkit
 
   # terminal stuff
-  brew install wezterm asciinema neovide
+  brew install ghostty asciinema pandoc
   brew install font-jetbrains-mono-nerd-font
 
   # aerc and dependencies
-  if command_exists aerc; then
-    brew reinstall aerc
-  else
-    brew install aerc --HEAD
-  fi
-  brew install abook pandoc msmtp isync notmuch
+  # if command_exists aerc; then
+  #   brew reinstall aerc
+  # else
+  #   brew install aerc --HEAD
+  # fi
+  # brew install abook pandoc msmtp isync notmuch
   # brew services start isync # we will let aerc manage syncing
 
   # presentations

@@ -1,4 +1,3 @@
-abook
 aerc
 agg
 asciinema
@@ -6,13 +5,11 @@ bash
 bat
 btop
 caddy
-chase/tap/awrit
 cmake
 cmatrix
 coreutils
 fastfetch
 fd
-felinks
 felixkratz/formulae/borders
 felixkratz/formulae/sketchybar
 ffmpegthumbnailer
@@ -28,10 +25,9 @@ go
 grep
 gum
 htop
-hwatch
 imagemagick
 include-what-you-use
-isync
+iperf3
 jj
 jq
 just
@@ -40,7 +36,6 @@ libsixel
 mas
 moreutils
 mpv
-msmtp
 neovim
 ninja
 nmap
