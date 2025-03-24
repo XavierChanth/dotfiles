@@ -136,11 +136,12 @@ brew)
 
   case "$(uname)" in
   Darwin)
-    brew install dotnet-sdk \
+    # brew install dotnet-sdk
+    brew install \
       quarto
     ;;
   Linux)
-    brew install dotnet
+    # brew install dotnet
     ;;
   esac
   ;;
@@ -162,8 +163,8 @@ dnf)
     fd \
     ImageMagick \
     parallel \
-    poppler-utils \
-    dotnet-sdk-9.0
+    poppler-utils
+  # sudo dnf install -y dotnet-sdk-9.0
 
   cargo binstall --disable-telemetry -y \
     --strategies crate-meta-data,quick-install,compile \

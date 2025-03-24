@@ -19,21 +19,15 @@ function _stow() {
   stow -d "$DOTFILES/dotfiles/dot-config" -t "$dest" "$name"
 }
 
-install_launchd_daemon() {
-  dir=$1
-  file=$2
-  sudo cp "$dir/$file" /Library/LaunchDaemons/
-  sudo launchctl unload "/Library/LaunchDaemons/$file" 2>/dev/null
-  sudo launchctl load "/Library/LaunchDaemons/$file"
-}
-
 # MacOS
 if [ "$(uname)" = 'Darwin' ]; then
   _stow "$HOME/Library/Application Support/Code/User" "vscode"
   _stow "$HOME/Library/Application Support/VSCodium/User" "vscode"
   _stow "$HOME/Library/Application Support/presenterm" "presenterm"
   _stow "$HOME/Library/Preferences/clangd" "clangd"
-  install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.karabiner.plist"
-  install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.kanata.plist"
 fi
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+"$script_dir"/restart-kanata
+
 unset _stow
