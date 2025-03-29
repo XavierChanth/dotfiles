@@ -1,25 +1,8 @@
-local diagnostic_icons = {
-  [vim.diagnostic.severity.ERROR] = " ",
-  [vim.diagnostic.severity.WARN] = " ",
-  [vim.diagnostic.severity.HINT] = " ",
-  [vim.diagnostic.severity.INFO] = " ",
-}
 return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
     opts = {
-      diagnostics = {
-        update_in_insert = false,
-        underline = true,
-        virtual_text = {
-          spacing = 4,
-          prefix = function(diagnostic)
-            return diagnostic_icons[diagnostic.severity]
-          end,
-        },
-        severity_sort = true,
-      },
       inlay_hints = { enabled = false },
       codelens = { enabled = false },
       capabilities = {
@@ -140,7 +123,7 @@ return {
           end
 
           -- Setup highlight groups when the cursor stops
-          if client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+          if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
               buffer = event.buf,

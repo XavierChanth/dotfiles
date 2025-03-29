@@ -1,13 +1,15 @@
+vim.diagnostic.config({
+  virtual_lines = true,
+  update_in_insert = false,
+  underline = true,
+})
+
 return {
   {
     "folke/trouble.nvim",
     cmd = { "Trouble" },
     opts = {
-      modes = {
-        lsp = {
-          win = { position = "right" },
-        },
-      },
+      auto_preview = false,
     },
     keys = {
       { "<leader>x", "", desc = "+diagnostics" },
@@ -24,9 +26,6 @@ return {
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
     },
-    init = function()
-      vim.g.trouble_lualine = true
-    end,
   },
   {
     "folke/todo-comments.nvim",
@@ -40,15 +39,6 @@ return {
       },
       { "<leader>st", "<cmd>TodoFzfLua<cr>", desc = "Todo" },
       { "<leader>sT", "<cmd>TodoFzfLua keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
-      {
-        "<leader>k",
-        function()
-          vim.diagnostic.open_float({
-            border = "rounded",
-          })
-        end,
-        desc = "Show diagnostic",
-      },
     },
     opts = {
       -- Had to override all of them so I could add highlighting to plurals
