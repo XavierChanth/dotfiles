@@ -24,4 +24,4 @@ tmux movew -b -t :2
 tmux selectw -t :2
 
 # set a hook to clean up after
-tmux set-hook -w pane-exited kill-window
+tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+name="jj-term"
+
+existing="$(tmux lsw -f $name -F "#{window_id}" -f "#{==:#W,$name}")"
+tmux lsp -t "$existing" -F "#{pane_current_command}" | grep -qv "^watch$" || tmux killw -t "$existing"

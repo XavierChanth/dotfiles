@@ -27,7 +27,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   _stow "$HOME/Library/Preferences/clangd" "clangd"
 fi
 
-script_dir="$(dirname -- "$(readlink -f -- "$0")")"
-"$script_dir"/restart-kanata
+# script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+# "$script_dir"/restart-kanata
 
 unset _stow
