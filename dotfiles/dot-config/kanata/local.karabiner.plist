@@ -10,7 +10,7 @@
     <key>RunAtLoad</key>
     <true />
     <key>KeepAlive</key>
-    <true/>
+    <false/>
     <key>StandardOutPath</key>
     <string>/tmp/karabiner.stdout</string>
     <key>StandardErrorPath</key>
