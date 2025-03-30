@@ -6,13 +6,13 @@ function M.ensure_installed(spec)
   local lazy_spec = {}
   -- Plugins with an ensure installed tag can concatenated into a single array
   -- which will be the resolved in the final opts
-  local index = {
+  local ensure_mappings = {
     treesitter = "nvim-treesitter",
     -- conform = "mason-conform",
     -- lsp = "mason-lspconfig.nvim",
     -- lint = "mason-nvim-lint",
   }
-  for key, plugin in pairs(index) do
+  for key, plugin in pairs(ensure_mappings) do
     if spec[key] ~= nil then
       lazy_spec[#lazy_spec + 1] = {
         plugin,
