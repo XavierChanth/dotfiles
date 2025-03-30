@@ -36,9 +36,6 @@ vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", {
 
 vim.lsp.inlay_hint.enable(false)
 
--- TODO - migrate lang directory
--- TODO - review blink
-
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(event)
     -- Default Keymaps
@@ -159,5 +156,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
   end,
 })
+
+vim.api.nvim_create_user_command("LspInfo", ":che vim.lsp", { desc = "Show LspInfo" })
+vim.api.nvim_create_user_command("LspRestart", function(_)
+  vim.lsp.stop_client(vim.lsp.get_clients())
+  vim.cmd("edit")
+end, {})
 
 return {}

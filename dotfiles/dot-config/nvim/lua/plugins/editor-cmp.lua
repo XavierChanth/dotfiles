@@ -17,10 +17,7 @@ return {
         },
       },
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
-        per_filetype = {
-          lsp = { "LazyDev", "path", "snippets", "buffer" },
-        },
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
         providers = {
           -- copilot = {
           --   name = "copilot",
@@ -37,7 +34,7 @@ return {
           lsp = { score_offset = 50 },
           buffer = { score_offset = 30 },
           path = { score_offset = 10 },
-          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", fallbacks = "lsp" },
+          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 60 },
         },
       },
       appearance = {

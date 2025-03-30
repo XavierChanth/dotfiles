@@ -27,7 +27,7 @@ return {
     },
   },
 
-  on_attach = function(client, event)
+  on_attach = function(client, buf)
     client.config.settings.dart.lineLength = 80
     vim.keymap.set("n", "<leader>ct", function()
       local mode
@@ -40,7 +40,7 @@ return {
       vim.notify("Toggled root mode to: " .. mode)
       vim.cmd("LspRestart")
     end, {
-      buffer = event.buf,
+      buffer = buf,
       desc = "DartLS toggle root mode",
     })
 
