@@ -94,7 +94,8 @@ alt-shift-enter = [
 
 # Go to workspace + app
 alt-t = ['workspace 3', 'exec-and-forget open -a /Applications/Ghostty.app']
-alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Orion.app']
+# alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Orion.app']
+alt-b = ['workspace 2', 'exec-and-forget open -a /Applications/Zen\ Browser.app']
 alt-v = ['workspace 2', 'exec-and-forget open -a /Applications/zoom.us.app']
 alt-p = ['workspace 1', 'exec-and-forget open -a /Applications/KeePassXC.app']
 

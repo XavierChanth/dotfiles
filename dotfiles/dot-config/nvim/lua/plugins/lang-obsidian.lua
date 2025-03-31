@@ -5,14 +5,6 @@ end
 
 return {
   {
-    "folke/which-key.nvim",
-    opts = function(_, opts)
-      opts.spec = opts.spec or {}
-      table.insert(opts.spec, { "<leader>n", group = "+notes", icon = "󱞁 " })
-      return opts
-    end,
-  },
-  {
     "epwalsh/obsidian.nvim",
     keys = {
       {

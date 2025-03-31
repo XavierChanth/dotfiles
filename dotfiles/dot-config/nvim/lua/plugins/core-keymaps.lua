@@ -131,6 +131,9 @@ return {
 
         -- Better descriptions
         { "gx", desc = "Open with system app" },
+
+        -- Other things
+        { "<leader>n", group = "+notes", icon = "󱞁 " },
       },
     },
   },
