@@ -1,5 +1,6 @@
 ---@class util
 ---@field ansi_colors util.ansi_colors
+---@field clangd util.clangd
 ---@field colorscheme util.colorscheme
 ---@field git util.git
 ---@field ipynb util.ipynb
