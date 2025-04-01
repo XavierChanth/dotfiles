@@ -31,7 +31,7 @@ inherit-env-vars = true
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin/:${PATH}'
 
 [[on-window-detected]] # Make these apps floating
-if.app-name-regex-substring = '^mpv$|^KeePassXC$'
+if.app-name-regex-substring = '^mpv$|^KeePassXC$|^The Unarchiver$'
 run = "layout floating"
 
 [[on-window-detected]] # Firefox (and friends) Picture-in-Picture floats

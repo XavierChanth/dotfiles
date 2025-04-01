@@ -13,7 +13,9 @@ is_debug=false
 focus_args=''
 while [ $# -gt 1 ]; do
   case "$1" in
-  --debug) is_debug=true ;;
+  --debug)
+    is_debug=true
+    ;;
   --wrap-around) focus_args=' --wrap-around' ;;
   *) {
     usage
@@ -24,11 +26,11 @@ while [ $# -gt 1 ]; do
 done
 
 debug() {
-  $is_debug && echo "$@" >>/tmp/aerowrap
+  $is_debug && echo "$@" | tee -a /tmp/aerowrap
 }
 
 summon() {
-  aerospace summon-workspace --fail-if-noop $1
+  aerospace summon-workspace --fail-if-noop "$1"
 }
 
 debug "grabbing w1, m1"
@@ -41,12 +43,16 @@ aerospace focus-monitor $focus_args $1
 
 debug "grabbing w2"
 w2=$(aerospace list-workspaces --focused)
-debug "w2: $w2"
-
-aerospace workspace $w2
+m2=$(aerospace list-monitors --focused)
+debug "w2: $w2, m2: $m2"
 
 debug "summoning w1: $w1"
 summon $w1 || {
+  echo "ERROR[summon w1]: can't move workspace $w1"
+  exit 1
+}
+# patch since for some reason this isn't always moved
+aerospace move-workspace-to-monitor --workspace $w1 $m2 || {
   echo "ERROR[summon w1]: can't move workspace $w1"
   exit 1
 }

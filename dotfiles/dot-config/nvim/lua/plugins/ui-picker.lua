@@ -21,6 +21,8 @@ return {
     {
       "<leader><space>",
       function()
+        -- Snacks.picker.smart({})
+        --
         if Snacks.git.get_root() then
           return Snacks.picker.git_files({ untracked = true })
         end
