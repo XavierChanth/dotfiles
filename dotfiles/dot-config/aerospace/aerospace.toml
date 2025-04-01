@@ -30,8 +30,8 @@ inherit-env-vars = true
 [exec.env-vars]
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin/:${PATH}'
 
-[[on-window-detected]] # mpv windows are buggy when working with multiple monitors
-if.app-name-regex-substring = '^mpv$'
+[[on-window-detected]] # Make these apps floating
+if.app-name-regex-substring = '^mpv$|^KeePassXC$'
 run = "layout floating"
 
 [[on-window-detected]] # Firefox (and friends) Picture-in-Picture floats
@@ -39,7 +39,7 @@ if.app-name-regex-substring = '^LibreWolf$|^Firefox$|^Zen$'
 if.window-title-regex-substring = '^Picture-in-Picture$'
 run = "layout floating"
 
-[[on-window-detected]] # Firefox (and friends) Picture-in-Picture floats
+[[on-window-detected]] # Lulu Alerts floating
 if.app-name-regex-substring = '^LuLu$'
 if.window-title-regex-substring = '^LuLu Alert$'
 run = "layout floating"
@@ -51,11 +51,6 @@ if.during-aerospace-startup = true
 check-further-callbacks = true
 run = 'move-node-to-workspace 4'
 
-[[on-window-detected]] # Notion on 1
-if.app-name-regex-substring = '^Notion$|^Notion Calendar$'
-if.during-aerospace-startup = true
-run = 'move-node-to-workspace 1'
-
 [[on-window-detected]] # Browsers and Zed on 2
 if.app-name-regex-substring = '^Zed$|^qutebrowser$|^LibreWolf$|^Firefox$|^Zen$|^Safari$|^Orion$'
 if.during-aerospace-startup = true
@@ -65,7 +60,6 @@ run = 'move-node-to-workspace 2'
 if.app-name-regex-substring = '^alacritty$|^WezTerm$|^wezterm-gui$|^Ghostty$'
 if.during-aerospace-startup = true
 run = 'move-node-to-workspace 3'
-
 
 [mode.main.binding]
 # General bindings
