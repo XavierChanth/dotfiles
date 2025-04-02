@@ -60,8 +60,7 @@ set -eux
   bookmarks=$(jj bookmark list -r $1 -T 'if(remote == "", name ++ " ")')
   jj restore --from $1
   jj abandon $1
-  change_id=$(jj bookmark list -r $1 -T 'normal_target.change_id()')
-  jj bookmark set --allow-backwards -r "$1-" 
+  jj bookmark set --allow-backwards -r "@-" $bookmarks
 """, ""]
 
 review = ["util", "exec", "--", "/bin/sh", "-c", """
