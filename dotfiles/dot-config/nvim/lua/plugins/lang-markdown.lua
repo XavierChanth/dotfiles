@@ -81,6 +81,8 @@ return {
     ft = "markdown",
     config = function()
       vim.g.bullets_enabled_file_types = { "markdown" }
+      vim.g.bullets_outline_levels = { "num", "abc", "std-" }
+      vim.g.bullets_checkbox_markers = " x"
     end,
   },
 }
