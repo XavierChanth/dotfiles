@@ -9,6 +9,8 @@ install_launchd_daemon() {
 }
 
 if [ "$(uname)" = 'Darwin' ]; then
-  install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.karabiner.plist"
+  # install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.karabiner.plist"
+  install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.karabiner-daemon.plist"
+  install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.karabiner-manager.plist"
   install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.kanata.plist"
 fi

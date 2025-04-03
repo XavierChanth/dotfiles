@@ -14,7 +14,7 @@
       <string>/Users/chant/.config/kanata/internal.kbd</string>
     </array>
     <key>RunAtLoad</key>
-    <false />
+    <true />
     <key>KeepAlive</key>
     <true/>
     <key>StandardOutPath</key>
