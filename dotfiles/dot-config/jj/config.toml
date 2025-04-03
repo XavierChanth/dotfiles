@@ -93,7 +93,7 @@ log-watch = [
 ]
 
 [revset-aliases]
-'working(x)' = "all:x+ & mine()"
+'working(x)' = "all:x+ & mine() & mutable()"
 'w(x)' = 'working(x)'
 
 [templates]
