@@ -1,6 +1,7 @@
 return {
   Util.packages.ensure_installed({
     mason = {
+      "asm-lsp",
       "basedpyright",
       "clangd",
       "csharp_ls",
@@ -12,6 +13,7 @@ return {
       "goimports",
       "gopls",
       "hadolint",
+      "jsonlsp",
       "lua_ls",
       "neocmake",
       "omnisharp",
