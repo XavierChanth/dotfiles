@@ -9,3 +9,4 @@ CompileFlags:
     - "-Wextra"
     - "-Werror"
     - "-Werror-implicit-function-declaration"
+    - "-xc-header"

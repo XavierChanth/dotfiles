@@ -18,6 +18,12 @@ vim.lsp.enable({
   "zls",
 })
 
+vim.api.nvim_create_user_command("LspInfo", ":che vim.lsp", { desc = "Show LspInfo" })
+vim.api.nvim_create_user_command("LspRestart", function(_)
+  vim.lsp.stop_client(vim.lsp.get_clients())
+  vim.cmd("edit")
+end, {})
+
 vim.lsp.config("*", {
   capabilities = {
     workspace = {
@@ -156,11 +162,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
   end,
 })
-
-vim.api.nvim_create_user_command("LspInfo", ":che vim.lsp", { desc = "Show LspInfo" })
-vim.api.nvim_create_user_command("LspRestart", function(_)
-  vim.lsp.stop_client(vim.lsp.get_clients())
-  vim.cmd("edit")
-end, {})
 
 return {}

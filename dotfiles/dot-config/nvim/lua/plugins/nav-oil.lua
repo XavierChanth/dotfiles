@@ -40,6 +40,27 @@ return {
         ["q"] = "actions.close",
         ["<backspace>"] = "actions.parent",
         ["<CR>"] = "actions.select",
+        ["<leader><CR>"] = {
+          callback = function()
+            local augroup = vim.api.nvim_create_augroup("oil-open-all", { clear = true })
+            vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+              group = augroup,
+              callback = function()
+                vim.api.nvim_del_augroup_by_id(augroup)
+                local timer = vim.uv.new_timer()
+                timer:start(
+                  10,
+                  0,
+                  vim.schedule_wrap(function()
+                    vim.cmd("cclose")
+                    vim.cmd("ldo e %")
+                  end)
+                )
+              end,
+            })
+            require("oil.actions").send_to_loclist.callback()
+          end,
+        },
         ["<C-r>"] = "actions.refresh",
         ["H"] = "actions.toggle_hidden",
         ["g?"] = "actions.show_help",

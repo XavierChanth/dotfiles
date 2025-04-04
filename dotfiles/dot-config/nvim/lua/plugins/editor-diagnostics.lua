@@ -1,8 +1,17 @@
+local virtual_lines_enabled = false
 vim.diagnostic.config({
-  virtual_lines = true,
-  update_in_insert = false,
+  virtual_lines = virtual_lines_enabled,
+  update_in_insert = not virtual_lines_enabled,
   underline = true,
 })
+
+vim.keymap.set("n", "<leader>xv", function()
+  virtual_lines_enabled = not virtual_lines_enabled
+  vim.diagnostic.config({
+    virtual_lines = virtual_lines_enabled,
+    update_in_insert = not virtual_lines_enabled,
+  })
+end, { desc = "Diagnostics: Toggle Virtual Lines" })
 
 return {
   {
