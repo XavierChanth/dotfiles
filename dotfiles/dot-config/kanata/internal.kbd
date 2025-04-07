@@ -34,10 +34,10 @@
     s (tap-hold-release $tap_time $hold_time s lsft)
     d (tap-hold-release $tap_time $hold_time d lalt)
     f (tap-hold-release $tap_time $hold_time f lmet)
-    j (tap-hold-release $tap_time $hold_time j lmet)
-    k (tap-hold-release $tap_time $hold_time k lalt)
-    l (tap-hold-release $tap_time $hold_time l lsft)
-    ; (tap-hold-release $tap_time $hold_time ; lctl)
+    j (tap-hold-release $tap_time $hold_time j rmet)
+    k (tap-hold-release $tap_time $hold_time k ralt)
+    l (tap-hold-release $tap_time $hold_time l rsft)
+    ; (tap-hold-release $tap_time $hold_time ; rctl)
 )
 
 
