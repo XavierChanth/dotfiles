@@ -78,8 +78,8 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
 -- MOVE LINES (visual mode)
-map("v", "J", ":m '>+1<cr>gv=gv", { noremap = true, desc = "Move selected lines down" })
-map("v", "K", ":m '<-2<cr>gv=gv", { noremap = true, desc = "Move selected lines up" })
+-- map("v", "J", ":m '>+1<cr>gv=gv", { noremap = true, desc = "Move selected lines down" })
+-- map("v", "K", ":m '<-2<cr>gv=gv", { noremap = true, desc = "Move selected lines up" })
 
 -- INDENTATION
 local spaces = { 2, 4, 8 }

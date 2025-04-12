@@ -34,6 +34,15 @@ return {
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      {
+        "<leader>cd",
+        function()
+          vim.diagnostic.open_float({
+            border = "rounded",
+          })
+        end,
+        desc = "Diagnostics (Line)",
+      },
     },
   },
   {

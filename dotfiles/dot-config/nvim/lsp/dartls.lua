@@ -45,27 +45,27 @@ return {
     })
 
     -- Detect if this package is published, if not, set line length to 120
-    if client and client.config and client.config.root_dir then
-      local pubspec_file = client.config.root_dir .. "/pubspec.yaml"
-      local file = io.open(pubspec_file, "r")
-      if file ~= nil then
-        ---@type string | nil
-        local line = ""
-        while line do
-          line = file:read("*L")
-          if line ~= nil then
-            local _, pos = line:find("publish_to:", 1, true)
-            if pos ~= nil then
-              if line:find("['\"%s]?none['\"%s]", pos) ~= nil then
-                client.config.settings.dart.lineLength = 120
-              end
-              line = nil
-            end
-          end
-        end
-        file:close()
-      end
-    end
+    -- if client and client.config and client.config.root_dir then
+    --   local pubspec_file = client.config.root_dir .. "/pubspec.yaml"
+    --   local file = io.open(pubspec_file, "r")
+    --   if file ~= nil then
+    --     ---@type string | nil
+    --     local line = ""
+    --     while line do
+    --       line = file:read("*L")
+    --       if line ~= nil then
+    --         local _, pos = line:find("publish_to:", 1, true)
+    --         if pos ~= nil then
+    --           if line:find("['\"%s]?none['\"%s]", pos) ~= nil then
+    --             client.config.settings.dart.lineLength = 120
+    --           end
+    --           line = nil
+    --         end
+    --       end
+    --     end
+    --     file:close()
+    --   end
+    -- end
 
     if not flutter_root then
       flutter_root = require("os").getenv("FLUTTER_ROOT")
