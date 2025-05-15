@@ -13,6 +13,7 @@ vim.lsp.enable({
   "omnisharp",
   "ruff",
   "rust_analyzer",
+  "sourcekit",
   "svelte",
   "tailwindcss",
   "vtsls",
