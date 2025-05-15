@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# TODO install:
+# - fd
+# - jj
+# - hwatch
+# - yazi
+# - imagemagick
+PACKAGES=$(
+  cat <<EOF
+  zsh
+  zsh-syntax-highlighting
+  bash
+  coreutils
+  moreutils
+  openssl
+  wget
+  tmux
+  neovim
+  ripgrep
+  fzf
+  git
+  git-delta
+  bat
+  stow
+  golang
+  rust
+  uv
+  python
+  gcc
+  cmake
+  ninja
+  zig
+  rust-analyzer
+  node
+  gh
+  jq
+  tokei
+  ffmpegthumbnailer
+  unar
+  poppler
+  just
+  libssl-dev
+  openssl
+  pkg-config
+  build-essential
+EOF
+)
+export PACKAGES

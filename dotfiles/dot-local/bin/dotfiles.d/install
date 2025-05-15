@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
+install_desktop=false
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --desktop)
+    install_desktop=true
+    shift
+    ;;
+  *)
+    echo "Unknown option: $1"
+    exit 1
+    ;;
+  esac
+done
+
 # brew && fedora 41
 PACKAGES=$(
   cat <<EOF
@@ -78,18 +92,23 @@ if ! command_exists git; then
   exit 1
 fi
 
+platform=""
+
 case "$(uname)" in
 Darwin)
   $script_dir/configure-macos
   brew_path=/opt/homebrew/bin/brew
+  platform="macos"
   ;;
 Linux)
-  case "$(uname -m)" in
-  aarch64)
-    brew_path=''
+  brew_path=""
+  case "$(source /etc/os-release && echo $ID)" in
+  ubuntu | fedora | arch)
+    platform="$ID"
     ;;
-  arm64 | x64_86)
-    brew_path=/home/linuxbrew/.linuxbrew/bin/brew
+  *)
+    echo "Distro not supported"
+    exit 1
     ;;
   esac
   ;;
@@ -105,74 +124,49 @@ else
   echo "not installing brew - unsupported"
 fi
 
-if [ -n "$brew_path" ]; then
-  pkg="brew"
-else
-  case "$(source /etc/os-release && echo $ID)" in
-  ubuntu)
-    pkg="apt"
-    ;;
-  fedora)
-    pkg="dnf"
-    ;;
-  esac
-fi
-
 (curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
 
-case "$pkg" in
-brew)
+source "$scriptdir/packages/$platform"
+case "$platform" in
+macos)
   brew analytics off
-
-  if [ "$(uname)" = 'Darwin' ]; then
-    brew install orbstack
+  brew install $PACAKGES
+  if $install_desktop; then
+    brew tap $DESKTOP_TAPS
+    brew install $DESKTOP_PACKAGES
   fi
-  brew install $PACKAGES \
-    fd \
-    jj \
-    imagemagick \
-    hwatch \
-    yazi
-
-  case "$(uname)" in
-  Darwin)
-    # brew install dotnet-sdk
-    brew install \
-      quarto
-    ;;
-  Linux)
-    # brew install dotnet
-    ;;
-  esac
   ;;
-apt)
+ubuntu)
   sudo -v
-  sudo apt install $LIGHT_PACKAGES
-  sudo apt install -y libssl-dev openssl pkg-config build-essential
-  # TODO install:
-  # - fd
-  # - jj
-  # - hwatch
-  # - yazi
-  # - imagemagick
+  sudo apt-get install -y $PACKAGES
   ;;
-dnf)
+fedora)
   sudo -v
-  sudo dnf install -y $LIGHT_PACKAGES \
-    cargo \
-    fd \
-    ImageMagick \
-    parallel \
-    poppler-utils
-  # sudo dnf install -y dotnet-sdk-9.0
+  sudo dnf install -y $PACKAGES
 
   cargo binstall --disable-telemetry -y \
     --strategies crate-meta-data,quick-install,compile \
-    jj-cli \
-    yazi-fm \
-    yazi-cli \
-    hwatch
+    $CARGO_PACKAGES
   ;;
+pacman)
+  sudo -v
+  sudo pacman -S --needed git base-devel
+
+  # setup yay for access to aur
+  (
+    mkdir ~/.local/dev
+    git clone https://aur.archlinux.org/yay.git ~/.local/dev/yay
+    cd ~/.local/dev/yay || exit 1
+    makepkg -si
+  )
+
+  yay -S $PACKAGES
+
+  if $install_desktop; then
+    yay -S $DESKTOP_PACKAGES
+  fi
+  ;;
+
 esac
 
 # install spaceship

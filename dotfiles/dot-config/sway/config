@@ -1,0 +1,134 @@
+# Setup keyboard defaults
+input "type:keyboard" {
+  xkb_layout us
+    xkb_variant ,nodeadkeys
+    xkb_options grp:alt_shift_toggle
+}
+
+# Trackpad config
+input "type:touchpad" {
+  tap enabled
+  natural_scroll enabled
+  dwt enabled # disable while typing
+  accel_profile "flat" # disable accel
+  pointer_accel 0.5 # sensitivity
+}
+
+# Enable clamshell mode
+set $builtin_display "eDP-1"
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+
+# Configure display scaling
+output eDP1 res 2880x1920
+
+
+
+# Keybinds
+# Handle power button to lock instead of shutdown
+bindcode 124 exec swaylock  # 124 is usually the power button code
+
+# Auto lock on lid close without external display
+exec_always ~/.config/sway/scripts/lidlock.sh
+
+# Sleep/hibernate when locked after timeout
+exec swayidle -w \
+    timeout 300 'swaylock -f' \
+    timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    timeout 900 'systemctl suspend' \
+    before-sleep 'swaylock -f' \
+    lock 'swaylock -f'
+# TODO: autolock if lid is closed without external display
+# TODO: sleep/hibernate when locked after X seconds/minutes
+
+# Default mod key (Alt)
+set $mod Mod1
+
+# Set basic properties
+font pango:monospace 10
+floating_modifier $mod
+
+# Startup executions
+# exec ~/.local/bin/aerospace-util startup
+# exec_always "pkill -f 'sketchybar'; sketchybar"
+
+# Gaps configuration
+gaps inner 8
+gaps outer 8
+smart_gaps on
+
+# Set workspace outputs (monitors)
+workspace 1 output HDMI-A-1  # Assuming secondary is HDMI
+
+# Window rules
+for_window [app_id="mpv|KeePassXC"] floating enable
+for_window [app_id="LibreWolf|Firefox|Zen" title="Picture-in-Picture"] floating enable
+
+# Assign apps to workspaces
+assign [app_id="Zed|qutebrowser|LibreWolf|Firefox|Zen"] workspace number 2
+assign [app_id="alacritty|wezterm|Ghostty"] workspace number 3
+
+# Key bindings
+bindsym $mod+Shift+r reload
+bindsym $mod+s layout splith
+bindsym $mod+f layout tabbed
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+Shift+space move container to output right
+bindsym $mod+space move workspace to output right
+bindsym $mod+r layout default
+bindsym $mod+w kill
+
+# Terminal openers
+bindsym $mod+Return exec ghostty
+bindsym $mod+Shift+Return exec ghostty -e zsh
+
+# Quick app launch bindings
+bindsym $mod+t workspace number 3; exec ghostty
+bindsym $mod+b workspace number 2; exec "zen-browser"
+bindsym $mod+v workspace number 2; exec zoom
+bindsym $mod+p workspace number 1; exec keepassxc
+
+# Focus movement
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Window movement
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Workspace switching
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+
+# Move container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1; workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2; workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3; workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4; workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5; workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6; workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7; workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8; workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9; workspace number 9
+
+# Resizing
+bindsym $mod+Shift+minus resize shrink width 50px
+bindsym $mod+Shift+equal resize grow width 50px
+bindsym $mod+Shift+0 resize set width 50ppt
+
+# Status Bar (sway bar)
+bar {
+    position top
+    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+}

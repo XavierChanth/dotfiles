@@ -7,11 +7,6 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-LIGHT=false
-if [ "$1" = "--light" ]; then
-  LIGHT=true
-fi
-
 check_commands=(
   git
   curl
