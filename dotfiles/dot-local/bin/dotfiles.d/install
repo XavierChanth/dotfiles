@@ -147,7 +147,7 @@ fedora)
     --strategies crate-meta-data,quick-install,compile \
     $CARGO_PACKAGES
   ;;
-pacman)
+arch)
   sudo -v
   sudo pacman -S --needed git base-devel
 

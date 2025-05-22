@@ -24,7 +24,6 @@ output eDP1 res 2880x1920
 
 
 
-# Keybinds
 # Handle power button to lock instead of shutdown
 bindcode 124 exec swaylock  # 124 is usually the power button code
 
@@ -41,6 +40,7 @@ exec swayidle -w \
 # TODO: autolock if lid is closed without external display
 # TODO: sleep/hibernate when locked after X seconds/minutes
 
+# Keybinds
 # Default mod key (Alt)
 set $mod Mod1
 
