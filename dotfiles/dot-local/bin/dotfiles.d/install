@@ -126,7 +126,7 @@ fi
 
 (curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
 
-source "$scriptdir/packages/$platform"
+source "$script_dir/packages/$platform"
 case "$platform" in
 macos)
   brew analytics off
@@ -208,9 +208,5 @@ nvim --headless "+Lazy! sync" +qa
 
 # Do a healthcheck to ensure that everything I want is installed
 
-if ! $LIGHT; then
-  "$script_dir"/check-env
-else
-  "$script_dir"/check-env --light
-fi
+"$script_dir"/check-env
 exit $?
