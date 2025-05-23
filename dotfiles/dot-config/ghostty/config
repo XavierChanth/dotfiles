@@ -20,11 +20,12 @@ background-blur-radius = 20
 # behaviour
 
 title = "Ghostty"
-command = "/opt/homebrew/bin/tmux new -A -s main"
+command = "tmux new -A -s main"
 
 confirm-close-surface = false
 quit-after-last-window-closed = true
 link-url = true
+app-notifications = no-clipboard-copy
 
 # mouse behaviour
 mouse-hide-while-typing = true

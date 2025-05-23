@@ -25,13 +25,15 @@ return {
           "progress",
         },
       },
-      hl = {
+      configs = {
         modes = {
-          normal = "MiniIconsBlue",
-          insert = "MiniIconsGreen",
-          pending = "MiniIconsRed",
-          visual = "MiniIconsPurple",
-          command = "MiniIconsOrange",
+          hl = {
+            normal = "MiniIconsBlue",
+            insert = "MiniIconsGreen",
+            pending = "MiniIconsRed",
+            visual = "MiniIconsPurple",
+            command = "MiniIconsOrange",
+          },
         },
       },
     },

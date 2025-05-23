@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -eux
+
+if [ $UID -ne 0 ]; then
+  echo Running this as root...
+
+  exec sudo DOTFILES="$DOTFILES" "$0" "$@"
+fi
+
+backup_dir="$DOTFILES/etc-backups/$(date -u +%s)"
+mkdir -p "$backup_dir/ly"
+cat /etc/ly/config.ini >"$backup_dir/ly/config.ini"
+rm /etc/ly/config.ini
+
+ln -s "$DOTFILES/linux/etc/ly/config.ini" /etc/ly/config.ini

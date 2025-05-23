@@ -36,6 +36,8 @@ function M.ensure_installed(spec)
           local ok, package = pcall(reg.get_package, id)
           if ok and not package:is_installed() then
             package:install()
+          elseif not ok then
+            print("Failed to retrieve package: " .. id)
           end
         end
       end,

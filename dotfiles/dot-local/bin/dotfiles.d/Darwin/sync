@@ -1,0 +1,22 @@
+#!/bin/sh
+
+_stow() {
+  dest="$1"
+  name="$2"
+  if [ $# -lt 2 ]; then return; fi
+  mkdir -p "$dest"
+  stow -d "$DOTFILES/dotfiles/dot-config" -t "$dest" "$name"
+}
+
+# MacOS
+if [ "$(uname)" = 'Darwin' ]; then
+  _stow "$HOME/Library/Application Support/Code/User" "vscode"
+  _stow "$HOME/Library/Application Support/VSCodium/User" "vscode"
+  _stow "$HOME/Library/Application Support/presenterm" "presenterm"
+  _stow "$HOME/Library/Preferences/clangd" "clangd"
+fi
+
+# script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+# "$script_dir"/restart-kanata
+
+unset _stow

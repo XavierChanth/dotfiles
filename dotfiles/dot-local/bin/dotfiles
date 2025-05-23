@@ -3,6 +3,8 @@
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 scripts_path="$script_dir/dotfiles.d"
 scripts=$(ls -1 "$scripts_path")
+uname=$(uname)
+uname_scripts=$(ls -1 "$scripts_path/$uname")
 
 usage() {
   echo "Usage:"
@@ -10,7 +12,16 @@ usage() {
   echo
   echo "Available commands:"
   for file in $scripts; do
+    if [ -d "$scripts_path/$file" ]; then
+      continue
+    fi
     echo $file
+  done
+  for file in $uname_scripts; do
+    if [ -d "$scripts_path/$uname/$file" ]; then
+      continue
+    fi
+    echo $(basename $file)
   done
 }
 
@@ -26,15 +37,25 @@ main() {
   local found=false
   for file in $scripts; do
     if [ "$command" = "$file" ]; then
+      $scripts_path/$command $@
       found=true
     fi
   done
 
-  if $found; then
-    $scripts_path/$command $@
-  else
-    usage
-    return 1
+  if [ -d $scripts_path/$uname ]; then
+    for file in $uname_scripts; do
+      if [ "$command" = "$file" ]; then
+        $scripts_path/$uname/$command $@
+        found=true
+      fi
+    done
   fi
+
+  if $found; then
+    return 0
+  fi
+
+  usage
+  return 1
 }
 main $@

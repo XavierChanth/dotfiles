@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#golang
+#node
+#gh
+#unar
+#dotnet
+
 PACKAGES=$(
   cat <<EOF
   zsh
@@ -11,13 +17,14 @@ PACKAGES=$(
   wget
   tmux
   neovim
+  tree-sitter
   ripgrep
   fzf
   git
   git-delta
   bat
   stow
-  golang
+  go
   rust
   uv
   python
@@ -26,20 +33,71 @@ PACKAGES=$(
   ninja
   zig
   rust-analyzer
-  node
-  gh
+  nodejs
+  github-cli
   jq
   tokei
   ffmpegthumbnailer
-  unar
   poppler
   just
+  parallel
+  fd
+  quarto-cli-bin
+  yazi
+  imagemagick
+  dotnet-sdk
+  unzip
+  tree
+EOF
+)
+
+CARGO_PACKAGES=$(
+  cat <<EOF
+  jj-cli
 EOF
 )
 
 DESKTOP_PACKAGES=$(
   cat <<EOF
+  polkit
+  pipewire
+  pipewire-pulse
+  wireplumber
+  pavucontrol
+  brightnessctl
+  iwgtk
+  bluez
+  bluez-utils
+  blueman
+
+  waybar
+  xorg-wayland
+  wofi
+  wmenu
+  wlogout
+  satty-git
+
+  sway
+  swaybg
+  swaylock
+  swayidle
+  foot
+
+  kanata-bin
+  ttf-jetbrains-mono-nerd
+
+  ghostty
+  zen-browser-bin
+  firefox
+  google-chrome
+  chromium
+  zoom
+  discord
+  spotify
+  asciinema-git
+  pandoc-bin
+  presenterm-git
 EOF
 )
 
-export PACKAGES DESKTOP_PACKAGES
+export PACKAGES DESKTOP_PACKAGES CARGO_PACKAGES

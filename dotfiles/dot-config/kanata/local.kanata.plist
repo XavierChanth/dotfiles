@@ -11,7 +11,7 @@
     <array>
       <string>/opt/homebrew/bin/kanata</string>
       <string>-c</string>
-      <string>/Users/chant/.config/kanata/internal.kbd</string>
+      <string>/Users/chant/.config/kanata/macos.kbd</string>
       <string>-c</string>
       <string>/Users/chant/.config/kanata/voyager.kbd</string>
     </array>

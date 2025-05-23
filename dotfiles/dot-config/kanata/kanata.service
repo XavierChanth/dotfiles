@@ -1,0 +1,14 @@
+[Unit]
+Description=Kanata keyboard manager
+Documentation=https://github.com/jtroo/kanata
+
+[Service]
+Environment=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin
+Environment=DISPLAY=:0
+Environment=HOME=/home/chant
+Type=simple
+Restart=never
+ExecStart=kanata -c /home/chant/.config/kanata/linux.kbd -c /home/chant/.config/kanata/voyager.kbd
+
+[Install]
+WantedBy=default.target

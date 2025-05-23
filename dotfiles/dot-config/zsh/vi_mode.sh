@@ -48,8 +48,11 @@ function vi-yank {
   zle .vi-yank
   if [ "$(uname)" = 'Darwin' ]; then
     printf "$CUTBUFFER" | pbcopy
-  else
-    printf "$CUTBUFFER" | xclip -i
+  elif [ "$(uname)" = 'Linux' ]; then
+    case "$XDG_SESSION_TYPE" in
+    wayland) printf "$CUTBUFFER" | wl-copy ;;
+    x11) printf "$CUTBUFFER" | xclip -i ;;
+    esac
   fi
   zle -K viins
 }

@@ -9,9 +9,9 @@ fi
 
 backup_dir="$DOTFILES/etc-backups/$(date -u +%s)"
 mkdir -p "$backup_dir"
-cat /etc/pf.conf >"$backup_dir/pc.conf"
+cat /etc/pf.conf >"$backup_dir/pf.conf"
 rm /etc/pf.conf
 
 pfctl -d || true
-ln -s "$DOTFILES/etc/pf.conf" /etc/pf.conf
+ln -s "$DOTFILES/macos/etc/pf.conf" /etc/pf.conf
 pfctl -e -f /etc/pf.conf

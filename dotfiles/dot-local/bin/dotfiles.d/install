@@ -15,44 +15,6 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# brew && fedora 41
-PACKAGES=$(
-  cat <<EOF
-zsh
-zsh-syntax-highlighting
-bash
-coreutils
-moreutils
-openssl
-wget
-tmux
-neovim
-ripgrep
-fzf
-git
-git-delta
-bat
-stow
-golang
-rust
-uv
-python
-gcc
-cmake
-ninja
-zig
-rust-analyzer
-node
-gh
-jq
-tokei
-ffmpegthumbnailer
-unar
-poppler
-just
-EOF
-)
-
 export DOTFILES="$HOME/.dotfiles"
 
 if [ -f /bin/zsh ] && [ "$SHELL" != "/bin/zsh" ]; then
@@ -149,23 +111,40 @@ fedora)
   ;;
 arch)
   sudo -v
-  sudo pacman -S --needed git base-devel
+  if ! command -v yay 2>&1; then
+    # setup yay for access to aur
+    sudo pacman -S --needed git base-devel
+    (
+      mkdir ~/.local/dev
+      git clone https://aur.archlinux.org/yay.git ~/.local/dev/yay
+      cd ~/.local/dev/yay || exit 1
+      makepkg -si
+    )
+  fi
 
-  # setup yay for access to aur
-  (
-    mkdir ~/.local/dev
-    git clone https://aur.archlinux.org/yay.git ~/.local/dev/yay
-    cd ~/.local/dev/yay || exit 1
-    makepkg -si
-  )
+  yay -Sy \
+    --norebuild \
+    --noredownload \
+    --noconfirm \
+    --answerclean=N \
+    --answerdiff=N \
+    $PACKAGES
 
-  yay -S $PACKAGES
+  cargo binstall --disable-telemetry -y \
+    --strategies crate-meta-data,quick-install,compile \
+    $CARGO_PACKAGES
 
+  sudo npm -g install tree-sitter-cli
   if $install_desktop; then
-    yay -S $DESKTOP_PACKAGES
+    yay -Sy \
+      --norebuild \
+      --noredownload \
+      --noconfirm \
+      --answerclean=N \
+      --answerdiff=N \
+      $DESKTOP_PACKAGES
   fi
   ;;
-
 esac
 
 # install spaceship
@@ -178,6 +157,15 @@ git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$H
 if command_exists go; then
   go install github.com/jesseduffield/lazygit@latest
 fi
+
+case "$(uname)" in
+Linux)
+  mkdir -p $HOME/.fonts
+  for font in "$script_dir"/../../../../fonts/**/*.otf; do
+    cp $font $HOME/.local/share/fonts/
+  done
+  ;;
+esac
 
 # Install flutter
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"

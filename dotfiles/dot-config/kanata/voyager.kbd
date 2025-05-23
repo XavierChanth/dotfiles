@@ -1,6 +1,7 @@
 (defcfg
   process-unmapped-keys no
   macos-dev-names-include ("Voyager")
+  linux-dev-names-include ("Voyager")
 )
 
 (defsrc
