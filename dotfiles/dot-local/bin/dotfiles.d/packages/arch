@@ -1,15 +1,10 @@
 #!/bin/sh
 
-#golang
-#node
-#gh
-#unar
-#dotnet
-
 PACKAGES=$(
   cat <<EOF
   zsh
   zsh-syntax-highlighting
+  zsh-completions
   bash
   coreutils
   moreutils
@@ -48,6 +43,13 @@ PACKAGES=$(
   dotnet-sdk
   unzip
   tree
+  unarchiver
+  iperf3
+  nmap
+  traceroute
+  iproute2
+  net-tools
+  tokei-git
 EOF
 )
 
@@ -72,32 +74,58 @@ DESKTOP_PACKAGES=$(
 
   waybar
   xorg-wayland
+  wl-clipboard
   wofi
   wmenu
   wlogout
   satty-git
+  grim
+  slurp
 
   sway
   swaybg
   swaylock
   swayidle
+  swaync
   foot
 
   kanata-bin
   ttf-jetbrains-mono-nerd
+
+  nautilus
+  zathura
+  imv
+  mpv
+
+  obs-studio
+  obs-pipewire-audio-capture
+  obs-backgroundremoval
 
   ghostty
   zen-browser-bin
   firefox
   google-chrome
   chromium
+  brave-bin
   zoom
   discord
   spotify
   asciinema-git
   pandoc-bin
   presenterm-git
+  opensnitch
+  ffmpeg
+  wireshark-cli
+  wireshark-qt
+  termshark
+  qmk
+  steam
+  vlc
+  opensnitch
+  notion-calendar-electron
 EOF
 )
+
+# TODO noports desktop
 
 export PACKAGES DESKTOP_PACKAGES CARGO_PACKAGES

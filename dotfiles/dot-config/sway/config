@@ -2,6 +2,7 @@
 set $mod Alt
 set $mod2 Alt+Shift
 set $mod3 Super
+set $mod4 Super+Control+Alt+Shift
 floating_modifier Super
 
 set $term ghostty
@@ -11,9 +12,10 @@ set $builtin_display "eDP-1"
 
 # Set basic properties
 font pango: JetBrainsMonoNerdFontMono 10
-# Focus borders white instead of blue
-default_border none
+
+# Basic theming
 titlebar_border_thickness 0
+default_border none
 client.focused #ffffff #cccccc #000000
 
 # Setup keyboard defaults
@@ -72,6 +74,7 @@ smart_gaps on
 
 # Window rules
 for_window [app_id="mpv|KeePassXC"] floating enable
+for_window [class="Display"] floating enable
 for_window [app_id="LibreWolf|Firefox|Zen" title="Picture-in-Picture"] floating enable
 
 # Assign apps to workspaces
@@ -148,21 +151,36 @@ bindsym $mod3+v exec wtype -k XF86Paste
 # bindsym $mod3+l exec wtype -M ctrl -k l
 # bindsym $mod3+a exec wtype -M ctrl -k a
 
+
+
 # Media keys binds
-# TODO change pactl to pipewire equivalent
-#    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-#    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-#    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-   # bindsym --locked XF86AudioPrev
-   # bindsym --locked XF86AudioPlay
-   # bindsym --locked XF86AudioNext
+   bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+   bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+   bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+   bindsym --locked XF86AudioPrev exec playerctl play-pause
+   bindsym --locked XF86AudioPlay playerctl prev
+   bindsym --locked XF86AudioNext playerctl next
    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
    # ALT_L+p = F9
    # bindsym --locked XF86RFKILL # F10
-   # bindsym Print exec grim
    # bindsym XF86AudioMedia # F12
 
+# F11 & Screen shots
+   set $satty satty -f - --initial-tool=arrow --copy-command=wl-copy --actions-on-escape="save-to-clipboard,exit" --brush-smooth-history-size=5 --disable-notifications
+   set $printscreen_mode 'printscreen (r:region, f:full, w:window)'
+   mode $printscreen_mode {
+    bindsym r exec swaymsg 'mode "default"' && grim -t ppm -g "$(slurp -d)" - | $satty
+    bindsym f exec swaymsg 'mode "default"' && grim -t ppm - | $satty
+    bindsym w exec swaymsg 'mode "default"' && swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -t ppm -g - - | $satty
+
+       bindsym Return mode "default"
+       bindsym Escape mode "default"
+   }
+bindsym Print mode $printscreen_mode
+bindsym $mod4+2 exec grim -t ppm -g "$(slurp -d)" - | display
+bindsym $mod4+3 exec grim -t ppm - | $satty
+bindsym $mod4+4 exec grim -t ppm -g "$(slurp -d)" - | $satty
 
 ##
 ## Scratchpad:

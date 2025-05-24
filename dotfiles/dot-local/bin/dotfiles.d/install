@@ -6,6 +6,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
   --desktop)
     install_desktop=true
+    echo "Installing desktop packages"
     shift
     ;;
   *)

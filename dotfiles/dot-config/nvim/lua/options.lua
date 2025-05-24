@@ -12,7 +12,6 @@ opt.confirm = true
 -- OS BINDINGS
 opt.clipboard = "unnamedplus"
 if vim.env.SSH_TTY and not vim.env.TMUX then
-  print("NO clipboard")
   opt.clipboard = ""
 end
 opt.grepprg = "rg --vimgrep"
