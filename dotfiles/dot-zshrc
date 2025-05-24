@@ -20,6 +20,11 @@ setopt extended_history
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+if command -v swaylock >/dev/null 2>&1; then
+  alias swaylock='swaylock -p -f -c 000000'
+  alias ls='ls --color=always' # FIXME hack for now
+fi
+
 # Pagers
 export LESS='--mouse'
 if command -v batman >/dev/null 2>&1; then
@@ -37,13 +42,13 @@ fi
 # basic exports
 export LANG="en_US.UTF-8"
 export CLICOLOR=1 # Colored ls output
+export XDG_CONFIG_HOME="$HOME/.config"
 if command -v dircolors 2>&1 >/dev/null; then
   if ! [ -f $XDG_CONFIG_HOME/dircolors ]; then
     dircolors -p >$XDG_CONFIG_HOME/dircolors
   fi
   eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
 fi
-export XDG_CONFIG_HOME="$HOME/.config"
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
 export JJ_CONFIG="$XDG_CONFIG_HOME/jj/config.toml"

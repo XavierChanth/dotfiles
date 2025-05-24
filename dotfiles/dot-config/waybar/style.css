@@ -17,18 +17,17 @@ window#waybar {
 .modules-right {
   background: rgba(0, 0, 8, 0.7);
   margin: 5px 10px;
-  padding: 0 5px;
+  padding: 0;
   border-radius: 15px;
 }
-.modules-left {
-  padding: 0;
-}
+
 .modules-center {
   padding: 0 10px;
 }
 
 #clock,
 #battery,
+#bluetooth,
 #cpu,
 #memory,
 #disk,
@@ -52,6 +51,7 @@ window#waybar {
 
 #clock:hover,
 #battery:hover,
+#bluetooth:hover,
 #cpu:hover,
 #memory:hover,
 #disk:hover,
@@ -67,7 +67,8 @@ window#waybar {
 #scratchpad:hover,
 #power-profiles-daemon:hover,
 #language:hover,
-#mpd:hover {
+#mpd:hover,
+#window:hover {
   background: rgba(26, 27, 38, 0.9);
 }
 

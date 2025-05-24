@@ -16,7 +16,7 @@
 
   # Setup systemd logind behavior
   echo "[Login]" | sudo tee /etc/systemd/logind.conf
-  echo "HandlePowerKey=suspend" | sudo tee -a /etc/systemd/logind.conf
+  echo "HandlePowerKey=ignore" | sudo tee -a /etc/systemd/logind.conf
   echo "HandlePowerKeyLongPress=poweroff" | sudo tee -a /etc/systemd/logind.conf
   echo "IdleAction=suspend" | sudo tee -a /etc/systemd/logind.conf
 

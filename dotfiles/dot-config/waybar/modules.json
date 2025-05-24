@@ -19,22 +19,23 @@
   },
   "bluetooth": {
     "on-click": "blueman-manager",
-    "format-no-controller": "󰂯"
+    "tooltip": true,
+    "tooltip-format": "{controller_alias}"
   },
   "network": {
-    "format-wifi": "  {essid}",
-    "format-ethernet": "󰈀  {ifname}",
+    "format-wifi": " {essid}",
+    "format-ethernet": "󰈀 {ifname}",
     "tooltip-format": "{ifname} via {gwaddr}",
     "format-linked": "{ifname} (No IP)",
     "format-disconnected": "Disconnected ⚠",
     "on-click": "iwgtk"
   },
   "cpu": {
-    "format": "  {usage}%",
+    "format": " {usage}%",
     "tooltip": true
   },
   "memory": {
-    "format": "  {}%",
+    "format": " {}%",
     "tooltip": true
   },
   "temperature": {
@@ -49,11 +50,11 @@
       "warning": 30,
       "critical": 15
     },
-    "format": "{icon}  {capacity}%",
-    "format-full": "{icon}  {capacity}%",
+    "format": "{icon} {capacity}%",
+    "format-full": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
-    "format-alt": "{time}  {icon}",
+    "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
   },
   "clock": {

@@ -71,10 +71,12 @@ DESKTOP_PACKAGES=$(
   bluez
   bluez-utils
   blueman
+  fprintd
 
   waybar
   xorg-wayland
   wl-clipboard
+  wev
   wofi
   wmenu
   wlogout
@@ -84,7 +86,7 @@ DESKTOP_PACKAGES=$(
 
   sway
   swaybg
-  swaylock
+  swaylock-fprintd-git
   swayidle
   swaync
   foot

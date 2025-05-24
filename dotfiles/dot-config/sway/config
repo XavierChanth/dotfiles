@@ -6,7 +6,9 @@ set $mod4 Super+Control+Alt+Shift
 floating_modifier Super
 
 set $term ghostty
+set $browser zen-browser
 set $menu wofi --show run
+set $lock_screen swaylock -p -f -c 000000
 
 set $builtin_display "eDP-1"
 
@@ -48,6 +50,16 @@ bar {
 
 # X compatibility
 xwayland enable
+
+# Lock on idle
+exec swayidle -w \
+  timeout 600 '$lock_screen' \
+  timeout 600 'swaymsg "output * power off"' \
+  before-sleep 'playerctl pause' \
+  before-sleep '$lock_screen' \
+  before-sleep 'swaymsg "output * power off"' \
+  unlock 'swaymsg "output * power on"' \
+  after-resume 'swaymsg "output * power on"'
 
 # Enable clamshell mode (turn off builtin_display when closed)
 bindswitch --reload --locked lid:on output $builtin_display disable
@@ -93,9 +105,10 @@ bindsym $mod+space move workspace to output right
 bindsym $mod+r layout default
 bindsym $mod+w kill
 
-# Terminal openers
+# Apps
 bindsym $mod+Return exec $term
 bindsym $mod2+Return exec $term -e zsh
+bindsym $mod+b exec $browser
 
 # Focus movement
 bindsym $mod+h focus left
@@ -140,11 +153,10 @@ bindsym $mod2+0 resize set width 50ppt
 bindsym $mod3+q kill
 bindsym $mod3+space exec $menu
 
-# TODO make this work - ghostty doesn't recognize
-bindsym $mod3+w exec wtype -k XF86Close
-bindsym $mod3+c exec wtype -k XF86Copy
-bindsym $mod3+x exec wtype -k XF86Cut
-bindsym $mod3+v exec wtype -k XF86Paste
+# bindsym $mod3+w exec wtype -k XF86Close
+# bindsym $mod3+c exec wtype -k XF86Copy
+# bindsym $mod3+x exec wtype -k XF86Cut
+# bindsym $mod3+v exec wtype -k XF86Paste
 # bindsym $mod3+minus exec wtype -k XF86ZoomOut
 # bindsym $mod3+equal exec wtype -k XF86ZoomIn
 # bindsym $mod3+r exec wtype -k XF86Refresh
@@ -154,6 +166,8 @@ bindsym $mod3+v exec wtype -k XF86Paste
 
 
 # Media keys binds
+   bindcode --locked 160 exec wlogout
+   bindsym --locked XF86PowerOff exec $lock_screen
    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
