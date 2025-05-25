@@ -65,6 +65,7 @@ DESKTOP_PACKAGES=$(
   pipewire
   pipewire-pulse
   wireplumber
+  easyeffects
   pavucontrol
   brightnessctl
   iwgtk
@@ -74,9 +75,11 @@ DESKTOP_PACKAGES=$(
   fprintd
 
   waybar
-  xorg-wayland
+  xorg-wayland-hidpi-xprop
   wlroots
+  wlr-randr
   xdg-desktop-portal-wlr
+  xdg-desktop-portal-gtk
   wl-clipboard
   wev
   wofi
@@ -112,9 +115,9 @@ DESKTOP_PACKAGES=$(
   google-chrome
   chromium
   brave-bin
-  onlyoffice-bin
   zoom
-  webcord-bin
+  onlyoffice-bin
+  discord
   spotify
   asciinema-git
   pandoc-bin
@@ -134,4 +137,4 @@ EOF
 
 # TODO noports desktop
 
-export PACKAGES DESKTOP_PACKAGES CARGO_PACKAGES
+export PACKAGES DESKTOP_PACKAGES

@@ -6,7 +6,7 @@ config-file = colorscheme
 # font-size = 18
 
 font-family = "CommitMonoDottedZero"
-font-size = 15.7
+font-size = 15
 adjust-cell-height = 20%
 
 macos-titlebar-style = hidden

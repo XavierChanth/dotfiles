@@ -20,9 +20,11 @@ setopt extended_history
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-if command -v swaylock >/dev/null 2>&1; then
+# sway specific config
+if [ -n "$SWAYSOCK" ]; then
   alias swaylock='swaylock -p -f -c 000000'
-  alias ls='ls --color=always' # FIXME hack for now
+  alias ls='ls --color=always'
+
 fi
 
 # Pagers

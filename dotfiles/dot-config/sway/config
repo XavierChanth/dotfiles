@@ -50,6 +50,8 @@ bar {
 
 # X compatibility
 xwayland enable
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec sleep 10 && xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
 # Lock on idle
 exec swayidle -w \
@@ -70,6 +72,8 @@ output "*" {
 # This will support up to any single hi-dpi display being connected
   scale 2
   pos 1440 0
+  adaptive_sync on
+  subpixel rgb
 }
 
 # Built-in display settings must come after "*"
@@ -183,9 +187,9 @@ bindsym $mod3+space exec $menu
    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-   bindsym --locked XF86AudioPrev exec playerctl play-pause
-   bindsym --locked XF86AudioPlay playerctl prev
-   bindsym --locked XF86AudioNext playerctl next
+   bindsym --locked XF86AudioPrev exec playerctl previous
+   bindsym --locked XF86AudioPlay exec playerctl play-pause
+   bindsym --locked XF86AudioNext exec playerctl next
    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
    # ALT_L+p = F9
