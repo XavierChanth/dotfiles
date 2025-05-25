@@ -75,6 +75,8 @@ DESKTOP_PACKAGES=$(
 
   waybar
   xorg-wayland
+  wlroots
+  xdg-desktop-portal-wlr
   wl-clipboard
   wev
   wofi
@@ -83,6 +85,7 @@ DESKTOP_PACKAGES=$(
   satty-git
   grim
   slurp
+  wf-recorder
 
   sway
   swaybg
@@ -109,8 +112,9 @@ DESKTOP_PACKAGES=$(
   google-chrome
   chromium
   brave-bin
+  onlyoffice-bin
   zoom
-  discord
+  webcord-bin
   spotify
   asciinema-git
   pandoc-bin
