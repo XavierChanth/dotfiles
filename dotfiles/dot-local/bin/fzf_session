@@ -3,11 +3,19 @@
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 source "$script_dir/include.d/tmux_session.sh"
 
+projects_dir=$(
+  { [ -d '/Volumes/xcdata/src' ] && echo '/Volumes/xcdata/src'; } ||
+    { [ -d '/mnt/xcdata/src' ] && echo '/mnt/xcdata/src'; } ||
+    echo "$HOME/src"
+)
+
+echo "$projects_dir"
+
 selected=$(
   (
     # tested find against fd, for a small set of directories like this find is slightly faster
     # now, if you were recursively searching all files, fd wins by a mile
-    find "$HOME/src" -mindepth 0 -maxdepth 2 -type d
+    find "$projects_dir" -mindepth 0 -maxdepth 2 -type d
     # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
     echo "$HOME/.dotfiles"
     echo "main"
