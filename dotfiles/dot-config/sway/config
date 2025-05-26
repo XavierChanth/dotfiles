@@ -51,7 +51,8 @@ bar {
 # X compatibility
 xwayland enable
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-exec sleep 10 && xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+exec sleep 8 && xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+exec_always xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
 # Lock on idle
 exec swayidle -w \
@@ -73,7 +74,10 @@ output "*" {
   scale 2
   pos 1440 0
   adaptive_sync on
-  subpixel rgb
+}
+
+output "BNQ BenQ EX3210U ETR1R00865SL0" {
+  subpixel bgr
 }
 
 # Built-in display settings must come after "*"
@@ -183,7 +187,7 @@ bindsym $mod3+space exec $menu
 
 # Media keys binds
    bindcode --locked 160 exec wlogout
-   bindsym --locked XF86PowerOff exec $lock_screen
+   bindsym --locked XF86PowerOff exec wlogout
    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
