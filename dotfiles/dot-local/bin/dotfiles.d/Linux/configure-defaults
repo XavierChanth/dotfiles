@@ -20,4 +20,6 @@
   echo "HandlePowerKeyLongPress=poweroff" | sudo tee -a /etc/systemd/logind.conf
   echo "IdleAction=suspend" | sudo tee -a /etc/systemd/logind.conf
 
+  echo "[Settings]" | sudo tee /etc/iwd/main.conf
+  echo "AutoConnect=true" | sudo tee -a /etc/iwd/main.conf
 )
