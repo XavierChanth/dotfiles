@@ -1,4 +1,11 @@
 {
+  "sway/workspaces": {
+    "format": "{icon}{name}",
+    "format-icons": {
+      "default": "",
+      "focused": "*"
+    }
+  },
   "wireplumber": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} {volume}%  {format_source}",
@@ -15,7 +22,7 @@
       "car": "",
       "default": ["", "", ""]
     },
-    "on-click": "pavucontrol"
+    "on-click": "pwvucontrol"
   },
   "bluetooth": {
     "on-click": "blueman-manager",
@@ -25,7 +32,7 @@
   "network": {
     "format-wifi": " {essid}",
     "format-ethernet": "󰈀 {ifname}",
-    "tooltip-format": "{ifname} via {gwaddr}",
+    "tooltip-format": "{ifname} via {gwaddr}\nup: {bandwidthUpBytes}\ndown: {bandwidthDownBytes}",
     "format-linked": "{ifname} (No IP)",
     "format-disconnected": "Disconnected ⚠",
     "on-click": "iwgtk"
@@ -60,5 +67,28 @@
   "clock": {
     "format": "{:%Y-%m-%d  %H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon} {text}",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "custom/spacer": {
+    "format": "|"
   }
 }

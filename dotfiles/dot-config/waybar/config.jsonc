@@ -10,12 +10,15 @@
   "modules-center": ["clock"],
   "modules-right": [
     // "idle_inhibitor",
-    "wireplumber",
-    "bluetooth",
-    "network",
     "cpu",
     "memory",
     "temperature",
+    "custom/spacer",
+    "bluetooth",
+    "network",
+    "wireplumber",
+    "custom/spacer",
+    "custom/notification",
     "battery",
   ],
   //Modules configuration

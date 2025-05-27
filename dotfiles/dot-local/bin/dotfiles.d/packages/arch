@@ -64,9 +64,10 @@ DESKTOP_PACKAGES=$(
   polkit
   pipewire
   pipewire-pulse
+  pipewire-alsa
   wireplumber
   easyeffects
-  pavucontrol
+  pwvucontrol
   brightnessctl
   iwgtk
   bluez

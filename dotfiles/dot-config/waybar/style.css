@@ -44,7 +44,8 @@ window#waybar {
 #power-profiles-daemon,
 #language,
 #window,
-#mpd {
+#mpd,
+#custom-notification {
   padding: 0 10px;
   border-radius: 15px;
 }
@@ -68,7 +69,8 @@ window#waybar {
 #power-profiles-daemon:hover,
 #language:hover,
 #mpd:hover,
-#window:hover {
+#window:hover,
+#custom-notification:hover {
   background: rgba(26, 27, 38, 0.9);
 }
 

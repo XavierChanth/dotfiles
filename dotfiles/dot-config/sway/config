@@ -7,7 +7,7 @@ floating_modifier Super
 
 set $term ghostty
 set $browser zen-browser
-set $menu wofi --show run
+set $menu source ~/.swayenv && wofi --show run
 set $lock_screen swaylock -p -f -c 000000
 
 set $builtin_display "eDP-1"
@@ -25,7 +25,7 @@ input "type:keyboard" {
   xkb_layout us
     xkb_variant ,nodeadkeys
   repeat_delay 225
-  repeat_rate 30
+  repeat_rate 40
 }
 
 # Trackpad config
@@ -35,11 +35,11 @@ input "type:touchpad" {
   scroll_factor 0.5
   dwt enabled # disable while typing
   # With acceleration
-  # accel_profile "adaptive"
-  # pointer_accel 0.2
+  accel_profile "adaptive"
+  pointer_accel 0.35
   # No acceleration
-  accel_profile "flat"
-  pointer_accel 0.7
+  # accel_profile "flat"
+  # pointer_accel 0.7
 }
 focus_follows_mouse no
 
@@ -51,18 +51,19 @@ bar {
 # X compatibility
 xwayland enable
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-exec sleep 8 && xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+exec sleep 10 && xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 exec_always xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
-# Lock on idle
-exec swayidle -w \
-  timeout 600 '$lock_screen' \
-  timeout 600 'swaymsg "output * power off"' \
-  before-sleep 'playerctl pause' \
-  before-sleep '$lock_screen' \
-  before-sleep 'swaymsg "output * power off"' \
-  unlock 'swaymsg "output * power on"' \
-  after-resume 'swaymsg "output * power on"'
+# Lock on idle (5 mins) Suspend on idle (30 mins)
+exec_always killall swayidle; swayidle -w \
+  timeout 300 "$lock_screen" \
+  timeout 1800 'systemctl suspend' \
+  resume 'swaymsg "output * power on"' \
+  before-sleep '$lock_screen; swaymsg "output * power off"'
+
+# Don't idle if an app is in full screen (i.e. watching something)
+for_window [class=".*"] inhibit_idle fullscreen
+for_window [app_id=".*"] inhibit_idle fullscreen
 
 # Enable clamshell mode (turn off builtin_display when closed)
 bindswitch --reload --locked lid:on output $builtin_display disable
@@ -73,18 +74,19 @@ output "*" {
 # This will support up to any single hi-dpi display being connected
   scale 2
   pos 1440 0
-  adaptive_sync on
+  # adaptive_sync on
+  subpixel rgb
 }
 
-output "BNQ BenQ EX3210U ETR1R00865SL0" {
-  subpixel bgr
-}
+# output "BNQ BenQ EX3210U ETR1R00865SL0" {
+# }
 
 # Built-in display settings must come after "*"
 output $builtin_display {
   mode 2880x1920@120Hz
   scale 2
   pos 0 0
+  subpixel rgb
 }
 
 # Gaps configuration
@@ -93,13 +95,9 @@ gaps outer 8
 smart_gaps on
 
 # Window rules
-for_window [app_id="mpv|KeePassXC"] floating enable
-for_window [class="Display"] floating enable
+for_window [app_id="KeePassXC"] move scratchpad
+for_window [app_id="mpv|Display"] floating enable
 for_window [app_id="LibreWolf|Firefox|Zen" title="Picture-in-Picture"] floating enable
-
-# Assign apps to workspaces
-assign [app_id="Zed|qutebrowser|LibreWolf|Firefox|Zen"] workspace number 2
-assign [app_id="alacritty|wezterm|Ghostty"] workspace number 3
 
 # Keybinds
 bindsym $mod2+r reload
@@ -129,6 +127,9 @@ bindsym $mod2+h move left
 bindsym $mod2+j move down
 bindsym $mod2+k move up
 bindsym $mod2+l move right
+
+# Default workspace 3 on login
+exec swaymsg workspace 3 
 
 # Workspace switching
 bindsym $mod+1 workspace number 1
