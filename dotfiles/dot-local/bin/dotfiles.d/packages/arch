@@ -101,6 +101,7 @@ DESKTOP_PACKAGES=$(
 
   kanata-bin
   ttf-jetbrains-mono-nerd
+  otf-commitmono-nerd
 
   flatpak
   fastfetch

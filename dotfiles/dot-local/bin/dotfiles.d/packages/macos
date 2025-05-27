@@ -69,6 +69,7 @@ DESKTOP_PACKAGES=$(
   asciinema
   pandoc
   font-jetbrains-mono-nerd-font
+  font-commit-mono-nerd-font
   presenterm
 EOF
 )
