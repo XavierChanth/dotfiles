@@ -97,11 +97,14 @@ DESKTOP_PACKAGES=$(
   swayidle
   swaync
   foot
+  autotiling-rs
 
   kanata-bin
   ttf-jetbrains-mono-nerd
 
-  nautilus
+  flatpak
+  fastfetch
+  thunar
   zathura
   imv
   mpv
@@ -116,7 +119,6 @@ DESKTOP_PACKAGES=$(
   google-chrome
   chromium
   brave-bin
-  zoom
   onlyoffice-bin
   discord
   spotify
@@ -135,7 +137,12 @@ DESKTOP_PACKAGES=$(
   notion-calendar-electron
 EOF
 )
+FLATPAK_PACKAGES=$(
+  cat <<EOF
+  us.zoom.Zoom
+EOF
+)
 
 # TODO noports desktop
 
-export PACKAGES DESKTOP_PACKAGES
+export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES

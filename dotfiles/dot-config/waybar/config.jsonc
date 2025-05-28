@@ -9,7 +9,6 @@
   "modules-left": ["sway/workspaces", "sway/window"],
   "modules-center": ["clock"],
   "modules-right": [
-    // "idle_inhibitor",
     "cpu",
     "memory",
     "temperature",
@@ -18,6 +17,7 @@
     "network",
     "wireplumber",
     "custom/spacer",
+    "idle_inhibitor",
     "custom/notification",
     "battery",
   ],

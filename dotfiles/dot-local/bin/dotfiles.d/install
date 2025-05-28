@@ -131,9 +131,13 @@ arch)
     --answerdiff=N \
     $PACKAGES
 
-  cargo binstall --disable-telemetry -y \
-    --strategies crate-meta-data,quick-install,compile \
-    $CARGO_PACKAGES
+  # cargo binstall --disable-telemetry -y \
+  #   --strategies crate-meta-data,quick-install,compile \
+  #   $CARGO_PACKAGES
+
+  for package in $FLATPAK_PACKAGES; do
+    flatpak install -y flathub "$package"
+  done
 
   sudo npm -g install tree-sitter-cli
   if $install_desktop; then

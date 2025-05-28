@@ -1,0 +1,7 @@
+[Context]
+devices=dri;
+filesystems=!home;
+persistent=.config/zoomus.conf;.zoom;
+
+[Environment]
+QT_SCALE_FACTOR=2

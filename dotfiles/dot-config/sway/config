@@ -51,7 +51,7 @@ bar {
 # X compatibility
 xwayland enable
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-exec sleep 10 && xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+exec xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 exec_always xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
 # Lock on idle (5 mins) Suspend on idle (30 mins)
@@ -93,16 +93,29 @@ output $builtin_display {
 gaps inner 8
 gaps outer 8
 smart_gaps on
+floating_maximum_size 1200 x 800
 
-# Window rules
+# Startup App rules
+exec spotify
+for_window [class="Spotify"] move scratchpad
+exec flatpak run us.zoom.Zoom
+for_window [class="zoom" title="Zoom Workplace -*"] move scratchpad
+exec keepassxc
 for_window [app_id="KeePassXC"] move scratchpad
-for_window [app_id="mpv|Display"] floating enable
-for_window [app_id="LibreWolf|Firefox|Zen" title="Picture-in-Picture"] floating enable
+for_window [app_id="Display"] floating enable
+for_window [app_id="firefox|zen" title="Picture-in-Picture"] floating enable
+
+# Auto tiling
+# exec_always killall autotiling; autotiling -sr 1.61 -l 3
+# bindsym $mod+f fullscreen
+
+# Manual tiling
+exec_always killall autotiling
+bindsym $mod+f layout toggle split tabbed
+bindsym $mod+s layout toggle splith splitv
 
 # Keybinds
 bindsym $mod2+r reload
-bindsym $mod+s layout toggle splith splitv
-bindsym $mod+f layout toggle tabbed stacking
 bindsym $mod2+f floating toggle
 bindsym $mod2+space mark --add "swap"; focus output right; \
   move workspace to output right; [con_mark="swap"] focus; \

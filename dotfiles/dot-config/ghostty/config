@@ -5,7 +5,13 @@ config-file = colorscheme
 # font-family = "JetBrainsMono Nerd Font Mono"
 # font-size = 18
 
-font-family = "CommitMonoDottedZero"
+# font-family = "CommitMonoDottedZero"
+# font-size = 15
+# adjust-cell-height = 20%
+
+font-family = "CommitMono Nerd Font"
+font-feature= +cv07,+ss03,+ss04,+ss05
+# ligatures ss01, arrows ss02
 font-size = 15
 adjust-cell-height = 20%
 

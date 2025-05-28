@@ -6,6 +6,16 @@
       "focused": "*"
     }
   },
+  "idle_inhibitor": {
+    "format": "{icon} idle",
+    "tooltip-format-activated": "{icon} idling turned off",
+    "tooltip-format-deactivated": "{icon} idling turned on",
+    "format-icons": {
+      "activated": "󰒳",
+      "deactivated": "󰒲"
+    },
+    "timeout": 120
+  },
   "wireplumber": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} {volume}%  {format_source}",
