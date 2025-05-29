@@ -52,7 +52,7 @@ main() {
 
   # Mouse & Keyboard
   defaults write NSGlobalDomain com.apple.mouse.linear -bool false
-  defaults write NSGlobalDomain com.apple.mouse.scaling -float 2.0
+  defaults write NSGlobalDomain com.apple.mouse.scaling -float 4.0
   defaults write NSGLobalDomain ApplePressAndHoldEnabled -bool false
   defaults write NSGlobalDomain com.apple.keyboard.fnState -bool false
 
