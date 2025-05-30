@@ -65,9 +65,6 @@ return {
         ["H"] = "actions.toggle_hidden",
         ["g?"] = "actions.show_help",
         ["gx"] = "actions.open_external",
-        ["<C-_>"] = function() -- opens the floating terminal at the current dir
-          Util.terminal.from_oil()
-        end,
         ["<C-t>"] = function() -- opens a new tmux window at the current dir
           Util.tmux.neww({ cwd = require("oil").get_current_dir() })
         end,

@@ -43,8 +43,8 @@ map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = true })
 if Util.platform.supports_terminal() then
   -- TERMINAL
   map("t", "<S-Space>", "<Space>", { desc = "which_key_ignore", noremap = true })
-  map("t", "<c-_>", "<cmd>close<cr>", { desc = "Terminal (Close)" })
-  map("n", "<c-_>", function()
+  map("t", "<c-t>", "<cmd>close<cr>", { desc = "Terminal (Close)" })
+  map("n", "<c-t>", function()
     Util.terminal.toggle()
   end, { desc = "Terminal" })
   map("n", "<leader>E", function()

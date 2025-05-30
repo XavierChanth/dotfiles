@@ -41,6 +41,8 @@ mouse-shift-capture = false
 
 macos-option-as-alt = true
 
+keybind = ctrl+shift+t=unbind
+
 keybind = super+r=reload_config
 keybind = super+j=text:5j
 keybind = super+k=text:5k
