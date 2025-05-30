@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -eux
+
+if [ $UID -ne 0 ]; then
+  echo Running this as root...
+
+  exec sudo DOTFILES="$DOTFILES" "$0" "$@"
+fi
+
+stow -d "$DOTFILES" -t "/" --dotfiles linux "$@"
+
+restart_systemd() {
+  file=$1
+  sudo systemctl enable $file
+  sudo systemctl restart $file
+}
+
+if [ "$(uname)" = 'Linux' ]; then
+  restart_systemd "kanata.service"
+fi

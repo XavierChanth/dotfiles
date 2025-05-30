@@ -1,22 +1,37 @@
 #!/bin/sh
-
+set -eux
 _stow() {
   dest="$1"
   name="$2"
   if [ $# -lt 2 ]; then return; fi
   mkdir -p "$dest"
-  stow -d "$DOTFILES/dotfiles/dot-config" -t "$dest" "$name"
+  stow -d "$DOTFILES/dotfiles/dot-config" -t "$dest" --dotfiles "$name"
 }
 
-# MacOS
-if [ "$(uname)" = 'Darwin' ]; then
+if [ $UID -ne 0 ]; then
   _stow "$HOME/Library/Application Support/Code/User" "vscode"
   _stow "$HOME/Library/Application Support/VSCodium/User" "vscode"
   _stow "$HOME/Library/Application Support/presenterm" "presenterm"
   _stow "$HOME/Library/Preferences/clangd" "clangd"
+
+  echo Running this as root...
+  exec sudo DOTFILES="$DOTFILES" "$0" "$@"
 fi
-
-# script_dir="$(dirname -- "$(readlink -f -- "$0")")"
-# "$script_dir"/restart-kanata
-
 unset _stow
+
+pfctl -d || true
+stow -d "$DOTFILES" -t "/" --dotfiles macos "$@"
+pfctl -e -f /etc/pf.conf
+
+restart_launchd() {
+  file=$1
+  sudo launchctl unload "/Library/LaunchDaemons/$file" 2>/dev/null
+  sudo launchctl load "/Library/LaunchDaemons/$file"
+}
+
+if [ "$(uname)" = 'Darwin' ]; then
+  # install_launchd_daemon "$DOTFILES/dotfiles/dot-config/kanata" "local.karabiner.plist"
+  restart_launchd "local.karabiner-daemon.plist"
+  restart_launchd "local.karabiner-manager.plist"
+  restart_launchd "local.kanata.plist"
+fi
