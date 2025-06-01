@@ -96,13 +96,11 @@ smart_gaps on
 floating_maximum_size 1200 x 800
 
 # Startup App rules
-exec spotify
-for_window [class="Spotify"] move scratchpad
 exec flatpak run us.zoom.Zoom
 for_window [class="zoom" title="Zoom Workplace*"] move scratchpad
 exec keepassxc
 for_window [app_id="KeePassXC"] move scratchpad
-for_window [app_id="Display"] floating enable
+for_window [class="Display"] floating enable
 for_window [app_id="firefox|zen" title="Picture-in-Picture"] floating enable
 
 # Auto tiling

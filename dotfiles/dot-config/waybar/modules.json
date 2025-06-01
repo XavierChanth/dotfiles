@@ -1,4 +1,9 @@
 {
+  "custom/tray": { "format": "", "tooltip": false },
+  "custom/monitor": { "format": "", "tooltip": false },
+  "custom/control": { "format": "", "tooltip": false },
+  "custom/spacer": { "format": "|", "tooltip": false },
+
   "sway/workspaces": {
     "format": "{icon}{name}",
     "format-icons": {
@@ -6,16 +11,121 @@
       "focused": "*"
     }
   },
+
+  "tray": {
+    "show-passive-items": false,
+    "icon-size": 15,
+    "reverse-direction": true
+  },
+
+  "memory": {
+    "format": "󰍛 {percentage}%",
+    "tooltip": true,
+    "tooltip-format": "main: {percentage}%\nused: {used}GiB\navailable: {avail}GiB\nswap: {swapPercentage}\nused: {swapUsed}GiB\navailable: {swapAvail}GiB"
+  },
+
+  "cpu": {
+    "format": " {}%",
+    "tooltip": true
+  },
+
+  "temperature": {
+    "interval": 10,
+    "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 60,
+    "format-critical": " {temperatureC}°C<span foreground='red'><sup></sup></span>",
+    "format": " {temperatureC}°C",
+    "tooltip-format": "{temperatureC}°C / {temperatureF}°F"
+  },
+
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
+  },
+
+  "systemd-failed-units": {
+    "format": "{nr_failed} failed units",
+    "hide-on-ok": true
+  },
+
+  "privacy": {
+    "icon-spacing": 4,
+    "icon-size": 12,
+    "modules": [
+      {
+        "type": "screenshare",
+        "tooltip": true
+      },
+      {
+        "type": "audio-out",
+        "tooltip": true
+      },
+      {
+        "type": "audio-in",
+        "tooltip": true
+      }
+    ]
+  },
+
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+
   "idle_inhibitor": {
-    "format": "{icon} idle",
-    "tooltip-format-activated": "{icon} idling turned off",
-    "tooltip-format-deactivated": "{icon} idling turned on",
+    "format": "{icon}",
+    "tooltip-format-activated": "machine will stay awake",
+    "tooltip-format-deactivated": "machine will sleep on idle",
     "format-icons": {
       "activated": "󰒳",
       "deactivated": "󰒲"
     },
     "timeout": 120
   },
+
+  "network": {
+    "format-wifi": "",
+    "format-ethernet": "󰈀",
+    "tooltip-format": "{ifname} via {gwaddr}\nup: {bandwidthUpBytes}\ndown: {bandwidthDownBytes}",
+    "tooltip-format-wifi": "{essid} via {gwaddr}\nup: {bandwidthUpBytes}\ndown: {bandwidthDownBytes}",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "󰖪",
+    "on-click": "iwgtk"
+  },
+
+  "bluetooth": {
+    "on-click": "blueman-manager",
+    "tooltip": true,
+    "tooltip-format": "controller: {controller_alias}\n{device_alias}",
+    "format": "",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "format-connected-battery": "󰂱"
+  },
+
   "wireplumber": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} {volume}%  {format_source}",
@@ -34,34 +144,7 @@
     },
     "on-click": "pwvucontrol"
   },
-  "bluetooth": {
-    "on-click": "blueman-manager",
-    "tooltip": true,
-    "tooltip-format": "{controller_alias}"
-  },
-  "network": {
-    "format-wifi": " {essid}",
-    "format-ethernet": "󰈀 {ifname}",
-    "tooltip-format": "{ifname} via {gwaddr}\nup: {bandwidthUpBytes}\ndown: {bandwidthDownBytes}",
-    "format-linked": "{ifname} (No IP)",
-    "format-disconnected": "Disconnected ⚠",
-    "on-click": "iwgtk"
-  },
-  "cpu": {
-    "format": " {usage}%",
-    "tooltip": true
-  },
-  "memory": {
-    "format": " {}%",
-    "tooltip": true
-  },
-  "temperature": {
-    "interval": 10,
-    "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-    "critical-threshold": 80,
-    "format-critical": " {temperatureC}",
-    "format": " {temperatureC}°C"
-  },
+
   "battery": {
     "states": {
       "warning": 30,
@@ -74,31 +157,9 @@
     "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
   },
+
   "clock": {
     "format": "{:%Y-%m-%d  %H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-  },
-  "custom/notification": {
-    "tooltip": false,
-    "format": "{icon} {text}",
-    "format-icons": {
-      "notification": "<span foreground='red'><sup></sup></span>",
-      "none": "",
-      "dnd-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-none": "",
-      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "inhibited-none": "",
-      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-inhibited-none": ""
-    },
-    "return-type": "json",
-    "exec-if": "which swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "swaync-client -t -sw",
-    "on-click-right": "swaync-client -d -sw",
-    "escape": true
-  },
-  "custom/spacer": {
-    "format": "|"
   }
 }

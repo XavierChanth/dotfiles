@@ -1,5 +1,4 @@
 * {
-  /* `otf-font-awesome` and SpaceMono Nerd Font are required to be installed for icons */
   font-family: JetBrains Mono Nerd Font Mono;
   font-size: 15px;
   transition: background-color 0.3s ease-out;
@@ -17,63 +16,42 @@ window#waybar {
 .modules-right {
   background: rgba(0, 0, 8, 0.7);
   margin: 5px 10px;
-  padding: 0;
-  border-radius: 15px;
-}
-
-.modules-center {
-  padding: 0 10px;
-}
-
-#clock,
-#battery,
-#bluetooth,
-#cpu,
-#memory,
-#disk,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#wireplumber,
-#custom-media,
-#tray,
-#mode,
-#idle_inhibitor,
-#scratchpad,
-#power-profiles-daemon,
-#language,
-#window,
-#mpd,
-#custom-notification {
   padding: 0 10px;
   border-radius: 15px;
 }
 
-#clock:hover,
-#battery:hover,
-#bluetooth:hover,
-#cpu:hover,
-#memory:hover,
-#disk:hover,
-#temperature:hover,
-#backlight:hover,
-#network:hover,
-#pulseaudio:hover,
-#wireplumber:hover,
-#custom-media:hover,
-#tray:hover,
-#mode:hover,
-#idle_inhibitor:hover,
-#scratchpad:hover,
-#power-profiles-daemon:hover,
-#language:hover,
-#mpd:hover,
-#window:hover,
-#custom-notification:hover {
+.module {
+  padding: 0 10px;
+  border-radius: 15px;
+}
+
+.module:hover,
+.drawer {
   background: rgba(26, 27, 38, 0.9);
 }
 
+/* Note that there is no comma, different selector than above */
+.drawer .module:hover {
+  background: rgba(0, 0, 8, 0.7);
+}
+
+.drawer {
+  padding: 3px 0;
+}
+
+#custom-tray,
+#custom-monitor,
+#custom-control {
+  padding: 0 5px;
+  border-radius: 15px;
+}
+
+/* Privacy specific */
+#privacy {
+  color: orange;
+}
+
+/* Workpaces specific */
 #workspaces button {
   background: transparent;
   font-weight: 900;

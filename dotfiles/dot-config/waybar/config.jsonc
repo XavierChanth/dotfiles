@@ -9,18 +9,65 @@
   "modules-left": ["sway/workspaces", "sway/window"],
   "modules-center": ["clock"],
   "modules-right": [
-    "cpu",
-    "memory",
-    "temperature",
-    "custom/spacer",
-    "bluetooth",
-    "network",
-    "wireplumber",
-    "custom/spacer",
-    "idle_inhibitor",
-    "custom/notification",
-    "battery",
+    "group/gtray",
+    "group/gmonitor",
+    "group/gcontrol",
+    "group/gurgent",
   ],
+
+  "group/gtray": {
+    "orientation": "horizontal",
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-left-to-right": false,
+      "children-class": "drawer",
+    },
+    "modules": ["custom/tray", "tray"],
+  },
+
+  "group/gmonitor": {
+    "orientation": "horizontal",
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-left-to-right": false,
+      "children-class": "drawer",
+    },
+    "modules": [
+      "custom/monitor",
+      "memory",
+      "cpu",
+      "temperature",
+      "power-profiles-daemon",
+    ],
+  },
+
+  "group/gcontrol": {
+    "orientation": "horizontal",
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-left-to-right": false,
+      "children-class": "drawer",
+    },
+    "modules": [
+      "custom/control",
+      "idle_inhibitor",
+      "network",
+      "bluetooth",
+      "wireplumber",
+    ],
+  },
+
+  "group/gurgent": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/spacer",
+      "systemd-failed-units",
+      "privacy",
+      "custom/notification",
+      "battery",
+    ],
+  },
+
   //Modules configuration
 
   "include": ["~/.config/waybar/modules.json"],
