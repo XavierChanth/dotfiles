@@ -10,7 +10,7 @@ return {
     "--fallback-style=llvm",
     "--enable-config",
   },
-  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "cc" },
   root_markers = {
     "compile_commands.json",
   },

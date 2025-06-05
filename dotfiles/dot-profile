@@ -7,3 +7,4 @@ command -v sway >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ] && {
   fi
   exec sway
 }
+PATH="$PATH:$HOME/.local/bin"

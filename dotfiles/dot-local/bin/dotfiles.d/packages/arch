@@ -24,8 +24,10 @@ PACKAGES=$(
   uv
   python
   gcc
+  clang
   cmake
   ninja
+  mesa-utils
   zig
   rust-analyzer
   nodejs

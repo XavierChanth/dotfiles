@@ -97,7 +97,8 @@ floating_maximum_size 1200 x 800
 
 # Startup App rules
 exec flatpak run us.zoom.Zoom
-for_window [class="zoom" title="Zoom Workplace*"] move scratchpad
+for_window [class="zoom" title="Zoom Workplace.*"] move scratchpad
+for_window [class="zoom" title="zoom"] floating enable
 exec keepassxc
 for_window [app_id="KeePassXC"] move scratchpad
 for_window [class="Display"] floating enable

@@ -5,10 +5,11 @@
   "custom/spacer": { "format": "|", "tooltip": false },
 
   "sway/workspaces": {
-    "format": "{icon}{name}",
+    "format": "{name}{icon}",
     "format-icons": {
       "default": "",
-      "focused": "*"
+      "focused": "<sup>*</sup>",
+      "urgent": "<span foreground='red'><sup></sup></span>"
     }
   },
 
