@@ -51,6 +51,20 @@ ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
 nt = ["new", "trunk"]
+colocate =  ["util", "exec", "--", "/bin/sh", "-c", """
+#!/usr/bin/env bash
+set -eux
+  [ -d ".git" ] && {
+    echo The .git dir already exists
+    exit 0
+  }
+  echo '/*' > .jj/.gitignore
+  mv .jj/repo/store/git .git
+  echo -n '../../../.git' > .jj/repo/store/git_target
+  git config --unset core.bare
+  jj new
+  jj undo
+""", ""]
 
 # rebase remote
 ro = ["util", "exec", "--", "/bin/sh", "-c", """

@@ -21,20 +21,20 @@ end, {
 --    uv run -m ipykernel install --user --name <KERNEL_NAME>
 
 return {
-  {
-    "nvim-lspconfig",
-    opts = {
-      attach_server = {
-        basedpyright = function(client, event)
-          if event.match:match("ipynb.otter") then
-            client.config.settings.basedpyright = vim.tbl_deep_extend("force", client.config.settings.basedpyright, {
-              analysis = { diagnosticSeverityOverrides = { reportUnusedExpression = "none" } },
-            })
-          end
-        end,
-      },
-    },
-  },
+  -- {
+  --   "nvim-lspconfig",
+  --   opts = {
+  --     attach_server = {
+  --       basedpyright = function(client, event)
+  --         if event.match:match("ipynb.otter") then
+  --           client.config.settings.basedpyright = vim.tbl_deep_extend("force", client.config.settings.basedpyright, {
+  --             analysis = { diagnosticSeverityOverrides = { reportUnusedExpression = "none" } },
+  --           })
+  --         end
+  --       end,
+  --     },
+  --   },
+  -- },
   {
     "benlubas/molten-nvim",
     ft = "ipynb",
