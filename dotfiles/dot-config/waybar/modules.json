@@ -16,6 +16,7 @@
   "tray": {
     "show-passive-items": false,
     "icon-size": 15,
+    "spacing": 8,
     "reverse-direction": true
   },
 

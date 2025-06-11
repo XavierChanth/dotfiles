@@ -11,11 +11,14 @@ theme=$($script_dir/list-colors | fzf -d "\n")
 
 if [ -n "$theme" ]; then
   $script_dir/color.d/apply-color $theme
-  sketchybar --reload
+  if command -v sketchybar >/dev/null 2>&1; then
+    sketchybar --reload
+  fi
   tmux source ~/.config/tmux/tmux.conf
 
   # reload the current ghostty window
-  osascript -e '
+  if command -v osascript >/dev/null 2>&1; then
+    osascript -e '
     tell application "Ghostty"
       activate
     end tell
@@ -25,4 +28,5 @@ if [ -n "$theme" ]; then
       end tell
     end tell
   ' >/dev/null
+  fi
 fi
