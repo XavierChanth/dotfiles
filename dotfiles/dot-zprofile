@@ -7,3 +7,10 @@ command -v sway >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ] && {
   fi
   exec sway
 }
+command -v gnome-shell >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty2" ] && {
+  source $HOME/.config/env/gnome
+  if [ "$(uname)" = 'daedalus' ]; then
+    source $HOME/.config/env/framework
+  fi
+  dbus-run-session gnome-shell
+}

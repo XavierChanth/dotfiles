@@ -3,3 +3,4 @@ export XDG_CURRENT_DESKTOP=sway
 export GDK_SCALE=2
 export XCURSOR_SIZE=24
 export MOZ_ENABLE_WAYLAND=1
+export XDG_SESSION_TYPE=wayland
