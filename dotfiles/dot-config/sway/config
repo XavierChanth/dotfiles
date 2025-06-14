@@ -57,9 +57,10 @@ exec_always xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOB
 # Lock on idle (5 mins) Suspend on idle (30 mins)
 exec_always killall swayidle; swayidle -w \
   timeout 300 "$lock_screen" \
-  timeout 1800 'systemctl suspend' \
+  timeout 1800 'systemctl sleep' \
   resume 'swaymsg "output * power on"' \
-  before-sleep '$lock_screen; swaymsg "output * power off"'
+  before-sleep '$lock_screen; swaymsg "output * power off"' \
+  after-resume 'swaymsg "output * power on"; $lock_screen'
 
 # Don't idle if an app is in full screen (i.e. watching something)
 for_window [class=".*"] inhibit_idle fullscreen
