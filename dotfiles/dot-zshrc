@@ -38,7 +38,7 @@ elif command -v bat >/dev/null 2>&1; then
   export FZF_CTRL_T_OPTS="--preview 'bat --line-range :50 {}'"
 else
   export PAGER="less -RFc"
-  export MANPAGER="less"
+  export MANPAGER="nvim +Man!"
 fi
 
 # basic exports
