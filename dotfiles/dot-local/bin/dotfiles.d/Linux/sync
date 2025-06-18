@@ -17,5 +17,4 @@ restart_systemd() {
 
 if [ "$(uname)" = 'Linux' ]; then
   restart_systemd "kanata.service"
-  sudo systemctl enable dbus-org.bluez.service || true
 fi

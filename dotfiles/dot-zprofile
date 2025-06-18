@@ -7,6 +7,7 @@ command -v sway >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ] && {
   fi
   exec sway
 }
+
 command -v gnome-shell >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty2" ] && {
   source $HOME/.config/env/gnome
   if [ "$(uname)" = 'daedalus' ]; then
@@ -14,3 +15,13 @@ command -v gnome-shell >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty2" ] && {
   fi
   dbus-run-session gnome-shell
 }
+
+# idk... niri doesn't seem like a good improvement to my workflow
+# The sway workflow is so natural at this point
+# command -v niri >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty3" ] && {
+#   source $HOME/.config/env/niri
+#   if [ "$(uname)" = 'daedalus' ]; then
+#     source $HOME/.config/env/framework
+#   fi
+#   dbus-run-session niri
+# }

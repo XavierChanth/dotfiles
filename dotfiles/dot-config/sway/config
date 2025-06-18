@@ -139,7 +139,7 @@ bindsym $mod2+k move up
 bindsym $mod2+l move right
 
 # Default workspace 3 on login
-exec swaymsg workspace 3 
+exec swaymsg workspace 3
 
 # Workspace switching
 bindsym $mod+1 workspace number 1

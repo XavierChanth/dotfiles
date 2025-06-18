@@ -17,6 +17,7 @@ setopt share_history
 setopt extended_history
 
 # basic programs
+export TERMINAL="ghostty"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
