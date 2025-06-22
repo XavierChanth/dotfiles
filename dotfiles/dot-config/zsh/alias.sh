@@ -5,7 +5,9 @@
 # it makes it so that you can use sudo with other aliases
 alias sudo='sudo '
 
-alias x64='arch -x86_64'
+if [ "$uname" = 'Darwin' ]; then
+  alias x64='arch -x86_64'
+fi
 alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
@@ -17,7 +19,7 @@ alias fetch='fastfetch'
 
 wrapped_man() {
   /usr/bin/man $1 ||
-    if command $1 2>/dev/null; then
+    if command -v $1 >/dev/null 2>&1; then
       $1 --help | $PAGER
     fi
 }
@@ -40,10 +42,7 @@ fi
 alias wgetsite='wget --no-parent -p -r'
 
 alias lg='lazygit'
-alias lj='lazyjj'
 alias y='yazi'
-
-alias rr="$HOME/.local/bin/repo_scripts"
 
 if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then
   alias code="codium"

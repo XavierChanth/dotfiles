@@ -12,7 +12,7 @@
 }
 {
     "label" : "logout",
-    "action" : "loginctl terminate-user $USER",
+    "action" : "loginctl terminate-session $(loginctl session-status | sed -e '1b;d' | cut -d' ' -f1)",
     "text" : "Log[o]ut",
     "keybind" : "o"
 }

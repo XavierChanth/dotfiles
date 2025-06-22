@@ -1,0 +1,13 @@
+[Unit]
+Description=tmux server
+
+[Service]
+Type=forking
+Environment=HOME="%h"
+ExecStartPre=
+ExecStart=tmux start-server
+ExecStop=tmux kill-server
+
+[Install]
+WantedBy=default.target
+

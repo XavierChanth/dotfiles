@@ -71,5 +71,5 @@ if command_exists arduino-cli; then
   }
 fi
 
-# append local path to PATH
+# prepend local path to PATH
 export PATH="$__path:$PATH"

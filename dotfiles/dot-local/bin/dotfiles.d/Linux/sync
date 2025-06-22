@@ -1,20 +1,27 @@
 #!/usr/bin/env bash
-set -eux
 
 if [ $UID -ne 0 ]; then
-  echo Running this as root...
-
+  echo Running root operations...
   exec sudo DOTFILES="$DOTFILES" "$0" "$@"
+else
+  set -eux
+  # operations as root
+  systemctl daemon-reload
+  systemd_start() {
+    systemctl enable "$1"
+    systemctl start "$1"
+  }
+  stow -d "$DOTFILES" -t "/" --dotfiles linux
+  systemd_start "kanata.service"
+  exit
 fi
 
-stow -d "$DOTFILES" -t "/" --dotfiles linux "$@"
-
-restart_systemd() {
-  file=$1
-  sudo systemctl enable $file
-  sudo systemctl restart $file
+# operations as user
+systemctl --user daemon-reload
+systemd_start_user() {
+  systemctl --user enable "$1"
+  systemctl --user start "$1"
 }
 
-if [ "$(uname)" = 'Linux' ]; then
-  restart_systemd "kanata.service"
-fi
+loginctl enable-linger
+systemd_start_user "tmux-server.service"
