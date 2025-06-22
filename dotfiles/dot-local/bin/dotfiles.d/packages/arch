@@ -64,6 +64,7 @@ EOF
 DESKTOP_PACKAGES=$(
   cat <<EOF
   polkit
+  zenity
   pipewire
   pipewire-pulse
   pipewire-alsa
