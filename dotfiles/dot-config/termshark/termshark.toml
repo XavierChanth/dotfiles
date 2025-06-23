@@ -1,5 +1,9 @@
 [main]
-term = "xterm-256color"
-respect-colorterm = true
+color-tsharks = ['/bin/tshark']
 ignore-base16-colors = true
-theme-256 = "default"
+last-used-tshark = '/bin/tshark'
+respect-colorterm = true
+term = 'xterm-256color'
+theme-256 = 'default'
+validated-tsharks = ['/bin/tshark']
+
