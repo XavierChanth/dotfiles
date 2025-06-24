@@ -1,18 +1,23 @@
 #!/bin/sh
+case "$XDG_CURRENT_DESKTOP" in
+sway) source $HOME/.config/env/sway ;;
+gnome) source $HOME/.config/env/gnome ;;
+esac
+
+case "$(uname)" in
+daedalus)
+  source $HOME/.config/env/framework
+  ;;
+esac
+
 command -v sway >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ] && {
   source $HOME/.config/env/sway
-  if [ "$(uname)" = 'daedalus' ]; then
-    source $HOME/.config/env/framework
-  fi
   exec sway
 }
 
 command -v gnome-shell >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty2" ] && {
   source $HOME/.config/env/gnome
-  if [ "$(uname)" = 'daedalus' ]; then
-    source $HOME/.config/env/framework
-  fi
-  dbus-run-session gnome-shell
+  exec gnome-shell
 }
 
 # idk... niri doesn't seem like a good improvement to my workflow

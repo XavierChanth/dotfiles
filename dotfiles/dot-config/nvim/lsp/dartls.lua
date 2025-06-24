@@ -13,6 +13,9 @@ return {
     outline = true,
     flutterOutline = true,
   },
+  reuse_client = function(_)
+    return true
+  end,
 
   settings = {
     dart = {
