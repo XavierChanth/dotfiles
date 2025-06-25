@@ -97,7 +97,8 @@ smart_gaps on
 floating_maximum_size 1200 x 800
 
 # Startup App rules
-for_window [class="zoom" title="zoom"] floating enable
+# for_window [app_id="Zoom Workplace"] floating enable
+# for_window [app_id="Zoom Workplace" title="Meeting"] floating disable
 for_window [class="Display"] floating enable
 for_window [app_id="firefox|zen" title="Picture-in-Picture"] floating enable
 

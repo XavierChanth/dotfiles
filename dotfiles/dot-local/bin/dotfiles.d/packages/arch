@@ -118,7 +118,6 @@ DESKTOP_PACKAGES=$(
   v4l2loopback-dkms
 
   ghostty
-  zoom-system-qt
   zen-browser-bin
   firefox
   google-chrome
@@ -141,6 +140,7 @@ EOF
 )
 FLATPAK_PACKAGES=$(
   cat <<EOF
+  us.zoom.Zoom
   com.github.IsmaelMartinez.teams_for_linux
 EOF
 )
