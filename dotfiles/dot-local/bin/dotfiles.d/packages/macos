@@ -39,7 +39,6 @@ PACKAGES=$(
   imagemagick
   hwatch
   yazi
-  orbstack
   quarto
 EOF
 )

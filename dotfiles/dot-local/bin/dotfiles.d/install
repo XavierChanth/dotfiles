@@ -59,7 +59,6 @@ platform=""
 
 case "$(uname)" in
 Darwin)
-  $script_dir/configure-macos
   brew_path=/opt/homebrew/bin/brew
   platform="macos"
   ;;
@@ -92,7 +91,7 @@ source "$script_dir/packages/$platform"
 case "$platform" in
 macos)
   brew analytics off
-  brew install $PACAKGES
+  brew install $PACKAGES
   if $install_desktop; then
     brew tap $DESKTOP_TAPS
     brew install $DESKTOP_PACKAGES
