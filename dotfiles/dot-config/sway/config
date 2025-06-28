@@ -54,6 +54,9 @@ xwayland enable
 # Connect session variables to systemd
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
+# Start swaync
+exec_always killall swaync && swaync
+
 # Lock on idle (5 mins) Suspend on idle (30 mins)
 exec_always killall swayidle; swayidle -w \
   timeout 300 "$lock_screen" \

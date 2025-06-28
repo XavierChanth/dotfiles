@@ -76,6 +76,7 @@ DESKTOP_PACKAGES=$(
   bluez
   bluez-utils
   blueman
+  gnome-keyring-daemon
   fprintd
 
   waybar
@@ -140,7 +141,6 @@ EOF
 )
 FLATPAK_PACKAGES=$(
   cat <<EOF
-  us.zoom.Zoom
   com.github.IsmaelMartinez.teams_for_linux
 EOF
 )
