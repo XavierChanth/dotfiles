@@ -7,18 +7,23 @@ return {
   filetypes = { "dart" },
   root_markers = { "pubspec.yaml" },
   init_options = {
-    onlyAnalyzeProjectsWithOpenFiles = true,
+    onlyAnalyzeProjectsWithOpenFiles = false,
     suggestFromUnimportedLibraries = true,
     closingLabels = true,
     outline = true,
     flutterOutline = true,
   },
-  reuse_client = function(_)
-    return true
+  reuse_client = function(client, config)
+    if config.root_dir:find(".pub-cache") then
+      config.root_dir = client.root_dir
+      return true
+    end
+    return false
   end,
 
   settings = {
     dart = {
+      allowAnalytics = false,
       analysisExcludedFolders = {},
       lineLength = 80,
       completeFunctionCalls = true,
@@ -26,7 +31,7 @@ return {
       renameFilesWithClasses = "prompt",
       enableSnippets = false,
       updateImportsOnRename = true,
-      includeDependenciesInWorkspaceSymbol = false,
+      includeDependenciesInWorkspaceSymbol = true,
     },
   },
 
