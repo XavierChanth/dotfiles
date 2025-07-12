@@ -63,6 +63,7 @@ EOF
 
 DESKTOP_PACKAGES=$(
   cat <<EOF
+  reflector
   polkit
   zenity
   pipewire
