@@ -18,7 +18,7 @@ return {
       config.root_dir = client.root_dir
       return true
     end
-    return false
+    return config.root_dir == client.root_dir
   end,
 
   settings = {

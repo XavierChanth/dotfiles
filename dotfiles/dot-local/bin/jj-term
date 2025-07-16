@@ -2,9 +2,9 @@
 
 root="$(git rev-parse --show-toplevel)"
 
-name="jj-term"
+name="jj-"
 
-existing="$(tmux lsw -f $name -F "#{window_id}" -f "#{==:#W,$name}")"
+existing="$(tmux lsw -F "#{window_id}" -f "#{==:#W,$name}")"
 
 if [ -n "$existing" ]; then
   tmux select-window -t "$existing"
@@ -17,7 +17,7 @@ tmux neww -c "$root"
 command="watch -w -tc -n 1 JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
 tmux splitw -l "45" -hbc "$root" "$command"
 tmux select-pane -R
-tmux rename-window $name
+tmux rename-window "$name"
 
 # move the window to #2 and focus
 tmux movew -b -t :2

@@ -49,7 +49,19 @@ return {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile", "BufReadPre" },
     keys = {
-      { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Todo (Trouble)" },
+      {
+        "<leader>xt",
+        function()
+          require("trouble").toggle({
+            mode = "todo",
+            groups = {
+              { "directory" },
+              { "filename" },
+            },
+          })
+        end,
+        desc = "Todo (Trouble)",
+      },
       {
         "<leader>xT",
         "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>",
