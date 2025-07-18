@@ -4,7 +4,7 @@ root="$(git rev-parse --show-toplevel)"
 
 name="opencode-"
 
-existing="$(tmux lsw -f $name -F "#{window_id}" -f "#{==:#W,$name}")"
+existing="$(tmux lsw -F "#{window_id}" -f "#{==:#W,$name}")"
 
 if [ -n "$existing" ]; then
   tmux select-window -t "$existing"
@@ -13,12 +13,12 @@ fi
 
 tmux neww -c "$root" "opencode"
 tmux rename-window $name
-
-jj_pos="$(tmux lsw -f "jj-" -F "#{window_id}" -f "#{==:W,jj-}")"
+jj_pos="$(tmux lsw -F "#I" -f "#{==:#W,jj-}")"
 # move the window to after jj-term if open, otherwise move it to 2
 if [ -n "$jj_pos" ]; then
-  tmux movew -a -t ":$jj_pos"
-  tmux selectw -a ":$jj_pos"
+  pos=$((jj_pos + 1))
+  tmux movew -b -t ":$pos"
+  tmux selectw -t ":$pos"
 else
   tmux movew -b -t :2
   tmux selectw -t :2
