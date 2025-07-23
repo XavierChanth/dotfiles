@@ -53,6 +53,7 @@
       "idle_inhibitor",
       "network",
       "bluetooth",
+      "custom/socks",
       "wireplumber",
     ],
   },

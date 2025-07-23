@@ -1,0 +1,17 @@
+[Unit]
+Description=Socks with no holes (no open ports)
+
+[Service]
+Environment=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin
+Environment=DISPLAY=:0
+Environment=HOME=/home/chant
+Type=simple
+Restart=never
+
+Environment=device_args="-f @xavierchanth -t @xchan -d charon -r @xchan_8286 "
+Environment=service_args="--rh socks --rp 1080 --lp 1080"
+
+ExecStart=/usr/local/bin/npt $device_args $service_args -K
+
+[Install]
+WantedBy=default.target

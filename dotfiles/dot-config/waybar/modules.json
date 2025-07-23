@@ -3,6 +3,13 @@
   "custom/monitor": { "format": "", "tooltip": false },
   "custom/control": { "format": "", "tooltip": false },
   "custom/spacer": { "format": "|", "tooltip": false },
+  "custom/socks": {
+    "interval": 120,
+    "exec": "echo \"{ \\\"text\\\": \\\"$(systemctl status --user socks >/dev/null 2>&1 && echo on || echo off)\\\"}\"",
+    "return-type": "json",
+    "format": " {}",
+    "on-click": "systemctl status --user socks >/dev/null 2>&1 && systemctl stop --user socks || systemctl start --user socks"
+  },
 
   "sway/workspaces": {
     "format": "{name}{icon}",

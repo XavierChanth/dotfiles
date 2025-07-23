@@ -79,6 +79,7 @@ DESKTOP_PACKAGES=$(
   blueman
   gnome-keyring-daemon
   fprintd
+  dante
 
   waybar
   xorg-wayland
