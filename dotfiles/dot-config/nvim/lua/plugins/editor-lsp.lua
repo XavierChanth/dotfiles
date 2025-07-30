@@ -11,6 +11,8 @@ vim.lsp.enable({
   "lua_ls",
   "neocmake",
   "omnisharp",
+  "rubocop",
+  "rubyls",
   "ruff",
   "rust_analyzer",
   "sourcekit",
