@@ -11,7 +11,6 @@
 ---@field platform util.platform
 ---@field root util.root
 ---@field statusline util.statusline
----@field terminal util.terminal
 ---@field tmux util.tmux
 local M = {}
 

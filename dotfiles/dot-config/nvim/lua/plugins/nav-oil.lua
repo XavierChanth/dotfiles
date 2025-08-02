@@ -18,15 +18,6 @@ return {
         end,
         desc = "Oil",
       },
-      {
-        "<leader>E",
-        function()
-          if Util.platform.supports_terminal() then
-            Util.terminal("yazi", {})
-          end
-        end,
-        desc = "Open Yazi",
-      },
     },
     opts = {
       columns = {
