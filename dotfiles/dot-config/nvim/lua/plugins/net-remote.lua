@@ -2,12 +2,13 @@
 -- I don't want to be forced into my editor being run over NTFS
 -- Too slow and painful
 return {
-  "amitds1997/remote-nvim.nvim",
-  version = "*", -- Pin to GitHub releases
-  cmd = { "RemoteStart", "RemoteStop", "RemoteInfo", "RemoteCleanup", "RemoteConfigDel", "RemoteLog" },
-  dependencies = {
-    "nvim-lua/plenary.nvim", -- For standard functions
-    "MunifTanjim/nui.nvim", -- To build the plugin UI
-  },
-  config = true,
+  -- { -- Doesn't even work with windows on the Remote sadly, pretty sure it's a Windows pain
+  --   "amitds1997/remote-nvim.nvim",
+  --   cmd = { "RemoteStart", "RemoteStop", "RemoteInfo", "RemoteCleanup", "RemoteConfigDel", "RemoteLog" },
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim", -- For standard functions
+  --     "MunifTanjim/nui.nvim", -- To build the plugin UI
+  --   },
+  --   config = true,
+  -- },
 }

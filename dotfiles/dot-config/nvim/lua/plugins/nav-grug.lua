@@ -1,6 +1,6 @@
 return {
   {
-    "MagicDuck/grug-far.nvim",
+    "MagicDuck/grug-far.nvim", -- grug gud
     opts = { headerMaxWidth = 80 },
     cmd = "GrugFar",
     keys = {

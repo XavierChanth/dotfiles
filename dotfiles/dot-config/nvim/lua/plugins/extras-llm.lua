@@ -1,8 +1,4 @@
 return {
-  -- {
-  --   " NickvanDyke/opencode.nvim",
-  --   version = false,
-  -- },
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",

@@ -21,21 +21,31 @@ return {
     {
       "<leader><space>",
       function()
-        -- Snacks.picker.smart({})
-        --
+        Snacks.picker.files({ cwd = vim.lsp.client.root_dir })
+      end,
+      desc = "Files (LSP Root || Vim PWD)",
+    },
+    {
+      "<leader>sf",
+      function()
         if Snacks.git.get_root() then
           return Snacks.picker.git_files({ untracked = true })
         end
         Snacks.picker.files({})
       end,
-      desc = "Git files",
+      desc = "Files (Git Root || Vim PWD)",
     },
     {
-      "<leader>sf",
+      "<leader>sF",
       function()
-        Snacks.picker.files({})
+        local bufinfo = vim.fn.getbufinfo(0)[1]
+        local cwd = nil
+        if bufinfo.name:match("^/") then
+          cwd = vim.fs.dirname(bufinfo.name)
+        end
+        Snacks.picker.files({ cwd = cwd })
       end,
-      desc = "Find files",
+      desc = "Files (Buffer's PWD || Vim PWD)",
     },
     {
       "<leader>sb",
