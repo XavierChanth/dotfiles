@@ -76,6 +76,15 @@ for _, indent in ipairs(spaces) do
   end, { desc = str .. " spaces" })
 end
 
+local function cmpvisible()
+  return tonumber(vim.fn.pumvisible()) ~= 0
+end
+
+-- CMP
+map("i", "<cr>", function()
+  return cmpvisible() and "<C-y>" or "<cr>"
+end, { expr = true })
+
 return {
   "folke/which-key.nvim",
   event = "VeryLazy",

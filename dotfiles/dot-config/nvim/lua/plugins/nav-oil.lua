@@ -39,6 +39,10 @@ return {
         ["q"] = "actions.close",
         ["<backspace>"] = "actions.parent",
         ["<CR>"] = "actions.select",
+        ["<leader>."] = function()
+          local cwd = require("oil").get_current_dir()
+          vim.cmd("cd " .. cwd)
+        end,
         ["<leader><CR>"] = {
           callback = function()
             local augroup = vim.api.nvim_create_augroup("oil-open-all", { clear = true })

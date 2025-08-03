@@ -15,22 +15,34 @@ return {
       vim.treesitter.language.register("markdown", "copilot-chat")
     end,
     opts = {
-      -- config
       model = "claude-3.5-sonnet",
-      -- auto_insert_mode = true,
-      -- style
-      question_header = "##   You ",
-      answer_header = "##   Copilot ",
+      temperature = 0.1,
+
+      -- Enable intelligent resource processing (skips unnecessary resources to save tokens)
+      resource_processing = true,
+
+      headers = {
+        user = "## 👤 You: ",
+        assistant = "## 🤖 Copilot: ",
+        tool = "## 🔧 Tool: ",
+      },
+
       window = {
         layout = "float",
-        border = "rounded",
+        border = "none",
         width = 1,
         height = 1,
       },
-      -- maps
+
+      -- providers = {},
+
+      -- functions = {},
+
+      -- prompts = {},
+
       mappings = {
         complete = {
-          insert = "<C-n>",
+          insert = "<CR>",
         },
       },
     },

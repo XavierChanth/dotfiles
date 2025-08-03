@@ -25,12 +25,7 @@ return {
           --   score_offset = 90,
           --   async = true,
           -- },
-          snippets = {
-            score_offset = 40,
-            -- function(ctx, enabled_sources)
-            --
-            --             end
-          },
+          snippets = { score_offset = 40 },
           lsp = { score_offset = 50 },
           buffer = { score_offset = 30 },
           path = { score_offset = 10 },
