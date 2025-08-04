@@ -5,7 +5,7 @@ return {
     opts = {
       char = { "▏" },
       virtcolumn = "81,121",
-      highlight = { "NonText" },
+      -- highlight = { "NonText" },
     },
   },
 }

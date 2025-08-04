@@ -1,5 +1,5 @@
 return {
-  {
+  { -- I keep this for the text objects
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
