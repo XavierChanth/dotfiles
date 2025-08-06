@@ -17,7 +17,8 @@ return {
       },
       quickfile = { enabled = true },
       statuscolumn = {
-        enabled = true,
+        -- race condition deleting last line of buffer when enabled
+        enabled = false,
       },
       zen = {
         toggles = { dim = false, mini_diff_signs = true },

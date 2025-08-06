@@ -31,13 +31,17 @@ function M.ensure_installed(spec)
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
-        local reg = require("mason-registry")
-        for _, id in ipairs(spec.mason) do
-          local ok, package = pcall(reg.get_package, id)
-          if ok and not package:is_installed() then
-            package:install()
-          elseif not ok then
-            print("Failed to retrieve package: " .. id)
+        local ok, reg = pcall(require, "mason-registry")
+        if ok then
+          for _, id in ipairs(spec.mason) do
+            local ok2, package = pcall(reg.get_package, id)
+            if ok2 then
+              local ok3, installed = pcall(package.is_installed, package)
+              if ok3 and not installed then
+                print("ok3 and not installed")
+                pcall(package.install, package)
+              end
+            end
           end
         end
       end,

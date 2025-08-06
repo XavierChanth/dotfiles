@@ -7,14 +7,14 @@ return {
   filetypes = { "dart" },
   root_markers = { "pubspec.yaml" },
   init_options = {
-    onlyAnalyzeProjectsWithOpenFiles = false,
+    onlyAnalyzeProjectsWithOpenFiles = true,
     suggestFromUnimportedLibraries = true,
     closingLabels = true,
     outline = true,
     flutterOutline = true,
   },
   reuse_client = function(client, config)
-    if config.root_dir:find(".pub-cache") then
+    if config.root_dir:find(".pub-cache") or config.root_dir:find(".local/dev/flutter/") then
       config.root_dir = client.root_dir
       return true
     end
@@ -31,7 +31,7 @@ return {
       renameFilesWithClasses = "prompt",
       enableSnippets = false,
       updateImportsOnRename = true,
-      includeDependenciesInWorkspaceSymbol = true,
+      includeDependenciesInWorkspaceSymbol = false,
     },
   },
 

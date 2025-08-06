@@ -30,3 +30,30 @@ To install Zen browser config (guided installer with steps that must be done
 manually):
 
 `dotfiles install-zen-browser`
+
+
+## Minimum Viable Windows setup (TODO)
+
+Steps:
+- Setup SSH
+- Install Winget packages
+- Setup Windows Terminal with Git bash as the default
+  - `"C:/Program Files/Git/bin/bash.exe" -i -l`
+- Setup Git bash as the default shell for ssh
+- Install nvim config to $LOCALAPPDATA/nvim
+- Install packages with Lazy
+
+Winget packages:
+
+```
+Git.Git
+Neovim.Neovim
+BurntSushi.ripgrep.MSVC
+sharkdp.fd
+zig.zig
+```
+
+Note: zig is used to build nvim-treesitter
+
+
+

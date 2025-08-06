@@ -56,7 +56,6 @@ return {
       "json",
       "jsonc",
       "just",
-      "latex",
       "lua",
       "luadoc",
       "luap",
