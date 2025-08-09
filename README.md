@@ -42,6 +42,7 @@ Steps:
 - Setup Git bash as the default shell for ssh
 - Install nvim config to $LOCALAPPDATA/nvim
 - Install packages with Lazy
+- Install CommitMonoNerdFont
 
 Winget packages:
 
@@ -51,6 +52,7 @@ Neovim.Neovim
 BurntSushi.ripgrep.MSVC
 sharkdp.fd
 zig.zig
+jj-vcs.jj
 ```
 
 Note: zig is used to build nvim-treesitter
