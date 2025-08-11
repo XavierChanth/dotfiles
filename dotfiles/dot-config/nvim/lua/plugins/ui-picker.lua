@@ -2,6 +2,7 @@ return {
   "folke/snacks.nvim",
   opts = {
     matcher = {
+
       sort_empty = false,
     },
     picker = {

@@ -7,18 +7,19 @@ return {
   filetypes = { "dart" },
   root_markers = { "pubspec.yaml" },
   init_options = {
-    onlyAnalyzeProjectsWithOpenFiles = true,
-    suggestFromUnimportedLibraries = true,
     closingLabels = true,
-    outline = true,
     flutterOutline = true,
+    onlyAnalyzeProjectsWithOpenFiles = false,
+    outline = true,
+    suggestFromUnimportedLibraries = true,
   },
   reuse_client = function(client, config)
-    if config.root_dir:find(".pub-cache") or config.root_dir:find(".local/dev/flutter/") then
-      config.root_dir = client.root_dir
-      return true
-    end
-    return config.root_dir == client.root_dir
+    return true
+    -- if config.root_dir:find(".pub-cache") or config.root_dir:find(".local/dev/flutter/") then
+    --   config.root_dir = client.root_dir
+    --   return true
+    -- end
+    -- return config.root_dir == client.root_dir
   end,
 
   settings = {

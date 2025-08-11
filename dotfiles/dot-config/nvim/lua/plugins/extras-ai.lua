@@ -28,10 +28,12 @@ return {
       },
 
       window = {
-        layout = "float",
-        border = "none",
-        width = 1,
-        height = 1,
+        -- layout = "float",
+        -- border = "none",
+        -- width = 1,
+        -- height = 1,
+        layout = "vertical",
+        border = "single",
       },
 
       -- providers = {},
@@ -43,6 +45,14 @@ return {
       mappings = {
         complete = {
           insert = "<CR>",
+        },
+        close = {
+          normal = "q",
+          insert = "",
+        },
+        reset = {
+          normal = "<C-c>",
+          insert = "<C-c>",
         },
       },
     },

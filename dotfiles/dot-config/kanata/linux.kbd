@@ -4,22 +4,18 @@
 )
 
 (defsrc
-  q w
   caps a s d f j k l ;
-  x c v
-  lctl lmet lalt left rght
+  lctl lmet lalt
 )
 
 (deflayer base
-  _ _
   @caps @a @s @d @f @j @k @l @;
-  _ _ _
-  lctl lalt lmet _ _
+  lctl lalt lmet
 )
 
 (defvar
   tap_time 225
-  hold_time 175
+  hold_time 200
 )
 
 (defalias
