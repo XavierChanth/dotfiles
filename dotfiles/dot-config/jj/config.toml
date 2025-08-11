@@ -51,7 +51,7 @@ bf = ["bookmark", "forget"]
 ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
-nt = ["new", "trunk"]
+nt = ["new", "trunk()"]
 colocate =  ["util", "exec", "--", "/bin/sh", "-c", """
 #!/usr/bin/env bash
 set -eux
@@ -67,7 +67,9 @@ set -eux
   jj undo
 """, ""]
 
-# rebase remote
+# Rebase from origin
+# i.e. Separate local changes from the commit on origin and move them to a new
+#      changeset.
 ro = ["util", "exec", "--", "/bin/sh", "-c", """
 #!/usr/bin/env bash
 set -eux
