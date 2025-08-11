@@ -1,3 +1,5 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
 [user]
 name = "XavierChanth"
 email = "xchanthavong@gmail.com"
@@ -38,7 +40,6 @@ key = "~/.ssh/id_ed25519.pub"
 auto-local-bookmark = false
 push-bookmark-prefix = "xc-"
 private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
-# subprocess = true
 
 [aliases]
 e = ["edit"]
@@ -107,6 +108,7 @@ log-watch = [
 ]
 
 [revset-aliases]
+"immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())"
 'working(x)' = "all:x+ & mine() & mutable()"
 'w(x)' = 'working(x)'
 
