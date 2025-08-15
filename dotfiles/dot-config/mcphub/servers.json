@@ -1,1 +1,11 @@
-{"mcpServers":{}}
+{
+  "mcpServers": {},
+  "nativeMCPServers": {
+    "mcphub": {
+      "disabled": false
+    },
+    "neovim": {
+      "disabled": false
+    }
+  }
+}

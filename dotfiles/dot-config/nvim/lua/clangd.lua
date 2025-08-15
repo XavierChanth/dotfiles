@@ -1,8 +1,10 @@
+local M = {}
+
 local function get_client(bufnr)
 	return vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })[1]
 end
 
-local function switch_source_header(bufnr)
+function M.switch_source_header(bufnr)
 	local method_name = "textDocument/switchSourceHeader"
 	bufnr = (bufnr == 0 and vim.api.nvim_get_current_buf()) or bufnr
 	local client = get_client(bufnr)
@@ -25,7 +27,7 @@ local function switch_source_header(bufnr)
 	end, bufnr)
 end
 
-local function symbol_info()
+function M.symbol_info()
 	local bufnr = vim.api.nvim_get_current_buf()
 	local clangd_client = get_client(bufnr)
 
@@ -51,58 +53,5 @@ local function symbol_info()
 		})
 	end, bufnr)
 end
-return {
-	cmd = {
-		"clangd",
-		"--query-driver=/usr/bin/clang++",
-		"--background-index",
-		"--clang-tidy",
-		"--header-insertion=iwyu",
-		"--completion-style=detailed",
-		"--function-arg-placeholders",
-		"--fallback-style=llvm",
-		"--enable-config",
-	},
-	filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "cc" },
-	root_markers = {
-		"compile_commands.json",
-	},
-	capabilities = {
-		textDocument = {
-			completion = {
-				editsNearCursor = true,
-			},
-		},
-		offsetEncoding = { "utf-16" },
-	},
-	init_options = {
-		usePlaceholders = true,
-		completeUnimported = true,
-		clangdFileStatus = true,
-	},
-	single_file_support = true,
-	on_attach = function(_, buf)
-		vim.keymap.set("n", "<leader>ch", function()
-			switch_source_header(buf)
-		end, { buffer = buf, desc = "Switch Source/Header (C/C++)" })
-		vim.keymap.set("n", "<leader>cw", function()
-			local filename = vim.fn.expand("%")
-			filename = filename:match("^.*/(.*/.*)$")
-			filename = filename:gsub("[-./]", "_")
-			filename = filename:upper()
-			-- top of file
-			vim.cmd.norm("ggO#ifndef " .. filename)
-			vim.cmd.norm("o#define " .. filename)
-			vim.cmd.norm("o#ifdef __cplusplus")
-			vim.cmd.norm('oextern "C" {')
-			vim.cmd.norm("o#endif")
-			vim.cmd.norm("o")
-			-- bottom of file
-			vim.cmd.norm("Go")
-			vim.cmd.norm("o#ifdef __cplusplus")
-			vim.cmd.norm("o}")
-			vim.cmd.norm("o#endif")
-			vim.cmd.norm("o#endif")
-		end, { buffer = buf, desc = "Wrap C headers" })
-	end,
-}
+
+return M

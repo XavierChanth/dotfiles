@@ -30,6 +30,7 @@ PACKAGES=$(
   mesa-utils
   zig
   rust-analyzer
+  typst
   nodejs
   github-cli
   jq

@@ -163,7 +163,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 local lazy_config = {
 	checker = { enabled = false }, -- disable check for updates
 	change_detection = { enabled = false },
-	colorscheme = { "retrobox", "unokai", "habamax" },
+	colorscheme = { "tokyonight-storm", "habamax" },
 	defaults = {
 		lazy = true,
 		version = "*",
@@ -215,34 +215,26 @@ vim.keymap.set("i", ";", ";<c-g>u")
 
 -- PLUGINS
 
-local FILE = { "BufReadPost", "BufNewFile", "BufReadPre" }
-local LAZYFILE = { "BufReadPost", "BufNewFile", "BufReadPre", "VeryLazy" }
+local file_event = { "BufReadPost", "BufNewFile", "BufReadPre" }
 
--- Here we define:
--- - how plugins load
--- - how they are built
--- - how they are loaded (event, ft)
--- keys and cmd go in the other config
 lazy_config.spec = {
-	-- LIBS
 	{ "nvim-lua/plenary.nvim", version = false },
 	{ "MunifTanjim/nui.nvim" },
 	{ "williamboman/mason.nvim", build = ":MasonUpdate" },
 
-	-- ESSENTIAL
-	{ "stevearc/oil.nvim", lazy = vim.fn.argc(-1) == 0 },
+	-- Essentials
+	"stevearc/oil.nvim",
 	"christoomey/vim-tmux-navigator",
 
 	-- QOL
-	{ "folke/persistence.nvim", event = "BufReadPre" },
-	{ "folke/snacks.nvim", priority = 1000, lazy = false },
-	"MagicDuck/grug-far.nvim",
+	"folke/persistence.nvim",
+	{ "folke/snacks.nvim", priority = 1000 },
+	"MagicDuck/grug-far.nvim", -- grug gud
 
 	-- MOTIONS
-	{ "folke/flash.nvim", event = "VeryLazy" },
-	{ "echasnovski/mini.ai", event = "VeryLazy", dependencies = {
-		"echasnovski/mini.extra",
-	} },
+	"folke/flash.nvim",
+	"echasnovski/mini.ai",
+	"echasnovski/mini.surround",
 
 	-- GIT
 	-- { "julienvincent/hunk.nvim", cmd = "DiffEditor" },
@@ -250,118 +242,53 @@ lazy_config.spec = {
 	"echasnovski/mini.diff",
 
 	-- CORE LANG
-	{ "saghen/blink.cmp", event = "InsertEnter", dependencies = {
-		"rafamadriz/friendly-snippets",
-	} },
-	{ "stevearc/conform.nvim", event = FILE },
-	{ "mfussenegger/nvim-lint", event = FILE },
-	{
-		"nvim-treesitter/nvim-treesitter",
-		version = false,
-		lazy = vim.fn.argc(-1) == 0,
-		event = LAZYFILE,
-		build = ":TSUpdate",
-	},
-	{ "nvim-treesitter/nvim-treesitter-textobjects", event = "VeryLazy" },
-	{ "windwp/nvim-ts-autotag", event = FILE },
-	{ "folke/ts-comments.nvim", event = "VeryLazy" },
+	{ "nvim-treesitter/nvim-treesitter", version = false },
+	"nvim-treesitter/nvim-treesitter-textobjects",
+	{ "windwp/nvim-ts-autotag", event = file_event, opts = {} },
+	{ "folke/ts-comments.nvim", event = "VeryLazy", opts = {} },
+	"saghen/blink.cmp",
+	"rafamadriz/friendly-snippets",
 	"folke/trouble.nvim",
-	{ "folke/todo-comments.nvim", event = FILE },
+	"folke/todo-comments.nvim",
+	"stevearc/conform.nvim",
+	"mfussenegger/nvim-lint",
 
 	-- THEME
-	{ "sschleemilch/slimline.nvim", event = "VeryLazy" },
-	{ "echasnovski/mini.icons", lazy = true },
+	"sschleemilch/slimline.nvim",
+	"echasnovski/mini.icons",
 	"folke/tokyonight.nvim",
 	"catppuccin/nvim",
 
 	-- AI
+	{ "zbirenbaum/copilot.lua", build = ":Copilot auth" },
 	{ "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
 	{ "ravitemer/mcphub.nvim", build = "bundled_build.lua" },
 
 	-- HANDY
 	{ "m00qek/baleia.nvim" },
-	{ "lukas-reineke/virt-column.nvim", event = FILE },
+	"lukas-reineke/virt-column.nvim",
 
 	-- LANG SPECIFIC
 	{ "b0o/SchemaStore.nvim", version = false },
-	{ "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
-	{ "Decodetalkers/csharpls-extended-lsp.nvim" },
+	-- { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
+	-- { "Decodetalkers/csharpls-extended-lsp.nvim" },
 	{ "NoahTheDuke/vim-just", event = "BufReadPre justfile" },
-	{ "kmonad/kmonad-vim", event = "BufReadPre *.kbd" },
+	-- { "kmonad/kmonad-vim", event = "BufReadPre *.kbd" },
 	{ "Bilal2453/luvit-meta", lazy = true },
-	{ "folke/lazydev.nvim", ft = "lua" },
-	{ "Saecki/crates.nvim", event = { "BufRead Cargo.toml" } },
-	{ "maxandron/goplements.nvim", ft = "go" },
-	{ "linux-cultist/venv-selector.nvim", branch = "regexp", ft = "python" },
+	"folke/lazydev.nvim",
+	-- "Saecki/crates.nvim",
+	-- "maxandron/goplements.nvim",
+	-- { "linux-cultist/venv-selector.nvim", branch = "regexp" },
 
 	-- MARKDOWN
 	{ "masukomi/vim-markdown-folding", ft = "markdown" },
-	{ "MeanderingProgrammer/render-markdown.nvim", ft = "markdown" },
-	{
-		"iamcco/markdown-preview.nvim",
-		ft = "markdown",
-		build = function()
-			require("lazy").load({ plugins = { "markdown-preview.nvim" } })
-			vim.fn["mkdp#util#install"]()
-		end,
-	},
-	{ "bullets-vim/bullets.vim", ft = "markdown" },
+	"MeanderingProgrammer/render-markdown.nvim",
+	"iamcco/markdown-preview.nvim",
+	"bullets-vim/bullets.vim",
 
 	-- REMOVE?
 	{ "ThePrimeagen/harpoon", branch = "harpoon2" },
-	"jiaoshijie/undotree",
 }
-
-local mason_packages = {
-	"asm-lsp",
-	"basedpyright",
-	"clangd",
-	"csharp-language-server",
-	"csharpier",
-	"docker-compose-language-service",
-	"dockerfile-language-server",
-	"gersemi",
-	"gofumpt",
-	"goimports",
-	"gopls",
-	"hadolint",
-	"json-lsp",
-	"lua-language-server",
-	"neocmakelsp",
-	"omnisharp",
-	"prettier",
-	"pymarkdownlnt",
-	"rubocop",
-	"ruby-lsp",
-	"ruff",
-	"rust-analyzer",
-	"shellcheck",
-	"shfmt",
-	"stylua",
-	"tailwindcss-language-server",
-	"vtsls",
-	"yaml-language-server",
-	"zls",
-}
-vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
-	callback = function()
-		require("mason-installer").install_packages(mason_packages)
-	end,
-})
 
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
 require("lazy").setup(lazy_config)
-require("lsp")
-
--- Colorscheme
-vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
-	callback = function()
-		require("colorscheme-timer").start(3000)
-	end,
-})
-vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
-	command = "highlight Normal ctermbg=NONE guibg=NONE",
-})
