@@ -8,7 +8,6 @@ function M.install_packages(packages)
       if ok2 then
         local ok3, installed = pcall(package.is_installed, package)
         if ok3 and not installed then
-          print("ok3 and not installed")
           pcall(package.install, package)
         end
       end
