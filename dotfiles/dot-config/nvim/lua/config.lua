@@ -146,7 +146,32 @@ local config = {
   {
     "folke/snacks.nvim",
     init = function()
-      vim.api.nvim_create_user_command( "Pick", ":lua Snacks.picker()", {})
+      local pick_cmp = nil
+      -- Pick user command with completion!
+      vim.api.nvim_create_user_command("Pick", function(conf)
+        if conf.args ~= "" then
+          Snacks.picker[conf.args]()
+        else
+          Snacks.picker()
+        end
+      end, {
+        nargs = "?",
+        complete = function()
+          if pick_cmp == nil then
+            pick_cmp = {}
+            for k, _ in pairs(require("snacks.picker.config.sources")) do
+              pick_cmp[#pick_cmp + 1] = k
+            end
+          end
+          return pick_cmp
+        end,
+      })
+      if not require("platform").is_windows() then
+        vim.env.SNACKS_GHOSTTY = true
+        vim.g.snacks_image = {
+          doc = { inline = false },
+        }
+      end
     end,
     opts = {
       matcher = { sort_empty = false },
@@ -168,6 +193,7 @@ local config = {
           },
         },
       },
+      image = vim.g.snacks_image,
       indent = {
         enabled = true,
         scope = { animate = { easing = "inOutQuad" } },
@@ -318,18 +344,16 @@ local config = {
         desc = "Jump to buffer (all)",
       },
       {
-        "<leader>uz",
+        "<leader>z",
         function()
           Snacks.zen.zen()
         end,
-        desc = "Toggle Zen Mode",
       },
       {
-        "<leader>uf",
+        "<leader>f",
         function()
           Snacks.zen.zoom()
         end,
-        desc = "Toggle Fullscreen",
       },
     },
   },
@@ -401,9 +425,6 @@ local config = {
   {
     "FabijanZulj/blame.nvim",
     cmd = "BlameToggle",
-    keys = {
-      { "<leader>gB", "<cmd>BlameToggle window<cr>" },
-    },
     opts = { merge_consecutive = false },
   },
   {
@@ -517,20 +538,6 @@ local config = {
         {}
       )
     end,
-    keys = {
-      {
-        "<leader>cc",
-        "<cmd>ConformInfo<cr>",
-        desc = "Conform Info",
-      },
-      {
-        "<leader>cf",
-        function()
-          require("conform").format()
-        end,
-        desc = "Code Format",
-      },
-    },
     opts = {
       format_on_save = function(bufnr)
         if not vim.g.autoformat then
@@ -724,9 +731,6 @@ local config = {
       auto_preview = false,
     },
     keys = {
-      { "<leader>x", "", desc = "+diagnostics" },
-      { "<leader>xl", "<cmd>lopen<cr>", desc = "Location List" },
-      { "<leader>xq", "<cmd>copen<cr>", desc = "Quickfix List" },
       {
         "<leader>xx",
         "<cmd>Trouble diagnostics toggle<cr>",
@@ -736,35 +740,6 @@ local config = {
         "<leader>xX",
         "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
         desc = "Buffer Diagnostics (Trouble)",
-      },
-      {
-        "<leader>xs",
-        "<cmd>Trouble symbols toggle<cr>",
-        desc = "Symbols (Trouble)",
-      },
-      {
-        "<leader>xS",
-        "<cmd>Trouble lsp toggle<cr>",
-        desc = "LSP references/definitions/... (Trouble)",
-      },
-      {
-        "<leader>xL",
-        "<cmd>Trouble loclist toggle<cr>",
-        desc = "Location List (Trouble)",
-      },
-      {
-        "<leader>xQ",
-        "<cmd>Trouble qflist toggle<cr>",
-        desc = "Quickfix List (Trouble)",
-      },
-      {
-        "<leader>cd",
-        function()
-          vim.diagnostic.open_float({
-            border = "rounded",
-          })
-        end,
-        desc = "Diagnostics (Line)",
       },
     },
   },
@@ -783,17 +758,6 @@ local config = {
           })
         end,
         desc = "Todo (Trouble)",
-      },
-      {
-        "<leader>xT",
-        "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>",
-        desc = "Todo/Fix/Fixme (Trouble)",
-      },
-      { "<leader>st", "<cmd>TodoFzfLua<cr>", desc = "Todo" },
-      {
-        "<leader>sT",
-        "<cmd>TodoFzfLua keywords=TODO,FIX,FIXME<cr>",
-        desc = "Todo/Fix/Fixme",
       },
     },
     opts = {
@@ -980,6 +944,7 @@ local config = {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    cmd = "CopilotChat",
     init = function()
       vim.treesitter.language.register("markdown", "copilot-chat")
     end,
@@ -1027,7 +992,7 @@ local config = {
     },
     keys = {
       {
-        "<leader>ll",
+        "<leader>l",
         function()
           local mode = vim.api.nvim_get_mode().mode
           require("CopilotChat").open({
@@ -1048,13 +1013,6 @@ local config = {
   {
     "ravitemer/mcphub.nvim",
     cmd = "MCPHub",
-    keys = {
-      {
-        "<leader>lm",
-        "<cmd>MCPHub<CR>",
-        desc = "MCPHub",
-      },
-    },
     opts = {
       use_bundled_binary = true, -- Use local `mcp-hub` binary
       config = vim.fn.expand("~/.config/mcphub/servers.json"),
@@ -1208,14 +1166,6 @@ local config = {
   {
     "linux-cultist/venv-selector.nvim",
     cmd = "VenvSelect",
-    keys = {
-      {
-        "<leader>cv",
-        "<cmd>:VenvSelect<cr>",
-        desc = "Select VirtualEnv",
-        ft = "python",
-      },
-    },
     opts = {
       settings = {
         options = {
@@ -1236,6 +1186,7 @@ local config = {
   -- MARKDOWN
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    cmd = "RenderMarkdown",
     opts = {
       code = {
         sign = false,
@@ -1277,27 +1228,10 @@ local config = {
         },
       },
     },
-    keys = {
-      {
-        "<leader>mr",
-        function()
-          require("render-markdown").toggle()
-        end,
-        ft = "markdown",
-      },
-    },
   },
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    keys = {
-      {
-        "<leader>mpb",
-        "<cmd>MarkdownPreviewToggle<cr>",
-        desc = "Preview in Browser",
-        ft = "markdown",
-      },
-    },
     config = function()
       vim.cmd([[do FileType]])
     end,
@@ -1342,11 +1276,15 @@ local config = {
   },
   {
     "jiaoshijie/undotree",
+    init = function()
+      vim.api.nvim_create_user_command(
+        "Undotree",
+        'lua require("undotree").toggle()',
+        {}
+      )
+    end,
     opts = {
       ignore_filetype = { "undotree", "undotreeDiff", "qf", "dashboard" },
-    },
-    keys = {
-      { "<leader>uh", 'lua require("undotree").toggle()' },
     },
   },
 }

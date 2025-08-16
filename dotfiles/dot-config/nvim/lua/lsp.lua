@@ -18,6 +18,7 @@ vim.lsp.enable({
   "sourcekit",
   "svelte",
   "tailwindcss",
+  "tinymist",
   "vtsls",
   "yamlls",
   "zls",
@@ -45,9 +46,11 @@ vim.lsp.config("*", {
   root_markers = { ".git", ".jj" },
 })
 
-vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", {
-  desc = "Lsp Info",
-})
+vim.keymap.set("n", "<leader>cd", function()
+  vim.diagnostic.open_float({
+    border = "rounded",
+  })
+end, {})
 
 vim.lsp.inlay_hint.enable(false)
 
