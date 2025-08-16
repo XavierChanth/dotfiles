@@ -163,11 +163,9 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 local lazy_config = {
 	checker = { enabled = false }, -- disable check for updates
 	change_detection = { enabled = false },
-	colorscheme = { "retrobox", "unokai", "habamax" },
 	defaults = {
 		lazy = true,
 		version = "*",
-		optional = true,
 	},
 	-- dev = {
 	--   -- To add a plugin to this folder use the following command
@@ -177,7 +175,10 @@ local lazy_config = {
 	--   patterns = { "xavierchanth" },
 	--   fallback = true,
 	-- },
-	install = { missing = false },
+  install = {
+    missing = false,
+    colorscheme = { "retrobox", "unokai", "habamax" },
+  },
 	performance = {
 		rtp = {
 			disabled_plugins = { "matchit", "netrwPlugin", "tutor" },
@@ -359,7 +360,9 @@ require("lsp")
 vim.api.nvim_create_autocmd("User", {
 	pattern = "VeryLazy",
 	callback = function()
-		require("colorscheme-timer").start(3000)
+    if not require("platform").is_windows() then
+      require("colorscheme-timer").start(3000)
+    end
 	end,
 })
 vim.api.nvim_create_autocmd("ColorScheme", {
