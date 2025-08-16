@@ -1,5 +1,5 @@
 -- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/nvim2/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/nvim/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
 	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
@@ -52,7 +52,7 @@ vim.opt.listchars = {
 }
 
 vim.opt.showbreak = "  󱞩 "
-vim.opt.cmdheight = 0
+-- vim.opt.cmdheight = 0
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
@@ -91,8 +91,8 @@ vim.opt.spelloptions:append("noplainbuffer")
 vim.opt.splitbelow = true
 vim.opt.splitkeep = "topline"
 vim.opt.splitright = true
-vim.opt.timeoutlen = 300
-vim.opt.ttimeout = false
+-- vim.opt.timeoutlen = 1000
+-- vim.opt.ttimeout = false
 vim.opt.undofile = true
 vim.opt.undolevels = 10000
 
@@ -188,6 +188,7 @@ local lazy_config = {
 }
 
 -- KEYMAPS
+vim.keymap.set({"n", "v"}, "<leader>", "");
 vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>")
 
 -- window maps
