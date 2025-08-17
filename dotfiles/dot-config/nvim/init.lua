@@ -64,7 +64,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 3
-vim.opt.termguicolors = true -- True color support
 vim.opt.completeopt = "menu,menuone,popup,noselect,noinsert"
 vim.opt.expandtab = true
 vim.opt.linebreak = true
@@ -313,9 +312,7 @@ lazy_config.spec = {
 
   -- THEME
   { "sschleemilch/slimline.nvim", event = "VeryLazy" },
-  { "echasnovski/mini.icons", lazy = true },
-  "folke/tokyonight.nvim",
-  "catppuccin/nvim",
+  { "echasnovski/mini.icons" },
 
   -- AI
   { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
@@ -327,11 +324,11 @@ lazy_config.spec = {
 
   -- LANG SPECIFIC
   { "b0o/SchemaStore.nvim", version = false },
-  { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
+  { "Hoffs/omnisharp-extended-lsp.nvim" },
   { "Decodetalkers/csharpls-extended-lsp.nvim", ft = "c_sharp" },
   { "NoahTheDuke/vim-just", event = "BufReadPre justfile" },
   { "kmonad/kmonad-vim", event = "BufReadPre *.kbd" },
-  { "Bilal2453/luvit-meta", lazy = true, ft = "lua" },
+  { "Bilal2453/luvit-meta", ft = "lua" },
   { "folke/lazydev.nvim", ft = "lua" },
   { "Saecki/crates.nvim", event = { "BufRead Cargo.toml" } },
   { "maxandron/goplements.nvim", ft = "go" },
@@ -394,21 +391,13 @@ vim.api.nvim_create_autocmd("User", {
     require("mason-installer").install_packages(mason_packages)
   end,
 })
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    require("colorscheme")
+  end,
+})
 
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
 require("lazy").setup(lazy_config)
 require("lsp")
-
--- Colorscheme
-vim.api.nvim_create_autocmd("User", {
-  pattern = "VeryLazy",
-  callback = function()
-    if not require("platform").is_windows() then
-      require("colorscheme-timer").start(3000)
-    end
-  end,
-})
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  command = "highlight Normal ctermbg=NONE guibg=NONE",
-})

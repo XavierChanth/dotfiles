@@ -103,7 +103,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map({
       "K",
       function()
-        vim.lsp.buf.hover()
+        vim.lsp.buf.hover({ border = "rounded" })
       end,
       desc = "Hover",
     })

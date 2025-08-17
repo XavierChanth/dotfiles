@@ -11,7 +11,7 @@ selected=$(
   sed -e 's/ /\n/g' <<<$hosts | fzf -d=' ' --scheme=path --tiebreak=end,index --header "Open tmux session"
 )
 
-[ -z $selected ] && return
+[ -z $selected ] && exit
 
 name="ssh-$selected"
 # add sshnp to path so it works in ProxyCommands
