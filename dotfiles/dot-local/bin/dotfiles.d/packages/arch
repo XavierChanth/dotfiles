@@ -123,8 +123,6 @@ DESKTOP_PACKAGES=$(
 
   ghostty
   zen-browser-bin
-  firefox
-  chromium
   onlyoffice-bin
   discord
   spotify
@@ -139,6 +137,7 @@ DESKTOP_PACKAGES=$(
   steam
   vlc
   opencode-bin
+  nom
 EOF
 )
 FLATPAK_PACKAGES=$(
