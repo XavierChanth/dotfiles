@@ -2,17 +2,18 @@ configpath: /home/chant/.config/nom/config.yml
 showfavourites: false
 version: ""
 feeds:
-    - url: https://blog.thestateofme.com/feed/
-    - url: http://localhost:5173/rss.xml
+  - url: https://blog.thestateofme.com/feed/
+  - url: https://xavierchanth.com/rss.xml
+  # - url: http://localhost:5173/rss.xml
 ordering: desc
 filtering:
-    defaultIncludeFeedName: true
+  defaultIncludeFeedName: true
 theme:
-    glamour: dark
-    titleColor: "62"
-    titleColorFg: "231"
-    filterColor: "62"
-    selectedItemColor: "170"
-    readIcon: ✓
+  glamour: dark
+  titleColor: "62"
+  titleColorFg: "231"
+  filterColor: "62"
+  selectedItemColor: "170"
+  readIcon: ✓
 http:
-    mintls: TLS 1.2
+  mintls: TLS 1.2
