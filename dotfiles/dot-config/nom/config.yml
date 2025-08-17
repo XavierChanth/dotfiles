@@ -3,8 +3,11 @@ showfavourites: false
 version: ""
 feeds:
   - url: https://blog.thestateofme.com/feed/
+    name: Chris
   - url: https://xavierchanth.com/rss.xml
+    name: XavierChanth
   # - url: http://localhost:5173/rss.xml
+  #   name: '[Dev]'
 ordering: desc
 filtering:
   defaultIncludeFeedName: true
