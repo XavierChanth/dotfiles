@@ -14,9 +14,8 @@ if exists("syntax_on")
 endif
 
 " Basic
-highlight Visual ctermbg=Grey
-highlight WhiteSpace ctermfg=Grey
-highlight WhiteSpace ctermfg=Grey
+highlight Visual ctermbg=LightGrey
+highlight WhiteSpace ctermfg=DarkGrey
 highlight Ignore ctermfg=DarkGrey
 highlight Underlined ctermfg=Cyan cterm=underline
 highlight MatchParen ctermfg=DarkYellow cterm=bold
@@ -25,12 +24,12 @@ highlight FoldColumn ctermfg=Grey ctermbg=DarkGrey
 
 " Theming
 highlight LineNr       ctermfg=DarkGrey
-highlight CursorLineNr ctermfg=Grey
+highlight CursorLineNr ctermfg=LightGrey
 highlight SignColumn   ctermbg=DarkGrey
 highlight ColorColumn  ctermfg=LightGrey ctermbg=DarkGrey
-highlight StatusLine   ctermfg=White ctermbg=Black cterm=NONE
-highlight StatusLineNC ctermfg=Grey ctermbg=DarkGrey cterm=NONE
-highlight SpellCap     ctermfg=Grey ctermbg=DarkGrey
+highlight StatusLine   ctermfg=White ctermbg=NONE cterm=NONE
+highlight link StatusLineNC StatusLine
+highlight SpellCap     ctermfg=DarkGrey ctermbg=DarkGrey
 
 highlight Pmenu ctermfg=Black ctermbg=White cterm=NONE
 highlight PmenuSel ctermfg=Black ctermbg=Blue cterm=bold
@@ -38,11 +37,11 @@ highlight NormalFloat ctermbg=Black
 
 
 " Syntax
-highlight Comment ctermfg=Grey cterm=italic
+highlight Comment ctermfg=LightGrey cterm=italic
 highlight String ctermfg=Green
 highlight Character ctermfg=Green
-highlight Constant ctermfg=DarkYellow
-highlight Statement ctermfg=Magenta
+highlight Constant ctermfg=Yellow
+highlight Statement ctermfg=LightMagenta
 highlight Special ctermfg=Grey
 highlight Delimiter ctermfg=Grey
 highlight Type ctermfg=DarkCyan
@@ -61,7 +60,7 @@ highlight @string.special ctermfg=Red
 highlight @module.builtin ctermfg=Red
 highlight @type.builtin ctermfg=DarkCyan
 highlight @label ctermfg=DarkBlue
-highlight @punctuation.special ctermfg=cyan
+highlight @punctuation.special ctermfg=Cyan
 highlight @comment.error ctermfg=DarkRed
 highlight @comment.warning ctermfg=DarkYellow
 highlight @comment.todo ctermfg=Blue
@@ -85,4 +84,8 @@ highlight DiagnosticUnderlineOk guisp=Green cterm=underline
 " Fix
 highlight LspReferenceText ctermfg=NONE ctermbg=NONE " Really annoying
 highlight NvimInternalError ctermfg=Black "Otherwise red on red
+
+" Plugins
+highlight link SnacksIndent WhiteSpace
+highlight SnacksIndentScope ctermfg=LightGrey
 ]])
