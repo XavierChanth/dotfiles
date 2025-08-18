@@ -31,7 +31,7 @@ vim.api.nvim_create_user_command(
 )
 vim.api.nvim_create_user_command("LspRestart", function(_)
   vim.lsp.stop_client(vim.lsp.get_clients())
-  vim.schedule_wrap_fn(vim.cmd)("edit")
+  vim.schedule_wrap(vim.cmd)("edit")
 end, {})
 
 vim.lsp.config("*", {
@@ -53,6 +53,9 @@ vim.keymap.set("n", "<leader>cd", function()
 end, {})
 
 vim.lsp.inlay_hint.enable(false)
+local function clear_floats()
+  -- TODO
+end
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(event)
@@ -69,6 +72,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map({
       "gd",
       function()
+        clear_floats()
         Snacks.picker.lsp_definitions()
       end,
       desc = "Goto Definition",
@@ -84,6 +88,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map({
       "gI",
       function()
+        clear_floats()
         Snacks.picker.lsp_implementations()
       end,
       desc = "Goto Implementation",

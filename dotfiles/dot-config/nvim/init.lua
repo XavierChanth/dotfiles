@@ -309,7 +309,6 @@ lazy_config.spec = {
   { "folke/ts-comments.nvim", event = "VeryLazy" },
   "folke/trouble.nvim",
   { "folke/todo-comments.nvim", event = FILE },
-
   -- THEME
   { "sschleemilch/slimline.nvim", event = "VeryLazy" },
   { "echasnovski/mini.icons" },
@@ -351,6 +350,7 @@ lazy_config.spec = {
   -- REMOVE?
   { "ThePrimeagen/harpoon", branch = "harpoon2" },
   "jiaoshijie/undotree",
+  { "folke/tokyonight.nvim", lazy = false },
 }
 
 local mason_packages = {
@@ -391,10 +391,12 @@ vim.api.nvim_create_autocmd("User", {
     require("mason-installer").install_packages(mason_packages)
   end,
 })
-vim.api.nvim_create_autocmd("User", {
-  pattern = "VeryLazy",
+
+local colors = require("colorscheme")
+vim.api.nvim_create_autocmd("OptionSet", {
+  pattern = "background",
   callback = function()
-    require("colorscheme")
+    colors.load()
   end,
 })
 

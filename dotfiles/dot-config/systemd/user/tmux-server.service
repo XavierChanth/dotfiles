@@ -7,6 +7,8 @@ Environment=HOME="%h"
 ExecStartPre=
 ExecStart=tmux start-server
 ExecStop=tmux kill-server
+Restart=always
+RestartSec=1
 
 [Install]
 WantedBy=default.target

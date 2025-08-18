@@ -51,6 +51,7 @@
     "modules": [
       "custom/control",
       "idle_inhibitor",
+      "custom/darkmode",
       "network",
       "bluetooth",
       "custom/socks",

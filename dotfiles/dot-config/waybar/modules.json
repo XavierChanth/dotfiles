@@ -1,16 +1,32 @@
 {
-  "custom/tray": { "format": "", "tooltip": false },
-  "custom/monitor": { "format": "", "tooltip": false },
-  "custom/control": { "format": "", "tooltip": false },
-  "custom/spacer": { "format": "|", "tooltip": false },
+  "custom/tray": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/monitor": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/control": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/spacer": {
+    "format": "|",
+    "tooltip": false
+  },
   "custom/socks": {
-    "interval": 120,
+    "interval": 1,
     "exec": "echo \"{ \\\"text\\\": \\\"$(systemctl status --user socks >/dev/null 2>&1 && echo on || echo off)\\\"}\"",
     "return-type": "json",
     "format": " {}",
     "on-click": "systemctl status --user socks >/dev/null 2>&1 && systemctl stop --user socks || systemctl start --user socks"
   },
-
+  "custom/darkmode": {
+    "tooltip": 1,
+    "format": "darkmode",
+    "on-click": "if [ $(gsettings get org.gnome.desktop.interface color-scheme) = \"'prefer-dark'\" ]; then gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'; else gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark';fi;"
+  },
   "sway/workspaces": {
     "format": "{name}{icon}",
     "format-icons": {
@@ -19,25 +35,21 @@
       "urgent": "<span foreground='red'><sup></sup></span>"
     }
   },
-
   "tray": {
     "show-passive-items": false,
     "icon-size": 15,
     "spacing": 8,
     "reverse-direction": true
   },
-
   "memory": {
     "format": "󰍛 {percentage}%",
     "tooltip": true,
     "tooltip-format": "main: {percentage}%\nused: {used}GiB\navailable: {avail}GiB\nswap: {swapPercentage}\nused: {swapUsed}GiB\navailable: {swapAvail}GiB"
   },
-
   "cpu": {
     "format": " {}%",
     "tooltip": true
   },
-
   "temperature": {
     "interval": 10,
     "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
@@ -46,7 +58,6 @@
     "format": " {temperatureC}°C",
     "tooltip-format": "{temperatureC}°C / {temperatureF}°F"
   },
-
   "power-profiles-daemon": {
     "format": "{icon}",
     "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
@@ -58,12 +69,10 @@
       "power-saver": ""
     }
   },
-
   "systemd-failed-units": {
     "format": "{nr_failed} failed units",
     "hide-on-ok": true
   },
-
   "privacy": {
     "icon-spacing": 4,
     "icon-size": 12,
@@ -82,7 +91,6 @@
       }
     ]
   },
-
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
@@ -103,7 +111,6 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
-
   "idle_inhibitor": {
     "format": "{icon}",
     "tooltip-format-activated": "machine will stay awake",
@@ -114,7 +121,6 @@
     },
     "timeout": 120
   },
-
   "network": {
     "format-wifi": "",
     "format-ethernet": "󰈀",
@@ -124,7 +130,6 @@
     "format-disconnected": "󰖪",
     "on-click": "iwgtk"
   },
-
   "bluetooth": {
     "on-click": "blueman-manager",
     "tooltip": true,
@@ -134,7 +139,6 @@
     "format-connected": "󰂱",
     "format-connected-battery": "󰂱"
   },
-
   "wireplumber": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} {volume}%  {format_source}",
@@ -149,11 +153,14 @@
       "phone": "",
       "portable": "",
       "car": "",
-      "default": ["", "", ""]
+      "default": [
+        "",
+        "",
+        ""
+      ]
     },
     "on-click": "pwvucontrol"
   },
-
   "battery": {
     "states": {
       "warning": 30,
@@ -164,9 +171,14 @@
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
     "format-alt": "{icon} {time}",
-    "format-icons": ["", "", "", "", ""]
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
   },
-
   "clock": {
     "format": "{:%Y-%m-%d  %H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"

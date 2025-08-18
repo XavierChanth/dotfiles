@@ -108,6 +108,9 @@ DESKTOP_PACKAGES=$(
   kanata-bin
   ttf-jetbrains-mono-nerd
   otf-commitmono-nerd
+  noto-sans
+  noto-sans-cjk
+  noto-sans-emoji
 
   flatpak
   fastfetch

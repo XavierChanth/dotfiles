@@ -346,7 +346,11 @@ local config = {
       {
         "<leader>z",
         function()
-          Snacks.zen.zen()
+          Snacks.zen.zen({
+            wo = {
+              winhighlight = "NormalFloat:Normal",
+            },
+          })
         end,
       },
       {
