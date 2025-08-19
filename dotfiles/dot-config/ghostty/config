@@ -1,7 +1,7 @@
 # styling
 # config-file = colorscheme
 
-theme = "light:catppuccin-latte,dark:tokyonight-storm"
+theme = "light:flexoki-light,dark:tokyonight-storm"
 
 # font-family = "JetBrainsMono Nerd Font Mono"
 # font-size = 18

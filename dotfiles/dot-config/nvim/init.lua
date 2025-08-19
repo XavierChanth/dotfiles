@@ -186,7 +186,7 @@ local lazy_config = {
   -- },
   install = {
     missing = false,
-    colorscheme = { "retrobox", "unokai", "habamax" },
+    colorscheme = { "tokyocterm", "retrobox", "unokai", "habamax" },
   },
   performance = {
     rtp = {
@@ -350,7 +350,6 @@ lazy_config.spec = {
   -- REMOVE?
   { "ThePrimeagen/harpoon", branch = "harpoon2" },
   "jiaoshijie/undotree",
-  { "folke/tokyonight.nvim", lazy = false },
 }
 
 local mason_packages = {
@@ -385,6 +384,7 @@ local mason_packages = {
   "yaml-language-server",
   "zls",
 }
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
   callback = function()
@@ -392,14 +392,14 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-local colors = require("colorscheme")
 vim.api.nvim_create_autocmd("OptionSet", {
   pattern = "background",
   callback = function()
-    colors.load()
+    vim.cmd([[colorscheme tokyonight-cterm]])
   end,
 })
 
+require("buffer-cache")
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
 require("lazy").setup(lazy_config)
 require("lsp")

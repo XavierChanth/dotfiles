@@ -2,12 +2,14 @@
 
 ## How to install
 
+```
 User setup:
 
 - Create user
 - Give user sudo permissions
 - Set user password
 - Login as user
+
 
 Dotfiles setup:
 

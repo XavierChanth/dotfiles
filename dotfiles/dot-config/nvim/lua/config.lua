@@ -35,7 +35,6 @@ local config = {
         function()
           require("oil").open()
         end,
-        desc = "Oil",
       },
     },
     opts = {
@@ -212,7 +211,6 @@ local config = {
         function()
           Snacks.picker.files({ cwd = vim.lsp.client.root_dir })
         end,
-        desc = "Files (LSP Root || Vim PWD)",
       },
       {
         "<leader>sf",
@@ -222,134 +220,130 @@ local config = {
           end
           Snacks.picker.files({})
         end,
-        desc = "Files (Git Root || Vim PWD)",
-      },
-      {
-        "<leader>sF",
-        function()
-          local bufinfo = vim.fn.getbufinfo(0)[1]
-          local cwd = nil
-          if bufinfo.name:match("^/") then
-            cwd = vim.fs.dirname(bufinfo.name)
-          end
-          Snacks.picker.files({ cwd = cwd })
-        end,
-        desc = "Files (Buffer's PWD || Vim PWD)",
-      },
-      {
-        "<leader>sb",
-        function()
-          Snacks.picker.buffers({})
-        end,
-        desc = "Buffers",
-      },
-      {
-        "<leader>sh",
-        function()
-          Snacks.picker.help({})
-        end,
-        desc = "Help Pages",
-      },
-      {
-        "<leader>sk",
-        function()
-          Snacks.picker.keymaps({})
-        end,
-        desc = "Key Maps",
-      },
-      {
-        "<leader>sm",
-        function()
-          Snacks.picker.marks({})
-        end,
-        desc = "Marks",
       },
       {
         "<leader>sg",
         function()
           Snacks.picker.grep({})
         end,
-        desc = "Grep workspace",
       },
       {
         "<leader>sc",
         function()
           Snacks.picker.resume({})
         end,
-        desc = "Continue",
-      },
-      {
-        "<leader>sG",
-        function()
-          require("fzf-lua").lgrep_curbuf({})
-        end,
-        desc = "Grep buffer",
       },
       {
         "<leader>ss",
         function()
           Snacks.picker.lsp_symbols({})
         end,
-        desc = "Symbols (Buffer)",
-      },
-      {
-        "<leader>sS",
-        function()
-          Snacks.picker.lsp_workspace_symbols({})
-        end,
-        desc = "Symbols (Workspace)",
-      },
-      {
-        "<leader>sd",
-        function()
-          Snacks.picker.diagnostics({})
-        end,
-        desc = "Diagnostics (Workspace)",
-      },
-      {
-        "<leader>sD",
-        function()
-          Snacks.picker.diagnostics_buffer({})
-        end,
-        desc = "Diagnostics (Buffer)",
-      },
-      {
-        "<leader>rc",
-        function()
-          Snacks.picker.commands({})
-        end,
-        desc = "Run commands",
       },
       {
         "<leader>j",
         function()
-          Snacks.picker.buffers({
-            hidden = false,
-            unloaded = true,
-            current = true,
-            nofile = false,
-            sort_lastused = true,
-            focus = "list",
-            layout = { preview = false, preset = "select" },
-            on_show = function()
-              vim.api.nvim_feedkeys("j", "n", false) -- focus alt buffer on show
+          local win = vim.api.nvim_get_current_win()
+          local b = vim.tbl_filter(
+            vim.api.nvim_buf_is_valid,
+            require("buffer-cache").get()
+          )
+          local aug =
+            vim.api.nvim_create_augroup("SnacksLeaderJ", { clear = true })
+          local finder_items = {}
+          for index, buf in ipairs(b) do
+            local fname = Snacks.picker.util.truncpath(
+              vim.api.nvim_buf_get_name(buf),
+              40,
+              nil
+            )
+            local text = string.format("%d : %s", buf, fname)
+            table.insert(finder_items, {
+              formatted = text,
+              text = index .. " " .. text,
+              item = buf,
+              buf = buf,
+              idx = index,
+            })
+          end
+
+          vim.api.nvim_create_autocmd("BufEnter", {
+            group = aug,
+            callback = function()
+              vim.schedule(function()
+                vim.cmd("stopinsert")
+              end)
             end,
+            once = true,
+          })
+
+          local on_choice = function(buf)
+            if buf ~= nil then
+              vim.api.nvim_set_current_win(win)
+              vim.api.nvim_set_current_buf(buf)
+              vim.api.nvim_del_augroup_by_id(aug)
+            end
+          end
+
+          local calc_height = function()
+            return math.min(vim.o.lines * 0.8 - 10, #finder_items + 2)
+          end
+          local completed = false
+          return Snacks.picker.pick({
+            source = "select",
+            items = finder_items,
+            format = Snacks.picker.format.ui_select(nil, #finder_items),
+            title = "Buffers",
+            layout = {
+              ---@diagnostic disable-next-line: assign-type-mismatch
+              preview = false,
+              layout = { height = calc_height() },
+            },
             win = {
-              list = {
-                keys = { ["<c-x>"] = { "bufdelete", mode = { "n", "i" } } },
+              input = {
+                keys = {
+                  ["<c-x>"] = { "delete", mode = { "n", "i" } },
+                },
               },
             },
+            actions = {
+              confirm = function(picker, item)
+                if completed then
+                  return
+                end
+                completed = true
+                picker:close()
+                vim.schedule(function()
+                  on_choice(item and item.item)
+                end)
+              end,
+              delete = function(picker, item)
+                if completed then
+                  return
+                end
+                completed = true
+                vim.schedule(function()
+                  if item and item.item then
+                    Snacks.picker.actions.bufdelete(picker)
+                    picker:close()
+                  end
+                end)
+              end,
+            },
+            on_close = function()
+              if completed then
+                return
+              end
+              completed = true
+              vim.schedule(on_choice)
+            end,
           })
         end,
-        desc = "Jump to buffer (all)",
       },
       {
         "<leader>z",
         function()
           Snacks.zen.zen({
-            wo = {
-              winhighlight = "NormalFloat:Normal",
-            },
+            wo = { winhighlight = "NormalFloat:Normal" },
           })
         end,
       },
@@ -736,59 +730,19 @@ local config = {
     },
     keys = {
       {
-        "<leader>xx",
-        "<cmd>Trouble diagnostics toggle<cr>",
-        desc = "Diagnostics (Trouble)",
-      },
-      {
-        "<leader>xX",
-        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-        desc = "Buffer Diagnostics (Trouble)",
-      },
-    },
-  },
-  {
-    "folke/todo-comments.nvim",
-    keys = {
-      {
-        "<leader>xt",
+        "<C-x>",
         function()
-          require("trouble").toggle({
-            mode = "todo",
-            groups = {
-              { "directory" },
-              { "filename" },
-            },
-          })
+          vim.cmd([[
+            let curqfidx = line('.') - 1
+            let qfall = getqflist()
+            call remove(qfall, curqfidx)
+            call setqflist(qfall, 'r')
+            :copen
+          ]])
         end,
-        desc = "Todo (Trouble)",
+        ft = "qf",
       },
-    },
-    opts = {
-      -- Had to override all of them so I could add highlighting to plurals
-      keywords = {
-        FIX = {
-          icon = " ",
-          color = "error",
-          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" },
-        },
-        TODOS = { icon = " ", color = "info", alt = { "TODO" } },
-        HACKS = { icon = " ", color = "warning" },
-        WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-        PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-        NOTES = { icon = " ", color = "hint", alt = { "NOTE", "INFO" } },
-        TESTS = {
-          icon = "⏲ ",
-          color = "test",
-          alt = { "TEST", "TESTING", "PASSED", "FAILED" },
-        },
-      },
-      highlight = {
-        pattern = [[.*<(KEYWORDS)\s*]],
-      },
-      search = {
-        pattern = [[\b(KEYWORDS)\b]],
-      },
+      { "<leader>xx", ":Trouble diagnostics toggle<cr>" },
     },
   },
   -- THEME
@@ -899,44 +853,6 @@ local config = {
       end
     end,
   },
-  -- nothing for tokyonight
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    opts = {
-      integrations = {
-        cmp = true,
-        dashboard = true,
-        flash = true,
-        gitsigns = true,
-        grug_far = true,
-        harpoon = true,
-        indent_blankline = { enabled = true },
-        lsp_trouble = true,
-        mason = true,
-        markdown = true,
-        mini = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
-          },
-        },
-        navic = true,
-        neotest = true,
-        noice = true,
-        notify = true,
-        render_markdown = true,
-        semantic_tokens = true,
-        treesitter = true,
-        treesitter_context = true,
-        which_key = true,
-      },
-    },
-  },
   -- AI
   {
     "zbirenbaum/copilot.lua",
@@ -1010,7 +926,6 @@ local config = {
           })
         end,
         mode = { "n", "v" },
-        desc = "Copilot",
       },
     },
   },
@@ -1194,6 +1109,8 @@ local config = {
     opts = {
       code = {
         sign = false,
+        conceal_delimiters = false,
+        highlight_border = false,
         width = "block",
         right_pad = 1,
       },
@@ -1201,35 +1118,9 @@ local config = {
         sign = false,
         icons = {},
       },
-      checkbox = {
-        custom = {
-          rightarrow = {
-            raw = "[>]",
-            rendered = " ",
-            highlight = "RenderMarkdownInfo",
-            scope_highlight = nil,
-          },
-          tilde = {
-            raw = "[~]",
-            rendered = "󰰱 ",
-            highlight = "RenderMarkdownError",
-            scope_highlight = nil,
-          },
-          important = {
-            raw = "[!]",
-            rendered = " ",
-            highlight = "RenderMarkdownWarn",
-            scope_highlight = nil,
-          },
-        },
-      },
       html = {
-        -- Turn on / off all HTML rendering
         enabled = true,
-        comment = {
-          -- Turn on / off HTML comment concealing
-          conceal = false,
-        },
+        comment = { conceal = false },
       },
     },
   },

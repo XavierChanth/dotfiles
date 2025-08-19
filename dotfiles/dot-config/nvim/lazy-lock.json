@@ -1,6 +1,6 @@
 {
   "CopilotChat.nvim": { "branch": "main", "commit": "f22747ae5a4c88b4aa519e4638fe89b274ea28a4" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "b627e3fbad4fed4adc75d35988effbd6ce93b7b4" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "e906ac3ed0bd273781759e7635b5b824393c925c" },
   "baleia.nvim": { "branch": "main", "commit": "880e97c02edf3148ba2bdc6305ac03eb3c3711e0" },
   "blame.nvim": { "branch": "main", "commit": "b87b8c820e4cec06fbbd2f946b7b35c45906ee0c" },
   "blink.cmp": { "branch": "main", "commit": "bae4bae0eedd1fa55f34b685862e94a222d5c6f8" },
@@ -42,7 +42,7 @@
   "typst-preview.nvim": { "branch": "master", "commit": "dea4525d5420b7c32eebda7de15a6beb9d6574fa" },
   "undotree": { "branch": "main", "commit": "eab459ab87dd249617b5f7187bb69e614a083047" },
   "venv-selector.nvim": { "branch": "regexp", "commit": "c2d888f416c3572c27ab9ef936443ce7cd98762b" },
-  "vim-just": { "branch": "main", "commit": "e0c04b6433b9c636274f074356744fdfae039b7e" },
+  "vim-just": { "branch": "main", "commit": "04b0f122f14c83f55a0f8bb2a087754dc98cdccc" },
   "vim-markdown-folding": { "branch": "master", "commit": "0592d3efcb9b287fff265aa542872d95478a7536" },
   "vim-tmux-navigator": { "branch": "master", "commit": "85b8e5f60c1690cde57dbb66467ce39cd1b63343" },
   "virt-column.nvim": { "branch": "master", "commit": "b87e3e0864211a32724a2ebf3be37e24e9e2fa99" }
