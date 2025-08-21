@@ -1,8 +1,0 @@
-{
-  "name": "atsign-flutter",
-  "dockerFile": "Dockerfile",
-  "context": "..",
-  "containerUser": "atsign",
-  "workspaceFolder": "/workspace",
-  "privileged": false
-}

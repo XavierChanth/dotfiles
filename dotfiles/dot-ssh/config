@@ -1,13 +1,3 @@
-# DevPod Start af.devpod
-Host af.devpod
-  ForwardAgent yes
-  LogLevel error
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
-  HostKeyAlgorithms rsa-sha2-256,rsa-sha2-512,ssh-rsa
-  ProxyCommand "/usr/bin/devpod-cli" ssh --stdio --context default --user chant af --workdir "/home/chant/src"
-  User chant
-# DevPod End af.devpod
 Host *
   IdentitiesOnly yes
   ControlMaster auto
