@@ -1,6 +1,5 @@
 {
   "name": "atsign-flutter",
-  "dockerFile": "this field hopefully fixes a schema validation bug",
   "build": {
     "dockerFile": "Dockerfile",
     "args": {

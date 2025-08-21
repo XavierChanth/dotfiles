@@ -17,4 +17,7 @@ jobs:
         uses: devcontainers/action@1082abd5d2bf3a11abccba70eef98df068277772
         with:
           publish-templates: "true"
+          disable-schema-validation: true # this broken
           base-path-to-templates: "./devcontainers"
+        env:
+          GITHUB_TOKEN: ${{ GHCR_TOKEN }}
