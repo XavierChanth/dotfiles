@@ -1,0 +1,15 @@
+{
+  "name": "atsign-flutter",
+  "build": {
+    "Dockerfile": ".",
+    "args": {
+      "flutter_version": "${templateOption.flutter_channel}",
+      "user": "${templateOption.username}",
+      "locale": "${templateOption.locale}"
+    },
+    "cacheFrom": "ghcr.io/cirruslabs/flutter:${templateOption.flutter_channel}"
+  },
+  "containerUser": "${templateOption.username}",
+  "workspaceFolder": "/workspace",
+  "privileged": false
+}

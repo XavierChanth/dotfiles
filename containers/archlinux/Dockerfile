@@ -1,0 +1,25 @@
+
+FROM archlinux:base@sha256:31f0749bdb81517dc8f379feac0a3860b097f1da1f53c8315c1bae0817d6c0a1
+
+RUN \
+  yes | pacman-key --init; \
+  yes | pacman-key --populate archlinux; \
+  pacman -Sy --noconfirm archlinux-keyring; \
+  pacman -S --noconfirm --needed git base-devel sudo; \
+  useradd -m chant; \
+  usermod -aG wheel chant; \
+  echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers; \
+  echo "en_CA.UTF-8 UTF-8" > /etc/locale.gen; \
+  echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen; \
+  locale-gen;
+
+ENV HOME=/home/chant
+ENV DOTFILES="$HOME/.dotfiles"
+WORKDIR "$HOME"
+
+USER chant
+
+RUN git clone https://github.com/xavierchanth/dotfiles "$DOTFILES" --depth=1; \
+  "$DOTFILES/install";
+
+ENTRYPOINT ["/bin/zsh"]

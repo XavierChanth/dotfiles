@@ -53,6 +53,7 @@ PACKAGES=$(
   iproute2
   net-tools
   tokei-git
+  fastfetch
 EOF
 )
 
@@ -113,7 +114,6 @@ DESKTOP_PACKAGES=$(
   noto-sans-emoji
 
   flatpak
-  fastfetch
   thunar
   zathura
   imv

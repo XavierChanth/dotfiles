@@ -114,12 +114,12 @@ arch)
   sudo -v
   if ! command -v yay 2>&1; then
     # setup yay for access to aur
-    sudo pacman -S --needed git base-devel
+    sudo pacman -S --noconfirm --needed git base-devel go
     (
-      mkdir ~/.local/dev
+      mkdir -p ~/.local/dev || true
       git clone https://aur.archlinux.org/yay.git ~/.local/dev/yay
       cd ~/.local/dev/yay || exit 1
-      makepkg -si
+      makepkg -si --noconfirm
     )
   fi
 
@@ -135,10 +135,6 @@ arch)
   #   --strategies crate-meta-data,quick-install,compile \
   #   $CARGO_PACKAGES
 
-  for package in $FLATPAK_PACKAGES; do
-    flatpak install -y flathub "$package"
-  done
-
   sudo npm -g install tree-sitter-cli
   if $install_desktop; then
     yay -Sy \
@@ -148,7 +144,12 @@ arch)
       --answerclean=N \
       --answerdiff=N \
       $DESKTOP_PACKAGES
+
+    for package in $FLATPAK_PACKAGES; do
+      flatpak install -y flathub "$package"
+    done
   fi
+
   ;;
 esac
 

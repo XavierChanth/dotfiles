@@ -24,8 +24,6 @@ wrapped_man() {
     fi
 }
 alias man='wrapped_man'
-
-alias devpod='devpod-cli'
 # provides a fallback set of arguments for the command if no arguments are provided
 wrapped_alias() {
   eval "function $1() { if [ \$# -gt 0 ]; then $2 \$@; else $2 $3; fi; }"

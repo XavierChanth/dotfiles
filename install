@@ -2,4 +2,5 @@
 
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
 
-$script_dir/dotfiles/dot-local/bin/dotfiles install "$@"
+export DOTFILES="$script_dir"
+"$script_dir"/dotfiles/dot-local/bin/dotfiles install "$@"
