@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ github.ref == 'refs/heads/trunk' }}
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: "Publish Templates"
+        uses: devcontainers/action@1082abd5d2bf3a11abccba70eef98df068277772
+        with:
+          publish-templates: "true"
+          base-path-to-templates: "./devcontainers"
