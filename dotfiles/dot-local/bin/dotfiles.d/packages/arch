@@ -102,6 +102,7 @@ DESKTOP_PACKAGES=$(
   sway
   swaylock-fprintd-git
   swayidle
+  swayimg
   swaync
   foot
   autotiling-rs

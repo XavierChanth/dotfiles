@@ -3,4 +3,4 @@
 name="jj-"
 
 existing="$(tmux lsw -f $name -F "#{window_id}" -f "#{==:#W,$name}")"
-tmux lsp -t "$existing" -F "#{pane_current_command}" | grep -qv "^python3$" || tmux killw -t "$existing"
+tmux lsp -t "$existing" -F "#{pane_current_command}" | grep -qv "^uv$" || tmux killw -t "$existing"

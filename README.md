@@ -2,7 +2,6 @@
 
 ## How to install
 
-```
 User setup:
 
 - Create user
@@ -10,14 +9,10 @@ User setup:
 - Set user password
 - Login as user
 
-
 Dotfiles setup:
 
 - Put ssh keys in place
 - Install git curl zsh
-- Install
-  [brew requirements](https://docs.brew.sh/Homebrew-on-Linux#requirements)
-  (Linux)
 - Clone this repo to ~/.dotfiles
 - `~/.dotfiles/install`
 
@@ -26,13 +21,7 @@ path.
 
 To install additional desktop packages:
 
-`dotfiles install-desktop`
-
-To install Zen browser config (guided installer with steps that must be done
-manually):
-
-`dotfiles install-zen-browser`
-
+`dotfiles install --desktop`
 
 ## Minimum Viable Windows setup (TODO)
 
@@ -58,6 +47,3 @@ jj-vcs.jj
 ```
 
 Note: zig is used to build nvim-treesitter
-
-
-

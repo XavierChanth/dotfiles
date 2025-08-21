@@ -2,7 +2,7 @@
 
 root="$(git rev-parse --show-toplevel)"
 
-name="opencode-"
+name="claude-"
 
 existing="$(tmux lsw -F "#{window_id}" -f "#{==:#W,$name}")"
 
@@ -11,7 +11,7 @@ if [ -n "$existing" ]; then
   exit 0
 fi
 
-tmux neww -c "$root" "opencode"
+tmux neww -c "$root" "claude"
 tmux rename-window $name
 jj_pos="$(tmux lsw -F "#I" -f "#{==:#W,jj-}")"
 # move the window to after jj-term if open, otherwise move it to 2

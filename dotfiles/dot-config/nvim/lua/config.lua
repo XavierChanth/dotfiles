@@ -1019,6 +1019,23 @@ local config = {
       },
     },
   },
+  {
+    "dlants/magenta.nvim",
+    cmd = "Magenta",
+    opts = {
+      profiles = {
+        {
+          name = "copilot-claude",
+          provider = "copilot",
+          model = "claude-3.7-sonnet",
+          fastModel = "claude-3-5-haiku-latest", -- optional, defaults provided
+        },
+      },
+      sidebarPosition = "right",
+      picker = "snacks",
+      defaultKeymaps = true,
+    },
+  },
   -- HANDY
   {
     "m00qek/baleia.nvim",

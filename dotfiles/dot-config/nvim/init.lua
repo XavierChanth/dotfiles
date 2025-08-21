@@ -315,10 +315,12 @@ lazy_config.spec = {
   -- AI
   { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
   { "ravitemer/mcphub.nvim", build = "bundled_build.lua" },
+  { "dlants/magenta.nvim", build = "npm install --frozen-lockfile" },
 
   -- HANDY
   { "m00qek/baleia.nvim" },
   { "lukas-reineke/virt-column.nvim", event = FILE },
+  { "esensar/nvim-dev-container" },
 
   -- LANG SPECIFIC
   { "b0o/SchemaStore.nvim", version = false },

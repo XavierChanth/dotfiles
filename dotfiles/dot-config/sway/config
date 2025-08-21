@@ -224,8 +224,9 @@ bindsym $mod3+space exec $menu
        bindsym Return mode "default"
        bindsym Escape mode "default"
    }
+   set $swayimg swayimg -c viewer.scale=real -c info.show=no -
 bindsym Print mode $printscreen_mode
-bindsym $mod4+2 exec grim -t ppm -g "$(slurp -d)" - | display
-bindsym $mod4+3 exec grim -t ppm - | $satty
+bindsym $mod4+2 exec grim -t ppm -g "$(slurp -d)" - | $swayimg
+bindsym $mod4+3 exec swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -g - - | $satty
 bindsym $mod4+4 exec grim -t ppm -g "$(slurp -d)" - | $satty
 

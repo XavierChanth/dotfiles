@@ -1,5 +1,7 @@
 # Orbstack Setup
 
+(No longer use
+
 This guide links orbstack machines to the macos home to give a near seamless
 experience (only works if your dotfiles are portable).
 

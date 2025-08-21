@@ -14,7 +14,7 @@ fi
 # create a vertical split in the sshnpd dir
 tmux neww -c "$root"
 jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
-command="$HOME/.local/bin/cwatch -i 2 -c '$jj_command --no-pager | head -c \$(( \$(tput lines) * \$(tput cols) ))'"
+command="$HOME/.local/bin/cwatch -i 1 -c '$jj_command --no-pager'"
 tmux splitw -l "45" -hbc "$root" "$command"
 tmux select-pane -R
 tmux rename-window "$name"
