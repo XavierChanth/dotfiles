@@ -1,6 +1,5 @@
 ARG user=atsign
-ARG flutter_version
-ARG locale
+ARG flutter_version=stable
 
 FROM ghcr.io/cirruslabs/flutter:${flutter_version}
 
@@ -13,11 +12,7 @@ ENV HOME=/home/${user}
 # then only US will be set.
 RUN useradd -m ${user} \
   usermod -aG wheel ${user} \
-  echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers; \
-  echo "${locale}" > /etc/locale.gen; \
-  echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen; \
-  sed -i '/^[[:space:]]*$/d' /etc/locale.gen; \
-  locale-gen;
+  echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers;
 
 ENV FLUTTER_HOME=${HOME}/sdks/flutter \
   FLUTTER_VERSION=$flutter_version

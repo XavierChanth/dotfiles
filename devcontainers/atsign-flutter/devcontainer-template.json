@@ -4,28 +4,7 @@
     "name": "Atsign Flutter",
     "description": "A Flutter template with at_repl installed",
     "documentationURL": "https://github.com/xavierchanth/dotfiles/tree/trunk/containers/atsign-flutter",
-  "licenseURL": "https://github.com/devcontainers/template-starter/blob/main/LICENSE",
-  "options": {
-    "flutter_channel": {
-      "type": "string",
-      "description": "Flutter channel (stable | beta):",
-      "proposals": [
-        "stable",
-        "beta"
-      ],
-      "default": "stable"
-    },
-    "username": {
-      "type": "string",
-      "description": "Linux user in the container",
-      "default": "atsign"
-    },
-    "locale": {
-      "type": "string",
-      "description": "Locale to install",
-      "default": ""
-    }
-  },
+    "licenseURL": "https://github.com/xavierchanth/dotfiles/tree/trunk/LICENSE",
     "platforms": [
         "Any"
     ]
