@@ -55,6 +55,7 @@ def defineArgs():
         help="Don't clear the screen before each command output.",
     )
 
+    # TODO add a way to stay at the top
     return parser.parse_args()
 
 

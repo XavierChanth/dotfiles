@@ -106,13 +106,16 @@ log-watch = [
   "--config",
   "template-aliases.'format_timestamp(timestamp)'='timestamp.format(\"%H:%M %D\")'",
   "--template",
-  "narrow_log_comfortable"
+  "narrow_log_comfortable",
+  "-r",
+  "brief",
 ]
 
 [revset-aliases]
 "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())"
 'working(x)' = "all:x+ & mine() & mutable()"
 'w(x)' = 'working(x)'
+'brief' = 'bookmarks() & ~immutable() | trunk-..ancestors(@)'
 
 [templates]
 log = 'builtin_log_comfortable'

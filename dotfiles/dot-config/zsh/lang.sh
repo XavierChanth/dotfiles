@@ -19,12 +19,18 @@ if [ -d $FLUTTER_ROOT ]; then
   [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
   pub() {
     local bin="flutter"
-    case "$1" in
+    local subcommand="$1"
+    shift 1
+    local extra_args=""
+    case "$subcommand" in
+    get)
+      extra_args="$extra_args --no-example"
+      ;;
     bump | unpack | workspace)
       bin="dart"
       ;;
     esac
-    "$bin" pub "$@"
+    "$bin" pub "$subcommand" $extra_args "$@"
   }
   alias melos='dart run melos'
 fi

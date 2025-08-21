@@ -285,7 +285,9 @@ local config = {
           end
 
           local calc_height = function()
-            return math.min(vim.o.lines * 0.8 - 10, #finder_items + 2)
+            return math.floor(
+              math.min(vim.o.lines * 0.8 - 10, #finder_items + 2) + 0.5
+            )
           end
           local completed = false
           return Snacks.picker.pick({

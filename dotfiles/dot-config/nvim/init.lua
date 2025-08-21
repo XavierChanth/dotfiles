@@ -308,7 +308,6 @@ lazy_config.spec = {
   { "windwp/nvim-ts-autotag", event = FILE },
   { "folke/ts-comments.nvim", event = "VeryLazy" },
   "folke/trouble.nvim",
-  { "folke/todo-comments.nvim", event = FILE },
   -- THEME
   { "sschleemilch/slimline.nvim", event = "VeryLazy" },
   { "echasnovski/mini.icons" },

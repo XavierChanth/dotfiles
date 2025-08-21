@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
+no_sudo=false
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --no-sudo)
+    no_sudo=true
+    shift
+    ;;
+  esac
+done
+
 if [ $UID -ne 0 ]; then
   echo Running root operations...
   exec sudo DOTFILES="$DOTFILES" "$0" "$@"
 else
+  $no_sudo && exit 0
   set -eux
   # operations as root
   systemctl daemon-reload
@@ -13,7 +24,7 @@ else
   }
   stow -d "$DOTFILES" -t "/" --dotfiles linux
   systemd_start "kanata.service"
-  exit
+  exit 0
 fi
 
 # operations as user
