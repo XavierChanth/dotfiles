@@ -2,7 +2,6 @@
   "name": "atsign-flutter",
   "build": {
     "dockerFile": "Dockerfile",
-    "context": "..",
     "args": {
       "flutter_version": "${templateOption.flutter_channel}",
       "user": "${templateOption.username}",
