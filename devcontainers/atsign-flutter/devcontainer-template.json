@@ -5,6 +5,14 @@
     "description": "A Flutter template with at_repl installed",
     "documentationURL": "https://github.com/xavierchanth/dotfiles/tree/trunk/containers/atsign-flutter",
     "licenseURL": "https://github.com/xavierchanth/dotfiles/tree/trunk/LICENSE",
+  "options": {
+    "channel": {
+      "type": "string",
+      "description": "flutter channel",
+      "proposals": [ "stable", "beta"],
+      "default": "stable"
+    }
+  },
     "platforms": [
         "Any"
     ]
