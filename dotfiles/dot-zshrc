@@ -34,16 +34,15 @@ fi
 
 # Pagers
 export LESS='--mouse'
+export MANPAGER="nvim -c 'set ft=man | AnsiColorize' -"
 if command -v batman >/dev/null 2>&1; then
   eval "$(batman --export-env)"
 elif command -v bat >/dev/null 2>&1; then
   export PAGER="bat"
   export BAT_PAGER="less -RFc"
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
   export FZF_CTRL_T_OPTS="--preview 'bat --line-range :50 {}'"
 else
   export PAGER="less -RFc"
-  export MANPAGER="nvim +Man!"
 fi
 
 # basic exports

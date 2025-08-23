@@ -20,6 +20,7 @@ PACKAGES=$(
   git-delta
   jujutsu
   bat
+  bat-extras
   stow
   go
   rust
@@ -100,6 +101,9 @@ DESKTOP_PACKAGES=$(
   grim
   slurp
   wf-recorder
+
+  man-db
+  man-pages
 
   sway
   swaylock-fprintd-git
