@@ -6,6 +6,7 @@ PACKAGES=$(
   zsh-syntax-highlighting
   zsh-completions
   bash
+  less
   coreutils
   moreutils
   openssl
@@ -17,6 +18,7 @@ PACKAGES=$(
   fzf
   git
   git-delta
+  jujutsu
   bat
   stow
   go
@@ -32,6 +34,7 @@ PACKAGES=$(
   rust-analyzer
   typst
   nodejs
+  npm
   github-cli
   jq
   tokei
@@ -59,7 +62,6 @@ EOF
 
 CARGO_PACKAGES=$(
   cat <<EOF
-  jj-cli
 EOF
 )
 
@@ -114,6 +116,7 @@ DESKTOP_PACKAGES=$(
   noto-sans-cjk
   noto-sans-emoji
 
+  parted
   flatpak
   thunar
   zathura
@@ -132,7 +135,6 @@ DESKTOP_PACKAGES=$(
   spotify
   asciinema-git
   pandoc-bin
-  presenterm-git
   ffmpeg
   wireshark-cli
   wireshark-qt
@@ -140,13 +142,11 @@ DESKTOP_PACKAGES=$(
   qmk
   steam
   vlc
-  opencode-bin
   nom
 EOF
 )
 FLATPAK_PACKAGES=$(
   cat <<EOF
-  com.github.IsmaelMartinez.teams_for_linux
 EOF
 )
 
