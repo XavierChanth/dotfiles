@@ -68,8 +68,10 @@ EOF
 
 DESKTOP_PACKAGES=$(
   cat <<EOF
+  linux-headers
   reflector
   polkit
+
   zenity
   pipewire
   pipewire-pulse
@@ -88,6 +90,7 @@ DESKTOP_PACKAGES=$(
 
   waybar
   xorg-wayland
+  qt6-wayland
   wlroots
   wlr-randr
   xdg-desktop-portal-wlr

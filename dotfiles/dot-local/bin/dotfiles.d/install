@@ -126,6 +126,7 @@ arch)
     --norebuild \
     --noredownload \
     --noconfirm \
+    --needed \
     --answerclean=N \
     --answerdiff=N \
     $PACKAGES
@@ -140,6 +141,7 @@ arch)
       --norebuild \
       --noredownload \
       --noconfirm \
+      --needed \
       --answerclean=N \
       --answerdiff=N \
       $DESKTOP_PACKAGES

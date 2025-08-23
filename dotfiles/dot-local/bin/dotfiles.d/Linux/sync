@@ -24,6 +24,7 @@ else
   }
   stow -d "$DOTFILES" -t "/" --dotfiles linux
   systemd_start "kanata.service"
+  systemd_start "bluetooth.service"
   exit 0
 fi
 
