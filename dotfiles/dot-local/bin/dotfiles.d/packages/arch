@@ -136,6 +136,7 @@ DESKTOP_PACKAGES=$(
   v4l2loopback-dkms
 
   ghostty
+  nerdctl-full
   zen-browser-bin
   onlyoffice-bin
   discord

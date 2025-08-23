@@ -240,108 +240,6 @@ local config = {
         end,
       },
       {
-        "<leader>j",
-        function()
-          local win = vim.api.nvim_get_current_win()
-          local b = vim.tbl_filter(
-            vim.api.nvim_buf_is_valid,
-            require("buffer-cache").get()
-          )
-          local aug =
-            vim.api.nvim_create_augroup("SnacksLeaderJ", { clear = true })
-          local finder_items = {}
-          for index, buf in ipairs(b) do
-            local fname = Snacks.picker.util.truncpath(
-              vim.api.nvim_buf_get_name(buf),
-              40,
-              nil
-            )
-            local text = string.format("%d : %s", buf, fname)
-            table.insert(finder_items, {
-              formatted = text,
-              text = index .. " " .. text,
-              item = buf,
-              buf = buf,
-              idx = index,
-            })
-          end
-
-          vim.api.nvim_create_autocmd("BufEnter", {
-            group = aug,
-            callback = function()
-              vim.schedule(function()
-                vim.cmd("stopinsert")
-              end)
-            end,
-            once = true,
-          })
-
-          local on_choice = function(buf)
-            if buf ~= nil then
-              vim.api.nvim_set_current_win(win)
-              vim.api.nvim_set_current_buf(buf)
-              vim.api.nvim_del_augroup_by_id(aug)
-            end
-          end
-
-          local calc_height = function()
-            return math.floor(
-              math.min(vim.o.lines * 0.8 - 10, #finder_items + 2) + 0.5
-            )
-          end
-          local completed = false
-          return Snacks.picker.pick({
-            source = "select",
-            items = finder_items,
-            format = Snacks.picker.format.ui_select(nil, #finder_items),
-            title = "Buffers",
-            layout = {
-              ---@diagnostic disable-next-line: assign-type-mismatch
-              preview = false,
-              layout = { height = calc_height() },
-            },
-            win = {
-              input = {
-                keys = {
-                  ["<c-x>"] = { "delete", mode = { "n", "i" } },
-                },
-              },
-            },
-            actions = {
-              confirm = function(picker, item)
-                if completed then
-                  return
-                end
-                completed = true
-                picker:close()
-                vim.schedule(function()
-                  on_choice(item and item.item)
-                end)
-              end,
-              delete = function(picker, item)
-                if completed then
-                  return
-                end
-                completed = true
-                vim.schedule(function()
-                  if item and item.item then
-                    Snacks.picker.actions.bufdelete(picker)
-                    picker:close()
-                  end
-                end)
-              end,
-            },
-            on_close = function()
-              if completed then
-                return
-              end
-              completed = true
-              vim.schedule(on_choice)
-            end,
-          })
-        end,
-      },
-      {
         "<leader>z",
         function()
           Snacks.zen.zen({
@@ -1161,32 +1059,34 @@ local config = {
   -- REMOVE?
   {
     "ThePrimeagen/harpoon",
-    keys = function()
-      local keys = {
-        {
-          "<leader>h",
-          function()
-            local harpoon = require("harpoon")
-            harpoon.ui:toggle_quick_menu(harpoon:list())
-          end,
-        },
-        {
-          "<leader>H",
-          function()
-            require("harpoon"):list():add()
-          end,
-        },
-      }
-      for i = 1, 5 do
-        keys[#keys + 1] = {
-          "<leader>" .. i,
-          function()
-            require("harpoon"):list():select(i)
-          end,
-        }
-      end
-      return keys
+    init = function()
+      vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(args)
+          if #args.file == 0 or args.file:find("^oil://") then
+            return
+          end
+          local l = require("harpoon"):list("buffers")
+          l:remove()
+          l:prepend()
+        end,
+      })
+      vim.api.nvim_create_autocmd("BufDelete", {
+        callback = function(args)
+          local l = require("harpoon"):list("buffers")
+          local v = l:get_by_value(args.file)
+          l:remove(v)
+        end,
+      })
     end,
+    keys = {
+      {
+        "<leader>j",
+        function()
+          local h = require("harpoon")
+          h.ui:toggle_quick_menu(h:list("buffers"))
+        end,
+      },
+    },
   },
   {
     "jiaoshijie/undotree",

@@ -400,7 +400,6 @@ vim.api.nvim_create_autocmd("OptionSet", {
   end,
 })
 
-require("buffer-cache")
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
 require("lazy").setup(lazy_config)
 require("lsp")
