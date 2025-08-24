@@ -318,9 +318,9 @@ lazy_config.spec = {
   { "dlants/magenta.nvim", build = "npm install --frozen-lockfile" },
 
   -- HANDY
+  { "ThePrimeagen/harpoon", branch = "harpoon2" },
   { "m00qek/baleia.nvim" },
   { "lukas-reineke/virt-column.nvim", event = FILE },
-  { "esensar/nvim-dev-container" },
 
   -- LANG SPECIFIC
   { "b0o/SchemaStore.nvim", version = false },
@@ -349,7 +349,6 @@ lazy_config.spec = {
   { "bullets-vim/bullets.vim", ft = "markdown" },
 
   -- REMOVE?
-  { "ThePrimeagen/harpoon", branch = "harpoon2" },
   "jiaoshijie/undotree",
 }
 

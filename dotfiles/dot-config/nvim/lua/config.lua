@@ -936,6 +936,37 @@ local config = {
   },
   -- HANDY
   {
+    "ThePrimeagen/harpoon",
+    init = function()
+      vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(args)
+          if #args.file == 0 or args.file:find("^oil://") then
+            return
+          end
+          local l = require("harpoon"):list("buffers")
+          l:remove()
+          l:prepend()
+        end,
+      })
+      vim.api.nvim_create_autocmd("BufDelete", {
+        callback = function(args)
+          local l = require("harpoon"):list("buffers")
+          local v = l:get_by_value(args.file)
+          l:remove(v)
+        end,
+      })
+    end,
+    keys = {
+      {
+        "<leader>j",
+        function()
+          local h = require("harpoon")
+          h.ui:toggle_quick_menu(h:list("buffers"))
+        end,
+      },
+    },
+  },
+  {
     "m00qek/baleia.nvim",
     config = function()
       local baleia = require("baleia").setup({})
@@ -1057,37 +1088,6 @@ local config = {
     end,
   },
   -- REMOVE?
-  {
-    "ThePrimeagen/harpoon",
-    init = function()
-      vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function(args)
-          if #args.file == 0 or args.file:find("^oil://") then
-            return
-          end
-          local l = require("harpoon"):list("buffers")
-          l:remove()
-          l:prepend()
-        end,
-      })
-      vim.api.nvim_create_autocmd("BufDelete", {
-        callback = function(args)
-          local l = require("harpoon"):list("buffers")
-          local v = l:get_by_value(args.file)
-          l:remove(v)
-        end,
-      })
-    end,
-    keys = {
-      {
-        "<leader>j",
-        function()
-          local h = require("harpoon")
-          h.ui:toggle_quick_menu(h:list("buffers"))
-        end,
-      },
-    },
-  },
   {
     "jiaoshijie/undotree",
     init = function()
