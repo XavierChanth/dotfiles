@@ -938,10 +938,16 @@ local config = {
   {
     "ThePrimeagen/harpoon",
     init = function()
+      local exceptions = { "^oil://", ".jjdescription$" }
       vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(args)
-          if #args.file == 0 or args.file:find("^oil://") then
+          if #args.file == 0 then
             return
+          end
+          for _, exception in ipairs(exceptions) do
+            if args.file:find(exception) then
+              return
+            end
           end
           local l = require("harpoon"):list("buffers")
           l:remove()

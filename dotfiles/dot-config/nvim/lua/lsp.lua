@@ -1,38 +1,45 @@
 vim.lsp.enable({
-  "asm_lsp",
-  "basedpyright",
-  "clangd",
-  "csharp_ls",
+  -- Dart
   "dartls",
+
+  -- Markup
+  "jsonls",
+  "yamlls",
+  "tinymist",
+
+  -- Based languages
+  "gopls",
+  "lua_ls",
+  "basedpyright",
+  "ruff",
+
+  -- C ABIs
+  "clangd",
+  "neocmake",
+  -- "asm_lsp",
+  "zls",
+  "rust_analyzer",
+
+  -- Docker
   "docker_compose_language_service",
   "docker_ls",
-  "gopls",
-  "jsonls",
-  "lua_ls",
-  "neocmake",
-  "omnisharp",
-  "rubocop",
-  "rubyls",
-  "ruff",
-  "rust_analyzer",
-  "sourcekit",
+
+  -- Poisoned by their OS
+  -- "csharp_ls",
+  -- "omnisharp",
+  --"sourcekit",  -- Swift
+
+  -- Ruby
+  -- "rubocop",
+  -- "rubyls",
+
+  -- Web
   "svelte",
   "tailwindcss",
-  "tinymist",
   "vtsls",
-  "yamlls",
-  "zls",
 })
 
-vim.api.nvim_create_user_command(
-  "LspInfo",
-  ":che vim.lsp",
-  { desc = "Show LspInfo" }
-)
-vim.api.nvim_create_user_command("LspRestart", function(_)
-  vim.lsp.stop_client(vim.lsp.get_clients())
-  vim.schedule_wrap(vim.cmd)("edit")
-end, {})
+require("lsp-cmds")
 
 vim.lsp.config("*", {
   capabilities = {
@@ -108,7 +115,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map({
       "K",
       function()
-        vim.lsp.buf.hover({ border = "rounded" })
+        vim.lsp.buf.hover({
+          border = "rounded",
+          close_events = {
+            "CursorMoved",
+            "CursorMovedI",
+            "InsertCharPre",
+            "BufWinLeave",
+          },
+        })
       end,
       desc = "Hover",
     })
