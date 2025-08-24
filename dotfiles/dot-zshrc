@@ -115,6 +115,5 @@ if command -v brew >/dev/null 2>&1; then
 fi
 export PATH="$HOME/.local/bin:$PATH:/usr/NX/bin"
 
-ff
 # enable profiling
 # zprof
