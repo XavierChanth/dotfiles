@@ -15,7 +15,9 @@ alias v='nvim'
 alias c='color'
 alias m='aerc'
 
-alias fetch='fastfetch'
+alias clera='clear' # Mistakes happen ok... I make this one alot
+
+alias ff='clear; fastfetch'
 
 wrapped_man() {
   /usr/bin/man $1 ||
