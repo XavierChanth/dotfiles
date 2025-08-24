@@ -6,7 +6,7 @@ set $mod4 Super+Control+Alt+Shift
 floating_modifier Super
 
 set $term ghostty
-set $browser zen-browser
+set $browser floorp
 set $menu source ~/.config/env/sway && wofi --show run
 set $lock_screen swaylock -p -f -c 000000
 

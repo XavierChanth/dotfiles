@@ -119,9 +119,9 @@ DESKTOP_PACKAGES=$(
   kanata-bin
   ttf-jetbrains-mono-nerd
   otf-commit-mono-nerd
-  noto-sans
-  noto-sans-cjk
-  noto-sans-emoji
+  noto-fonts
+  noto-fonts-cjk
+  noto-fonts-emoji
 
   parted
   flatpak
