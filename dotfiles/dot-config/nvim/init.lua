@@ -1,3 +1,7 @@
+P = function(...)
+  vim.print(vim.inspect(...))
+end
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/nvim/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -21,10 +25,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
-P = function(...)
-  vim.print(vim.inspect(...))
-end
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -108,64 +108,6 @@ vim.filetype.add({
     xaml = "xml",
   },
   filename = {},
-})
-
--- Autocmds
-
--- Reload file on context change
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
-  end,
-})
-
--- Highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
--- resize splits if window got resized
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-  callback = function()
-    local current_tab = vim.fn.tabpagenr()
-    vim.cmd("tabdo wincmd =")
-    vim.cmd("tabnext " .. current_tab)
-  end,
-})
-
--- go to last cursor pos when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPost", {
-  callback = function(event)
-    local exclude = { "gitcommit" }
-    local buf = event.buf
-    if
-      vim.tbl_contains(exclude, vim.bo[buf].filetype)
-      or vim.b[buf].lazyvim_last_loc
-    then
-      return
-    end
-    vim.b[buf].lazyvim_last_loc = true
-    local mark = vim.api.nvim_buf_get_mark(buf, '"')
-    local lcount = vim.api.nvim_buf_line_count(buf)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-})
-
--- Auto create dir when saving a file, in case some intermediate directory does not exist
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then
-      return
-    end
-    local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-  end,
 })
 
 -- LAZY CONFIG
@@ -261,7 +203,6 @@ lazy_config.spec = {
   -- LIBS
   { "nvim-lua/plenary.nvim", version = false },
   { "MunifTanjim/nui.nvim" },
-  { "williamboman/mason.nvim", build = ":MasonUpdate" },
 
   -- ESSENTIAL
   { "stevearc/oil.nvim", lazy = vim.fn.argc(-1) == 0 },
@@ -318,7 +259,6 @@ lazy_config.spec = {
 
   -- HANDY
   { "ThePrimeagen/harpoon", branch = "harpoon2" },
-  { "m00qek/baleia.nvim" },
   { "lukas-reineke/virt-column.nvim", event = FILE },
 
   -- LANG SPECIFIC
@@ -346,9 +286,6 @@ lazy_config.spec = {
     end,
   },
   { "bullets-vim/bullets.vim", ft = "markdown" },
-
-  -- REMOVE?
-  "jiaoshijie/undotree",
 }
 
 local mason_packages = {
@@ -384,20 +321,5 @@ local mason_packages = {
   "zls",
 }
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "VeryLazy",
-  callback = function()
-    require("mason-installer").install_packages(mason_packages)
-  end,
-})
-
-vim.api.nvim_create_autocmd("OptionSet", {
-  pattern = "background",
-  callback = function()
-    vim.cmd([[colorscheme tokyonight-cterm]])
-  end,
-})
-
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
 require("lazy").setup(lazy_config)
-require("lsp")

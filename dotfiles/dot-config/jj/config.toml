@@ -116,7 +116,7 @@ branch = [ "log", "-r", "bookmarks()" ]
 "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())"
 'working(x)' = "all:x+ & mine() & mutable()"
 'w(x)' = 'working(x)'
-'brief' = 'bookmarks() & ~immutable() | tracked_remote_bookmarks() | (trunk-..(@::))'
+'brief' = 'bookmarks() & ~immutable() | tracked_remote_bookmarks() | reachable(@, trunk()..)'
 
 [templates]
 log = 'builtin_log_comfortable'

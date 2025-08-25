@@ -91,7 +91,7 @@ source "$script_dir/packages/$platform"
 case "$platform" in
 macos)
   brew analytics off
-  brew install $PACAKGES
+  brew install $PACKAGES
   if $install_desktop; then
     brew tap $DESKTOP_TAPS
     brew install $DESKTOP_PACKAGES
@@ -122,21 +122,7 @@ arch)
     )
   fi
 
-  yay -Sy \
-    --norebuild \
-    --noredownload \
-    --noconfirm \
-    --needed \
-    --answerclean=N \
-    --answerdiff=N \
-    $PACKAGES
-
-  # cargo binstall --disable-telemetry -y \
-  #   --strategies crate-meta-data,quick-install,compile \
-  #   $CARGO_PACKAGES
-
-  sudo npm -g install tree-sitter-cli
-  if $install_desktop; then
+  [ -n "$PACKAGES" ] &&
     yay -Sy \
       --norebuild \
       --noredownload \
@@ -144,7 +130,26 @@ arch)
       --needed \
       --answerclean=N \
       --answerdiff=N \
-      $DESKTOP_PACKAGES
+      $PACKAGES
+
+  [ -n "$CARGO_PACKAGES" ] &&
+    cargo binstall --disable-telemetry -y \
+      --strategies crate-meta-data,quick-install,compile \
+      $CARGO_PACKAGES
+
+  [ -n "$PIP_PACKAGES" ] &&
+    pipx install $PIP_PACKAGES
+
+  if $install_desktop; then
+    [ -n "$DESKTOP_PACKAGES" ] &&
+      yay -Sy \
+        --norebuild \
+        --noredownload \
+        --noconfirm \
+        --needed \
+        --answerclean=N \
+        --answerdiff=N \
+        $DESKTOP_PACKAGES
 
     for package in $FLATPAK_PACKAGES; do
       flatpak install -y flathub "$package"

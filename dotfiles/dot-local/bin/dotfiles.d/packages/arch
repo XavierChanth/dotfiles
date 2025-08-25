@@ -9,11 +9,11 @@ PACKAGES=$(
   less
   coreutils
   moreutils
-  openssl
-  wget
-  tmux
+
+  tmux-git
   neovim
   tree-sitter
+  tree-sitter-cli
   ripgrep
   fzf
   git
@@ -22,48 +22,84 @@ PACKAGES=$(
   bat
   bat-extras
   stow
-  go
-  rust
-  uv
-  python
-  gcc
-  clang
-  cmake
-  ninja
   mesa-utils
-  zig
-  rust-analyzer
-  typst
-  nodejs
-  npm
   github-cli
   jq
-  tokei
   ffmpegthumbnailer
   poppler
   just
   parallel
   fd
-  quarto-cli-bin
   yazi
   imagemagick
-  dotnet-sdk
   unzip
   tree
   unarchiver
+  fastfetch
+
+  openssl
+  wget
   iperf3
   nmap
   traceroute
   iproute2
   net-tools
   bind
-  tokei-git
-  fastfetch
+
+  vscode-json-languageserver
+  yaml-language-server
+  go
+  gopls
+  gofumpt
+  uv
+  python
+  python-pipx
+  basedpyright
+  ruff
+  typst
+  tinymist
+  llvm
+  gcc
+  clang
+  cmake
+  neocmakelsp
+  python-gersemi
+  ninja
+  asm-lsp
+  zig
+  zls
+  rust
+  rust-analyzer
+  nodejs
+  npm
+  dotnet-sdk
+  csharp-ls
+  omnisharp-roslyn
+  csharpier
+  dockerfile-language-server
+  nodejs-compose-language-service
+  hadolint
+  gofumpt
+  goimports
+  gopls
+  lua-language-server
+  stylua
+  prettier
+  shellcheck
+  shfmt
+  tailwindcss-language-server
+  vtsls
 EOF
 )
 
 CARGO_PACKAGES=$(
   cat <<EOF
+EOF
+)
+
+PIP_PACKAGES=$(
+  cat <<EOF
+pymarkdownlnt
 EOF
 )
 
@@ -162,4 +198,4 @@ EOF
 
 # TODO noports desktop
 
-export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES
+export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES CARGO_PACKAGES PIP_PACKAGES
