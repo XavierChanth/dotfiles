@@ -93,7 +93,7 @@ else
   hi BgHint ctermbg=14 ctermfg=0
   hi BgTest ctermbg=13 ctermfg=0
 
-  hi RenderMarkdownH1Bg ctermbg=2 ctermfg=0
+  hi RenderMarkdownH1Bg ctermbg=12 ctermfg=0
   hi RenderMarkdownH2Bg ctermbg=11 ctermfg=0
   hi RenderMarkdownH3Bg ctermbg=10 ctermfg=0
   hi RenderMarkdownH4Bg ctermbg=13 ctermfg=0

@@ -315,7 +315,6 @@ lazy_config.spec = {
   -- AI
   { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
   { "ravitemer/mcphub.nvim", build = "bundled_build.lua" },
-  { "dlants/magenta.nvim", build = "npm install --frozen-lockfile" },
 
   -- HANDY
   { "ThePrimeagen/harpoon", branch = "harpoon2" },
