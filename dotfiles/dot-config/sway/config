@@ -7,6 +7,7 @@ floating_modifier Super
 
 set $term ghostty
 set $browser floorp
+set $browser2 luakit
 set $menu source ~/.config/env/sway && wofi --show run
 set $lock_screen swaylock -p -f -c 000000
 
@@ -127,6 +128,7 @@ bindsym $mod+w kill
 bindsym $mod+Return exec $term
 bindsym $mod2+Return exec $term -e zsh
 bindsym $mod+b exec $browser
+bindsym $mod+g exec $browser2
 
 # Focus movement
 bindsym $mod+h focus left

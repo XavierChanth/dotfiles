@@ -138,7 +138,8 @@ DESKTOP_PACKAGES=$(
 
   ghostty
   nerdctl-full
-  zen-browser-bin
+  floorp
+  luakit
   onlyoffice-bin
   discord
   spotify
