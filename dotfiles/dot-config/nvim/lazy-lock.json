@@ -8,7 +8,6 @@
   "conform.nvim": { "branch": "master", "commit": "3543d000dafbc41cc7761d860cfdb24e82154f75" },
   "crates.nvim": { "branch": "main", "commit": "afcd1cc3eeceb5783676fc8464389b9216a29d05" },
   "csharpls-extended-lsp.nvim": { "branch": "master", "commit": "9328e1a5451e52ac79dece8cd718641989d6a484" },
-  "distant.nvim": { "branch": "v0.3", "commit": "1d798b3746709ee5b1a2209d63248800cea82f09" },
   "flash.nvim": { "branch": "main", "commit": "ec0bf2842189f65f60fd40bf3557cac1029cc932" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
   "goplements.nvim": { "branch": "main", "commit": "a3291c4db092d5bc95ec0e6e2bcfc14587d06dfc" },
