@@ -128,7 +128,7 @@ bindsym $mod+w kill
 bindsym $mod+Return exec $term
 bindsym $mod2+Return exec $term -e zsh
 bindsym $mod+b exec $browser
-bindsym $mod+g exec $browser2
+bindsym $mod+v exec $browser2
 
 # Focus movement
 bindsym $mod+h focus left
