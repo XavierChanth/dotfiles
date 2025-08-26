@@ -917,14 +917,6 @@ local config = {
       },
     },
   },
-  {
-    "NickvanDyke/opencode.nvim",
-    init = function()
-      vim.api.nvim_create_user_command("Opencode", function()
-        require("opencode").toggle()
-      end, {})
-    end,
-  },
   -- HANDY
   {
     "ThePrimeagen/harpoon",
