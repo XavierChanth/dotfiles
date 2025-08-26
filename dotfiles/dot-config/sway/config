@@ -103,7 +103,7 @@ floating_maximum_size 1200 x 800
 # for_window [app_id="Zoom Workplace"] floating enable
 # for_window [app_id="Zoom Workplace" title="Meeting"] floating disable
 for_window [class="Display"] floating enable
-for_window [app_id="firefox|zen" title="Picture-in-Picture"] floating enable
+for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] floating enable
 
 # Auto tiling
 # exec_always killall autotiling; autotiling -sr 1.61 -l 3

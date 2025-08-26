@@ -23,8 +23,10 @@
     "on-click": "systemctl status --user socks >/dev/null 2>&1 && systemctl stop --user socks || systemctl start --user socks"
   },
   "custom/darkmode": {
-    "tooltip": 1,
-    "format": "darkmode",
+    "interval": 1,
+    "format": "{}",
+    "exec": "echo \"{ \\\"text\\\": \\\"$( [ $(gsettings get org.gnome.desktop.interface color-scheme) = \"'prefer-dark'\" ] && echo  || echo )\\\"}\"",
+    "return-type": "json",
     "on-click": "if [ $(gsettings get org.gnome.desktop.interface color-scheme) = \"'prefer-dark'\" ]; then gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'; else gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark';fi;"
   },
   "sway/workspaces": {

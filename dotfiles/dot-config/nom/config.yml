@@ -3,9 +3,11 @@ showfavourites: false
 version: ""
 feeds:
   - url: https://blog.thestateofme.com/feed/
-    name: Chris
+    name: Chris Swan
   - url: https://xavierchanth.com/rss.xml
     name: XavierChanth
+  - url: https://blog.howardjohn.info/index.xml
+    name: Howard John
   # - url: http://localhost:5173/rss.xml
   #   name: '[Dev]'
 ordering: desc
