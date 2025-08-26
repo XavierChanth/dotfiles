@@ -13,11 +13,11 @@ local function identify_go_dir(custom_args, on_complete)
     else
       vim.schedule(function()
         vim.notify(
-          ("[gopls] identify " .. custom_args.envvar_id .. " dir cmd failed with code %d: %s\n%s"):format(
-            output.code,
-            vim.inspect(cmd),
-            output.stderr
-          )
+          (
+            "[gopls] identify "
+            .. custom_args.envvar_id
+            .. " dir cmd failed with code %d: %s\n%s"
+          ):format(output.code, vim.inspect(cmd), output.stderr)
         )
       end)
       on_complete(nil)
@@ -31,11 +31,14 @@ local function get_std_lib_dir()
     return std_lib
   end
 
-  identify_go_dir({ envvar_id = "GOROOT", custom_subdir = "/src" }, function(dir)
-    if dir then
-      std_lib = dir
+  identify_go_dir(
+    { envvar_id = "GOROOT", custom_subdir = "/src" },
+    function(dir)
+      if dir then
+        std_lib = dir
+      end
     end
-  end)
+  )
   return std_lib
 end
 
@@ -68,7 +71,9 @@ local function get_root_dir(fname)
       return clients[#clients].config.root_dir
     end
   end
-  return vim.fs.root(fname, "go.work") or vim.fs.root(fname, "go.mod") or vim.fs.root(fname, ".git")
+  return vim.fs.root(fname, "go.work")
+    or vim.fs.root(fname, "go.mod")
+    or vim.fs.root(fname, ".git")
 end
 
 return {
@@ -105,7 +110,6 @@ return {
         rangeVariableTypes = true,
       },
       analyses = {
-        fieldalignment = true,
         nilness = true,
         unusedparams = true,
         unusedwrite = true,
@@ -114,14 +118,21 @@ return {
       usePlaceholders = true,
       completeUnimported = true,
       staticcheck = true,
-      directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+      directoryFilters = {
+        "-.git",
+        "-.vscode",
+        "-.idea",
+        "-.vscode-test",
+        "-node_modules",
+      },
       semanticTokens = true,
     },
   },
   on_attach = function(client)
     if client.server_capabilities.semanticTokensProvider then
       client.config.capabilities = client.config.capabilities or {}
-      client.config.capabilities.textDocument = client.config.capabilities.textDocument or {}
+      client.config.capabilities.textDocument = client.config.capabilities.textDocument
+        or {}
       local semantic = client.config.capabilities.textDocument.semanticTokens
       if semantic then
         client.server_capabilities.semanticTokensProvider = {

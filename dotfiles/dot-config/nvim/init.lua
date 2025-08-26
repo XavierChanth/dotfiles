@@ -256,6 +256,7 @@ lazy_config.spec = {
   -- AI
   { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
   { "ravitemer/mcphub.nvim", build = "bundled_build.lua" },
+  { "NickvanDyke/opencode.nvim", lazy = true },
 
   -- HANDY
   { "ThePrimeagen/harpoon", branch = "harpoon2" },
@@ -286,39 +287,6 @@ lazy_config.spec = {
     end,
   },
   { "bullets-vim/bullets.vim", ft = "markdown" },
-}
-
-local mason_packages = {
-  "asm-lsp",
-  "basedpyright",
-  "clangd",
-  "csharp-language-server",
-  "csharpier",
-  "docker-compose-language-service",
-  "dockerfile-language-server",
-  "gersemi",
-  "gofumpt",
-  "goimports",
-  "gopls",
-  "hadolint",
-  "json-lsp",
-  "lua-language-server",
-  "neocmakelsp",
-  "omnisharp",
-  "prettier",
-  "pymarkdownlnt",
-  "rubocop",
-  "ruby-lsp",
-  "ruff",
-  "rust-analyzer",
-  "shellcheck",
-  "shfmt",
-  "stylua",
-  "tailwindcss-language-server",
-  "tinymist",
-  "vtsls",
-  "yaml-language-server",
-  "zls",
 }
 
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
