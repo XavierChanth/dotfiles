@@ -71,6 +71,7 @@ PACKAGES=$(
   rust-analyzer
   nodejs
   npm
+  svelte-language-server
   csharp-ls
   omnisharp-roslyn
   csharpier
