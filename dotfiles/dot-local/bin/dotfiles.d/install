@@ -198,5 +198,13 @@ nvim --headless "+Lazy! sync" +qa
 
 # Do a healthcheck to ensure that everything I want is installed
 
+case "$platform" in
+  arch)
+    pacman -Qe > "$script_dir/install-arch.lock"
+    pacman -Qne > "$script_dir/install-arch-native.lock"
+    pacman -Qme > "$script_dir/install-arch-foreign.lock"
+    ;;
+esac
+
 "$script_dir"/check-env
 exit $?

@@ -9,7 +9,7 @@
   "csharpls-extended-lsp.nvim": { "branch": "master", "commit": "9328e1a5451e52ac79dece8cd718641989d6a484" },
   "flash.nvim": { "branch": "main", "commit": "ec0bf2842189f65f60fd40bf3557cac1029cc932" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
-  "goplements.nvim": { "branch": "main", "commit": "a3291c4db092d5bc95ec0e6e2bcfc14587d06dfc" },
+  "goplements.nvim": { "branch": "main", "commit": "4ef2c1d29f50fc34355a0bc5d7878c9e15d27dc9" },
   "grug-far.nvim": { "branch": "main", "commit": "385d1949dc21d0c39e7a74b4f4a25da18817bc86" },
   "harpoon": { "branch": "harpoon2", "commit": "ed1f853847ffd04b2b61c314865665e1dadf22c7" },
   "kmonad-vim": { "branch": "master", "commit": "e31a83d0281f27f3b4fb391c9be3202b5a248d72" },

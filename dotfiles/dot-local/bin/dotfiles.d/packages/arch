@@ -13,7 +13,6 @@ PACKAGES=$(
   tmux-git
   neovim
   tree-sitter
-  tree-sitter-cli
   ripgrep
   fzf
   git
@@ -72,7 +71,6 @@ PACKAGES=$(
   rust-analyzer
   nodejs
   npm
-  dotnet-sdk
   csharp-ls
   omnisharp-roslyn
   csharpier
