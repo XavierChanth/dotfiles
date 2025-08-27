@@ -35,6 +35,7 @@ PACKAGES=$(
   tree
   unarchiver
   fastfetch
+  pandoc-bin
 
   openssl
   wget
@@ -161,33 +162,41 @@ DESKTOP_PACKAGES=$(
 
   parted
   flatpak
-  thunar
-  zathura
-  imv
-  mpv
 
   obs-studio
   obs-pipewire-audio-capture
   obs-backgroundremoval
   v4l2loopback-dkms
 
-  ghostty
-  nerdctl-full
-  floorp
-  luakit
-  onlyoffice-bin
-  discord
-  spotify
-  asciinema-git
-  pandoc-bin
-  ffmpeg
+  remmina
+  freerdp2
+  remmina-plugin-ultravnc
+
   wireshark-cli
   wireshark-qt
   termshark
-  qmk
-  steam
+
+  thunar
+  zathura
+  onlyoffice-bin
+
+  ffmpeg
+  imv
+  mpv
   vlc
   nom
+
+  ghostty
+  floorp-bin
+  luakit
+
+  steam
+  discord
+  spotify
+
+  qmk
+  nerdctl-full
+  asciinema-git
 EOF
 )
 FLATPAK_PACKAGES=$(

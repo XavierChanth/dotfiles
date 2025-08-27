@@ -181,15 +181,15 @@ if command_exists dotnet; then
   dotnet tool install --global csharp-ls
 fi
 
-# install venv for nvim
-if ! [ -d "$DOTFILES/.venv" ]; then
-  (
-    cd "$DOTFILES" || return 1
-    uv venv
-    source "$DOTFILES/.venv/bin/activate"
-    uv pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip jupytext
-  )
-fi
+# # install venv for nvim
+# if ! [ -d "$DOTFILES/.venv" ]; then
+#   (
+#     cd "$DOTFILES" || return 1
+#     uv venv
+#     source "$DOTFILES/.venv/bin/activate"
+#     uv pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip jupytext
+#   )
+# fi
 
 # sync nvim
 $script_dir/../color.d/apply-color tokyonight-storm
@@ -199,11 +199,11 @@ nvim --headless "+Lazy! sync" +qa
 # Do a healthcheck to ensure that everything I want is installed
 
 case "$platform" in
-  arch)
-    pacman -Qe > "$script_dir/install-arch.lock"
-    pacman -Qne > "$script_dir/install-arch-native.lock"
-    pacman -Qme > "$script_dir/install-arch-foreign.lock"
-    ;;
+arch)
+  pacman -Qe >"$script_dir/install-arch.lock"
+  pacman -Qne >"$script_dir/install-arch-native.lock"
+  pacman -Qme >"$script_dir/install-arch-foreign.lock"
+  ;;
 esac
 
 "$script_dir"/check-env
