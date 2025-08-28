@@ -170,7 +170,7 @@ DESKTOP_PACKAGES=$(
 
   remmina
   freerdp2
-  remmina-plugin-ultravnc
+  libvncserver
 
   wireshark-cli
   wireshark-qt
@@ -178,6 +178,7 @@ DESKTOP_PACKAGES=$(
 
   thunar
   zathura
+  zathura-pdf-poppler
   onlyoffice-bin
 
   ffmpeg

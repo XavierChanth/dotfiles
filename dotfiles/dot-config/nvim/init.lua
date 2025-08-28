@@ -225,7 +225,7 @@ lazy_config.spec = {
 
   -- GIT
   -- { "julienvincent/hunk.nvim", cmd = "DiffEditor" },
-  "FabijanZulj/blame.nvim",
+  "FabijanZulj/blame.nvim", -- TODO: replace with jj file annotate plugin
   "echasnovski/mini.diff",
 
   -- CORE LANG
@@ -246,8 +246,6 @@ lazy_config.spec = {
     build = ":TSUpdate",
   },
   { "nvim-treesitter/nvim-treesitter-textobjects", event = "VeryLazy" },
-  { "windwp/nvim-ts-autotag", event = FILE },
-  { "folke/ts-comments.nvim", event = "VeryLazy" },
   "folke/trouble.nvim",
   -- THEME
   { "sschleemilch/slimline.nvim", event = "VeryLazy" },
@@ -255,7 +253,6 @@ lazy_config.spec = {
 
   -- AI
   { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
-  { "ravitemer/mcphub.nvim", build = "bundled_build.lua" },
 
   -- HANDY
   { "ThePrimeagen/harpoon", branch = "harpoon2" },

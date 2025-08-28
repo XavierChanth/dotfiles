@@ -17,14 +17,12 @@ else
   $no_sudo && exit 0
   set -eux
   # operations as root
-  systemctl daemon-reload
-  systemd_start() {
-    systemctl enable "$1"
-    systemctl start "$1"
-  }
+  # systemctl daemon-reload
+  # systemd_start() {
+  #   systemctl enable "$1"
+  #   systemctl start "$1"
+  # }
   stow -d "$DOTFILES" -t "/" --dotfiles linux
-  systemd_start "kanata.service"
-  systemd_start "bluetooth.service"
   exit 0
 fi
 
