@@ -278,7 +278,6 @@ local config = {
     },
   },
   -- MOTIONS
-  { "folke/flash.nvim", opts = {} },
   {
     "echasnovski/mini.ai",
     opts = function()

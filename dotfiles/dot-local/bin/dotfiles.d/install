@@ -32,6 +32,7 @@ mkdir -p "$HOME/.local/dev"
 mkdir -p "$HOME/.local/state/colorscheme"
 mkdir -p "$HOME/.cargo/bin"
 mkdir -p "$HOME/.config"
+mkdir -p "$HOME/Documents" "$HOME/Downloads" "$HOME/Recordings" "$HOME/Screenshots"
 
 touch "$HOME/.zshenv"
 touch "$zsh_state_dir/main_history"

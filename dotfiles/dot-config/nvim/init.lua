@@ -57,6 +57,7 @@ vim.opt.listchars = {
   extends = "…",
   precedes = "…",
 }
+vim.opt.iskeyword = "@,48-57,192-255" -- default, but underscore removed
 
 vim.opt.showbreak = "  󱞩 "
 -- vim.opt.cmdheight = 0
@@ -214,7 +215,6 @@ lazy_config.spec = {
   "MagicDuck/grug-far.nvim",
 
   -- MOTIONS
-  { "folke/flash.nvim", event = "VeryLazy" },
   {
     "echasnovski/mini.ai",
     event = "VeryLazy",
@@ -268,7 +268,7 @@ lazy_config.spec = {
   { "folke/lazydev.nvim", ft = "lua" },
   { "Saecki/crates.nvim", event = { "BufRead Cargo.toml" } },
   { "maxandron/goplements.nvim", ft = "go" },
-  { "linux-cultist/venv-selector.nvim", branch = "regexp", ft = "python" },
+  { "linux-cultist/venv-selector.nvim", branch = "main", ft = "python" },
   { "chomosuke/typst-preview.nvim", cmd = "TypstPreview", ft = "typst" },
 
   -- MARKDOWN

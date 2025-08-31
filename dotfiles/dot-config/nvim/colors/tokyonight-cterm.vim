@@ -53,7 +53,7 @@ if &background == "dark"
   hi RenderMarkdownH5Bg ctermbg=6 ctermfg=0
   hi RenderMarkdownH6Bg ctermbg=1 ctermfg=0
 
-  hi RenderMarkdownCode ctermbg=8
+  hi RenderMarkdownCode ctermbg=0
   hi RenderMarkdownCodeBorder ctermbg=7
 else
   hi Visual ctermbg=7
@@ -99,7 +99,7 @@ else
   hi RenderMarkdownH4Bg ctermbg=13 ctermfg=0
   hi RenderMarkdownH5Bg ctermbg=14 ctermfg=0
   hi RenderMarkdownH6Bg ctermbg=9 ctermfg=0
-  hi RenderMarkdownCode ctermbg=8
+  hi RenderMarkdownCode ctermbg=15
   hi RenderMarkdownCodeBorder ctermbg=0
 endif
 hi Underlined ctermfg=6 cterm=underline
