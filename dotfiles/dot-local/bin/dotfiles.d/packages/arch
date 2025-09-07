@@ -9,15 +9,18 @@ PACKAGES=$(
   less
   coreutils
   moreutils
+  vi
+  vim
 
   tmux-git
-  neovim
+  bob
   tree-sitter
   ripgrep
   fzf
   git
   git-delta
   jujutsu
+  jjui
   bat
   bat-extras
   stow
@@ -53,7 +56,6 @@ PACKAGES=$(
   gofumpt
   uv
   python
-  python-pipx
   basedpyright
   ruff
   typst
@@ -97,12 +99,6 @@ CARGO_PACKAGES=$(
 EOF
 )
 
-PIP_PACKAGES=$(
-  cat <<EOF
-pymarkdownlnt
-EOF
-)
-
 DESKTOP_PACKAGES=$(
   cat <<EOF
   linux-headers
@@ -124,6 +120,7 @@ DESKTOP_PACKAGES=$(
   gnome-keyring-daemon
   fprintd
   dante
+  fwupd
 
   waybar
   xorg-wayland
@@ -189,15 +186,22 @@ DESKTOP_PACKAGES=$(
 
   ghostty
   floorp-bin
+  zen-browser-bin
   luakit
+  ungoogled-chromium-bin
 
   steam
   discord
   spotify
 
   qmk
-  nerdctl-full
+  docker
   asciinema-git
+
+  cups
+  cups-browsed
+  cups-filters
+  cups-pdf
 EOF
 )
 FLATPAK_PACKAGES=$(

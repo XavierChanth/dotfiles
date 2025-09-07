@@ -138,9 +138,6 @@ arch)
       --strategies crate-meta-data,quick-install,compile \
       $CARGO_PACKAGES
 
-  [ -n "$PIP_PACKAGES" ] &&
-    pipx install $PIP_PACKAGES
-
   if $install_desktop; then
     [ -n "$DESKTOP_PACKAGES" ] &&
       yay -Sy \

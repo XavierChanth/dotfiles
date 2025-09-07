@@ -4,7 +4,7 @@
 
 return {
 	cmd = { "dart", "language-server", "--protocol=lsp" },
-	filetypes = { "dart" },
+	filetypes = { "dart", "pubspec" },
 	root_markers = { "pubspec.yaml" },
 	init_options = {
 		closingLabels = true,

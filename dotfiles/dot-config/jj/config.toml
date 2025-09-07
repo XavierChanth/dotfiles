@@ -10,20 +10,34 @@ default-command = "log"
 conflict-marker-style = "snapshot"
 # conflict-marker-style = "diff" # shows +/- at start of line
 
-diff-formatter = [
-  "delta",
+diff-formatter = "delta"
+diff-editor = ":builtin"
+merge-editor = "nvim" 
+
+[merge-tools.delta]
+diff-args=[
   "--paging=always",
   "--file-transformation", 's\^.*(left|right)/\\\',
   "$left", "$right",
 ]
+diff-expected-exit-codes = [0, 1]
 
-diff-editor = ":builtin"
-# diff-editor = "nvim"
-
-# hunk.nvim plugin
 [merge-tools.nvim]
-program = "nvim"
-edit-args = ["-c", "DiffEditor $left $right $output"]
+diff-invocation-mode = "file-by-file"
+edit-args = ["-d", "-o", "$left", "$right"]
+merge-args = [
+  "-f", "-d", "$output",
+  "-M", "$left", "$base", "$right",
+  "-c", "wincmd J",
+  "-c", "set modifiable",
+  "-c", "set write",
+  "-c", "set wrap",
+  "-c", "lua require('persistence').stop()",
+]
+merge-tool-edits-conflict-markers = true
+
+[merge-tools.vimdiff]
+diff-invocation-mode = "file-by-file"
 
 # [revsets]
 # short-prefixes = "(trunk..@)::"

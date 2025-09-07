@@ -75,7 +75,8 @@ vim.opt.foldlevel = 99
 vim.opt.formatoptions = "jcroqlnt"
 vim.opt.pumblend = 0
 vim.opt.pumheight = 10
-vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
+vim.opt.wildmenu = true
+vim.opt.wildmode = "noselect:longest:lastused,full" -- Command-line completion mode
 vim.opt.sessionoptions = {
   "buffers",
   "curdir",
@@ -106,10 +107,14 @@ vim.opt.undolevels = 10000
 -- Filetypes
 vim.filetype.add({
   extension = {
-    xaml = "xml",
+    -- xaml = "xml",
   },
-  filename = {},
+  filename = {
+    ["pubspec.yaml"] = "pubspec"
+  },
 })
+vim.treesitter.language.register("xml", {"xaml"})
+vim.treesitter.language.register("yaml", {"pubspec"})
 
 -- LAZY CONFIG
 local lazy_config = {
@@ -224,7 +229,6 @@ lazy_config.spec = {
   },
 
   -- GIT
-  -- { "julienvincent/hunk.nvim", cmd = "DiffEditor" },
   "FabijanZulj/blame.nvim", -- TODO: replace with jj file annotate plugin
   "echasnovski/mini.diff",
 

@@ -11,17 +11,25 @@ if [ -n "$existing" ]; then
   exit 0
 fi
 
-# create a vertical split in the sshnpd dir
-tmux neww -c "$root"
-jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
-command="$HOME/.local/bin/cwatch -i 1 -c '$jj_command --no-pager'"
-tmux splitw -l "45" -hbc "$root" "$command"
-tmux select-pane -R
-tmux rename-window "$name"
+tui=false
 
+if $tui; then
+  command="jjui"
+  tmux neww -c "$root" "$command"
+else
+  # create a vertical split in the sshnpd dir
+  tmux neww -c "$root"
+  jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
+  command="$HOME/.local/bin/cwatch -i 1 -c '$jj_command --no-pager'"
+  tmux splitw -l "45" -hbc "$root" "$command"
+  tmux select-pane -R
+
+  # set a hook to clean up after
+  tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"
+fi
+
+# Handle the created window
+tmux rename-window "$name"
 # move the window to #2 and focus
 tmux movew -b -t :2
 tmux selectw -t :2
-
-# set a hook to clean up after
-tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"

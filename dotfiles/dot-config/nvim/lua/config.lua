@@ -418,23 +418,25 @@ local config = {
     cmd = "ConformInfo",
     init = function()
       vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
-      vim.g.autoformat = true
       vim.api.nvim_create_user_command(
         "W",
-        "lua vim.g.autoformat = false; vim.cmd.w(); vim.g.autoformat = true",
-        {}
-      )
-      vim.api.nvim_create_user_command(
-        "WA",
-        "lua vim.g.autoformat = false; vim.cmd.wa(); vim.g.autoformat = true",
+        "lua vim.g.autoformat = true; vim.cmd.w(); vim.g.autoformat = false",
         {}
       )
       vim.api.nvim_create_user_command(
         "Wa",
-        "lua vim.g.autoformat = false; vim.cmd.wa(); vim.g.autoformat = true",
+        "lua vim.g.autoformat = true; vim.cmd.wa(); vim.g.autoformat = false",
         {}
       )
     end,
+    keys = {
+      {
+        "<leader>cf",
+        function()
+          require("conform").format({})
+        end,
+      },
+    },
     opts = {
       format_on_save = function(bufnr)
         if not vim.g.autoformat then
@@ -504,9 +506,9 @@ local config = {
       },
       linters = {
         pymarkdownlnt = {
-          cmd = "pymarkdownlnt",
+          cmd = "uvx",
           stdin = true,
-          args = { "scan-stdin" },
+          args = {"pymarkdownlnt", "scan-stdin" },
           stream = nil,
           ignore_exitcode = true,
           parser = function(...)
@@ -830,7 +832,7 @@ local config = {
   {
     "ThePrimeagen/harpoon",
     init = function()
-      local exceptions = { "^oil://", ".jjdescription$" }
+      local exceptions = { "^oil://", ".jjdescription$", "^/tmp/" }
       vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(args)
           if #args.file == 0 then

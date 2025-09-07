@@ -218,6 +218,18 @@ local configured_lsps = function(arg)
     :totable()
 end
 
+local complete_client = function(arg)
+    return vim
+      .iter(vim.lsp.get_clients())
+      :map(function(client)
+        return client.name
+      end)
+      :filter(function(name)
+        return name:sub(1, #arg) == arg
+      end)
+      :totable()
+end
+
 vim.api.nvim_create_user_command("LspRestart", function(info)
   local clients = info.fargs
 
@@ -262,6 +274,32 @@ end, {
   nargs = "?",
   complete = configured_lsps,
 })
+
+vim.api.nvim_create_user_command('LspStop', function(info)
+    local clients = info.fargs
+
+    -- Default to disabling all servers on current buffer
+    if #clients == 0 then
+      clients = vim
+        .iter(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
+        :map(function(client)
+          return client.name
+        end)
+        :totable()
+    end
+
+    for _, name in ipairs(clients) do
+      if vim.lsp.config[name] == nil then
+        vim.notify(("Invalid server name '%s'"):format(name))
+      else
+        vim.lsp.enable(name, false)
+      end
+    end
+  end, {
+    desc = 'Disable and stop the given client',
+    nargs = '?',
+    complete = complete_client,
+  })
 
 vim.api.nvim_create_user_command("LspInfo", ":che vim.lsp", {})
 vim.api.nvim_create_user_command("LspLog", function()

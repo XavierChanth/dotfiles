@@ -6,8 +6,9 @@ set $mod4 Super+Control+Alt+Shift
 floating_modifier Super
 
 set $term ghostty
-set $browser floorp
+set $browser zen-browser
 set $browser2 luakit
+set $notes obsidian
 set $menu source ~/.config/env/sway && wofi --show run
 set $lock_screen swaylock -p -f -c 000000
 
@@ -128,7 +129,8 @@ bindsym $mod+w kill
 bindsym $mod+Return exec $term
 bindsym $mod2+Return exec $term -e zsh
 bindsym $mod+b exec $browser
-bindsym $mod+v exec $browser2
+bindsym $mod2+b exec $browser2
+bindsym $mod+v exec $notes
 
 # Focus movement
 bindsym $mod+h focus left

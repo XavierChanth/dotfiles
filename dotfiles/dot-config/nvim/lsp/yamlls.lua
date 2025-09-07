@@ -1,8 +1,7 @@
 return {
   cmd = { "yaml-language-server", "--stdio" },
-  filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab" },
+  filetypes = { "yaml", "pubspec" },
   root_markers = { ".git" },
-  single_file_support = true,
   capabilities = {
     textDocument = {
       foldingRange = {
