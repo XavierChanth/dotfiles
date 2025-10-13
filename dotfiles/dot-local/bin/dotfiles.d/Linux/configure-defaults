@@ -14,12 +14,15 @@
   # Generate the locales
   sudo locale-gen
 
-  # Setup systemd logind behavior
-  echo "[Login]" | sudo tee /etc/systemd/logind.conf
-  echo "HandlePowerKey=ignore" | sudo tee -a /etc/systemd/logind.conf
-  echo "HandlePowerKeyLongPress=poweroff" | sudo tee -a /etc/systemd/logind.conf
-  echo "IdleAction=ignore" | sudo tee -a /etc/systemd/logind.conf
+  if ! [ -f "$DOTFILES/install-once" ]; then
+    # Setup systemd logind behavior
+    echo "[Login]" | sudo tee /etc/systemd/logind.conf
+    echo "HandlePowerKey=ignore" | sudo tee -a /etc/systemd/logind.conf
+    echo "HandlePowerKeyLongPress=poweroff" | sudo tee -a /etc/systemd/logind.conf
+    echo "IdleAction=ignore" | sudo tee -a /etc/systemd/logind.conf
 
-  echo "[Settings]" | sudo tee /etc/iwd/main.conf
-  echo "AutoConnect=true" | sudo tee -a /etc/iwd/main.conf
+    echo "[Settings]" | sudo tee /etc/iwd/main.conf
+    echo "AutoConnect=true" | sudo tee -a /etc/iwd/main.conf
+    touch "$DOTFILES/install-once"
+  fi
 )

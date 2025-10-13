@@ -11,8 +11,14 @@ while [ $# -gt 0 ]; do
 done
 
 if [ $UID -ne 0 ]; then
-  echo Running root operations...
-  exec sudo DOTFILES="$DOTFILES" "$0" "$@"
+  read -r -p "Would you like to run root operations? (y/n) " -n 1 choice
+  echo
+  case "$choice" in
+    y|Y)
+      echo Running root operations...
+      exec sudo DOTFILES="$DOTFILES" "$0" "$@"
+      ;;
+  esac
 else
   $no_sudo && exit 0
   set -eux
@@ -23,6 +29,7 @@ else
   #   systemctl start "$1"
   # }
   stow -d "$DOTFILES" -t "/" --dotfiles linux
+  cp -fr "$DOTFILES/manual/systemd/" /etc/
   exit 0
 fi
 
