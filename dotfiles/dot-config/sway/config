@@ -10,6 +10,7 @@ set $browser zen-browser
 set $browser2 luakit
 set $notes obsidian
 set $menu source ~/.config/env/sway && wofi --show run
+set $menu2 source ~/.config/env/sway && wofi --show drun
 set $lock_screen swaylock -p -f -c 000000
 
 set $builtin_display "eDP-1"
@@ -191,6 +192,7 @@ bindsym $mod2+0 resize set width 50ppt
 # macOS binds
 bindsym $mod3+q kill
 bindsym $mod3+space exec $menu
+bindsym $mod+$mod3+space exec $menu2
 
 # bindsym $mod3+w exec wtype -k XF86Close
 # bindsym $mod3+c exec wtype -k XF86Copy

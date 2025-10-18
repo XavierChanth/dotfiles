@@ -100,110 +100,142 @@ EOF
 )
 
 DESKTOP_PACKAGES=$(
-  cat <<EOF
-  linux-headers
-  reflector
-  polkit
+  cat <<EOF | sed -e '/#.*$/d'
+  # Core Arch/Linux packages
+  linux-headers - Kernel APIs
+  fwupd - Firmware updater
+  reflector # Automatically
+  polkit # POLicyKIT - control privileges
+  gnome-keyring-daemon - Keychain
 
+  # Wayland core
+  wayland
+  xorg-wayland
+  qt6-wayland
+
+  # Wayland portals and roots extensions
+  wlroots
+  wev
+  wlr-randr
+  wf-recorder
+  xdg-desktop-portal-wlr
+  xdg-desktop-portal-gtk
+  wl-clipboard
   zenity
+
+  # DE packages
+  waybar
+  wofi
+  wmenu
+  wlogout
+
+  # Screenshots
+  satty-git
+  grim
+  slurp
+
+  # Sway WM
+  sway
+  swaylock-fprintd-git
+  swayidle
+  swayimg
+  swaync
+  foot # Foot is default terminal for sway
+
+  # Audio
   pipewire
   pipewire-pulse
   pipewire-alsa
   wireplumber
   easyeffects
   pwvucontrol
-  brightnessctl
+
+  # Networking
   iwgtk
   bluez
   bluez-utils
   blueman
-  gnome-keyring-daemon
-  fprintd
   dante
-  fwupd
 
-  waybar
-  xorg-wayland
-  qt6-wayland
-  wlroots
-  wlr-randr
-  xdg-desktop-portal-wlr
-  xdg-desktop-portal-gtk
-  wl-clipboard
-  wev
-  wofi
-  wmenu
-  wlogout
-  satty-git
-  grim
-  slurp
-  wf-recorder
+  # Other Hardware
+  fprintd # Fingerprint sensor
+  brightnessctl # Display brightness controls
 
+  # RTFM
   man-db
   man-pages
 
-  sway
-  swaylock-fprintd-git
-  swayidle
-  swayimg
-  swaync
-  foot
-  autotiling-rs
-
+  # Keyboard stuff
   kanata-bin
+  qmk
+ 
+  # Fonts
   ttf-jetbrains-mono-nerd
   otf-commit-mono-nerd
   noto-fonts
   noto-fonts-cjk
   noto-fonts-emoji
 
+  # Disk management
   parted
+
+  # Package managers
   flatpak
 
+  # Obs and extensions
   obs-studio
   obs-pipewire-audio-capture
   obs-backgroundremoval
   v4l2loopback-dkms
 
+  # RDP/VNC client
   remmina
   freerdp2
   libvncserver
 
+  # Network diagnostics
   wireshark-cli
   wireshark-qt
   termshark
 
+  # Filesystem / Office tooling
   thunar
   zathura
   zathura-pdf-poppler
   onlyoffice-bin
 
+  # Media consumption
   ffmpeg
   imv
   mpv
   vlc
   nom
 
+  # Development
   ghostty
-  floorp-bin
-  zen-browser-bin
-  luakit
-  ungoogled-chromium-bin
+  docker # Couldn't get rootless containerd to work properly, back on this for now, nerdctl-full is preferred
+  asciinema-git # Great, just don't use kitty img protocol with it
 
+  # Browsers
+  glide-browser-bin # I'm excited for this one
+  floorp-bin # Could be good, but needs improvement
+  zen-browser-bin # Impressive work on this front
+  luakit # I want to like this
+  ungoogled-chromium-bin # Sad we live in a world where we need chromium, web devs need to do their job better
+
+  # Social
   steam
-  discord
+  vesktop-bin
   spotify
 
-  qmk
-  docker
-  asciinema-git
-
+  # Printers
   cups
   cups-browsed
   cups-filters
   cups-pdf
 EOF
 )
+
 FLATPAK_PACKAGES=$(
   cat <<EOF
 EOF
