@@ -21,7 +21,7 @@
   },
   "permission": {
     "bash": "ask",
-    "edit": "ask",
+    "edit": "allow",
     "webfetch": "ask",
   },
   "theme": "system",

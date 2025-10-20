@@ -106,6 +106,7 @@ DESKTOP_PACKAGES=$(
   fwupd - Firmware updater
   reflector # Automatically
   polkit # POLicyKIT - control privileges
+  gnome-keyring
   gnome-keyring-daemon - Keychain
 
   # Wayland core
@@ -215,6 +216,7 @@ DESKTOP_PACKAGES=$(
   ghostty
   docker # Couldn't get rootless containerd to work properly, back on this for now, nerdctl-full is preferred
   asciinema-git # Great, just don't use kitty img protocol with it
+  zed
 
   # Browsers
   glide-browser-bin # I'm excited for this one
@@ -233,6 +235,12 @@ DESKTOP_PACKAGES=$(
   cups-browsed
   cups-filters
   cups-pdf
+
+  # AI
+  gitbutler-bin
+  opencode-bin
+  claude-code
+  claude-desktop-bin
 EOF
 )
 

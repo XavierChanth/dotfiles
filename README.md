@@ -44,6 +44,7 @@ BurntSushi.ripgrep.MSVC
 sharkdp.fd
 zig.zig
 jj-vcs.jj
+dandavison.delta
 ```
 
 Note: zig is used to build nvim-treesitter
