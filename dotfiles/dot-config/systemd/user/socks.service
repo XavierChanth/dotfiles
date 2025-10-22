@@ -7,6 +7,7 @@ Environment=DISPLAY=:0
 Environment=HOME=/home/chant
 Type=simple
 Restart=never
+KillMode=process
 
 Environment=device_args="-f @xavierchanth -t @xchan -d charon -r @xchan_8286 "
 Environment=service_args="--rh socks --rp 1080 --lp 1080"

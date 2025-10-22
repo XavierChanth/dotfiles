@@ -12,11 +12,12 @@ if [ -n "$existing" ]; then
 fi
 
 tui=false
+log=false
 
 if $tui; then
   command="jjui"
   tmux neww -c "$root" "$command"
-else
+elif $log; then
   # create a vertical split in the sshnpd dir
   tmux neww -c "$root"
   jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
@@ -26,6 +27,8 @@ else
 
   # set a hook to clean up after
   tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"
+else
+  tmux neww -c "$root"
 fi
 
 # Handle the created window
