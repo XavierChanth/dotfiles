@@ -235,6 +235,8 @@ DESKTOP_PACKAGES=$(
   cups-browsed
   cups-filters
   cups-pdf
+  system-config-printer
+  splix
 
   # AI
   gitbutler-bin
