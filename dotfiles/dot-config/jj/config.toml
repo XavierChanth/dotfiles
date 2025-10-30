@@ -85,12 +85,17 @@ set -eux
 #      changeset.
 ro = ["util", "exec", "--", "/bin/sh", "-c", """
 #!/usr/bin/env bash
-set -eux
-  jj new $1@origin
+set -ex
+  remote="origin"
+  if [ -n "$2" ]; then
+    remote="$2"
+  fi
+  jj new $1@$remote
   bookmarks=$(jj bookmark list -r $1 -T 'if(remote == "", name ++ " ")')
   jj restore --from $1
   jj abandon $1
   jj bookmark set --allow-backwards -r "@-" $bookmarks
+  jj bookmark set $1
 """, ""]
 
 review = ["util", "exec", "--", "/bin/sh", "-c", """
