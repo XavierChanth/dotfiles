@@ -54,6 +54,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
+-- Automatically refresh the colorscheme when bg is set
 vim.api.nvim_create_autocmd("OptionSet", {
   pattern = "background",
   callback = function()
@@ -61,6 +62,7 @@ vim.api.nvim_create_autocmd("OptionSet", {
   end,
 })
 
+-- Open help windows to the right
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = vim.api.nvim_create_augroup("help_window_right", {}),
   pattern = { "*.txt" },

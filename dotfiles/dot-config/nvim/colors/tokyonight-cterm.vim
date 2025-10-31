@@ -19,7 +19,7 @@ if &background == "dark"
   hi LineNr       ctermfg=8
   hi CursorLineNr ctermfg=7
   hi SignColumn   ctermbg=8
-  hi ColorColumn  ctermfg=15 ctermbg=7 cterm=NONE
+  hi ColorColumn  ctermfg=15 ctermbg=8 cterm=NONE
   hi StatusLine   ctermfg=15 ctermbg=NONE cterm=NONE
   hi SpellCap     ctermfg=0 ctermbg=7
   hi Pmenu ctermfg=0 ctermbg=15 cterm=NONE

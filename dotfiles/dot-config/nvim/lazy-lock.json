@@ -1,5 +1,4 @@
 {
-  "CopilotChat.nvim": { "branch": "main", "commit": "1e06be97df058fa0bb4af54659c39918a4999c86" },
   "SchemaStore.nvim": { "branch": "main", "commit": "3b0d7d781589ce98ce577202d25d07741ffcf479" },
   "blame.nvim": { "branch": "main", "commit": "f3f6153ea94e1120f2776f22bbbd63c4aeebaf32" },
   "blink.cmp": { "branch": "main", "commit": "327fff91fe6af358e990be7be1ec8b78037d2138" },
@@ -30,7 +29,6 @@
   "render-markdown.nvim": { "branch": "main", "commit": "ea3678daff66656a9e1c20914d204b7c841c5030" },
   "slimline.nvim": { "branch": "main", "commit": "7bc3d1e8a37dedbf756a954ba7dc5b2b7a99fc89" },
   "snacks.nvim": { "branch": "main", "commit": "4b3bb54d8b8bc114ceab203fa23973789a79be24" },
-  "trouble.nvim": { "branch": "main", "commit": "748ca2789044607f19786b1d837044544c55e80a" },
   "typst-preview.nvim": { "branch": "master", "commit": "e544812bba84b4f7976590f2b6c0dfbd099e1893" },
   "venv-selector.nvim": { "branch": "main", "commit": "567dcd6cc555caf5163c99ca2ba6a86c661393e5" },
   "vim-just": { "branch": "main", "commit": "c13e317dda76ea01c2521cbed2a5c552a96951bd" },

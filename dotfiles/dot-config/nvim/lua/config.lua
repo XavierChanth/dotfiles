@@ -277,7 +277,61 @@ local config = {
       },
     },
   },
-  -- MOTIONS
+  {
+    "echasnovski/mini.diff",
+    event = "VeryLazy",
+    keys = {
+      {
+        "<leader>go",
+        function()
+          require("mini.diff").toggle_overlay(0)
+        end,
+      },
+    },
+    opts = {
+      view = {
+        style = "sign",
+        signs = { add = "▎", change = "▎", delete = "" },
+      },
+    },
+  },
+  {
+    "ThePrimeagen/harpoon",
+    init = function()
+      local exceptions = { "^oil://", ".jjdescription$", "^/tmp/" }
+      vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(args)
+          if #args.file == 0 then
+            return
+          end
+          for _, exception in ipairs(exceptions) do
+            if args.file:find(exception) then
+              return
+            end
+          end
+          local l = require("harpoon"):list("buffers")
+          l:remove()
+          l:prepend()
+        end,
+      })
+      vim.api.nvim_create_autocmd("BufDelete", {
+        callback = function(args)
+          local l = require("harpoon"):list("buffers")
+          local v = l:get_by_value(args.file)
+          l:remove(v)
+        end,
+      })
+    end,
+    keys = {
+      {
+        "<leader>j",
+        function()
+          local h = require("harpoon")
+          h.ui:toggle_quick_menu(h:list("buffers"))
+        end,
+      },
+    },
+  },
   {
     "echasnovski/mini.ai",
     opts = function()
@@ -317,30 +371,6 @@ local config = {
         },
       }
     end,
-  },
-  -- GIT
-  {
-    "FabijanZulj/blame.nvim",
-    cmd = "BlameToggle",
-    opts = { merge_consecutive = false },
-  },
-  {
-    "echasnovski/mini.diff",
-    event = "VeryLazy",
-    keys = {
-      {
-        "<leader>go",
-        function()
-          require("mini.diff").toggle_overlay(0)
-        end,
-      },
-    },
-    opts = {
-      view = {
-        style = "sign",
-        signs = { add = "▎", change = "▎", delete = "" },
-      },
-    },
   },
   -- CORE LANG
   {
@@ -621,29 +651,6 @@ local config = {
       end
     end,
   },
-  {
-    "folke/trouble.nvim",
-    cmd = { "Trouble" },
-    opts = {
-      auto_preview = false,
-    },
-    keys = {
-      {
-        "<C-x>",
-        function()
-          vim.cmd([[
-            let curqfidx = line('.') - 1
-            let qfall = getqflist()
-            call remove(qfall, curqfidx)
-            call setqflist(qfall, 'r')
-            :copen
-          ]])
-        end,
-        ft = "qf",
-      },
-      { "<leader>xx", ":Trouble diagnostics toggle<cr>" },
-    },
-  },
   -- THEME
   {
     "folke/snacks.nvim",
@@ -752,124 +759,7 @@ local config = {
       end
     end,
   },
-  -- AI
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    opts = {
-      suggestions = { enabled = false },
-      panel = { enabled = false },
-    },
-  },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    cmd = "CopilotChat",
-    init = function()
-      vim.treesitter.language.register("markdown", "copilot-chat")
-    end,
-    opts = {
-      model = "claude-3.5-sonnet",
-      temperature = 0.1,
-
-      -- Enable intelligent resource processing (skips unnecessary resources to save tokens)
-      resource_processing = true,
-
-      headers = {
-        user = "## 👤 You: ",
-        assistant = "## 🤖 Copilot: ",
-        tool = "## 🔧 Tool: ",
-      },
-
-      window = {
-        -- layout = "float",
-        -- border = "none",
-        -- width = 1,
-        -- height = 1,
-        layout = "vertical",
-        border = "single",
-      },
-
-      -- providers = {},
-
-      -- functions = {},
-
-      -- prompts = {},
-
-      mappings = {
-        complete = {
-          insert = "<CR>",
-        },
-        close = {
-          normal = "q",
-          insert = "",
-        },
-        reset = {
-          normal = "<C-c>",
-          insert = "<C-c>",
-        },
-      },
-    },
-    keys = {
-      {
-        "<leader>l",
-        function()
-          local mode = vim.api.nvim_get_mode().mode
-          require("CopilotChat").open({
-            selection = function(source)
-              local select = require("CopilotChat.select")
-              if mode == "v" then
-                return select.visual(source)
-              end
-              return select.buffer(source)
-            end,
-          })
-        end,
-        mode = { "n", "v" },
-      },
-    },
-  },
   -- HANDY
-  {
-    "ThePrimeagen/harpoon",
-    init = function()
-      local exceptions = { "^oil://", ".jjdescription$", "^/tmp/" }
-      vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function(args)
-          if #args.file == 0 then
-            return
-          end
-          for _, exception in ipairs(exceptions) do
-            if args.file:find(exception) then
-              return
-            end
-          end
-          local l = require("harpoon"):list("buffers")
-          l:remove()
-          l:prepend()
-        end,
-      })
-      vim.api.nvim_create_autocmd("BufDelete", {
-        callback = function(args)
-          local l = require("harpoon"):list("buffers")
-          local v = l:get_by_value(args.file)
-          l:remove(v)
-        end,
-      })
-    end,
-    keys = {
-      {
-        "<leader>j",
-        function()
-          local h = require("harpoon")
-          h.ui:toggle_quick_menu(h:list("buffers"))
-        end,
-      },
-    },
-  },
-  {
-    "lukas-reineke/virt-column.nvim",
-    opts = { char = { "▏" }, virtcolumn = "81,121" },
-  },
   -- LANG SPECIFIC
   -- Nothing for a bunch of these
   {

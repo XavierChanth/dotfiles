@@ -66,6 +66,7 @@ vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 3
 vim.opt.completeopt = "menu,menuone,popup,noselect,noinsert"
+vim.opt.colorcolumn = { 81, 121 }
 vim.opt.expandtab = true
 vim.opt.linebreak = true
 vim.opt.shiftround = true
@@ -218,8 +219,8 @@ lazy_config.spec = {
   { "folke/persistence.nvim", event = "BufReadPre" },
   { "folke/snacks.nvim", priority = 1000, lazy = false },
   "MagicDuck/grug-far.nvim",
-
-  -- MOTIONS
+  "echasnovski/mini.diff",
+  { "ThePrimeagen/harpoon", branch = "harpoon2" },
   {
     "echasnovski/mini.ai",
     event = "VeryLazy",
@@ -227,10 +228,6 @@ lazy_config.spec = {
       "echasnovski/mini.extra",
     },
   },
-
-  -- GIT
-  "FabijanZulj/blame.nvim", -- TODO: replace with jj file annotate plugin
-  "echasnovski/mini.diff",
 
   -- CORE LANG
   {
@@ -250,24 +247,12 @@ lazy_config.spec = {
     build = ":TSUpdate",
   },
   { "nvim-treesitter/nvim-treesitter-textobjects", event = "VeryLazy" },
-  "folke/trouble.nvim",
-  -- THEME
-  { "sschleemilch/slimline.nvim", event = "VeryLazy" },
-  { "echasnovski/mini.icons" },
-
-  -- AI
-  { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
-
-  -- HANDY
-  { "ThePrimeagen/harpoon", branch = "harpoon2" },
-  { "lukas-reineke/virt-column.nvim", event = FILE },
 
   -- LANG SPECIFIC
   { "b0o/SchemaStore.nvim", version = false },
   { "Hoffs/omnisharp-extended-lsp.nvim" },
-  { "Decodetalkers/csharpls-extended-lsp.nvim", ft = "c_sharp" },
+  { "Decodetalkers/csharpls-extended-lsp.nvim", ft = "cs" },
   { "NoahTheDuke/vim-just", event = "BufReadPre justfile" },
-  { "kmonad/kmonad-vim", event = "BufReadPre *.kbd" },
   { "Bilal2453/luvit-meta", ft = "lua" },
   { "folke/lazydev.nvim", ft = "lua" },
   { "Saecki/crates.nvim", event = { "BufRead Cargo.toml" } },
@@ -276,7 +261,6 @@ lazy_config.spec = {
   { "chomosuke/typst-preview.nvim", cmd = "TypstPreview", ft = "typst" },
 
   -- MARKDOWN
-  { "masukomi/vim-markdown-folding", ft = "markdown" },
   { "MeanderingProgrammer/render-markdown.nvim", ft = "markdown" },
   {
     "iamcco/markdown-preview.nvim",
@@ -287,6 +271,10 @@ lazy_config.spec = {
     end,
   },
   { "bullets-vim/bullets.vim", ft = "markdown" },
+
+  -- THEME
+  { "sschleemilch/slimline.nvim", event = "VeryLazy" },
+  { "echasnovski/mini.icons" },
 }
 
 lazy_config.spec[#lazy_config.spec + 1] = require("config")
