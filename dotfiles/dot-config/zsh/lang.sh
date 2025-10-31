@@ -17,21 +17,22 @@ if [ -d $FLUTTER_ROOT ]; then
   __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$FLUTTER_ROOT/bin/cache/dart-sdk/bin:$__path"
   # dart completions
   [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
-  pub() {
-    local bin="flutter"
-    local subcommand="$1"
-    shift 1
-    local extra_args=""
-    case "$subcommand" in
-    get)
-      extra_args="$extra_args --no-example"
-      ;;
-    bump | unpack | workspace)
-      bin="dart"
-      ;;
-    esac
-    "$bin" pub "$subcommand" $extra_args "$@"
-  }
+  alias pub='dart pub'
+  # pub() {
+  #   local bin="flutter"
+  #   local subcommand="$1"
+  #   shift 1
+  #   local extra_args=""
+  #   case "$subcommand" in
+  #   get)
+  #     extra_args="$extra_args --no-example"
+  #     ;;
+  #   bump | unpack | workspace)
+  #     bin="dart"
+  #     ;;
+  #   esac
+  #   "$bin" pub "$subcommand" $extra_args "$@"
+  # }
   alias melos='dart run melos'
 fi
 
