@@ -111,11 +111,11 @@ vim.filetype.add({
     -- xaml = "xml",
   },
   filename = {
-    ["pubspec.yaml"] = "pubspec"
+    ["pubspec.yaml"] = "pubspec",
   },
 })
-vim.treesitter.language.register("xml", {"xaml"})
-vim.treesitter.language.register("yaml", {"pubspec"})
+vim.treesitter.language.register("xml", { "xaml" })
+vim.treesitter.language.register("yaml", { "pubspec" })
 
 -- LAZY CONFIG
 local lazy_config = {
@@ -228,6 +228,8 @@ lazy_config.spec = {
       "echasnovski/mini.extra",
     },
   },
+  { "sschleemilch/slimline.nvim", event = "VeryLazy" },
+  { "echasnovski/mini.icons" },
 
   -- CORE LANG
   {
@@ -272,9 +274,6 @@ lazy_config.spec = {
   },
   { "bullets-vim/bullets.vim", ft = "markdown" },
 
-  -- THEME
-  { "sschleemilch/slimline.nvim", event = "VeryLazy" },
-  { "echasnovski/mini.icons" },
 }
 
 lazy_config.spec[#lazy_config.spec + 1] = require("config")

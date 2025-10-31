@@ -173,6 +173,63 @@ local config = {
       end
     end,
     opts = {
+      dashboard = {
+        sections = {
+          { section = "header" },
+          function()
+            local root = Snacks.git.get_root()
+            if root then
+              return {
+                {
+                  title = "repo: ",
+                  desc = vim.fs.basename(root),
+                  icon = " ",
+                  key = "b",
+                  action = Snacks.gitbrowse,
+                },
+                {
+                  desc = "pull requests",
+                  icon = " ",
+                  key = "p",
+                  action = function()
+                    vim.fn.jobstart("gh pr list --web", { detach = true })
+                  end,
+                },
+                {
+                  desc = "issues",
+                  icon = " ",
+                  key = "i",
+                  action = function()
+                    vim.fn.jobstart("gh issues list --web", { detach = true })
+                  end,
+                  padding = 1,
+                },
+              }
+            end
+          end,
+          { title = "session" },
+          {
+            desc = "restore",
+            icon = " ",
+            key = "s",
+            action = function()
+              require("persistence").load()
+            end,
+          },
+          {
+            desc = "quit",
+            icon = " ",
+            key = "q",
+            action = ":qa",
+            padding = 1,
+          },
+          { section = "startup" },
+        },
+        preset = {
+          header = require("logo"),
+          keys = {},
+        },
+      },
       matcher = { sort_empty = false },
       picker = {
         ui_select = true,
@@ -370,6 +427,51 @@ local config = {
           },
         },
       }
+    end,
+  },
+  {
+    "sschleemilch/slimline.nvim",
+    opts = {
+      style = "fg",
+      spaces = { left = "", right = "" },
+      sep = {
+        hide = { first = true, last = true },
+        left = "",
+        right = "",
+      },
+      components = {
+        left = { "mode", "path" },
+        right = { "diagnostics", "filetype_lsp", "progress" },
+      },
+      configs = {
+        modes = {
+          hl = {
+            normal = "MiniIconsBlue",
+            insert = "MiniIconsGreen",
+            pending = "MiniIconsRed",
+            visual = "MiniIconsPurple",
+            command = "MiniIconsOrange",
+          },
+        },
+      },
+    },
+  },
+  {
+    "echasnovski/mini.icons",
+    opts = {
+      file = {
+        [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
+        ["devcontainer.json"] = { glyph = "", hl = "MiniIconsAzure" },
+      },
+      filetype = {
+        dotenv = { glyph = "", hl = "MiniIconsYellow" },
+      },
+    },
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
     end,
   },
   -- CORE LANG
@@ -651,115 +753,6 @@ local config = {
       end
     end,
   },
-  -- THEME
-  {
-    "folke/snacks.nvim",
-    opts = {
-      dashboard = {
-        sections = {
-          { section = "header" },
-          function()
-            local root = Snacks.git.get_root()
-            if root then
-              return {
-                {
-                  title = "repo: ",
-                  desc = vim.fs.basename(root),
-                  icon = " ",
-                  key = "b",
-                  action = Snacks.gitbrowse,
-                },
-                {
-                  desc = "pull requests",
-                  icon = " ",
-                  key = "p",
-                  action = function()
-                    vim.fn.jobstart("gh pr list --web", { detach = true })
-                  end,
-                },
-                {
-                  desc = "issues",
-                  icon = " ",
-                  key = "i",
-                  action = function()
-                    vim.fn.jobstart("gh issues list --web", { detach = true })
-                  end,
-                  padding = 1,
-                },
-              }
-            end
-          end,
-          { title = "session" },
-          {
-            desc = "restore",
-            icon = " ",
-            key = "s",
-            action = function()
-              require("persistence").load()
-            end,
-          },
-          {
-            desc = "quit",
-            icon = " ",
-            key = "q",
-            action = ":qa",
-            padding = 1,
-          },
-          { section = "startup" },
-        },
-        preset = {
-          header = require("logo"),
-          keys = {},
-        },
-      },
-    },
-  },
-  {
-    "sschleemilch/slimline.nvim",
-    opts = {
-      style = "fg",
-      spaces = { left = "", right = "" },
-      sep = {
-        hide = { first = true, last = true },
-        left = "",
-        right = "",
-      },
-      components = {
-        left = { "mode", "path" },
-        right = { "diagnostics", "filetype_lsp", "progress" },
-      },
-      configs = {
-        modes = {
-          hl = {
-            normal = "MiniIconsBlue",
-            insert = "MiniIconsGreen",
-            pending = "MiniIconsRed",
-            visual = "MiniIconsPurple",
-            command = "MiniIconsOrange",
-          },
-        },
-      },
-    },
-  },
-  {
-    "echasnovski/mini.icons",
-    opts = {
-      file = {
-        [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
-        ["devcontainer.json"] = { glyph = "", hl = "MiniIconsAzure" },
-      },
-      filetype = {
-        dotenv = { glyph = "", hl = "MiniIconsYellow" },
-      },
-    },
-    init = function()
-      package.preload["nvim-web-devicons"] = function()
-        require("mini.icons").mock_nvim_web_devicons()
-        return package.loaded["nvim-web-devicons"]
-      end
-    end,
-  },
-  -- HANDY
   -- LANG SPECIFIC
   -- Nothing for a bunch of these
   {
