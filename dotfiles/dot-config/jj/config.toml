@@ -133,7 +133,7 @@ branch = [ "log", "-r", "bookmarks()" ]
 
 [revset-aliases]
 "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())"
-'working(x)' = "all:x+ & mine() & mutable()"
+'working(x)' = "x+ & mine() & mutable()"
 'w(x)' = 'working(x)'
 'brief' = 'bookmarks() & ~immutable() | tracked_remote_bookmarks() | reachable(@, trunk()..)'
 
