@@ -1,0 +1,10 @@
+{
+  "Error Check": {
+    "prefix": "iferrnil",
+    "body": [
+      "if err != nil {",
+      "  return err",
+      "}"
+    ]
+  }
+}

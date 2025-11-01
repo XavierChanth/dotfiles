@@ -1,0 +1,155 @@
+{
+  "plugins": {
+    "SchemaStore.nvim": {
+      "rev": "8d37e8e",
+      "src": "https://github.com/b0o/SchemaStore.nvim"
+    },
+    "blink.cmp": {
+      "rev": "327fff9",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": ">=0.0.0"
+    },
+    "bullets.vim": {
+      "rev": "af7e7ad",
+      "src": "https://github.com/bullets-vim/bullets.vim",
+      "version": ">=0.0.0"
+    },
+    "conform.nvim": {
+      "rev": "3543d00",
+      "src": "https://github.com/stevearc/conform.nvim",
+      "version": ">=0.0.0"
+    },
+    "crates.nvim": {
+      "rev": "afcd1cc",
+      "src": "https://github.com/Saecki/crates.nvim",
+      "version": ">=0.0.0"
+    },
+    "csharpls-extended-lsp.nvim": {
+      "rev": "9328e1a",
+      "src": "https://github.com/Decodetalkers/csharpls-extended-lsp.nvim",
+      "version": ">=0.0.0"
+    },
+    "friendly-snippets": {
+      "rev": "572f566",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
+    "goplements.nvim": {
+      "rev": "1750ace",
+      "src": "https://github.com/maxandron/goplements.nvim"
+    },
+    "grug-far.nvim": {
+      "rev": "3e72397",
+      "src": "https://github.com/MagicDuck/grug-far.nvim",
+      "version": ">=0.0.0"
+    },
+    "harpoon": {
+      "rev": "87b1a35",
+      "src": "https://github.com/ThePrimeagen/harpoon",
+      "version": "'harpoon2'"
+    },
+    "lazydev.nvim": {
+      "rev": "01bc2aa",
+      "src": "https://github.com/folke/lazydev.nvim",
+      "version": ">=0.0.0"
+    },
+    "luvit-meta": {
+      "rev": "0ea4ff6",
+      "src": "https://github.com/Bilal2453/luvit-meta"
+    },
+    "markdown-preview.nvim": {
+      "rev": "9beccee",
+      "src": "https://github.com/iamcco/markdown-preview.nvim",
+      "version": ">=0.0.0"
+    },
+    "mini.ai": {
+      "rev": "e139eb1",
+      "src": "https://github.com/echasnovski/mini.ai",
+      "version": ">=0.0.0"
+    },
+    "mini.diff": {
+      "rev": "ec8a5ae",
+      "src": "https://github.com/echasnovski/mini.diff",
+      "version": ">=0.0.0"
+    },
+    "mini.extra": {
+      "rev": "87be97a",
+      "src": "https://github.com/echasnovski/mini.extra",
+      "version": ">=0.0.0"
+    },
+    "mini.icons": {
+      "rev": "397ed38",
+      "src": "https://github.com/echasnovski/mini.icons",
+      "version": ">=0.0.0"
+    },
+    "nui.nvim": {
+      "rev": "f535005",
+      "src": "https://github.com/MunifTanjim/nui.nvim",
+      "version": ">=0.0.0"
+    },
+    "nvim-lint": {
+      "rev": "fe16081",
+      "src": "https://github.com/mfussenegger/nvim-lint",
+      "version": ">=0.0.0"
+    },
+    "nvim-treesitter": {
+      "rev": "42fc28ba",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "nvim-treesitter-textobjects": {
+      "rev": "5ca4aaa",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
+    },
+    "oil.nvim": {
+      "rev": "975a77c",
+      "src": "https://github.com/stevearc/oil.nvim",
+      "version": ">=0.0.0"
+    },
+    "omnisharp-extended-lsp.nvim": {
+      "rev": "a47388e",
+      "src": "https://github.com/Hoffs/omnisharp-extended-lsp.nvim"
+    },
+    "persistence.nvim": {
+      "rev": "c45ff86",
+      "src": "https://github.com/folke/persistence.nvim",
+      "version": ">=0.0.0"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "render-markdown.nvim": {
+      "rev": "ea3678d",
+      "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+      "version": ">=0.0.0"
+    },
+    "slimline.nvim": {
+      "rev": "7bc3d1e",
+      "src": "https://github.com/sschleemilch/slimline.nvim",
+      "version": ">=0.0.0"
+    },
+    "snacks.nvim": {
+      "rev": "eadb0ca",
+      "src": "https://github.com/folke/snacks.nvim",
+      "version": ">=0.0.0"
+    },
+    "typst-preview.nvim": {
+      "rev": "e544812",
+      "src": "https://github.com/chomosuke/typst-preview.nvim",
+      "version": ">=0.0.0"
+    },
+    "venv-selector.nvim": {
+      "rev": "0241027",
+      "src": "https://github.com/linux-cultist/venv-selector.nvim",
+      "version": "'main'"
+    },
+    "vim-just": {
+      "rev": "c13e317",
+      "src": "https://github.com/NoahTheDuke/vim-just"
+    },
+    "vim-tmux-navigator": {
+      "rev": "85b8e5f",
+      "src": "https://github.com/christoomey/vim-tmux-navigator",
+      "version": ">=0.0.0"
+    }
+  }
+}
