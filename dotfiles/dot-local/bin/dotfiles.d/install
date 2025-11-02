@@ -189,10 +189,13 @@ fi
 #   )
 # fi
 
-# sync nvim
+# Apply my colorscheme
 $script_dir/../color.d/apply-color tokyonight-storm
-nvim --headless "+Lazy! sync" +qa
-# Install python provider for nvim
+
+# sync nvim
+bob use nightly
+# nvim --headless "+Lazy! sync" +qa # lazy.nvim
+nvim --headless +PackInstall +qa # vim pack with my user command
 
 # Do a healthcheck to ensure that everything I want is installed
 

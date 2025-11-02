@@ -9,17 +9,19 @@ cmp.setup({
     },
   },
   sources = {
-    default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+    default = { "lsp", "path", "snippets", "buffer" },
     providers = {
       snippets = { score_offset = 40 },
       lsp = { score_offset = 50 },
       buffer = { score_offset = 30 },
       path = { score_offset = 10 },
       lazydev = {
-        name = "LazyDev",
         module = "lazydev.integrations.blink",
         score_offset = 60,
       },
+    },
+    per_filetype = {
+      lua = { inherit_defaults = true, 'lazydev' }
     },
   },
   appearance = {

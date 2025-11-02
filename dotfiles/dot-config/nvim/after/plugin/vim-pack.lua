@@ -6,6 +6,6 @@ vim.api.nvim_create_user_command(
 
 vim.api.nvim_create_user_command(
   "PackInstall",
-  [[lua require("util/pack").install()]],
+  [[lua require("utils/pack").install()]],
   {}
 )
