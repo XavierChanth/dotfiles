@@ -61,6 +61,8 @@ gf = ["git", "fetch"]
 bs = ["bookmark", "set"]
 bm = ["bookmark", "move"]
 bf = ["bookmark", "forget"]
+br = ["bookmark", "list"]
+bl = ["branch"]
 ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
@@ -107,6 +109,7 @@ set -eux
   jj diff --from trunk@origin --to @-
 """, ""]
 
+logg = ["llog"]
 llog = [
   "log",
   "-r",
