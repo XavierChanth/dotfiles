@@ -227,7 +227,7 @@ vim.api.nvim_create_user_command("LspStart", function(conf)
   if conf.args ~= "" then
     vim.lsp.enable(conf.args)
   else
-    Snacks.picker()
+    vim.lsp.enable(require("assets/lsp-spec"))
   end
 end, {
   nargs = "?",
