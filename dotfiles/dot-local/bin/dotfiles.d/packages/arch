@@ -72,6 +72,7 @@ PACKAGES=$(
   zls
   rust
   rust-analyzer
+  ruby
   nodejs
   npm
   svelte-language-server

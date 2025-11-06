@@ -1,41 +1,26 @@
 -- Lsps that will be enabled
 return {
-  -- Dart
-  "dartls",
-
-  -- Markup
-  "jsonls",
-  "yamlls",
-  "tinymist",
-
-  -- Based languages
-  "gopls",
-  "lua_ls",
+  "asmls",
   "basedpyright",
-  "ruff",
-
-  -- C ABIs
   "clangd",
-  "neocmake",
-  -- "asm_lsp",
-  "zls",
-  "rust_analyzer",
-
-  -- Docker
-  "docker_compose_language_service",
+  "csharpls",
+  "dartls",
+  "docker_compose_ls",
   "docker_ls",
-
-  -- Poisoned by their OS
-  -- "csharp_ls",
-  -- "omnisharp",
-  --"sourcekit",  -- Swift
-
-  -- Ruby
-  -- "rubocop",
-  -- "rubyls",
-
-  -- Web
-  "svelte",
-  "tailwindcss",
+  "gopls",
+  "jsonls",
+  "luals",
+  "neocmake",
+  "omnisharp",
+  "rubocop",
+  "rubyls",
+  "ruff",
+  "rust-analyzer",
+  "sourcekit",
+  "sveltels",
+  "tailwindls",
+  "tinymist",
   "vtsls",
+  "yamlls",
+  "zls",
 }

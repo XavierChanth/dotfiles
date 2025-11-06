@@ -69,6 +69,12 @@ if command_exists dotnet; then
   __path="$HOME/.dotnet/tools:$__path"
 fi
 
+# ruby
+if command_exists gem; then
+  export GEM_HOME="$(gem env user_gemhome)"
+  __path="$GEM_HOME/bin:$__path"
+fi
+
 if command_exists arduino-cli; then
   alias ard='arduino-cli'
   function ard-upload() {
