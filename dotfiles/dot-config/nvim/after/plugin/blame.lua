@@ -1,7 +1,7 @@
 vim.api.nvim_create_user_command("Blame", function()
   local pos = vim.fn.getpos(".")
   vim.cmd[[tabnew | r!jj file annotate --color always #]]
-  require("ansi_colorize").apply()
+  require("utils.ansi-hi").apply()
 
   -- Adjust cursor position in the blame buffer
   pos[2] = pos[2] + 1
