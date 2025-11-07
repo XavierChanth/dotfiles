@@ -28,7 +28,7 @@ elif $log; then
   # set a hook to clean up after
   tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"
 else
-  tmux neww -e "SPACESHIP_JJ_LOG_SHOW=true" -c "$root"
+  tmux neww -e "SPACESHIP_JJ_LOG_SHOW=true" -e "SPACESHIP_DIR_PREFIX=" -c "$root"
 fi
 
 # Handle the created window
