@@ -12,7 +12,7 @@ KillMode=process
 Environment=device_args="-f @xavierchanth -t @xchan -d charon -r @xchan_8286 "
 Environment=service_args="--rh socks --rp 1080 --lp 1080"
 
-ExecStart=/usr/local/bin/npt $device_args $service_args -K
+ExecStart=-/usr/local/bin/npt $device_args $service_args -K
 
 [Install]
 WantedBy=default.target
