@@ -73,7 +73,7 @@ mpv 1:0.40.0-6
 net-tools 2.10-3
 ninja 1.12.1-2
 nmap 7.98-3
-nodejs 25.1.0-2
+nodejs 25.1.0-3
 noise-suppression-for-voice 1.10-1
 noto-fonts 1:2025.10.01-1
 noto-fonts-cjk 20240730-1
@@ -99,8 +99,9 @@ qutebrowser 3.5.1-2
 reflector 2023-3
 remmina 1:1.4.41-1
 ripgrep 14.1.1-1
+ruby 3.4.7-2
 ruff 0.13.2-1
-rust 1:1.90.0-4
+rust 1:1.91.0-1
 rust-analyzer 20250825-1
 sbctl 0.18-1
 sbsigntools 0.9.5-3
@@ -132,7 +133,7 @@ ttf-nunito 3.601-2
 typst 1:0.13.1-1
 unarchiver 1.10.8-5
 unzip 6.0-23
-uv 0.9.7-1
+uv 0.9.8-1
 v4l2loopback-dkms 0.15.1-1
 vi 1:070224-6
 vim 9.1.1734-1

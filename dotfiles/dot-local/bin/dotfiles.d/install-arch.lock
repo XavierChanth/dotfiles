@@ -53,6 +53,7 @@ gofumpt 0.7.0-1
 gopls 0.20.0-3
 gptfdisk 1.0.10-1
 grim 1.5.0-2
+htop-vim 3.4.1-1
 imagemagick 7.1.2.3-2
 imv 4.5.0-6
 iperf3 3.19.1-1
@@ -86,7 +87,7 @@ neocmakelsp 0.8.25-1.0
 net-tools 2.10-3
 ninja 1.12.1-2
 nmap 7.98-3
-nodejs 25.1.0-2
+nodejs 25.1.0-3
 nodejs-compose-language-service 0.4.0-1
 noise-suppression-for-voice 1.10-1
 nom 2.15.0-1
@@ -126,8 +127,9 @@ reflector 2023-3
 remmina 1:1.4.41-1
 remmina-plugin-url 1.3.0.0-5
 ripgrep 14.1.1-1
+ruby 3.4.7-2
 ruff 0.13.2-1
-rust 1:1.90.0-4
+rust 1:1.91.0-1
 rust-analyzer 20250825-1
 satty-git 0.19.0.r42.gfcf68b0-1
 sbctl 0.18-1
@@ -165,7 +167,7 @@ typst 1:0.13.1-1
 unarchiver 1.10.8-5
 ungoogled-chromium-bin 140.0.7339.207-1
 unzip 6.0-23
-uv 0.9.7-1
+uv 0.9.8-1
 v4l2loopback-dkms 0.15.1-1
 vesktop-bin 1.5.8-1
 vi 1:070224-6

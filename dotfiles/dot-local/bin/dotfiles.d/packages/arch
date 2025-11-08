@@ -246,9 +246,12 @@ DESKTOP_PACKAGES=$(
   claude-desktop-bin
 EOF
 )
-
+# Zoom requires environment to share wayland correctly:
+# XDG_CURRENT_DESKTOP=GNOME
 FLATPAK_PACKAGES=$(
   cat <<EOF
+com.github.tchx84.Flatseal
+us.zoom.Zoom
 EOF
 )
 

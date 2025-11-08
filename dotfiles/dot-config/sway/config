@@ -101,8 +101,6 @@ smart_gaps on
 floating_maximum_size 1200 x 800
 
 # Startup App rules
-# for_window [app_id="Zoom Workplace"] floating enable
-# for_window [app_id="Zoom Workplace" title="Meeting"] floating disable
 for_window [class="swayimg|Display"] {
   floating enable
 }
