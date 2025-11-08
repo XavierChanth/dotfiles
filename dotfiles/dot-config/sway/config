@@ -1,8 +1,7 @@
 # Global config
 set $mod Alt
-set $mod2 Alt+Shift
-set $mod3 Super
-set $mod4 Super+Control+Alt+Shift
+set $mod2 Super
+set $hypr Super+Control+Alt+Shift
 floating_modifier Super
 
 set $term ghostty
@@ -16,7 +15,7 @@ set $lock_screen swaylock -p -f -c 000000
 set $builtin_display "eDP-1"
 
 # Set basic properties
-font pango: JetBrainsMonoNerdFontMono 10
+font pango:JetBrainsMonoNerdFontMono 10
 
 # Basic theming
 titlebar_border_thickness 0
@@ -104,11 +103,24 @@ floating_maximum_size 1200 x 800
 # Startup App rules
 # for_window [app_id="Zoom Workplace"] floating enable
 # for_window [app_id="Zoom Workplace" title="Meeting"] floating disable
-for_window [class="Display"] floating enable
-for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] floating enable
+for_window [class="swayimg|Display"] {
+  floating enable
+}
+for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] {
+  floating enable
+}
+for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] {
+  floating enable
+}
+for_window [app_id="blueman-manager|system-config-printer|.*iwgtk|.*pwvucontrol"] {
+  floating enable
+  sticky enable
+}
 
-for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] floating enable
-for_window [app_id="swayimg"] floating enable
+for_window [app_id="swayimg"] {
+  floating enable
+  floating_minimum_size 1 x 1
+}
 
 # Auto tiling
 # exec_always killall autotiling; autotiling -sr 1.61 -l 3
@@ -120,20 +132,26 @@ bindsym $mod+f layout toggle split tabbed
 bindsym $mod+s layout toggle splith splitv
 
 # Keybinds
-bindsym $mod2+r reload
-bindsym $mod2+f floating toggle
-bindsym $mod2+space mark --add "swap"; focus output right; \
-  move workspace to output right; [con_mark="swap"] focus; \
-  move workspace to output right; unmark "swap"; focus output right;
-bindsym $mod+space move workspace to output right
-bindsym $mod+r layout default
-bindsym $mod+w kill
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+Shift+space \
+  mark --add "swap"; \
+  focus output right; \
+  move workspace to output right; \
+  [con_mark="swap"] focus; \
+  move workspace to output right; \
+  unmark "swap"; \
+  focus output right
+  bindsym $mod+space move workspace to output right
+  bindsym $mod+r layout default
+  bindsym $mod+w kill
 
 # Apps
 bindsym $mod+Return exec $term
-bindsym $mod2+Return exec $term -e zsh
+bindsym $mod+Shift+Return exec $term -e zsh
+
 bindsym $mod+b exec $browser
-bindsym $mod2+b exec $browser2
+bindsym $mod+Shift+b exec $browser2
 bindsym $mod+v exec $notes
 
 # Focus movement
@@ -143,10 +161,10 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # Window movement
-bindsym $mod2+h move left
-bindsym $mod2+j move down
-bindsym $mod2+k move up
-bindsym $mod2+l move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # Default workspace 3 on login
 exec swaymsg workspace 3
@@ -163,15 +181,15 @@ bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 
 # Move container to workspace
-bindsym $mod2+1 move container to workspace number 1; workspace number 1
-bindsym $mod2+2 move container to workspace number 2; workspace number 2
-bindsym $mod2+3 move container to workspace number 3; workspace number 3
-bindsym $mod2+4 move container to workspace number 4; workspace number 4
-bindsym $mod2+5 move container to workspace number 5; workspace number 5
-bindsym $mod2+6 move container to workspace number 6; workspace number 6
-bindsym $mod2+7 move container to workspace number 7; workspace number 7
-bindsym $mod2+8 move container to workspace number 8; workspace number 8
-bindsym $mod2+9 move container to workspace number 9; workspace number 9
+bindsym $mod+Shift+1 move container to workspace number 1; workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2; workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3; workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4; workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5; workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6; workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7; workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8; workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9; workspace number 9
 
 ##
 ## Scratchpad:
@@ -180,7 +198,7 @@ bindsym $mod2+9 move container to workspace number 9; workspace number 9
 #    # You can send windows there and get them back later.
 #
 #    # Move the currently focused window to the scratchpad
-bindsym $mod2+g move scratchpad
+bindsym $mod+Shift+g move scratchpad
 #
 #    # Show the next scratchpad window or hide the focused scratchpad window.
 #    # If there are multiple scratchpad windows, this command cycles through them.
@@ -188,54 +206,73 @@ bindsym $mod+g scratchpad show
 
 
 # Resizing
-bindsym $mod2+minus resize shrink width 50px
-bindsym $mod2+equal resize grow width 50px
-bindsym $mod2+0 resize set width 50ppt
+bindsym $mod+Shift+minus resize shrink width 50px
+bindsym $mod+Shift+equal resize grow width 50px
+bindsym $mod+Shift+0 resize set width 50ppt
 
 # macOS binds
-bindsym $mod3+q kill
-bindsym $mod3+space exec $menu
-bindsym $mod+$mod3+space exec $menu2
+bindsym $mod2+q kill
+bindsym $mod2+space exec $menu
+bindsym $mod+$mod2+space exec $menu2
 
-# bindsym $mod3+w exec wtype -k XF86Close
-# bindsym $mod3+c exec wtype -k XF86Copy
-# bindsym $mod3+x exec wtype -k XF86Cut
-# bindsym $mod3+v exec wtype -k XF86Paste
-# bindsym $mod3+minus exec wtype -k XF86ZoomOut
-# bindsym $mod3+equal exec wtype -k XF86ZoomIn
-# bindsym $mod3+r exec wtype -k XF86Refresh
-# bindsym $mod3+l exec wtype -M ctrl -k l
-# bindsym $mod3+a exec wtype -M ctrl -k a
+# bindsym $mod2+w exec wtype -k XF86Close
+# bindsym $mod2+c exec wtype -k XF86Copy
+# bindsym $mod2+x exec wtype -k XF86Cut
+# bindsym $mod2+v exec wtype -k XF86Paste
+# bindsym $mod2+minus exec wtype -k XF86ZoomOut
+# bindsym $mod2+equal exec wtype -k XF86ZoomIn
+# bindsym $mod2+r exec wtype -k XF86Refresh
+# bindsym $mod2+l exec wtype -M ctrl -k l
+# bindsym $mod2+a exec wtype -M ctrl -k a
 
 # Media keys binds
-   bindcode --locked 160 exec wlogout
-   bindsym --locked XF86PowerOff exec wlogout
-   bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-   bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-   bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-   bindsym --locked XF86AudioPrev exec playerctl previous
-   bindsym --locked XF86AudioPlay exec playerctl play-pause
-   bindsym --locked XF86AudioNext exec playerctl next
-   bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
-   bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-   # ALT_L+p = F9
-   # bindsym --locked XF86RFKILL # F10
-   # bindsym XF86AudioMedia # F12
+bindcode --locked 160 exec wlogout
+bindsym --locked XF86PowerOff exec wlogout
+bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioPrev exec playerctl previous
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+bindsym --locked XF86AudioNext exec playerctl next
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+# ALT_L+p = F9
+# bindsym --locked XF86RFKILL # F10
+# bindsym XF86AudioMedia # F12
 
 # F11 & Screen shots
-   set $satty satty -f - --initial-tool=arrow --copy-command=wl-copy --actions-on-escape="save-to-clipboard,exit" --brush-smooth-history-size=5 --disable-notifications
-   set $printscreen_mode 'printscreen (r:region, f:full, w:window)'
-   mode $printscreen_mode {
-    bindsym r exec swaymsg 'mode "default"' && grim -t ppm -g "$(slurp -d)" - | $satty
-    bindsym f exec swaymsg 'mode "default"' && grim -t ppm - | $satty
-    bindsym w exec swaymsg 'mode "default"' && swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -t ppm -g - - | $satty
+set $satty satty -f - \
+  --initial-tool=arrow \
+  --copy-command=wl-copy \
+  --actions-on-escape="save-to-clipboard,exit" \
+  --brush-smooth-history-size=5 \
+  --disable-notifications
 
-       bindsym Return mode "default"
-       bindsym Escape mode "default"
-   }
-   set $swayimg swayimg -c viewer.scale=real -c info.show=no -
+set $satty_jq_fmt_string \
+  '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"'
+
+set $printscreen_mode 'printscreen (r:region, f:full, w:window)'
+
+mode $printscreen_mode {
+  bindsym r exec swaymsg 'mode "default"' && \
+    grim -t ppm -g "$(slurp -d)" - | $satty
+  bindsym f exec swaymsg 'mode "default"' && \
+    grim -t ppm - | $satty
+  bindsym w exec swaymsg 'mode "default"' && \
+    swaymsg -t get_tree | \
+    jq -r $satty_jq_fmt_string | \
+    grim -t ppm -g - - | $satty
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+set $swayimg swayimg -c viewer.scale=real -c info.show=no -
+
 bindsym Print mode $printscreen_mode
-bindsym $mod4+2 exec grim -t ppm -g "$(slurp -d)" - | $swayimg
-bindsym $mod4+3 exec swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -g - - | $satty
-bindsym $mod4+4 exec grim -t ppm -g "$(slurp -d)" - | $satty
+bindsym $hypr+2 exec grim -t ppm -g "$(slurp -d)" - | $swayimg
+bindsym $hypr+3 exec swaymsg -t get_tree | \
+  jq -r $satty_jq_fmt_string | \
+  grim -g - - | $satty
+bindsym $hypr+4 exec grim -t ppm -g "$(slurp -d)" - | $satty
 

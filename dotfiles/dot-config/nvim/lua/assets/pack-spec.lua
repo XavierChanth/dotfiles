@@ -149,6 +149,12 @@ return {
         data = { config = "config/venv-selector" },
       },
     },
+    swayconfig = {
+      {
+        src = "https://github.com/jamespeapen/swayconfig.vim",
+        version = nil,
+      }
+    },
     typst = {
       {
         src = "https://github.com/chomosuke/typst-preview.nvim",
