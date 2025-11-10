@@ -103,10 +103,18 @@ SAVEHIST=10000
 # Programming language setup
 source $XDG_CONFIG_HOME/zsh/lang.sh
 
+if [ -n "$ZSH_PRECMD_HOOK" ]; then
+  _precmd_hook() {
+    eval "$ZSH_PRECMD_HOOK"
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _precmd_hook
+fi
+
 #completion
 # FPATH="$XDG_CONFIG_HOME/zsh/cmp:$(brew --prefix)/share/zsh-completions:$FPATH"
-# autoload -Uz compinit
-# compinit
+autoload -Uz compinit
+compinit
 
 # Export last so it's prioritized over other paths
 if command -v brew >/dev/null 2>&1; then
