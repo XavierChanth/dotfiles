@@ -81,7 +81,7 @@ PACKAGES=$(
   csharpier
   dockerfile-language-server
   nodejs-compose-language-service
-  hadolint
+  hadolint-bin
   gofumpt
   goimports
   gopls
