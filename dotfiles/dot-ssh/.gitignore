@@ -1,1 +1,2 @@
-config.d/
+/config.d/
+/control/
