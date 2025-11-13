@@ -53,6 +53,7 @@ gofumpt 0.7.0-1
 gopls 0.20.0-3
 gptfdisk 1.0.10-1
 grim 1.5.0-2
+hadolint-bin 2.14.0-1
 htop-vim 3.4.1-1
 imagemagick 7.1.2.8-1
 imv 4.5.0-7
@@ -87,7 +88,7 @@ neocmakelsp 0.8.25-1.0
 net-tools 2.10-3
 ninja 1.13.1-2
 nmap 7.98-3
-nodejs 25.1.0-4
+nodejs 25.2.0-1
 nodejs-compose-language-service 0.4.0-1
 noise-suppression-for-voice 1.10-1
 nom 2.20.0-1
@@ -137,6 +138,7 @@ sbsigntools 0.9.5-3
 shellcheck 0.11.0-71
 shfmt 3.12.0-1
 slurp 1.5.0-1
+socat 1.8.0.3-2
 splix 2.0.1-1
 spotify 1:1.2.74.477-2
 stow 2.4.1-1
