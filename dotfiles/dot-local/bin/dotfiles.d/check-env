@@ -47,7 +47,6 @@ check_commands=(
   jq
   yazi
   tokei
-  quarto
   ffmpegthumbnailer
   pdfinfo # poppler
   # non-brew stuff

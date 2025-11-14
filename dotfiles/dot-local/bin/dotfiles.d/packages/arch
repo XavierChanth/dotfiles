@@ -1,7 +1,8 @@
 #!/bin/sh
 
 PACKAGES=$(
-  cat <<EOF
+  cat <<EOF | sed -e '/#.*$/d'
+  # Core
   zsh
   zsh-syntax-highlighting
   zsh-completions
@@ -12,6 +13,7 @@ PACKAGES=$(
   vi
   vim
 
+  # My Essentials
   tmux-git
   bob
   tree-sitter
@@ -40,6 +42,7 @@ PACKAGES=$(
   fastfetch
   pandoc-bin
 
+  # Networking tools
   openssl
   wget
   iperf3
@@ -49,6 +52,7 @@ PACKAGES=$(
   net-tools
   bind
 
+  # Programming Languages
   vscode-json-languageserver
   yaml-language-server
   go
@@ -221,7 +225,6 @@ DESKTOP_PACKAGES=$(
 
   # Browsers
   glide-browser-bin # I'm excited for this one
-  floorp-bin # Could be good, but needs improvement
   zen-browser-bin # Impressive work on this front
   luakit # I want to like this
   ungoogled-chromium-bin # Sad we live in a world where we need chromium, web devs need to do their job better
@@ -241,9 +244,7 @@ DESKTOP_PACKAGES=$(
 
   # AI
   gitbutler-bin
-  opencode-bin
   claude-code
-  claude-desktop-bin
 EOF
 )
 # Zoom requires environment to share wayland correctly:

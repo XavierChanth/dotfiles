@@ -1,5 +1,4 @@
 alsa-utils 1.2.14-1
-appflowy-bin 0.10.1-1
 asciinema-git 3.0.0rc.5.r8.g3e5aef4-1
 asm-lsp 0.10.1-1
 autotiling-rs 0.1.6-1
@@ -16,7 +15,6 @@ bob 4.1.4-1
 brightnessctl 0.5.1-3
 clang 21.1.5-1
 claude-code 2.0.36-1
-claude-desktop-bin 0.14.10-1
 cmake 4.1.2-1
 cups 2:2.4.14-1
 cups-browsed 2.1.1-1
@@ -34,7 +32,6 @@ fastfetch 2.54.0-1
 fd 10.3.0-1
 ffmpegthumbnailer 2.2.3-4
 flatpak 1:1.16.1-1
-floorp-bin 12.5.0-2
 foot 1.25.0-1
 fprintd 1.94.5-1
 freerdp 2:3.17.2-5
@@ -82,13 +79,14 @@ lvm2 2.03.36-2
 man-db 2.13.1-1
 man-pages 6.16-1
 mesa-utils 9.0.0-7
+min-browser-bin 1.35.2-1
 moreutils 0.70-1
 mpv 1:0.40.0-7
 neocmakelsp 0.8.25-1.0
 net-tools 2.10-3
 ninja 1.13.1-2
 nmap 7.98-3
-nodejs 25.2.0-1
+nodejs 25.2.1-1
 nodejs-compose-language-service 0.4.0-1
 noise-suppression-for-voice 1.10-1
 nom 2.20.0-1
@@ -96,7 +94,7 @@ nomachine 9.2.18-1
 noto-fonts 1:2025.11.01-1
 noto-fonts-cjk 20240730-1
 noto-fonts-emoji 1:2.051-1
-npm 11.6.2-1
+npm 11.6.3-1
 nss-mdns 0.15.1-2
 obs-backgroundremoval 1.3.0-1
 obs-pipewire-audio-capture 1.2.1-1
@@ -106,7 +104,6 @@ ollama 0.12.10-1
 ollama-rocm 0.12.10-1
 omnisharp-roslyn 1.39.14-1
 onlyoffice-bin 9.1.0-1
-opencode-bin 1.0.55-1
 otf-commit-mono-nerd 3.4.0-1
 pandoc-bin 3.8.2.1-1
 parallel 20251022-1
@@ -122,7 +119,6 @@ pwvucontrol 0.5.1-1
 python-gersemi 0.17.0-1
 qmk 1.1.8-1
 qt6-wayland 6.10.0-1
-quarto-cli-bin 1.8.25-1
 qutebrowser 3.6.1-1
 reflector 2023-3
 remmina 1:1.4.41-1
@@ -169,7 +165,7 @@ typst 1:0.14.0-2
 unarchiver 1.10.8-6
 ungoogled-chromium-bin 142.0.7444.134-1
 unzip 6.0-23
-uv 0.9.8-1
+uv 0.9.11-1
 v4l2loopback-dkms 0.15.2-1
 vesktop-bin 1.6.1-1
 vi 1:070224-6
@@ -184,6 +180,7 @@ wget 1.25.0-3
 wireplumber 0.5.12-1
 wireshark-cli 4.6.0-1
 wireshark-qt 4.6.0-1
+witsy-bin 3.2.0-1
 wl-clipboard 1:2.2.1-3
 wlogout 1.2.2-0
 wlr-randr 0.5.0-1
