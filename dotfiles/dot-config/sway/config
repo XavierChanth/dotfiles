@@ -89,6 +89,7 @@ output "*" {
 # Built-in display settings must come after "*"
 output $builtin_display {
   mode 2880x1920@120Hz
+  adaptive_sync on
   scale 2
   pos 0 0
   subpixel rgb
