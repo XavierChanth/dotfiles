@@ -19,7 +19,7 @@ require("oil").setup({
     ["<backspace>"] = "actions.parent",
     ["<CR>"] = "actions.select",
     ["<leader>."] = function()
-      local cwd = require("after.plugin.startup.open_file").get_current_dir()
+      local cwd = require("oil").get_current_dir()
       vim.cmd("cd " .. cwd)
     end,
     ["<leader><CR>"] = {
@@ -52,17 +52,17 @@ require("oil").setup({
     ["gx"] = "actions.open_external",
     ["<C-t>"] = function() -- opens a new tmux window at the current dir
       require("utils.tmux").neww({
-        cwd = require("after.plugin.startup.open_file").get_current_dir(),
+        cwd = require("oil").get_current_dir(),
       })
     end,
     ["\\"] = function()
       require("utils.tmux").splitw({
-        cwd = require("after.plugin.startup.open_file").get_current_dir(),
+        cwd = require("oil").get_current_dir(),
       })
     end,
     ["-"] = function()
       require("utils.tmux").splitw({
-        cwd = require("after.plugin.startup.open_file").get_current_dir(),
+        cwd = require("oil").get_current_dir(),
         vertical = true,
       })
     end,

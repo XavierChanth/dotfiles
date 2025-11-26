@@ -3,7 +3,7 @@ local M = {}
 function M.neww(opts)
 	opts = opts or {}
 	local Job = require("plenary.job")
-	if require("platform").supports_terminal then
+	if require("utils.platform").supports_terminal then
 		local args = { "neww" }
 		if opts.cwd then
 			args[#args + 1] = "-c"
@@ -35,7 +35,7 @@ function M.splitw(opts)
 	opts = opts or {}
 	opts.vertical = opts.vertical or false
 	local Job = require("plenary.job")
-	if require("platform").supports_terminal then
+	if require("utils.platform").supports_terminal then
 		local args = { "splitw" }
 
 		if opts.vertical then
@@ -79,7 +79,7 @@ end
 
 function M.popup(opts)
 	local Job = require("plenary.job")
-	if require("platform").supports_terminal then
+	if require("utils.platform").supports_terminal then
 		local args = { "popup", "-w", "100%", "-h", "100%" }
 		opts.args = opts.args or {}
 		for _, v in ipairs(opts.args) do

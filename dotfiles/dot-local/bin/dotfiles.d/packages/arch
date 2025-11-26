@@ -100,7 +100,8 @@ EOF
 )
 
 CARGO_PACKAGES=$(
-  cat <<EOF
+  cat <<EOF | sed -e '/#.*$/d'
+bacon bacon-ls
 EOF
 )
 

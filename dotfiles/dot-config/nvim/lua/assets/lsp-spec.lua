@@ -2,6 +2,7 @@
 return {
   "asmls",
   "basedpyright",
+  -- "bacon_ls",
   "clangd",
   -- "csharpls",
   "dartls",
