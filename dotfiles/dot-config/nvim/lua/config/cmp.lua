@@ -1,3 +1,9 @@
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+  filetypes = { markdown = true, help = true },
+})
+
 local cmp = require("blink-cmp")
 cmp.setup({
   completion = {
@@ -11,17 +17,19 @@ cmp.setup({
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
     providers = {
-      snippets = { score_offset = 40 },
-      lsp = { score_offset = 50 },
-      buffer = { score_offset = 30 },
-      path = { score_offset = 10 },
       lazydev = {
         module = "lazydev.integrations.blink",
-        score_offset = 60,
+        score_offset = 10,
+      },
+      copilot = {
+        name = "copilot",
+        module = "blink-copilot",
+        score_offset = 10,
+        async = true,
       },
     },
     per_filetype = {
-      lua = { inherit_defaults = true, 'lazydev' }
+      lua = { inherit_defaults = true, "lazydev" },
     },
   },
   appearance = {
@@ -57,5 +65,10 @@ cmp.setup({
     ["<C-p>"] = { "show", "select_prev", "fallback" },
     ["<C-u>"] = { "scroll_documentation_up", "fallback" },
     ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+    ["<C-l>"] = {
+      function(c)
+        c.show({ providers = { "copilot" } })
+      end,
+    },
   },
 })

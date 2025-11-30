@@ -1,11 +1,16 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "8d37e8e",
+      "rev": "5f22999",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
+    "blink-copilot": {
+      "rev": "41e91a6",
+      "src": "https://github.com/fang2hou/blink-copilot",
+      "version": ">=0.0.0"
+    },
     "blink.cmp": {
-      "rev": "327fff9",
+      "rev": "b19413d",
       "src": "https://github.com/saghen/blink.cmp",
       "version": ">=0.0.0"
     },
@@ -18,6 +23,14 @@
       "rev": "3543d00",
       "src": "https://github.com/stevearc/conform.nvim",
       "version": ">=0.0.0"
+    },
+    "copilot-lsp": {
+      "rev": "884034b",
+      "src": "https://github.com/copilotlsp-nvim/copilot-lsp"
+    },
+    "copilot.lua": {
+      "rev": "4383e05",
+      "src": "https://github.com/zbirenbaum/copilot.lua"
     },
     "crates.nvim": {
       "rev": "afcd1cc",
@@ -123,7 +136,7 @@
       "version": ">=0.0.0"
     },
     "slimline.nvim": {
-      "rev": "7bc3d1e",
+      "rev": "8d71559",
       "src": "https://github.com/sschleemilch/slimline.nvim",
       "version": ">=0.0.0"
     },
@@ -137,12 +150,12 @@
       "src": "https://github.com/jamespeapen/swayconfig.vim"
     },
     "typst-preview.nvim": {
-      "rev": "e544812",
+      "rev": "87d0f3a",
       "src": "https://github.com/chomosuke/typst-preview.nvim",
       "version": ">=0.0.0"
     },
     "venv-selector.nvim": {
-      "rev": "0241027",
+      "rev": "58bae72",
       "src": "https://github.com/linux-cultist/venv-selector.nvim",
       "version": "'main'"
     },

@@ -46,7 +46,9 @@ return {
       src = "https://github.com/rafamadriz/friendly-snippets",
       verison = any,
     },
-    { -- Needed by blink.cmp
+    { src = "https://github.com/zbirenbaum/copilot.lua", version = nil },
+    { src = "https://github.com/fang2hou/blink-copilot", version = any },
+    {
       src = "https://github.com/saghen/blink.cmp",
       version = any,
       data = { config = "config/cmp" },
@@ -73,6 +75,7 @@ return {
       src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       version = nil,
     },
+    { src = "https://github.com/b0o/SchemaStore.nvim", version = nil },
   },
   -- Loads on VimEnter
   lazy = {
@@ -90,7 +93,6 @@ return {
       src = "https://github.com/echasnovski/mini.extra",
       version = any,
     },
-    { src = "https://github.com/b0o/SchemaStore.nvim", version = nil },
     {
       src = "https://github.com/MagicDuck/grug-far.nvim",
       version = any,
@@ -153,7 +155,7 @@ return {
       {
         src = "https://github.com/jamespeapen/swayconfig.vim",
         version = nil,
-      }
+      },
     },
     typst = {
       {
@@ -166,7 +168,7 @@ return {
         src = "https://github.com/MeanderingProgrammer/render-markdown.nvim",
         version = any,
         data = {
-          config = "config/render-markdown"
+          config = "config/render-markdown",
         },
       },
       {

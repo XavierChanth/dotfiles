@@ -98,12 +98,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       desc = "Signature Help",
     })
     map({
-      "<leader>ca",
-      vim.lsp.buf.code_action,
-      desc = "Code Action",
-      mode = { "n", "v" },
-    })
-    map({
       "<leader>a",
       vim.lsp.buf.code_action,
       desc = "Code Action",
@@ -113,19 +107,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       "<leader>cr",
       vim.lsp.buf.rename,
       desc = "Rename",
-    })
-    map({
-      "<leader>cA",
-      function()
-        vim.lsp.buf.code_action({
-          apply = true,
-          context = {
-            only = { "source" },
-            diagnostics = {},
-          },
-        })
-      end,
-      desc = "Source Action",
     })
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
