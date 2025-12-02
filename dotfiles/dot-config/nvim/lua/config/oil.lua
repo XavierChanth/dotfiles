@@ -66,6 +66,12 @@ require("oil").setup({
         vertical = true,
       })
     end,
+    ["<leader>a"] = function()
+      require("utils.tmux").neww({
+        cwd = require("oil").get_current_dir(),
+        cmd = "agent",
+      })
+    end
   },
   float = {
     padding = 8,

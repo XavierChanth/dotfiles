@@ -3,7 +3,7 @@
 root="$(git rev-parse --show-toplevel)"
 
 name="agent-"
-command="opencode"
+command="$HOME/.local/bin/agent"
 editor="nvim"
 
 existing="$(tmux lsw -F "#{window_id}" -f "#{==:#W,$name}")"

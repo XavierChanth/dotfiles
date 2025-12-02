@@ -6,5 +6,5 @@ vim.keymap.set("n", "<C-x>", function()
             call setqflist(qfall, 'r')
             :copen
           ]])
-end, {})
+end, {buffer=0})
 
