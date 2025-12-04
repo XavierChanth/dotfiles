@@ -1,3 +1,9 @@
 **
 !.gitignore
 !settings.json
+
+!/commands
+!/commands/*.md
+
+!/agents
+!/agents/*.md
