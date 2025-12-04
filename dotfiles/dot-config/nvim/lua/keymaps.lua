@@ -48,8 +48,8 @@ vim.keymap.set("i", ".", ".<c-g>u")
 vim.keymap.set("i", ";", ";<c-g>u")
 
 -- diagnostics
-vim.keymap.set("n", "<leader>xx", "lua vim.diagnostic.setqflist()")
-vim.keymap.set("n", "<leader>xX", "lua vim.diagnostic.setloclist()")
+vim.keymap.set("n", "<leader>xx", "<cmd>lua vim.diagnostic.setqflist()<cr>")
+vim.keymap.set("n", "<leader>xX", "<cmd>lua vim.diagnostic.setloclist()<cr>")
 
 -- PLUGINS
 
