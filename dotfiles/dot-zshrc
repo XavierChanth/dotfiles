@@ -120,7 +120,7 @@ compinit
 if command -v brew >/dev/null 2>&1; then
   export PATH="$(brew --prefix):$PATH"
 fi
-export PATH="$HOME/.local/bin:$PATH:/usr/NX/bin"
+export PATH="$HOME/.local/bin:$HOME/.local/share/bob/nvim-bin:$PATH:/usr/NX/bin"
 
 # enable profiling
 # zprof
