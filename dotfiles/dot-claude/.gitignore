@@ -7,3 +7,6 @@
 
 !/agents
 !/agents/*.md
+
+!/scripts
+!/scripts/*.sh

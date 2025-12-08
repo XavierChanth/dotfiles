@@ -1,7 +1,17 @@
 {
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "USE_BUILTIN_RIPGREP": "0",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5"
+  },
   "permissions": {
-    "allow": ["Edit(*)", "Write(*)"],
-    "ask": [],
+    "allow": [
+      "Edit(*)",
+      "Write(*)"
+    ],
     "deny": [
       "Write(./.jj)",
       "Write(./.git)",
@@ -10,16 +20,10 @@
       "Read(./secrets/**)",
       "Read(./config/credentials.json)",
       "Read(./build)"
-],
+    ],
+    "ask": [],
     "disableBypassPermissionsMode": "disable"
   },
   "enableAllProjectMcpServers": false,
-  "env": {
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
-    "USE_BUILTIN_RIPGREP": "0",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL":"claude-opus-4-1",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL":"claude-sonnet-4-5",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL":"claude-haiku-4-5"
-  }
+  "alwaysThinkingEnabled": false
 }
