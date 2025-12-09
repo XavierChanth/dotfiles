@@ -83,7 +83,12 @@ Then wait for the user's research query.
    - Answer the user's specific questions with concrete evidence
 
 5. **Gather metadata for the research document:**
-   - Run the `hack/spec_metadata.sh` script to generate all relevant metadata
+   - Collect metadata using git commands:
+     - Current date/time: Use today's date from environment
+     - Git commit: `git rev-parse HEAD`
+     - Branch name: `git branch --show-current`
+     - Repository name: Extract from `git remote get-url origin` or use directory name
+     - Researcher name: Use "Claude" or extract from git config if available
    - Filename: `thoughts/shared/research/YYYY-MM-DD-ENG-XXXX-description.md`
      - Format: `YYYY-MM-DD-ENG-XXXX-description.md` where:
        - YYYY-MM-DD is today's date
@@ -94,7 +99,7 @@ Then wait for the user's research query.
        - Without ticket: `2025-01-08-authentication-flow.md`
 
 6. **Generate research document:**
-   - Use the metadata gathered in step 4
+   - Use the metadata gathered in step 5
    - Structure the document with YAML frontmatter followed by content:
      ```markdown
      ---
@@ -112,10 +117,10 @@ Then wait for the user's research query.
 
      # Research: [User's Question/Topic]
 
-     **Date**: [Current date and time with timezone from step 4]
-     **Researcher**: [Researcher name from thoughts status]
-     **Git Commit**: [Current commit hash from step 4]
-     **Branch**: [Current branch name from step 4]
+     **Date**: [Current date and time with timezone from step 5]
+     **Researcher**: [Researcher name from step 5]
+     **Git Commit**: [Current commit hash from step 5]
+     **Branch**: [Current branch name from step 5]
      **Repository**: [Repository name]
 
      ## Research Question
@@ -161,10 +166,10 @@ Then wait for the user's research query.
      - Create permalinks: `https://github.com/{owner}/{repo}/blob/{commit}/{file}#L{line}`
    - Replace local file references with permalinks in the document
 
-8. **Sync and present findings:**
-   - Run `humanlayer thoughts sync` to sync the thoughts directory
+8. **Present findings:**
    - Present a concise summary of findings to the user
    - Include key file references for easy navigation
+   - Mention the location of the saved research document
    - Ask if they have follow-up questions or need clarification
 
 9. **Handle follow-up questions:**
@@ -173,7 +178,7 @@ Then wait for the user's research query.
    - Add `last_updated_note: "Added follow-up research for [brief description]"` to frontmatter
    - Add a new section: `## Follow-up Research [timestamp]`
    - Spawn new sub-agents as needed for additional investigation
-   - Continue updating the document and syncing
+   - Continue updating the document
 
 ## Important notes:
 - Always use parallel Task agents to maximize efficiency and minimize context usage

@@ -19,6 +19,11 @@
       "src": "https://github.com/bullets-vim/bullets.vim",
       "version": ">=0.0.0"
     },
+    "claude-code.nvim": {
+      "rev": "d1dbc6b",
+      "src": "https://github.com/greggh/claude-code.nvim",
+      "version": ">=0.0.0"
+    },
     "conform.nvim": {
       "rev": "3543d00",
       "src": "https://github.com/stevearc/conform.nvim",
