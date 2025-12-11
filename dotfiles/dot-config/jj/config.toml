@@ -106,10 +106,10 @@ set -ex
 review = ["util", "exec", "--", "/bin/sh", "-c", """
 #!/usr/bin/env bash
 set -eux
-  jj new trunk
+  jj new trunk()
   jj git fetch
   gh pr checkout $1
-  jj diff --from trunk@origin --to @-
+  jj diff --from trunk() --to @-
 """, ""]
 
 logg = ["llog"]
