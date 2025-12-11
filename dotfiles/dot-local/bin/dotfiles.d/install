@@ -138,6 +138,9 @@ arch)
       --strategies crate-meta-data,quick-install,compile \
       $CARGO_PACKAGES
 
+  [ -n "$GO_PACKAGES" ] &&
+    go install $GO_PACKAGES
+
   if $install_desktop; then
     [ -n "$DESKTOP_PACKAGES" ] &&
       yay -Sy \

@@ -79,6 +79,7 @@ PACKAGES=$(
   ruby
   nodejs
   npm
+  pnpm
   svelte-language-server
   csharp-ls
   omnisharp-roslyn
@@ -96,6 +97,9 @@ PACKAGES=$(
   shfmt
   tailwindcss-language-server
   vtsls
+
+  # Development Dependencies
+  webkit2gtk
 EOF
 )
 
@@ -104,6 +108,12 @@ CARGO_PACKAGES=$(
 bacon bacon-ls
 EOF
 )
+
+GO_PACKAGES=$(
+cat <<EOF | sed -e '/#.*$/d'
+github.com/wailsapp/wails/v2/cmd/wails@latest
+EOF
+  )
 
 DESKTOP_PACKAGES=$(
   cat <<EOF | sed -e '/#.*$/d'
@@ -228,9 +238,10 @@ DESKTOP_PACKAGES=$(
   glide-browser-bin # I'm excited for this one
   zen-browser-bin # Impressive work on this front
   luakit # I want to like this
-  ungoogled-chromium-bin # Sad we live in a world where we need chromium, web devs need to do their job better
+  helium-browser-bin # Chromium
 
   # Social
+  element-desktop
   steam
   vesktop-bin
   spotify
@@ -251,7 +262,8 @@ EOF
 # Zoom requires environment to share wayland correctly:
 # XDG_CURRENT_DESKTOP=GNOME
 FLATPAK_PACKAGES=$(
-  cat <<EOF
+  cat <<EOF | sed -e '/#.*$/d'
+im.riot.Riot # Element (matrix chat)
 com.github.tchx84.Flatseal
 us.zoom.Zoom
 EOF
@@ -259,4 +271,5 @@ EOF
 
 # TODO noports desktop
 
-export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES CARGO_PACKAGES PIP_PACKAGES
+export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES CARGO_PACKAGES PIP_PACKAGES \
+  GO_PACKAGES
