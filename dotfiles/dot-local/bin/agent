@@ -2,4 +2,5 @@
 
 export EDITOR="nvim"
 
-claude
+#claude
+opencode "$@"
