@@ -102,12 +102,7 @@ return {
       src = "https://github.com/echasnovski/mini.diff",
       version = any,
       data = { config = "config/mini-diff" },
-    },
-    -- {
-    --   src = "https://github.com/greggh/claude-code.nvim",
-    --   version = any,
-    --   data = { config = "config/claude-code" },
-    -- }
+    }
   },
   -- Loads on specific file type
   ft = {
