@@ -114,6 +114,9 @@ for_window [class="swayimg|Display"] {
 for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] {
   floating enable
 }
+for_window [title="Picture in picture"] {
+  floating enable
+}
 for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] {
   floating enable
 }
