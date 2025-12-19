@@ -5,8 +5,8 @@ set $hypr Super+Control+Alt+Shift
 floating_modifier Super
 
 set $term ghostty
-set $browser zen-browser
-set $browser2 luakit
+set $browser helium-browser
+set $browser2 zen-browser
 set $notes obsidian
 set $menu source ~/.config/env/sway && wofi --show drun
 set $menu2 source ~/.config/env/sway && wofi --show run
