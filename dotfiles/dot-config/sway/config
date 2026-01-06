@@ -6,7 +6,7 @@ floating_modifier Super
 
 set $term ghostty
 set $browser helium-browser
-set $browser2 zen-browser
+set $browser2 google-chrome-stable
 set $notes obsidian
 set $menu source ~/.config/env/sway && wofi --show drun
 set $menu2 source ~/.config/env/sway && wofi --show run

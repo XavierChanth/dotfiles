@@ -229,10 +229,8 @@ DESKTOP_PACKAGES=$(
   nom
 
   # Browsers
-  glide-browser-bin # I'm excited for this one
-  zen-browser-bin # Impressive work on this front
-  luakit # I want to like this
   helium-browser-bin # Chromium
+  google-chrome # Cuz we need widevine sometimes :/
 
   # Social
   element-desktop
@@ -253,6 +251,7 @@ DESKTOP_PACKAGES=$(
   docker # Couldn't get rootless containerd to work properly :(
   asciinema-git # Great, just don't use kitty img protocol with it
   zed
+  code
 
   # AI
   gitbutler-bin

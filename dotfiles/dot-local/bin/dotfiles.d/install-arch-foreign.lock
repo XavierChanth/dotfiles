@@ -2,9 +2,13 @@ asciinema-git 3.0.0rc.5.r8.g3e5aef4-1
 asm-lsp 0.10.1-1
 basedpyright 1.33.0-1
 claude-code 2.0.36-1
+claude-desktop-bin 1.0.1307-1
+cursor-bin 2.2.20-1
+freerdp2 2.11.7-5
 gitbutler-bin 0.17.6-1
 glide-browser-bin 0.1.51a-1
 hadolint-bin 2.14.0-1
+helium-browser-bin 0.7.3.1-1
 htop-vim 3.4.1-1
 iwgtk 0.9-1
 jjui-bin 0.9.5-2
@@ -19,6 +23,7 @@ obs-pipewire-audio-capture 1.2.1-1
 obsidian-bin 1.9.12-1
 omnisharp-roslyn 1.39.14-1
 onlyoffice-bin 9.1.0-1
+opencode-bin 1.0.152-1
 pandoc-bin 3.8.2.1-1
 pwvucontrol 0.5.1-1
 python-gersemi 0.17.0-1
@@ -34,5 +39,5 @@ vtsls 0.2.9-1
 witsy-bin 3.2.0-1
 wlogout 1.2.2-0
 wlroots-asan-git 0.20.0.r7582.7431d840-1
-yay 12.5.2-2
+yay 12.5.7-1
 zen-browser-bin 1.17.6b-1
