@@ -37,6 +37,20 @@
       "urgent": "<span foreground='red'><sup></sup></span>"
     }
   },
+  "hyprland/workspaces": {
+    "format": "{name}{icon}",
+    "format-icons": {
+      "default": "",
+      "active": "<sup>*</sup>",
+      "urgent": "<span foreground='red'><sup></sup></span>"
+    },
+    "on-click": "activate"
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 50,
+    "separate-outputs": true
+  },
   "tray": {
     "show-passive-items": false,
     "icon-size": 15,

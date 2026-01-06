@@ -6,7 +6,7 @@
   // "width": 1280, // Waybar width
   "spacing": 4, // Gaps between modules (4px)
   // Choose the order of the modules
-  "modules-left": ["sway/workspaces", "sway/window"],
+  "modules-left": ["sway/workspaces", "hyprland/workspaces", "sway/window", "hyprland/window"],
   "modules-center": ["clock"],
   "modules-right": [
     "group/gtray",

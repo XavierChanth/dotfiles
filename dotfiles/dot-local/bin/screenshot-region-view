@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Capture screenshot of selected region and view without annotation
+
+TEMP_FILE="/tmp/screenshot-$(date +%Y%m%d-%H%M%S).png"
+grim -g "$(slurp)" "$TEMP_FILE" && swayimg "$TEMP_FILE"

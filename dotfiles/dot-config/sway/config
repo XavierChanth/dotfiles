@@ -4,12 +4,12 @@ set $mod2 Super
 set $hypr Super+Control+Alt+Shift
 floating_modifier Super
 
-set $term ghostty
-set $browser helium-browser
-set $browser2 google-chrome-stable
-set $notes obsidian
-set $menu source ~/.config/env/sway && wofi --show drun
-set $menu2 source ~/.config/env/sway && wofi --show run
+set $term launch-terminal
+set $browser launch-browser
+set $browser2 launch-browser-alt
+set $notes launch-notes
+set $menu launch-menu
+set $menu2 launch-menu-run
 set $lock_screen swaylock -p -f -c 000000
 
 set $builtin_display "eDP-1"
@@ -233,54 +233,35 @@ bindsym $mod+$mod2+space exec $menu2
 # bindsym $mod2+l exec wtype -M ctrl -k l
 # bindsym $mod2+a exec wtype -M ctrl -k a
 
-# Media keys binds
+# Media keys binds (using scripts)
 bindcode --locked 160 exec wlogout
 bindsym --locked XF86PowerOff exec wlogout
-bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-bindsym --locked XF86AudioPrev exec playerctl previous
-bindsym --locked XF86AudioPlay exec playerctl play-pause
-bindsym --locked XF86AudioNext exec playerctl next
-bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
-bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym --locked XF86AudioMute exec volume-mute
+bindsym --locked XF86AudioLowerVolume exec volume-down
+bindsym --locked XF86AudioRaiseVolume exec volume-up
+bindsym --locked XF86AudioPrev exec media-prev
+bindsym --locked XF86AudioPlay exec media-play-pause
+bindsym --locked XF86AudioNext exec media-next
+bindsym --locked XF86MonBrightnessDown exec brightness-down
+bindsym --locked XF86MonBrightnessUp exec brightness-up
 # ALT_L+p = F9
 # bindsym --locked XF86RFKILL # F10
 # bindsym XF86AudioMedia # F12
 
-# F11 & Screen shots
-set $satty satty -f - \
-  --initial-tool=arrow \
-  --copy-command=wl-copy \
-  --actions-on-escape="save-to-clipboard,exit" \
-  --brush-smooth-history-size=5 \
-  --disable-notifications
-
-set $satty_jq_fmt_string \
-  '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"'
-
+# Screenshot keybinds (using scripts)
 set $printscreen_mode 'printscreen (r:region, f:full, w:window)'
 
 mode $printscreen_mode {
-  bindsym r exec swaymsg 'mode "default"' && \
-    grim -t ppm -g "$(slurp -d)" - | $satty
-  bindsym f exec swaymsg 'mode "default"' && \
-    grim -t ppm - | $satty
-  bindsym w exec swaymsg 'mode "default"' && \
-    swaymsg -t get_tree | \
-    jq -r $satty_jq_fmt_string | \
-    grim -t ppm -g - - | $satty
+  bindsym r exec swaymsg 'mode "default"' && screenshot-region
+  bindsym f exec swaymsg 'mode "default"' && screenshot-full
+  bindsym w exec swaymsg 'mode "default"' && screenshot-window
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-set $swayimg swayimg -c viewer.scale=real -c info.show=no -
-
 bindsym Print mode $printscreen_mode
-bindsym $hypr+2 exec grim -t ppm -g "$(slurp -d)" - | $swayimg
-bindsym $hypr+3 exec swaymsg -t get_tree | \
-  jq -r $satty_jq_fmt_string | \
-  grim -g - - | $satty
-bindsym $hypr+4 exec grim -t ppm -g "$(slurp -d)" - | $satty
+bindsym $hypr+2 exec screenshot-region-view
+bindsym $hypr+3 exec screenshot-window
+bindsym $hypr+4 exec screenshot-region
 

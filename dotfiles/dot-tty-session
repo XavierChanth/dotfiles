@@ -1,6 +1,7 @@
 #!/bin/sh
 case "$XDG_CURRENT_DESKTOP" in
 sway) source $HOME/.config/env/sway ;;
+Hyprland) source $HOME/.config/env/hyprland ;;
 gnome) source $HOME/.config/env/gnome ;;
 esac
 
@@ -18,6 +19,11 @@ command -v sway >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ] && {
 command -v gnome-shell >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty2" ] && {
   source $HOME/.config/env/gnome
   exec gnome-shell
+}
+
+command -v Hyprland >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty3" ] && {
+  source $HOME/.config/env/hyprland
+  exec Hyprland
 }
 
 # idk... niri doesn't seem like a good improvement to my workflow
