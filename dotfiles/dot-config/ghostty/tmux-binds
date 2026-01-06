@@ -25,6 +25,7 @@ keybind =	super+ctrl+alt+shift+f=text:\x00f
 keybind =	super+ctrl+alt+shift+g=text:\x00g
 keybind =	super+ctrl+alt+shift+n=text:\x00n
 keybind =	super+ctrl+alt+shift+p=text:\x00p
+keybind =	super+ctrl+alt+shift+e=text:\x00e
 
 # hyper+q to prefix+d
 keybind =	super+ctrl+shift+alt+q=text:\x00d

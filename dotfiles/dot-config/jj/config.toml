@@ -58,6 +58,9 @@ private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
 e = ["edit"]
 gp = ["git", "push"]
 gf = ["git", "fetch"]
+ls = ["diff", "-s"]
+nt = ["new", "trunk()"]
+
 bs = ["bookmark", "set"]
 bm = ["bookmark", "move"]
 bf = ["bookmark", "forget"]
@@ -65,11 +68,16 @@ bl = ["bookmark", "list"]
 blt = ["bookmark", "list", "--tracked"]
 bla = ["bookmark", "list", "--all-remotes"]
 blr = ["bookmark", "list", "--remote"]
+
+w = ["workspace"]
+wa = ["workspace", "add"]
+wl = ["workspace", "list"]
+wr = ["workspace", "rename"]
+wf = ["workspace", "forget"]
+
 heads = ["branch"]
-ls = ["diff", "-s"]
 sp = ["split"]
 sq = ["squash"]
-nt = ["new", "trunk()"]
 colocate =  ["util", "exec", "--", "/bin/sh", "-c", """
 #!/usr/bin/env bash
 set -eux

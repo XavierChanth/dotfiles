@@ -6,7 +6,17 @@ function add_session() {
 
   name="$2"
   if [ -z "$name" ]; then
-    name=$(basename $selected | sed -e 's/\./_/g')
+    case "$selected" in
+      */.work/*)
+        # Extract parent dir before .work and subdir after .work
+        before=$(echo "$selected" | sed 's/\/.work\/.*//' | xargs basename)
+        after=$(echo "$selected" | sed 's/.*\/.work\///' | xargs basename)
+        name="${before}-${after}"
+        ;;
+      *)
+        name=$(basename "$selected" | sed -e 's/\./_/g')
+        ;;
+    esac
   fi
 
   command="$3"

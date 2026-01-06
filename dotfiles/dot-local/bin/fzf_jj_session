@@ -13,12 +13,30 @@ selected=$(
   (
     # tested find against fd, for a small set of directories like this find is slightly faster
     # now, if you were recursively searching all files, fd wins by a mile
-    find "$projects_dir" -mindepth 0 -maxdepth 2 -type d
-    find "$projects_dir" -mindepth 4 -maxdepth 4 -type d -path "$projects_dir/*/.work/*"
+    find "$projects_dir" -mindepth 2 -maxdepth 2 -type d
     # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
     echo "$HOME/.dotfiles"
     echo "main"
   ) |
-    fzf --scheme=path --tiebreak=end,index --header "Open session in..."
+    fzf --scheme=path --tiebreak=end,index --header "Open new workspace in..."
 )
+
+if [ -z "$selected" ]; then exit 0; fi
+
+printf "Workspace name: "
+read -r name
+
+if [ -z "$name" ]; then exit 0; fi
+
+(
+  set -e
+  cd "$selected"
+  mkdir -p .work
+  jj workspace add ".work/$name"
+) || {
+  echo "Failed to create workspace. Press enter to continue.";
+  read -r name;
+  exit 1;
+}
+
 add_session "$selected"

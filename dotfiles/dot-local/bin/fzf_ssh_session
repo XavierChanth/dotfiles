@@ -8,7 +8,7 @@ files=$(echo $includes) # expands globs
 hosts=$(sed -e 's/ /\n/g' <<<$files | xargs -I % /bin/sh -c 'cat "%" | grep "Host " | grep -v "Host \*" | cut -d " " -f2')
 
 selected=$(
-  sed -e 's/ /\n/g' <<<$hosts | fzf -d=' ' --scheme=path --tiebreak=end,index --header "Open tmux session"
+  sed -e 's/ /\n/g' <<<$hosts | fzf -d=' ' --scheme=path --tiebreak=end,index --header "Open ssh session..."
 )
 
 [ -z $selected ] && exit
