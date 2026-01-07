@@ -4,12 +4,13 @@ set $mod2 Super
 set $hypr Super+Control+Alt+Shift
 floating_modifier Super
 
-set $term launch-terminal
-set $browser launch-browser
-set $browser2 launch-browser-alt
-set $notes launch-notes
-set $menu launch-menu
-set $menu2 launch-menu-run
+set $script ~/.local/bin
+set $term $script/launch-terminal
+set $browser $script/launch-browser
+set $browser2 $script/launch-browser-alt
+set $notes $script/launch-notes
+set $menu $script/launch-menu
+set $menu2 $script/launch-menu-run
 set $lock_screen swaylock -p -f -c 000000
 
 set $builtin_display "eDP-1"
@@ -157,6 +158,7 @@ bindsym $mod+Shift+space \
 # Apps
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec $term -e zsh
+bindsym $mod+$mod2+Return exec foot
 
 bindsym $mod+b exec $browser
 bindsym $mod+Shift+b exec $browser2
@@ -252,16 +254,16 @@ bindsym --locked XF86MonBrightnessUp exec brightness-up
 set $printscreen_mode 'printscreen (r:region, f:full, w:window)'
 
 mode $printscreen_mode {
-  bindsym r exec swaymsg 'mode "default"' && screenshot-region
-  bindsym f exec swaymsg 'mode "default"' && screenshot-full
-  bindsym w exec swaymsg 'mode "default"' && screenshot-window
+  bindsym r exec swaymsg 'mode "default"' && $script/screenshot-region
+  bindsym f exec swaymsg 'mode "default"' && $script/screenshot-full
+  bindsym w exec swaymsg 'mode "default"' && $script/screenshot-window
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
 bindsym Print mode $printscreen_mode
-bindsym $hypr+2 exec screenshot-region-view
-bindsym $hypr+3 exec screenshot-window
-bindsym $hypr+4 exec screenshot-region
+bindsym $hypr+2 exec $script/screenshot-region-view
+bindsym $hypr+3 exec $script/screenshot-window
+bindsym $hypr+4 exec $script/screenshot-region
 

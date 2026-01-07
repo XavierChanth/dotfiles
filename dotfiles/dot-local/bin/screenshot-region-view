@@ -2,4 +2,9 @@
 # Capture screenshot of selected region and view without annotation
 
 TEMP_FILE="/tmp/screenshot-$(date +%Y%m%d-%H%M%S).png"
-grim -g "$(slurp)" "$TEMP_FILE" && swayimg "$TEMP_FILE"
+grim -g "$(slurp)" "$TEMP_FILE" &&
+  swayimg -c "general.overlay=no" \
+  -c "general.size=image" \
+  -c "viewer.window=mirror" \
+  -c "info.show=no" \
+  "$TEMP_FILE"
