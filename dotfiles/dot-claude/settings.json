@@ -4,10 +4,7 @@
     "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
     "USE_BUILTIN_RIPGREP": "0"
   },
-  "model": "opusplan",
   "permissions": {
-    "defaultMode": "plan",
-    "disableBypassPermissionsMode": "disable",
     "allow": [
       "Edit(*)",
       "Write(*)"
@@ -21,8 +18,15 @@
       "Read(./config/credentials.json)",
       "Read(./build)"
     ],
-    "ask": []
+    "ask": [],
+    "defaultMode": "plan",
+    "disableBypassPermissionsMode": "disable"
   },
+  "model": "opusplan",
   "enableAllProjectMcpServers": false,
+  "enabledPlugins": {
+    "hookify@claude-code-plugins": true,
+    "ralph-wiggum@claude-code-plugins": true
+  },
   "alwaysThinkingEnabled": false
 }
