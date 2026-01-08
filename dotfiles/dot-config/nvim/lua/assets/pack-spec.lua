@@ -46,8 +46,6 @@ return {
       src = "https://github.com/rafamadriz/friendly-snippets",
       verison = any,
     },
-    { src = "https://github.com/zbirenbaum/copilot.lua", version = nil },
-    { src = "https://github.com/fang2hou/blink-copilot", version = any },
     {
       src = "https://github.com/saghen/blink.cmp",
       version = any,
@@ -102,7 +100,7 @@ return {
       src = "https://github.com/echasnovski/mini.diff",
       version = any,
       data = { config = "config/mini-diff" },
-    }
+    },
   },
   -- Loads on specific file type
   ft = {

@@ -34,7 +34,7 @@ fi
 
 # Pagers
 export LESS='--mouse'
-export MANPAGER="nvim -c 'set ft=man | AnsiColorize' -"
+export MANPAGER="nvim -c 'set ft=man | AnsiHighlight' -"
 if command -v batman >/dev/null 2>&1; then
   eval "$(batman --export-env)"
 elif command -v bat >/dev/null 2>&1; then
