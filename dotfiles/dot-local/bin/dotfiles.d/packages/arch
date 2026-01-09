@@ -257,7 +257,6 @@ DESKTOP_PACKAGES=$(
   # AI
   gitbutler-bin
   claude-code
-  opencode-bin
 EOF
 )
 # Zoom requires environment to share wayland correctly:
