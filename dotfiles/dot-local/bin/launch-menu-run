@@ -8,4 +8,4 @@ elif [[ "$XDG_CURRENT_DESKTOP" == "sway" ]]; then
     [[ -f "$HOME/.config/env/sway" ]] && source "$HOME/.config/env/sway"
 fi
 
-wofi --show run
+exec wofi --show run

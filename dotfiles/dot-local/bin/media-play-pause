@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Toggle play/pause for media
 
-playerctl play-pause
+exec playerctl play-pause

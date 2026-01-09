@@ -9,11 +9,10 @@
   {
     // Global Navigation Binds
     "bindings": {
-      "ctrl-h": "workspace::ActivatePaneLeft",
-      "ctrl-l": "workspace::ActivatePaneRight",
-      "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown",
-      "ctrl-w": "pane::CloseActiveItem",
+      "ctrl-h": ["workspace::ActivatePaneInDirection", "Left"],
+      "ctrl-l": ["workspace::ActivatePaneInDirection", "Right"],
+      "ctrl-k": ["workspace::ActivatePaneInDirection", "Up"],
+      "ctrl-j": ["workspace::ActivatePaneInDirection", "Down"],
       "ctrl--": "workspace::ToggleBottomDock"
     }
   },
@@ -34,6 +33,10 @@
       "space space": "file_finder::Toggle",
       "space j": "tab_switcher::Toggle",
       "space e": "workspace::ToggleLeftDock",
+      "space b n": "workspace::NewFile",
+      // "space b b" :"",
+      "space b d": "pane::CloseActiveItem",
+      "space b o": "pane::CloseInactiveItems",
       "space b r": "workspace::ReloadActiveItem",
       "space \\": "pane::SplitRight",
       "space -": "pane::SplitDown",
@@ -55,8 +58,8 @@
       "g I": "editor::GoToImplementation",
       "g y": "editor::GoToTypeDefinition",
       "g r": "editor::FindAllReferences",
-      // "] d": "editor::GoToDiagnostic",
-      // "[ d": "editor::GoToPreviousDiagnostic"
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPrevDiagnostic"
     }
   },
   {
@@ -90,7 +93,7 @@
     "context": "TabSwitcher",
     "bindings": {
       "j": "menu::SelectNext",
-      "k": "menu::SelectPrevious",
+      "k": "menu::SelectPrev",
       "ctrl-d": "tab_switcher::CloseSelectedItem"
     }
   },
@@ -112,7 +115,7 @@
       "y": "project_panel::Copy",
       "x": "project_panel::Cut",
       "p": "project_panel::Paste",
-      "r": "project_panel::Rename"
+      "c": "project_panel::Rename"
     }
-  },
+  }
 ]

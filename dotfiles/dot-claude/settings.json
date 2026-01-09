@@ -22,9 +22,11 @@
     "defaultMode": "plan",
     "disableBypassPermissionsMode": "disable"
   },
+  "model": "opus",
   "enableAllProjectMcpServers": false,
   "enabledPlugins": {
-    "hookify@claude-code-plugins": true,
-    "ralph-wiggum@claude-code-plugins": true
-  }
+    "typescript-lsp@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": false
 }

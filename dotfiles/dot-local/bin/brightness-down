@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Decrease brightness by 5%
 
-brightnessctl set 5%-
+exec brightnessctl set 5%-

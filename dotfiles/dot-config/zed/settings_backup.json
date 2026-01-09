@@ -6,35 +6,18 @@
 // To see all of Zed's default settings without changing your
 // custom settings, run `zed: open default settings` from the // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "agent_servers": {
-    "claude": {
-      "default_mode": "plan"
-    }
-  },
-  "search": {
-    "regex": true
-  },
-  "sticky_scroll": {
-    "enabled": true
-  },
-  "audio": {
-    "experimental.auto_microphone_volume": true,
-    "experimental.rodio_audio": true
-  },
-  "disable_ai": false,
-  "auto_update": false,
-  "formatter": "language_server",
   "when_closing_with_no_tabs": "close_window",
   "always_treat_brackets_as_autoclosed": false,
-  "agent": {
-    "enabled": true
+  "assistant": {
+    "enabled": false,
+    "version": "2"
   },
- "command_aliases": {
+  "command_aliases": {
     "W": "write",
   },
   "features": {
     "copilot": false,
-    "edit_prediction_provider": "none"
+    "inline_completion_provider": "none"
   },
   "toolbar": {
     "selections_menu": false,
@@ -48,7 +31,7 @@
   "use_auto_surround": false,
   "auto_install_extensions": {},
   "buffer_font_size": 20,
-  "buffer_font_family": "CommitMono Nerd Font",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "git": {
     "git_gutter": "hide"
   },
@@ -58,8 +41,8 @@
     "folds": false
   },
   "projects_online_by_default": false,
-  "ui_font_size": 12,
-  "ui_font_family": "CommitMono Nerd Font",
+  "ui_font_size": 16,
+  "ui_font_family": "JetBrainsMono Nerd Font",
   "cursor_blink": false,
   "tab_size": 2,
   "languages": {
@@ -70,8 +53,8 @@
   "scrollbar": {
     "show": "never"
   },
-  "show_edit_predictions": false,
-  "format_on_save": "on",
+  "show_inline_completions": false,
+  "format_on_save": "language_server",
   "inlay_hints": {
     "enabled": false
   },
@@ -88,7 +71,7 @@
       "show": "always"
     }
   },
-  "relative_line_numbers": "enabled",
+  "relative_line_numbers": true,
   "tab_bar": {
     "show": false,
     "show_nav_history_buttons": false
@@ -101,9 +84,9 @@
     "line_height": "comfortable"
   },
   "theme": {
-    "mode": "system",
-    "light": "Ayu Light",
-    "dark": "Tokyo Night Storm"
+    "mode": "dark",
+    "light": "Catppuccin Latte - No Italics",
+    "dark": "Catppuccin Mocha - No Italics"
   },
   "use_autoclose": false,
   "vertical_scroll_margin": 8,

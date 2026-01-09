@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Launch alternative browser
 
-google-chrome-stable "$@"
+exec google-chrome-stable "$@"

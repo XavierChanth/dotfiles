@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Launch default terminal
 
-ghostty "$@"
+exec ghostty "$@"

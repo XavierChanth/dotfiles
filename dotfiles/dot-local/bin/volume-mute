@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Toggle mute
 
-pactl set-sink-mute @DEFAULT_SINK@ toggle
+exec pactl set-sink-mute @DEFAULT_SINK@ toggle
