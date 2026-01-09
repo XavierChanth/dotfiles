@@ -31,7 +31,7 @@ wrapped_alias() {
   eval "function $1() { if [ \$# -gt 0 ]; then $2 \$@; else $2 $3; fi; }"
 }
 wrapped_alias "t" "tmux" "new -A -s 'main'"
-wrapped_alias "z" "zed" "."
+wrapped_alias "z" "zeditor" "."
 
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
