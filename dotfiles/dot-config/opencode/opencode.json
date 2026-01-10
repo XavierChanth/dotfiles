@@ -1,12 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "options": { "baseURL": "http://localhost:11434/v1" },
-      "models": { }
-    },
-  },
-  // "theme": "system",
+  "default_agent": "plan",
   "theme": "tokyonight",
 }

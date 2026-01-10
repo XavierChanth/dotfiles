@@ -21,6 +21,11 @@ conform.setup({
     sh = { "shfmt" },
     zig = { "zigfmt" },
     zsh = { "shfmt" },
+    typescript = { "prettier" },
+    javascript = { "prettier" },
+    svelte = { "prettier" },
+    html = { "prettier" },
+    css = { "prettier" },
   },
   formatters = {
     csharpier = {
@@ -50,9 +55,6 @@ conform.setup({
       },
     },
     -- TODO: fix me
-    -- condition = function(_, ctx)
-    --   return require("conform").has_parser(ctx)
-    -- end,
     prettier = { prepend_args = { "--prose-wrap", "always" } },
   },
 })

@@ -21,6 +21,7 @@ PACKAGES=$(
   fzf
   git
   git-delta
+  difftastic
   jujutsu
   jjui
   bat
@@ -255,8 +256,10 @@ DESKTOP_PACKAGES=$(
   code
 
   # AI
-  gitbutler-bin
+  # gitbutler-bin
   claude-code
+  openai-codex
+  # opencode-bin
 EOF
 )
 # Zoom requires environment to share wayland correctly:

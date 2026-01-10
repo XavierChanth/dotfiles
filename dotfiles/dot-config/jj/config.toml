@@ -22,6 +22,9 @@ diff-args=[
 ]
 diff-expected-exit-codes = [0, 1]
 
+[merge-tools.difft]
+diff-args = ["--color=always", "$left", "$right"]
+
 [merge-tools.nvim]
 diff-invocation-mode = "file-by-file"
 edit-args = ["-d", "-o", "$left", "$right"]
