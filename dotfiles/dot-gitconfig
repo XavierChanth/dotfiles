@@ -22,6 +22,8 @@
   path = ~/.config/git/user-default
   path = ~/.config/git/delta
 
-[includeIf "hasconfig:remote.*.url:https://github.com/atsign-**"]
+[includeIf "hasconfig:remote.*.url:git@github.com:atsign-*/**"]
   path = ~/.config/git/user-atsign
 
+[includeIf "hasconfig:remote.*.url:git@github.com:woosah-tech/**"]
+  path = ~/.config/git/user-woosah
