@@ -1,27 +1,33 @@
 -- Lsps that will be enabled
 return {
-  "asmls",
+
+  -- loosey lang
+  "luals",
+  "ruff",
   "basedpyright",
-  -- "bacon_ls",
-  "clangd",
-  -- "csharpls",
+
+  -- static lang
+  "gopls",
   "dartls",
+
+  -- systems lang
+  "clangd",
+  "neocmake",
+  "rust-analyzer",
+  "zls",
+
+  -- markup
+  "jsonls",
+  "yamlls",
+  "tinymist",
+
+  -- docker
   "docker_compose_ls",
   "docker_ls",
-  "gopls",
-  "jsonls",
-  "luals",
-  "neocmake",
-  -- "omnisharp",
-  -- "rubocop",
-  -- "rubyls",
-  "ruff",
-  "rust-analyzer",
-  -- "sourcekit",
+
+  -- web dev
+  "biome",
   "sveltels",
   "tailwindls",
-  "tinymist",
   "vtsls",
-  "yamlls",
-  "zls",
 }

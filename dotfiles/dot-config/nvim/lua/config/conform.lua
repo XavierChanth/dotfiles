@@ -21,11 +21,11 @@ conform.setup({
     sh = { "shfmt" },
     zig = { "zigfmt" },
     zsh = { "shfmt" },
-    typescript = { "prettier" },
-    javascript = { "prettier" },
-    svelte = { "prettier" },
-    html = { "prettier" },
-    css = { "prettier" },
+    -- typescript = { "prettier" },
+    -- javascript = { "prettier" },
+    -- svelte = { "prettier" },
+    -- html = { "prettier" },
+    -- css = { "prettier" },
   },
   formatters = {
     csharpier = {
@@ -54,7 +54,6 @@ conform.setup({
         lang_to_formatters = {},
       },
     },
-    -- TODO: fix me
     prettier = { prepend_args = { "--prose-wrap", "always" } },
   },
 })
