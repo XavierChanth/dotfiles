@@ -103,33 +103,15 @@ smart_gaps on
 floating_maximum_size 1200 x 800
 
 # Startup App rules
-for_window [class="zoom" title="zoom"] {
-  floating enable
-}
-for_window [class="zoom" title="Meeting"] {
-  inhibit_idle open
-}
-for_window [class="swayimg|Display"] {
-  floating enable
-}
-for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] {
-  floating enable
-}
-for_window [title="Picture in picture"] {
-  floating enable
-}
-for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] {
-  floating enable
-}
-for_window [app_id="blueman-manager|system-config-printer|.*iwgtk|.*pwvucontrol"] {
-  floating enable
-  sticky enable
-}
+for_window [class="zoom" title="zoom"]  floating enable
+for_window [class="zoom" title="Meeting"] inhibit_idle open
+for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] floating enable, sticky enable
+for_window [title="Picture in picture"] floating enable, sticky enable
 
-for_window [app_id="swayimg"] {
-  floating enable
-  floating_minimum_size 1 x 1
-}
+for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] floating enable
+for_window [app_id="blueman-manager|system-config-printer|.*iwgtk|.*pwvucontrol"] floating enable, sticky enable
+
+for_window [class="swayimg|Display"] floating enable, sticky enable, floating_minimum_size 1 x 1
 
 # Auto tiling
 # exec_always killall autotiling; autotiling -sr 1.61 -l 3
