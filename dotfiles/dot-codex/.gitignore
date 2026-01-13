@@ -1,0 +1,10 @@
+**
+!.gitignore
+
+!/skills/
+!/skills/*/SKILL.md
+!/skills/*/LICENSE*
+/skills/.system
+
+!/skills/create-plan
+

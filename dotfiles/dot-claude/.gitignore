@@ -1,11 +1,3 @@
 **
 !.gitignore
 !settings.json
-!CLAUDE.md
-
-!/commands
-!/commands/*.md
-
-!/agents
-!/agents/*.md
-
