@@ -25,7 +25,8 @@ vim.opt.listchars = {
   extends = "…",
   precedes = "…",
 }
-vim.opt.iskeyword = "@,48-57,192-255" -- default, but underscore removed
+-- disabled this, it can actually be quite annoying in some languages, you can always use f/t motions to deal with individual segments of a word
+-- vim.opt.iskeyword = "@,48-57,192-255" -- default, but underscore removed
 
 vim.opt.showbreak = "  󱞩 "
 -- vim.opt.cmdheight = 0

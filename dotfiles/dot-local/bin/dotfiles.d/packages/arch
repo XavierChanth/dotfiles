@@ -233,6 +233,7 @@ DESKTOP_PACKAGES=$(
   # Browsers
   helium-browser-bin # Chromium
   google-chrome # Cuz we need widevine sometimes :/
+  brave-bin # streaming
 
   # Social
   element-desktop

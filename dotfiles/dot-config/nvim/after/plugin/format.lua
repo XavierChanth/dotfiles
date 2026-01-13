@@ -10,5 +10,5 @@ vim.api.nvim_create_user_command(
   {}
 )
 vim.api.nvim_create_user_command("Format", function()
-   require("conform").format({})
+  require("conform").format({})
 end, {})
