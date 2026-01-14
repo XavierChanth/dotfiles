@@ -105,17 +105,6 @@ PACKAGES=$(
 EOF
 )
 
-CARGO_PACKAGES=$(
-  cat <<EOF | sed -e '/#.*$/d'
-bacon bacon-ls
-EOF
-)
-
-GO_PACKAGES=$(
-cat <<EOF | sed -e '/#.*$/d'
-github.com/wailsapp/wails/v2/cmd/wails@latest
-EOF
-  )
 
 DESKTOP_PACKAGES=$(
   cat <<EOF | sed -e '/#.*$/d'
@@ -236,7 +225,6 @@ DESKTOP_PACKAGES=$(
   brave-bin # streaming
 
   # Social
-  element-desktop
   steam
   vesktop-bin
   spotify
@@ -258,22 +246,36 @@ DESKTOP_PACKAGES=$(
 
   # AI
   # gitbutler-bin
-  claude-code
-  openai-codex
-  # opencode-bin
+  claude-code # This is getting purged soon
 EOF
 )
 # Zoom requires environment to share wayland correctly:
 # XDG_CURRENT_DESKTOP=GNOME
 FLATPAK_PACKAGES=$(
   cat <<EOF | sed -e '/#.*$/d'
-im.riot.Riot # Element (matrix chat)
 com.github.tchx84.Flatseal
 us.zoom.Zoom
 EOF
 )
 
-# TODO noports desktop
+CARGO_PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+# bacon bacon-ls
+EOF
+)
+
+GO_PACKAGES=$(
+cat <<EOF | sed -e '/#.*$/d'
+github.com/wailsapp/wails/v2/cmd/wails@latest
+EOF
+  )
+
+NODE_PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+opencode-ai
+@openai/codex
+EOF
+)
 
 export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES CARGO_PACKAGES PIP_PACKAGES \
-  GO_PACKAGES
+  GO_PACKAGES NODE_PACKAGES
