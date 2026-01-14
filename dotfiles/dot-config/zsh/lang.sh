@@ -92,5 +92,9 @@ if command_exists arduino-cli; then
   }
 fi
 
+if command_exists bun; then
+  __path="/home/chant/.bun/bin:$__path"
+fi
+
 # prepend local path to PATH
 export PATH="$__path:$PATH"
