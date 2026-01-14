@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Capture full screen screenshot with annotation
 
-grim - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png
+grim - | satty --filename - --fullscreen --output-filename ~/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png

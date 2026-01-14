@@ -111,7 +111,8 @@ for_window [title="Picture in picture"] floating enable, sticky enable
 for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] floating enable
 for_window [app_id="blueman-manager|system-config-printer|.*iwgtk|.*pwvucontrol"] floating enable, sticky enable
 
-for_window [class="swayimg|Display"] floating enable, sticky enable, floating_minimum_size 1 x 1
+for_window [class="Display"] floating enable, sticky enable, floating_minimum_size 1 x 1
+for_window [app_id="swayimg"] floating enable, sticky enable, floating_minimum_size 1 x 1
 
 # Auto tiling
 # exec_always killall autotiling; autotiling -sr 1.61 -l 3

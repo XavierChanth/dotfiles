@@ -13,4 +13,4 @@ else
     exit 1
 fi
 
-grim -g "$GEOMETRY" - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png
+grim -g "$GEOMETRY" - | satty --filename - --fullscreen --output-filename ~/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png
