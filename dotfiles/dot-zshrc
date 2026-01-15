@@ -59,6 +59,7 @@ export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
 export JJ_CONFIG="$XDG_CONFIG_HOME/jj/config.toml"
 export HOMEBREW_NO_ENV_HINTS=true
+export OPENCODE_EXPERIMENTAL_PLAN_MODE=true
 
 # vi mode - must be set before prompt
 source $XDG_CONFIG_HOME/zsh/vi_mode.sh

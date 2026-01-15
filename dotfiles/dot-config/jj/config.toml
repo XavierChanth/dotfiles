@@ -72,6 +72,8 @@ e = ["edit"]
 gp = ["git", "push"]
 gf = ["git", "fetch"]
 ls = ["diff", "-s"]
+difft = ["diff", "--tool", "difft"]
+delta = ["diff", "--tool", "delta"]
 nt = ["new", "trunk()"]
 
 bs = ["bookmark", "set"]
