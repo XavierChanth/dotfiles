@@ -101,6 +101,11 @@ return {
       version = any,
       data = { config = "config/mini-diff" },
     },
+    {
+      src = "https://github.com/NickvanDyke/opencode.nvim",
+      version = nil,
+      data = { config = "config/opencode" },
+    }
   },
   -- Loads on specific file type
   ft = {
