@@ -48,13 +48,9 @@
       "version": "'harpoon2'"
     },
     "lazydev.nvim": {
-      "rev": "01bc2aa",
+      "rev": "01bc2aacd51cf9021eb19d048e70ce3dd09f7f93",
       "src": "https://github.com/folke/lazydev.nvim",
       "version": ">=0.0.0"
-    },
-    "luvit-meta": {
-      "rev": "0ea4ff636c5bb559ffa78108561d0976f4de9682",
-      "src": "https://github.com/Bilal2453/luvit-meta"
     },
     "markdown-preview.nvim": {
       "rev": "9beccee",

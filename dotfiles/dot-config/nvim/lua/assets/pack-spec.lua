@@ -100,11 +100,6 @@ return {
       src = "https://github.com/echasnovski/mini.diff",
       version = any,
       data = { config = "config/mini-diff" },
-    },
-    {
-      src = "https://github.com/NickvanDyke/opencode.nvim",
-      version = nil,
-      data = { config = "config/opencode" },
     }
   },
   -- Loads on specific file type
@@ -122,15 +117,9 @@ return {
     just = {
       { src = "https://github.com/NoahTheDuke/vim-just", version = nil },
     },
-    lua = {
-      {
-        src = "https://github.com/Bilal2453/luvit-meta",
-        version = nil,
-      },
-      {
+      lua = { {
         src = "https://github.com/folke/lazydev.nvim",
         version = any,
-        data = { config = "config/lazydev" },
       },
     },
     rust = {

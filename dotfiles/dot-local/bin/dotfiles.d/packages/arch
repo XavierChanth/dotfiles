@@ -102,6 +102,7 @@ PACKAGES=$(
 
   # Development Dependencies
   webkit2gtk
+  lsof
 EOF
 )
 

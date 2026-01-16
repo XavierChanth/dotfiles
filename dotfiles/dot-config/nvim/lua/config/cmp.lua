@@ -10,15 +10,6 @@ cmp.setup({
   },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
-    providers = {
-      lazydev = {
-        module = "lazydev.integrations.blink",
-        score_offset = 10,
-      },
-    },
-    per_filetype = {
-      lua = { inherit_defaults = true, "lazydev" },
-    },
   },
   appearance = {
     kind_icons = {
