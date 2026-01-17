@@ -134,3 +134,4 @@ hi LspReferenceText ctermfg=NONE ctermbg=NONE " Really annoying
 hi NvimInternalError ctermfg=0 " Otherwise red on red
 hi link SnacksIndent WhiteSpace
 hi link StatusLineNC StatusLine
+hi link MiniPickMatchCurrent PMenuSel

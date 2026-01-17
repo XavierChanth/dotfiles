@@ -73,10 +73,22 @@ return {
       src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       version = nil,
     },
-    { src = "https://github.com/b0o/SchemaStore.nvim", version = nil },
+    { -- Needed by LSP, could make this lazy but it would be pain.
+      src = "https://github.com/b0o/SchemaStore.nvim",
+      version = nil,
+    },
   },
   -- Loads on VimEnter
   lazy = {
+    { -- Needed by pick, ai
+      src = "https://github.com/echasnovski/mini.extra",
+      version = any,
+    },
+    {
+      src = "https://github.com/nvim-mini/mini.pick",
+      version = any,
+      data = { config = "config/mini-pick" },
+    },
     {
       src = "https://github.com/sschleemilch/slimline.nvim",
       version = any,
@@ -87,10 +99,6 @@ return {
       version = any,
       data = { config = "config/mini-ai" },
     },
-    { -- Needed by mini.ai
-      src = "https://github.com/echasnovski/mini.extra",
-      version = any,
-    },
     {
       src = "https://github.com/MagicDuck/grug-far.nvim",
       version = any,
@@ -100,7 +108,7 @@ return {
       src = "https://github.com/echasnovski/mini.diff",
       version = any,
       data = { config = "config/mini-diff" },
-    }
+    },
   },
   -- Loads on specific file type
   ft = {
@@ -117,9 +125,11 @@ return {
     just = {
       { src = "https://github.com/NoahTheDuke/vim-just", version = nil },
     },
-      lua = { {
+    lua = {
+      {
         src = "https://github.com/folke/lazydev.nvim",
         version = any,
+        data = { config = "config/lazydev" }
       },
     },
     rust = {

@@ -73,7 +73,4 @@ require("oil").setup({
       })
     end
   },
-  float = {
-    padding = 8,
-  },
 })

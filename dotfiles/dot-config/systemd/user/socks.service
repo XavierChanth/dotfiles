@@ -6,7 +6,6 @@ Environment=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin
 Environment=DISPLAY=:0
 Environment=HOME=/home/chant
 Type=simple
-Restart=never
 KillMode=process
 
 Environment=device_args="-f @xavierchanth -t @xchan -d charon -r @xchan_8286 "

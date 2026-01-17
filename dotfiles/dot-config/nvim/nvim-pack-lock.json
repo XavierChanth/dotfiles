@@ -77,6 +77,11 @@
       "src": "https://github.com/echasnovski/mini.icons",
       "version": ">=0.0.0"
     },
+    "mini.pick": {
+      "rev": "6b7974543b17cf2e294993fc3d8545a342258232",
+      "src": "https://github.com/nvim-mini/mini.pick",
+      "version": ">=0.0.0"
+    },
     "nui.nvim": {
       "rev": "f535005",
       "src": "https://github.com/MunifTanjim/nui.nvim",

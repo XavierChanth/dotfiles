@@ -13,55 +13,29 @@ return {
     "selene.yml",
     ".git",
   },
-
-  on_init = function(client)
-    if client.workspace_folders then
-      local path = client.workspace_folders[1].name
-      if
-        path ~= vim.fn.stdpath("config")
-        and (
-          vim.uv.fs_stat(path .. "/.luarc.json")
-          or vim.uv.fs_stat(path .. "/.luarc.jsonc")
-        )
-      then
-        return
-      end
+  root_dir = function(buf, on_dir)
+    -- attach to existing workspace if possible
+    local ws = require("lazydev").find_workspace(buf)
+    if ws ~= nil then
+      return on_dir(ws)
     end
-    client.config.settings.Lua =
-      vim.tbl_deep_extend("force", client.config.settings.Lua, {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most
-          -- likely LuaJIT in the case of Neovim)
-          version = "LuaJIT",
-          -- Tell the language server how to find Lua modules same way as Neovim
-          -- (see `:h lua-module-load`)
-          path = {
-            "lua/?.lua",
-            "lua/?/init.lua",
-          },
-        },
-        -- Make the server aware of Neovim runtime files
-        workspace = {
-          checkThirdParty = false,
-          library = {
-            vim.env.VIMRUNTIME,
-            -- Depending on the usage, you might want to add additional paths
-            -- here.
-            '${3rd}/luv/library'
-            -- '${3rd}/busted/library'
-          },
-          -- Or pull in all of 'runtimepath'.
-          -- NOTE: this is a lot slower and will cause issues when working on
-          -- your own configuration.
-          -- See https://github.com/neovim/nvim-lspconfig/issues/3189
-          -- library = {
-          --   vim.api.nvim_get_runtime_file('', true),
-          -- }
-        },
-      })
+
+    -- use ~/.config/nvim for everything nvim-related as that seems to work best
+    local buf_name = vim.api.nvim_buf_get_name(buf)
+    if
+      vim.fs.relpath(vim.fn.stdpath("config"), buf_name)
+      or vim.fs.relpath(vim.fn.stdpath("data"), buf_name)
+      or vim.fs.relpath(vim.env.VIMRUNTIME, buf_name)
+    then
+      return on_dir(vim.fn.stdpath("config"))
+    end
+
+    -- fallback to default (luarc, git, …)
+    return on_dir(nil)
   end,
   settings = {
     Lua = {
+      workspace = { checkThirdParty = false },
       codeLens = { enable = true },
       hint = { enable = true, semicolon = "Disable" },
     },

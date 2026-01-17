@@ -30,13 +30,13 @@ PACKAGES=$(
   mesa-utils
   github-cli
   jq
-  ffmpegthumbnailer
-  poppler
   just
   parallel
   fd
   yazi
+  poppler
   imagemagick
+  resvg
   unzip
   tree
   unarchiver
