@@ -4,7 +4,7 @@ prepend_keymap = [
     "g",
     "?",
   ], run = "help", desc = "Help" },
-  { on = "<Enter>", run = "plugin --sync smart-enter", desc = "Smart enter" },
+  { on = "<Enter>", run = "plugin smart-enter", desc = "Enter directory / Open File" },
   { on = "<Backspace>", run = "leave", desc = "Leave the child directory" },
   { on = "o", run = "create", desc = "Create file" },
   { on = "<C-o>", run = "back", desc = "Go back" },
