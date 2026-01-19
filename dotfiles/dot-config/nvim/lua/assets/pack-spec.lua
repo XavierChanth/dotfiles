@@ -85,11 +85,6 @@ return {
       version = any,
     },
     {
-      src = "https://github.com/nvim-mini/mini.pick",
-      version = any,
-      data = { config = "config/mini-pick" },
-    },
-    {
       src = "https://github.com/sschleemilch/slimline.nvim",
       version = any,
       data = { config = "config/slimline" },

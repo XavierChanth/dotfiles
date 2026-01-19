@@ -67,16 +67,22 @@ vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>")
 
 -- Snacks
 vim.keymap.set("n", "<leader><space>", function()
-  require("mini.pick").builtin.files({ tool = "rg" })
+  local cwd = vim.lsp.client.root_dir
+  require("snacks.picker").files({ cwd = cwd })
+end)
+vim.keymap.set("n", "<leader>sf", function()
+  local cwd = require("oil").get_current_dir() or
+      vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+  require("snacks.picker").files({ cwd = cwd })
 end)
 vim.keymap.set("n", "<leader>sg", function()
-  require("mini.pick").builtin.grep({ tool = "rg" })
+  require("snacks.picker").grep()
 end)
 vim.keymap.set("n", "<leader>sc", function()
-  require("mini.pick").builtin.resume()
+  require("snacks.picker").resume()
 end)
 vim.keymap.set("n", "<leader>ss", function()
-  require("mini.extra").pickers.lsp({ scope = "workspace_symbol"  })
+  require("snacks.picker").lsp_symbols()
 end)
 vim.keymap.set("n", "<leader>z", function()
   require("snacks").zen.zen({
