@@ -1,7 +1,7 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "20ee0cad0b25e4a028d355c51b06d41eecb90d91",
+      "rev": "a0375eb6f7f944723162ef41c200ac6b364f53ac",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
     "blink.cmp": {
@@ -77,11 +77,6 @@
       "src": "https://github.com/echasnovski/mini.icons",
       "version": ">=0.0.0"
     },
-    "mini.pick": {
-      "rev": "6b7974543b17cf2e294993fc3d8545a342258232",
-      "src": "https://github.com/nvim-mini/mini.pick",
-      "version": ">=0.0.0"
-    },
     "nui.nvim": {
       "rev": "f535005",
       "src": "https://github.com/MunifTanjim/nui.nvim",
@@ -108,10 +103,6 @@
     "omnisharp-extended-lsp.nvim": {
       "rev": "a47388e",
       "src": "https://github.com/Hoffs/omnisharp-extended-lsp.nvim"
-    },
-    "opencode.nvim": {
-      "rev": "c3c6fb4d7d8beb348b67decfb00f23831c7f7df8",
-      "src": "https://github.com/NickvanDyke/opencode.nvim"
     },
     "persistence.nvim": {
       "rev": "c45ff86",
@@ -147,7 +138,7 @@
       "version": ">=0.0.0"
     },
     "venv-selector.nvim": {
-      "rev": "e56bed0eccc80d64ca2ec176cadd489b1bf4ea7d",
+      "rev": "98c04c70d11007b84111c5fa94b6ab9f2745b934",
       "src": "https://github.com/linux-cultist/venv-selector.nvim",
       "version": "'main'"
     },
