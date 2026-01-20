@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+app="${1:-AI}"
+title="${2:-Needs attention}"
+body="${3:-Session needs input}"
+urgency="${4:-normal}"
+
+if command -v notify-send >/dev/null 2>&1; then
+  notify-send -a "$app" -u "$urgency" "$title" "$body"
+  exit 0
+fi
+
+echo "notify-attention: notify-send not found" >&2
+exit 1
