@@ -52,11 +52,6 @@
       "src": "https://github.com/folke/lazydev.nvim",
       "version": ">=0.0.0"
     },
-    "markdown-preview.nvim": {
-      "rev": "9beccee",
-      "src": "https://github.com/iamcco/markdown-preview.nvim",
-      "version": ">=0.0.0"
-    },
     "mini.ai": {
       "rev": "bfb26d9072670c3aaefab0f53024b2f3729c8083",
       "src": "https://github.com/echasnovski/mini.ai",

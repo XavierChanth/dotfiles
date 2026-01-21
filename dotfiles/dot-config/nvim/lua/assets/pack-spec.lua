@@ -65,7 +65,9 @@ return {
       src = "https://github.com/nvim-treesitter/nvim-treesitter",
       version = nil,
       data = {
-        build = ":TSUpdate",
+        build = function()
+          vim.cmd("TSUpdate")
+        end,
         config = "config/treesitter",
       },
     },
@@ -124,7 +126,7 @@ return {
       {
         src = "https://github.com/folke/lazydev.nvim",
         version = any,
-        data = { config = "config/lazydev" }
+        data = { config = "config/lazydev" },
       },
     },
     rust = {
@@ -166,13 +168,6 @@ return {
         version = any,
         data = {
           config = "config/render-markdown",
-        },
-      },
-      {
-        src = "https://github.com/iamcco/markdown-preview.nvim",
-        version = any,
-        data = {
-          build = "mkdp#util#install",
         },
       },
       {
