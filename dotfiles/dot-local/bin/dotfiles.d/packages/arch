@@ -248,6 +248,11 @@ DESKTOP_PACKAGES=$(
   # AI
   # gitbutler-bin
   claude-code # This is getting purged soon
+
+  # Ryzen packages
+  # lact
+  # ryzenadj
+  # ryzen_smu-dkms-git
 EOF
 )
 # Zoom requires environment to share wayland correctly:
