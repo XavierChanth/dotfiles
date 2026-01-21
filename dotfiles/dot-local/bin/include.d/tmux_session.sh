@@ -7,11 +7,16 @@ function add_session() {
   name="$2"
   if [ -z "$name" ]; then
     case "$selected" in
-      */.work/*)
-        # Extract parent dir before .work and subdir after .work
-        before=$(echo "$selected" | sed 's/\/.work\/.*//' | xargs basename)
-        after=$(echo "$selected" | sed 's/.*\/.work\///' | xargs basename)
-        name="${before}-${after}"
+      */work/*)
+        work_path="${selected#*"/work/"}"
+        repo="${work_path%%/*}"
+        rest="${work_path#*/}"
+        if [ "$rest" = "$work_path" ]; then
+          name="$repo"
+        else
+          ws="${rest%%/*}"
+          name="${repo}-${ws}"
+        fi
         ;;
       *)
         name=$(basename "$selected" | sed -e 's/\./_/g')

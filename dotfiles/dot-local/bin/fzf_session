@@ -14,7 +14,7 @@ selected=$(
     # tested find against fd, for a small set of directories like this find is slightly faster
     # now, if you were recursively searching all files, fd wins by a mile
     find "$projects_dir" -mindepth 0 -maxdepth 2 -type d
-    find "$projects_dir" -mindepth 4 -maxdepth 4 -type d -path "$projects_dir/*/.work/*"
+    [ -d "$HOME/work" ] && find "$HOME/work" -mindepth 2 -maxdepth 2 -type d
     # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
     echo "$HOME/.dotfiles"
     echo "main"

@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
 workdir="$(pwd -P)"
-if [[ "$workdir" == *"/.work/"* ]]; then
-  work_parent="${workdir%%/.work/*}"
-  work_child="${workdir#*"/.work/"}"
-  root="$work_parent/.work/${work_child%%/*}"
+if [[ "$workdir" == *"/work/"* ]]; then
+  work_parent="${workdir%%/work/*}"
+  work_path="${workdir#*"/work/"}"
+  repo="${work_path%%/*}"
+  rest="${work_path#*/}"
+  if [[ "$rest" == "$work_path" ]]; then
+    root="$work_parent/work/$repo"
+  else
+    ws="${rest%%/*}"
+    root="$work_parent/work/$repo/$ws"
+  fi
 else
   root="$(git rev-parse --show-toplevel)"
 fi

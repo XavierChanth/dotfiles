@@ -28,15 +28,24 @@ read -r name
 
 if [ -z "$name" ]; then exit 0; fi
 
+work_root="$HOME/work/$(basename "$selected")"
+workspace_path="$work_root/$name"
+
+if [ -e "$workspace_path" ]; then
+  echo "Workspace already exists: $workspace_path"
+  read -r name
+  exit 1
+fi
+
 (
   set -e
   cd "$selected"
-  mkdir -p .work
-  jj workspace add ".work/$name"
+  mkdir -p "$work_root"
+  jj workspace add "$workspace_path"
 ) || {
   echo "Failed to create workspace. Press enter to continue.";
   read -r name;
   exit 1;
 }
 
-add_session "$selected"
+add_session "$workspace_path"
