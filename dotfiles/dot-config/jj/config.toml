@@ -14,6 +14,11 @@ email = "xavier@atsign.com"
 [--scope.user]
 email = "xavier@woosah.io"
 
+[[--scope]]
+--when.repositories = ["~/src/cc/"]
+[--scope.user]
+email = "xavier@chanthvongconsulting.ca"
+
 [ui]
 default-command = "log"
 

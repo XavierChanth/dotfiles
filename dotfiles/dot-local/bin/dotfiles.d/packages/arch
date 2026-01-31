@@ -195,6 +195,7 @@ DESKTOP_PACKAGES=$(
   obs-studio
   obs-pipewire-audio-capture
   obs-backgroundremoval
+  onnxruntime-rocm
   v4l2loopback-dkms
 
   # RDP/VNC client

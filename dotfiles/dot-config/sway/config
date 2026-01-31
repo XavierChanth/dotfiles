@@ -108,6 +108,9 @@ for_window [class="zoom" title="Meeting"] inhibit_idle open
 for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] floating enable, sticky enable
 for_window [title="Picture in picture"] floating enable, sticky enable
 
+# Spotify miniplayer:
+for_window [app_id="chromium-browser"] floating enable, sticky enable, resize 300 x 300
+
 for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] floating enable
 for_window [app_id="blueman-manager|system-config-printer|.*iwgtk|.*pwvucontrol"] floating enable, sticky enable
 
