@@ -4,8 +4,7 @@
 /config.toml
 
 !/skills/
-!/skills/*/SKILL.md
-!/skills/*/LICENSE*
+!/skills/**
 /skills/.system
 
 !/skills/create-plan
