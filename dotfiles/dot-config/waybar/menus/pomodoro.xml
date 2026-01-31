@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child>
+      <object class="GtkMenuItem" id="toggle">
+        <property name="label"> Toggle</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="timer01">
+        <property name="label">config  25-5-15</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="timer02">
+        <property name="label">config  50-10-30</property>
+      </object>
+    </child>
+  </object>
+</interface>

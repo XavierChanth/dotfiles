@@ -4,11 +4,19 @@
   transition: background-color 0.3s ease-out;
 }
 
-window#waybar {
+window#waybar, menu {
   background: rgba(26, 27, 38, 0.75);
   color: #c0caf5;
   font-family: JetBrains Mono Nerd Font Mono;
   transition: background-color 0.5s;
+}
+
+menu {
+  font-size: 10px
+}
+
+menuitem {
+  border-radius: 15px;
 }
 
 .modules-left,
@@ -26,7 +34,8 @@ window#waybar {
 }
 
 .module:hover,
-.drawer {
+.drawer,
+menuitem:hover {
   background: rgba(26, 27, 38, 0.9);
 }
 

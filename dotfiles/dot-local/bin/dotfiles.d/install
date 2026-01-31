@@ -138,6 +138,8 @@ arch)
       --strategies crate-meta-data,quick-install,compile \
       $CARGO_PACKAGES
 
+  cargo install --git https://github.com/Andeskjerf/waybar-module-pomodoro
+
   [ -n "$GO_PACKAGES" ] &&
     go install $GO_PACKAGES
 

@@ -7,7 +7,7 @@
   "spacing": 4, // Gaps between modules (4px)
   // Choose the order of the modules
   "modules-left": ["sway/workspaces", "hyprland/workspaces", "sway/window", "hyprland/window"],
-  "modules-center": ["clock"],
+  "modules-center": ["clock", "custom/spacer", "custom/pomodoro"],
   "modules-right": [
     "group/gtray",
     "group/gmonitor",
@@ -71,6 +71,5 @@
   },
 
   //Modules configuration
-
-  "include": ["~/.config/waybar/modules.json"],
+  "include": ["~/.config/waybar/modules.jsonc"],
 }

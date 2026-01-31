@@ -15,6 +15,18 @@
     "format": "|",
     "tooltip": false
   },
+  "custom/pomodoro": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.cargo/bin/waybar-module-pomodoro",
+    "menu": "on-click",
+    "menu-file": "~/.config/waybar/menus/pomodoro.xml",
+    "menu-actions": {
+      "toggle": "~/.cargo/bin/waybar-module-pomodoro toggle",
+      "timer01": "~/.cargo/bin/waybar-module-pomodoro set-work 25 set-short 5 set-long 15",
+      "timer02": "~/.cargo/bin/waybar-module-pomodoro set-work 50 set-short 10 set-long 30",
+    },
+  },
   "custom/socks": {
     "interval": 1,
     "exec": "echo \"{ \\\"text\\\": \\\"$(systemctl status --user socks >/dev/null 2>&1 && echo on || echo off)\\\"}\"",
