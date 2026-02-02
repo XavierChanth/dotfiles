@@ -1,20 +1,47 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "tokyonight",
-  // "default_agent": "plan",
-  "model": "openai/gpt-5.2",
+
+  // HOT TAKE: opus-4.5 is not that good.
+  // In every single test that I've run gpt-5.2-codex tends to outperform it.
+  // I've used a variety of 
+
+  // If I'm doing a plan-first approach, I prefer to reach for codex
+  "default_agent": "plan",
+
+  // gpt-5.2-codex is the best general purpose model that I've found
+  "model": "openai/gpt-5.2-codex",
+
   "agent": {
-    "plan": {
-      "model": "openai/gpt-5.2",
+    // gpt-5.2-codex is pretty well balanced, and quite terse, which is great
+    // for implementation.
+    "build": {
+      "model": "openai/gpt-5.2-codex",
       "reasoningEffort": "medium",
     },
-    "build": {
-      // "model": "openai/gpt-5.2-codex",
-      // "reasoningEffort": "low",
-      //
-      "model": "zai-coding-plan/glm-4.7",
+
+    // glm-4.7 is pretty good at building too, but I find it tends to lose sight
+    // of the goal and ends up doing more than asking...
+    // i.e. it slops all over the place
+    // "build": { "model": "zai-coding-plan/glm-4.7" }
+
+    // giving this another shot
+    "plan": {
+      "model": "anthropic/opus-4.5",
+      "reasoningEffort": "high",
     },
-    "title": { "model": "opencode/gpt-5-nano" }
+
+
+    // gpt-5.2 tends to be better than gpt-5.2-codex at planning in opencode
+    // "plan": {
+    //   "model": "openai/gpt-5.2",
+    //   "reasoningEffort": "medium",
+    // },
+
+    // Anything cheap and fast is good for session models.
+    // I'm paying for z.ai and don't use it much... might as well use it for
+    // something.
+    "title": { "model": "zai-coding-plan/glm-4.7-flash" }
   },
   "keybinds": {
     "model_cycle_favorite": "ctrl+n",
