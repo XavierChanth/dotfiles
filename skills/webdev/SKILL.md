@@ -11,6 +11,7 @@ Create content-forward React components with Tailwind styling and shadcn/ui buil
 ## Tooling preferences
 - Prefer Bun for installs, scripts, and CLIs unless the user explicitly requests npm/pnpm/yarn.
 - Prefer `bunx` over `npx` for one-off CLIs.
+- Prefer lucide icons via `lucide-react` when icons are needed.
 
 ## Workflow (choose the right subresource)
 
@@ -20,6 +21,7 @@ Create content-forward React components with Tailwind styling and shadcn/ui buil
 
 ### 2) Pick the relevant subresource(s)
 - **Content UI (Tailwind + shadcn/ui):** See `skills/webdev/references/content-ui.md`.
+- **Monorepo (Bun + Turborepo):** See `skills/webdev/references/monorepo-bun-turbo.md`.
 - **Convex data (queries, mutations, actions):** See `skills/webdev/references/convex-queries-mutations-actions.md`.
 - **Routing & SSR (TanStack Start):** See `skills/webdev/references/routing-ssr.md`.
 - **Auth (better-auth / better-auth-ui):** See `skills/webdev/references/better-auth.md`.

@@ -7,6 +7,7 @@ Use this when the request is primarily about layout, typography, components, or 
 - Use Tailwind utilities for spacing, typography, and responsive layout.
 - If a needed shadcn/ui component is missing, add it with `bunx shadcn@latest add <component>`.
 - Avoid adding new libraries unless the user explicitly asks (TanStack Router is allowed).
+- Prefer lucide icons via `lucide-react` when icons are needed.
 
 ## Tooling
 - Prefer Bun for installs, scripts, and CLIs unless the user explicitly requests npm/pnpm/yarn.
@@ -18,4 +19,5 @@ Provide URLs in code blocks (no inline links).
 ```text
 https://ui.shadcn.com/docs
 https://tailwindcss.com/docs
+https://lucide.dev
 ```
