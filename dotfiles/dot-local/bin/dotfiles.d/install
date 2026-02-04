@@ -27,6 +27,7 @@ zsh_state_dir="$HOME/.local/state/zsh"
 mkdir -p "$zsh_state_dir/history/"
 mkdir -p "$HOME/src"
 mkdir -p "$HOME/.ssh/config.d" # ssh profiles that I don't want tracked in git go here
+mkdir -p "$HOME/.ssh/control"
 mkdir -p "$HOME/.local/bin"
 mkdir -p "$HOME/.local/dev"
 mkdir -p "$HOME/.local/state/colorscheme"
