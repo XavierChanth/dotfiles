@@ -27,7 +27,7 @@ background-blur-radius = 20
 # behaviour
 
 title = "Ghostty"
-command = "sh -c 'PATH=$PATH:/opt/homebrew/bin tmux new -A -s main"
+command = "tmux new -A -s main"
 
 confirm-close-surface = false
 quit-after-last-window-closed = true
