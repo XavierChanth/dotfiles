@@ -64,6 +64,7 @@
     "modules": [
       "custom/spacer",
       "systemd-failed-units",
+      "custom/voxtype",
       "privacy",
       "custom/notification",
       "battery",

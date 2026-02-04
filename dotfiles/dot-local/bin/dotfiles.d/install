@@ -140,6 +140,7 @@ arch)
       $CARGO_PACKAGES
 
   cargo install --git https://github.com/Andeskjerf/waybar-module-pomodoro
+  cargo install --features gpu-hipblas --git https://github.com/peteonrails/voxtype voxtype
 
   [ -n "$GO_PACKAGES" ] &&
     go install $GO_PACKAGES

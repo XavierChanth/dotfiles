@@ -1,0 +1,47 @@
+{
+  "$schema": "https://btca.dev/btca.schema.json",
+  "resources": [
+    {
+      "name": "svelte",
+      "specialNotes": "This is the svelte docs website repo, not the actual svelte repo. Focus on the content directory, it has all the markdown files for the docs.",
+      "type": "git",
+      "url": "https://github.com/sveltejs/svelte.dev",
+      "branch": "main",
+      "searchPath": "apps/svelte.dev"
+    },
+    {
+      "name": "tailwindcss",
+      "specialNotes": "This is the tailwindcss docs website repo, not the actual tailwindcss repo. Use the docs to answer questions about tailwindcss.",
+      "type": "git",
+      "url": "https://github.com/tailwindlabs/tailwindcss.com",
+      "searchPath": "src/docs",
+      "branch": "main"
+    },
+    {
+      "type": "git",
+      "name": "nextjs",
+      "url": "https://github.com/vercel/next.js",
+      "branch": "canary",
+      "searchPath": "docs",
+      "specialNotes": "These are the docs for the next.js framework, not the actual next.js repo. Use the docs to answer questions about next.js."
+    },
+    {
+      "type": "git",
+      "name": "Tanstack router and start",
+      "branch": "main",
+      "url": "https://github.com/tanstack/router",
+      "specialNotes": "This is the repo which contains tanstack router and tanstack start. Use this repo to answer questions about tanstack router or tanstack start."
+    },
+{
+      "type": "git",
+      "name": "Tanstack query",
+      "branch": "main",
+      "url": "https://github.com/tanstack/query",
+      "specialNotes": "This is the repo which contains tanstack query. Use this repo to answer questions about tanstack query."
+    },
+
+  ],
+  "model": "glm-4.7",
+  "provider": "zai-coding-plan",
+  "providerTimeoutMs": 300000
+}

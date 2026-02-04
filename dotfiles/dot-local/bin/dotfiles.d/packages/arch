@@ -130,6 +130,7 @@ DESKTOP_PACKAGES=$(
   xdg-desktop-portal-wlr
   xdg-desktop-portal-gtk
   wl-clipboard
+  wtype
   zenity
 
   # DE packages
@@ -248,7 +249,7 @@ DESKTOP_PACKAGES=$(
 
   # AI
   # gitbutler-bin
-  claude-code # This is getting purged soon
+  voxtype
 
   # Ryzen packages
   # lact

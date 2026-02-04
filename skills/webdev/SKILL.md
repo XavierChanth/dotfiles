@@ -23,6 +23,7 @@ Create content-forward React components with Tailwind styling and shadcn/ui buil
 - **Content UI (Tailwind + shadcn/ui):** See `skills/webdev/references/content-ui.md`.
 - **Monorepo (Bun + Turborepo):** See `skills/webdev/references/monorepo-bun-turbo.md`.
 - **Convex data (queries, mutations, actions):** See `skills/webdev/references/convex-queries-mutations-actions.md`.
+- **Billing (Autumn + Convex):** See `skills/webdev/references/autumn-billing.md`.
 - **Routing & SSR (TanStack Start):** See `skills/webdev/references/routing-ssr.md`.
 - **Auth (better-auth / better-auth-ui):** See `skills/webdev/references/better-auth.md`.
 - **Deployment (Cloudflare Workers):** See `skills/webdev/references/cloudflare-deploy.md`.

@@ -102,6 +102,9 @@ gaps outer 8
 smart_gaps on
 floating_maximum_size 1200 x 800
 
+# Workspace Configuration
+workspace_auto_back_and_forth yes
+
 # Startup App rules
 for_window [class="zoom" title="zoom"]  floating enable
 for_window [class="zoom" title="Meeting"] inhibit_idle open
@@ -148,7 +151,7 @@ bindsym $mod+$mod2+Return exec foot
 
 bindsym $mod+b exec $browser
 bindsym $mod+Shift+b exec $browser2
-bindsym $mod+v exec $notes
+
 
 # Focus movement
 bindsym $mod+h focus left
@@ -253,3 +256,6 @@ bindsym $hypr+2 exec $script/screenshot-region-view
 bindsym $hypr+3 exec $script/screenshot-window
 bindsym $hypr+4 exec $script/screenshot-region
 
+# Voice input
+bindsym --no-repeat $mod+v exec $script/voice-start
+bindsym --release $mod+v exec $script/voice-stop

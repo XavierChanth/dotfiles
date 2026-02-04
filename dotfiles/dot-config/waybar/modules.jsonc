@@ -15,6 +15,13 @@
     "format": "|",
     "tooltip": false
   },
+  "custom/voxtype": {
+    "exec": "~/.cargo/bin/voxtype status --follow --format json --extended",
+    "return-type": "json",
+    "format": "{} [{}]",
+    "format-alt": "{model}",
+    "tooltip": true
+  },
   "custom/pomodoro": {
     "format": "{}",
     "return-type": "json",
