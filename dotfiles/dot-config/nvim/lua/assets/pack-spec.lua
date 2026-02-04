@@ -106,6 +106,11 @@ return {
       version = any,
       data = { config = "config/mini-diff" },
     },
+    {
+      src = "https://github.com/carlos-algms/agentic.nvim",
+      version = nil,
+      data = { config = "config/agentic" },
+    },
   },
   -- Loads on specific file type
   ft = {

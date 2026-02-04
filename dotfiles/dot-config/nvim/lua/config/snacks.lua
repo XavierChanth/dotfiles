@@ -79,7 +79,7 @@ require("snacks").setup({
       -- {
       --   align = "center",
       --   text = function()
-      --     local ms = 
+      --     local ms =
       --     return {
       --       { "⚡ Neovim loaded in ", hl = "footer" },
       --       { ms .. "ms", hl = "special" },
@@ -94,6 +94,7 @@ require("snacks").setup({
   },
   matcher = { sort_empty = false },
   picker = {
+    main_file = false,
     ui_select = true,
     layout = {
       preset = function()

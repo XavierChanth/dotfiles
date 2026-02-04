@@ -54,7 +54,7 @@ vim.keymap.set("n", "<leader>xX", "<cmd>lua vim.diagnostic.setloclist()<cr>")
 -- PLUGINS
 
 -- Oil.nvim
-vim.keymap.set("n", "<leader>e", "<cmd>Oil<cr>")
+vim.keymap.set("n", "<leader>e", "<cmd>lua require('oil').open()<cr>")
 
 -- vim-tmux-navigator
 vim.keymap.set({ "n", "t", "i" }, "<c-h>", "<cmd>TmuxNavigateLeft<cr>")

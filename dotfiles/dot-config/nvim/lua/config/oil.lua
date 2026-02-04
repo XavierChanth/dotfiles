@@ -10,18 +10,16 @@ require("oil").setup({
     natural_order = true,
     case_insensitive = true,
   },
+  float = {
+    padding = 0,
+  },
   cleanup_delay_ms = 1,
   use_default_keymaps = false,
   keymaps = {
     ["<leader>e"] = "actions.close",
-    ["<leader>E"] = "actions.close",
     ["q"] = "actions.close",
     ["<backspace>"] = "actions.parent",
     ["<CR>"] = "actions.select",
-    ["<leader>."] = function()
-      local cwd = require("oil").get_current_dir()
-      vim.cmd("cd " .. cwd)
-    end,
     ["<leader><CR>"] = {
       callback = function()
         local augroup =
@@ -47,8 +45,6 @@ require("oil").setup({
       end,
     },
     ["<C-r>"] = "actions.refresh",
-    ["H"] = "actions.toggle_hidden",
-    ["g?"] = "actions.show_help",
     ["gx"] = "actions.open_external",
     ["<C-t>"] = function() -- opens a new tmux window at the current dir
       require("utils.tmux").neww({
@@ -66,11 +62,14 @@ require("oil").setup({
         vertical = true,
       })
     end,
-    ["<leader>a"] = function()
-      require("utils.tmux").neww({
-        cwd = require("oil").get_current_dir(),
-        cmd = "agent",
-      })
-    end
   },
+})
+
+local oil_snacks_main = vim.api.nvim_create_augroup("oil-snacks-main", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = oil_snacks_main,
+  pattern = "oil",
+  callback = function()
+    vim.b.snacks_main = true
+  end,
 })

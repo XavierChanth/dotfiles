@@ -1,0 +1,13 @@
+[Unit]
+Description=opencode server
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+ExecStart=%h/.bun/bin/opencode serve --hostname localhost --port 9999
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+

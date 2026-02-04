@@ -1,5 +1,8 @@
 local cmp = require("blink-cmp")
 cmp.setup({
+  enabled = function()
+    return not vim.tbl_contains({ "AgenticInput" }, vim.bo.filetype)
+  end,
   completion = {
     list = { selection = { auto_insert = true, preselect = false } },
     menu = {

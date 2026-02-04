@@ -1,4 +1,5 @@
 require("render-markdown").setup({
+  file_types = { "markdown", "md", "AgenticChat" },
   code = {
     sign = false,
     conceal_delimiters = false,
@@ -14,5 +15,4 @@ require("render-markdown").setup({
     enabled = true,
     comment = { conceal = false },
   },
-}
-)
+})

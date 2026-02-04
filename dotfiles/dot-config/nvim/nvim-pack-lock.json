@@ -4,6 +4,10 @@
       "rev": "a0375eb6f7f944723162ef41c200ac6b364f53ac",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
+    "agentic.nvim": {
+      "rev": "e84e505837afc36358b950e4941ed8fc59bfdbe4",
+      "src": "https://github.com/carlos-algms/agentic.nvim"
+    },
     "blink.cmp": {
       "rev": "b19413d",
       "src": "https://github.com/saghen/blink.cmp",

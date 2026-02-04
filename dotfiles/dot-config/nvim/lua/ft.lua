@@ -9,4 +9,3 @@ vim.filetype.add({
 })
 vim.treesitter.language.register("xml", { "xaml" })
 vim.treesitter.language.register("yaml", { "pubspec" })
-

@@ -27,7 +27,7 @@
 
     // giving this another shot
     "plan": {
-      "model": "anthropic/opus-4.5",
+      "model": "anthropic/claude-opus-4-5",
       "reasoningEffort": "high",
     },
 
