@@ -107,9 +107,9 @@ return {
       data = { config = "config/mini-diff" },
     },
     {
-      src = "https://github.com/carlos-algms/agentic.nvim",
+      src = "https://github.com/ThePrimeagen/99",
       version = nil,
-      data = { config = "config/agentic" },
+      data = { config = "config/99" },
     },
   },
   -- Loads on specific file type

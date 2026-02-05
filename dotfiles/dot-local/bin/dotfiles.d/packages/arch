@@ -119,7 +119,7 @@ DESKTOP_PACKAGES=$(
 
   # Wayland core
   wayland
-  xorg-wayland
+  xorg-xwayland
   qt6-wayland
 
   # Wayland portals and roots extensions

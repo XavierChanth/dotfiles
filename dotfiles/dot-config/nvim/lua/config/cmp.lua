@@ -38,6 +38,9 @@ cmp.setup({
     preset = "default",
     ["<Esc>"] = {
       function()
+        -- if require("blink.cmp").snippet_active() then
+        --   vim.snippet.stop()
+        -- end
         require("blink.cmp").hide()
         if vim.fn.getcmdtype() ~= "" then
           -- replace <Esc> with <C-c> if it's the command line, otherwise the command is submitted

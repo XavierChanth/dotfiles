@@ -1,12 +1,12 @@
 {
   "plugins": {
+    "99": {
+      "rev": "0fb3b8b2d032289ea7088a37161e1c50bdfccfa9",
+      "src": "https://github.com/ThePrimeagen/99"
+    },
     "SchemaStore.nvim": {
       "rev": "a0375eb6f7f944723162ef41c200ac6b364f53ac",
       "src": "https://github.com/b0o/SchemaStore.nvim"
-    },
-    "agentic.nvim": {
-      "rev": "e84e505837afc36358b950e4941ed8fc59bfdbe4",
-      "src": "https://github.com/carlos-algms/agentic.nvim"
     },
     "blink.cmp": {
       "rev": "b19413d",
