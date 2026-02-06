@@ -103,6 +103,10 @@
       "rev": "a47388e",
       "src": "https://github.com/Hoffs/omnisharp-extended-lsp.nvim"
     },
+    "opencode.nvim": {
+      "rev": "0ff55d441bceca364af1c771f8ccdd3c93c4ffdd",
+      "src": "https://github.com/sudo-tee/opencode.nvim"
+    },
     "persistence.nvim": {
       "rev": "c45ff86",
       "src": "https://github.com/folke/persistence.nvim",

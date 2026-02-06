@@ -107,10 +107,20 @@ return {
       data = { config = "config/mini-diff" },
     },
     {
-      src = "https://github.com/ThePrimeagen/99",
+      src = "https://github.com/sudo-tee/opencode.nvim",
       version = nil,
-      data = { config = "config/99" },
+      data = { config = "config/opencode" },
     },
+    -- {
+    --   src = "https://github.com/carlos-algms/agentic.nvim",
+    --   version = nil,
+    --   data = { config = "config/agentic" },
+    -- },
+    -- {
+    --   src = "https://github.com/ThePrimeagen/99",
+    --   version = nil,
+    --   data = { config = "config/99" },
+    -- },
   },
   -- Loads on specific file type
   ft = {
