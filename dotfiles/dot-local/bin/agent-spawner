@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Agent spawner, aka "token burner mk.7"
+
 set -euo pipefail
 
 usage() {
@@ -9,7 +11,7 @@ Usage: agent-spawner [options]
 Spawn multiple coding agents in parallel (one tmux window + jj workspace per row).
 
 Options:
-  -f, --matrix <file>          Matrix file (default: agent-matrix.md)
+  -f, --matrix <file>          Matrix file (required)
   -p, --prompt <file>          Prompt file (default: repo root PROMPT.md or prompt.md)
   -w, --workspace-root <dir>   Workspace root under repo (default: .work/agent-spawner)
       --prefix <name>          Tmux window name prefix (default: empty)
@@ -23,13 +25,25 @@ Matrix format (Markdown fenced tsv block; spaces or tabs between columns):
 harness model thinking
 codex gpt-5.3-codex medium
 opencode openai/gpt-5.3-codex high
+claude claude-opus-4-6 10000
 ```
+
+"thinking" maps to:
+- thinking level in codex
+- variant in opencode
+- CLAUDE_CODE_EFFORT_LEVEL in claude
 EOF
 }
 
 die() {
   printf 'error: %s\n' "$*" >&2
   exit 1
+}
+
+usage_error() {
+  printf 'error: %s\n\n' "$*" >&2
+  usage >&2
+  exit 2
 }
 
 trim() {
@@ -99,13 +113,18 @@ build_agent_command() {
       printf 'opencode run -m %q --variant %q --agent build --title %q "$(cat %q)"' \
         "$model" "$thinking" "$model_display [$thinking]" "$prompt_file"
       ;;
+    claude)
+      printf 'CLAUDE_CODE_EFFORT_LEVEL=%q claude --model %q --agent build "$(cat %q)"' \
+        "$thinking" "$model" "$prompt_file"
+      ;;
     *)
       return 1
       ;;
   esac
 }
 
-matrix_file="agent-matrix.md"
+matrix_file=""
+matrix_provided=false
 prompt_file=""
 workspace_root=".work/agent-spawner"
 prefix=""
@@ -115,8 +134,9 @@ dry_run=false
 while [ "$#" -gt 0 ]; do
   case "$1" in
     -f|--matrix)
-      [ "$#" -ge 2 ] || die "missing value for $1"
+      [ "$#" -ge 2 ] || usage_error "missing value for $1"
       matrix_file="$2"
+      matrix_provided=true
       shift 2
       ;;
     -p|--prompt)
@@ -151,6 +171,8 @@ while [ "$#" -gt 0 ]; do
       ;;
   esac
 done
+
+[ "$matrix_provided" = true ] || usage_error "missing required option: -f|--matrix"
 
 command -v jj >/dev/null 2>&1 || die "jj not found"
 command -v tmux >/dev/null 2>&1 || die "tmux not found"
@@ -219,8 +241,8 @@ for raw_line in "${matrix_lines[@]}"; do
   [ -n "$thinking" ] || die "missing thinking in row: $line"
 
   case "$harness" in
-    codex|opencode) ;;
-    *) die "unsupported harness '$harness' (expected codex or opencode)" ;;
+    codex|opencode|claude) ;;
+    *) die "unsupported harness '$harness' (expected codex, opencode, or claude)" ;;
   esac
 
   harnesses+=("$harness")
@@ -232,13 +254,16 @@ done
 
 need_codex=false
 need_opencode=false
+need_claude=false
 for harness in "${harnesses[@]}"; do
   [ "$harness" = "codex" ] && need_codex=true
   [ "$harness" = "opencode" ] && need_opencode=true
+  [ "$harness" = "claude" ] && need_claude=true
 done
 
 [ "$need_codex" = false ] || command -v codex >/dev/null 2>&1 || die "codex not found"
 [ "$need_opencode" = false ] || command -v opencode >/dev/null 2>&1 || die "opencode not found"
+[ "$need_claude" = false ] || command -v claude >/dev/null 2>&1 || die "claude not found"
 
 if ! tmux list-sessions >/dev/null 2>&1; then
   die "tmux server is not running"

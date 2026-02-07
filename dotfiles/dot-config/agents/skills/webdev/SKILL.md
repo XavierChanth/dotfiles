@@ -1,6 +1,6 @@
 ---
 name: webdev
-description: Create or refine content-focused React UIs using Tailwind CSS and shadcn/ui components. Use when asked to build or polish web pages, sections, or components that present written content (marketing, docs, landing pages, editorial layouts) with React + Tailwind + shadcn. Avoid backend work; focus on typed props, UI structure, and styling.
+description: A set of resources for building web based applications and the default architectural preferences that should be mmade for projects
 ---
 
 # React Content UI
