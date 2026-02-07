@@ -25,7 +25,7 @@
 
   // Models
   "model": "openai/gpt-5.3-codex",
-  "small_model": "zai-coding-plan/glm-4.7-flash",
+  "small_model": "opencode/gpt-5-nano",
 
   "provider": {
     "openai": { "whitelist": ["gpt-5.3-codex", "gpt-5.2-codex", "gpt-5.2"] },
@@ -40,18 +40,29 @@
     "cloudflare-workers-ai": { "whitelist": [] },
     "zai-coding-plan": {
       "whitelist": ["glm-4.7", "glm-4.7-flash"],
-      "options": {
-        "baseURL": "https://gateway.ai.cloudflare.com/v1/{env:CLOUDFLARE_ACCOUNT_ID}/{env:CLOUDFLARE_GATEWAY_ID}/custom-zai/v4",
-        "headers": { "cf-aig-authorization": "Bearer {env:CF_AIG_TOKEN}" },
-      },
+      // "options": {
+      //   "baseURL": "https://gateway.ai.cloudflare.com/v1/{env:CLOUDFLARE_ACCOUNT_ID}/{env:CLOUDFLARE_GATEWAY_ID}/custom-zai/v4",
+      //   "headers": { "cf-aig-authorization": "Bearer {env:CF_AIG_TOKEN}" },
+      // },
     },
     "opencode": {
-      "whitelist": ["kimi-k2.5", "gemini-3-pro", "minimax-m2.1", "qwen3-coder"],
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "https://gateway.ai.cloudflare.com/v1/{env:CLOUDFLARE_ACCOUNT_ID}/{env:CLOUDFLARE_GATEWAY_ID}/custom-zen",
-        "headers": { "cf-aig-authorization": "Bearer {env:CF_AIG_TOKEN}" },
-      },
+      "whitelist": [
+        "gpt-5-nano", // small model
+        "claude-opus-4-6",
+        "claude-opus-4-5",
+        "claude-sonnet-4-5",
+        "claude-haiku-4-5",
+        "gemini-3-pro",
+        "gemini-3-flash",
+        "minimax-m2.1",
+        "qwen3-coder",
+        "kimi-k2.5",
+      ],
+      // "npm": "@ai-sdk/openai-compatible",
+      // "options": {
+      //   "baseURL": "https://gateway.ai.cloudflare.com/v1/{env:CLOUDFLARE_ACCOUNT_ID}/{env:CLOUDFLARE_GATEWAY_ID}/custom-zen",
+      //   "headers": { "cf-aig-authorization": "Bearer {env:CF_AIG_TOKEN}" },
+      // },
     },
   },
 
