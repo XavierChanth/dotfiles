@@ -20,6 +20,7 @@ return {
   "jsonls",
   "yamlls",
   "tinymist",
+  "tombi",
 
   -- docker
   "docker_compose_ls",
