@@ -1,9 +1,4 @@
 **
 !.gitignore
-!settings.json
-
-!skills/
-!skills/*
-
-!commands/
-!commands/*
+!/settings.json
+!/skills

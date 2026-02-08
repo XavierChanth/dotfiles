@@ -1,11 +1,6 @@
 **
 !.gitignore
+!/skills
 
 /config.toml
-
-!/skills/
-!/skills/**
-/skills/.system
-
-!/skills/create-plan
 
