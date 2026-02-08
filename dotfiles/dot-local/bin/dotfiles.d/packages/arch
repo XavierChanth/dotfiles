@@ -283,6 +283,7 @@ NODE_PACKAGES=$(
   cat <<EOF | sed -e '/#.*$/d'
 opencode-ai
 @openai/codex
+@playwright/cli
 EOF
 )
 
