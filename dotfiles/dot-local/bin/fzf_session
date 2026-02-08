@@ -21,4 +21,17 @@ selected=$(
   ) |
     fzf --scheme=path --tiebreak=end,index --header "Open session in..."
 )
-add_session "$selected"
+
+name=""
+if [ -n "$selected" ]; then
+  case "$selected" in
+    "$projects_dir"/*)
+      rel_path="${selected#"$projects_dir"/}"
+      if [[ "$rel_path" == */* ]]; then
+        name="$(printf '%s' "$rel_path" | sed -e 's/\./_/g')"
+      fi
+      ;;
+  esac
+fi
+
+add_session "$selected" "$name"

@@ -9,14 +9,7 @@ function add_session() {
     case "$selected" in
       */work/*)
         work_path="${selected#*"/work/"}"
-        repo="${work_path%%/*}"
-        rest="${work_path#*/}"
-        if [ "$rest" = "$work_path" ]; then
-          name="$repo"
-        else
-          ws="${rest%%/*}"
-          name="${repo}-${ws}"
-        fi
+        name="w/$(printf '%s' "$work_path" | sed -e 's/\./_/g')"
         ;;
       *)
         name=$(basename "$selected" | sed -e 's/\./_/g')
