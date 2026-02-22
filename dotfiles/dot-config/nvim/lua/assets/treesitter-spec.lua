@@ -29,6 +29,7 @@ return {
   "markdown",
   "markdown_inline",
   "ninja",
+  "nix",
   "printf",
   "python",
   "query",
