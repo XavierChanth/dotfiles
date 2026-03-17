@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix Management"
+  short_description: "Manage Nix flakes and rebuild workflows"
+  default_prompt: "Use $nix-management to inspect this flake, make the requested change, and validate the relevant Nix checks before applying it."
