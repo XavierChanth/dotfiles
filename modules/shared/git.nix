@@ -1,9 +1,12 @@
 {...}: {
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
   programs.git = {
     enable = true;
-    delta.enable = true;
-
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       pull.rebase = false;
     };
