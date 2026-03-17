@@ -7,20 +7,15 @@
 }: {
   home.packages =
     (with pkgs; [
-      ghostty-bin
-      tmux
-      zsh
-      codex
-      fd
-      fzf
-      less
+      # Core
+      bash
       coreutils
+      less
       moreutils
-      inputs.neovim-nightly-overlay.packages.${system}.default
-      git
-      delta
-      difftastic
-      jujutsu
+      vim
+      zsh
+
+      # My Essentials
       bat
       bat-extras.batdiff
       bat-extras.batgrep
@@ -28,26 +23,84 @@
       bat-extras.batpipe
       bat-extras.batwatch
       bat-extras.prettybat
-      jq
-      just
-      parallel
-      yazi
-      poppler
-      imagemagick
-      resvg
-      unzip
-      tree
-      unar
+      codex
+      curl
+      delta
+      difftastic
+      fd
       fastfetch
+      fzf
+      gh
+      git
+      imagemagick
+      inputs.neovim-nightly-overlay.packages.${system}.default
+      jjui
+      jq
+      jujutsu
+      just
       pandoc
-      openssl
-      wget
-      iperf3
-      nmap
-      nettools
-      bind
-      lsof
+      parallel
+      poppler
+      resvg
       ripgrep
+      stow
+      tmux
+      tree
+      tree-sitter
+      unar
+      unzip
+      wget
+      yazi
+
+      # Networking tools
+      bind
+      iperf3
+      lsof
+      nettools
+      nmap
+      openssl
+    ])
+    ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
+      # Apps
+      ghostty-bin
+      google-chrome
+
+      # Programming Languages
+      basedpyright
+      bun
+      cmake
+      docker-compose-language-service
+      dockerfile-language-server
+      go
+      gofumpt
+      gopls
+      hadolint
+      iproute2mac
+      lua-language-server
+      neocmakelsp
+      ninja
+      nodejs
+      pnpm
+      prettier
+      python3
+      ruby
+      ruff
+      rust-analyzer
+      rustc
+      shellcheck
+      shfmt
+      stylua
+      svelte-language-server
+      tailwindcss-language-server
+      tinymist
+      tombi
+      typst
+      uv
+      vscode-json-languageserver
+      vtsls
+      yaml-language-server
+      zig
+      zls
     ])
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
       pkgs.traceroute
