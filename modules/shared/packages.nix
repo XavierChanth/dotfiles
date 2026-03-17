@@ -62,8 +62,6 @@
     ])
     ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
       # Apps
-      ghostty-bin
-      google-chrome
 
       # Programming Languages
       basedpyright
@@ -77,7 +75,6 @@
       hadolint
       iproute2mac
       kanata
-      karabiner-elements
       lua-language-server
       neocmakelsp
       ninja

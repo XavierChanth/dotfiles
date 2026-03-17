@@ -68,6 +68,23 @@
 
     mkdir -p "$apps_dir"
 
+    for app_name in \
+      "Ghostty.app" \
+      "Google Chrome.app" \
+      "Karabiner-Elements.app" \
+      "Karabiner-EventViewer.app"
+    do
+      app_link="$apps_dir/$app_name"
+      if [ -L "$app_link" ]; then
+        target="$(readlink "$app_link" || true)"
+        case "$target" in
+          /nix/store/*)
+            rm -f "$app_link"
+            ;;
+        esac
+      fi
+    done
+
     find "$apps_dir" -maxdepth 1 -type l -name '*.app' | while read -r app_link; do
       target="$(readlink "$app_link" || true)"
       case "$target" in
