@@ -76,6 +76,8 @@
       gopls
       hadolint
       iproute2mac
+      kanata
+      karabiner-elements
       lua-language-server
       neocmakelsp
       ninja

@@ -9,6 +9,7 @@
   imports = [
     ../../../modules/shared/nix.nix
     ../../../modules/darwin/defaults.nix
+    ../../../modules/darwin/kanata.nix
   ];
 
   networking.hostName = hostname;

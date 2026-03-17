@@ -1,0 +1,12 @@
+{
+  "cplusplus start": {
+    "prefix": "cplusplus-start",
+    "body": ["#ifdef __cplusplus", "extern \"C\" {", "#endif", "$1"],
+    "description": "Start __cplusplus wrapper"
+  },
+  "cplusplus end": {
+    "prefix": "cplusplus-end",
+    "body": ["#ifdef __cplusplus", "}", "#endif", "$1"],
+    "description": "End __cplusplus wrapper"
+  }
+}

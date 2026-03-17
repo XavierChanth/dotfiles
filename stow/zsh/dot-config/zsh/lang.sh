@@ -1,0 +1,97 @@
+#!/bin/zsh
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+__path=""
+
+# if command_exists vfox; then
+#   alias vfox='if [ -z $__VFOX_SHELL ]; then eval "$(\vfox activate zsh)"; fi; vfox'
+# fi
+
+# flutter
+export FLUTTER_ROOT="$HOME/.local/dev/flutter"
+if [ -d $FLUTTER_ROOT ]; then
+  export PUB_CACHE="$HOME/.pub-cache"
+  __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$FLUTTER_ROOT/bin/cache/dart-sdk/bin:$__path"
+  # dart completions
+  [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
+  alias pub='dart pub'
+  # pub() {
+  #   local bin="flutter"
+  #   local subcommand="$1"
+  #   shift 1
+  #   local extra_args=""
+  #   case "$subcommand" in
+  #   get)
+  #     extra_args="$extra_args --no-example"
+  #     ;;
+  #   bump | unpack | workspace)
+  #     bin="dart"
+  #     ;;
+  #   esac
+  #   "$bin" pub "$subcommand" $extra_args "$@"
+  # }
+  alias melos='dart run melos'
+fi
+
+# android
+export ANDROID_HOME="/Users/chant/Library/Android/sdk"
+__path="$ANDROID_HOME/cmdline-tools/latest/bin:$__path"
+
+# clang
+export CPATH="/usr/local/include:$CPATH"
+
+# cmake
+alias cmbs='cmake -G Ninja -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
+alias cmbr='cmake -G Ninja -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
+alias cmbb='cmake --build build'
+alias cmcc='ln -s build/compile_commands.json .; [ -d "./tests" ] && ln -s build/compile_commands.json ./tests'
+alias ctb='ctest --test-dir build --output-on-failure'
+alias ccc='cmbs; cmbb; cmcc'
+
+# golang
+if command_exists go; then
+  __path="$HOME/go/bin:$__path"
+fi
+
+# rust / cargo
+if command_exists cargo; then
+  __path="$HOME/.cargo/bin:$__path"
+fi
+
+# dotnet
+if command_exists dotnet; then
+  __path="$HOME/.dotnet/tools:$__path"
+fi
+
+# ruby
+if command_exists gem; then
+  export GEM_HOME="$(gem env user_gemhome)"
+  __path="$GEM_HOME/bin:$__path"
+fi
+
+if command_exists arduino-cli; then
+  alias ard='arduino-cli'
+  function ard-upload() {
+    p="$1"
+    if [ -z "$p" ]; then
+      echo "Usage: ard-upload <path>"
+      return 1
+    fi
+    selected="$(arduino-cli board list | tail -n +2 | fzf)"
+    if [ -z "$selected" ]; then
+      echo Nothing selected
+      return 0
+    fi
+    arduino-cli upload "$p" -b "$(echo $selected | rev | cut -w -f2 | rev)" -p "$(echo $selected | cut -w -f1)"
+  }
+fi
+
+if command_exists bun; then
+  __path="/home/chant/.bun/bin:$__path"
+fi
+
+# prepend local path to PATH
+export PATH="$__path:$PATH"
