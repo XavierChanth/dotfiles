@@ -1,9 +1,56 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    curl
-    eza
-    fd
-    jq
-    ripgrep
-  ];
+{
+  lib,
+  pkgs,
+  inputs,
+  system,
+  ...
+}: {
+  home.packages =
+    (with pkgs; [
+      ghostty-bin
+      tmux
+      zsh
+      codex
+      fd
+      fzf
+      less
+      coreutils
+      moreutils
+      inputs.neovim-nightly-overlay.packages.${system}.default
+      git
+      delta
+      difftastic
+      jujutsu
+      bat
+      bat-extras.batdiff
+      bat-extras.batgrep
+      bat-extras.batman
+      bat-extras.batpipe
+      bat-extras.batwatch
+      bat-extras.prettybat
+      jq
+      just
+      parallel
+      yazi
+      poppler
+      imagemagick
+      resvg
+      unzip
+      tree
+      unar
+      fastfetch
+      pandoc
+      openssl
+      wget
+      iperf3
+      nmap
+      nettools
+      bind
+      lsof
+      ripgrep
+    ])
+    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+      pkgs.traceroute
+      pkgs.iproute2
+    ];
 }
