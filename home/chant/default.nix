@@ -16,6 +16,8 @@
 
   programs.home-manager.enable = true;
 
+  home.file.".config/spaceship-prompt".source = "${pkgs.spaceship-prompt}/lib/spaceship-prompt";
+
   home.sessionPath = [
     "${config.home.homeDirectory}/.dotfiles/bin/shared"
     "${config.home.homeDirectory}/.dotfiles/bin/hosts/${hostname}"
@@ -104,6 +106,5 @@
 
   home.sessionVariables = {
     EDITOR = "vim";
-    SPACESHIP_PROMPT_DIR = "${pkgs.spaceship-prompt}/lib/spaceship-prompt";
   };
 }

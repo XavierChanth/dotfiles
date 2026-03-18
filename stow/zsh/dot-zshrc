@@ -65,11 +65,7 @@ source $XDG_CONFIG_HOME/zsh/vi_mode.sh
 source $XDG_CONFIG_HOME/zsh/spaceship_sections.sh
 
 # prompt
-if [ -n "$SPACESHIP_PROMPT_DIR" ] && [ -f "$SPACESHIP_PROMPT_DIR/spaceship.zsh" ]; then
-  source "$SPACESHIP_PROMPT_DIR/spaceship.zsh"
-  SPACESHIP_HOST_SHOW="true" # enable in ssh
-  SPACESHIP_PROMPT_ORDER=(jj_log dir host exec_time async line_sep jobs exit_code sudo mode char)
-elif [ -f "$XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh" ]; then
+if [ -f "$XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh" ]; then
   source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
   SPACESHIP_HOST_SHOW="true" # enable in ssh
   SPACESHIP_PROMPT_ORDER=(jj_log dir host exec_time async line_sep jobs exit_code sudo mode char)
