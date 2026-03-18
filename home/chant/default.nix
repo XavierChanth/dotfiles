@@ -119,12 +119,6 @@
     done
   '';
 
-  home.activation.configureRaycast = lib.hm.dag.entryAfter ["writeBoundary"] (
-    lib.mkIf pkgs.stdenv.isDarwin ''
-      /usr/bin/defaults write com.raycast.macos raycastGlobalHotkey -string "Command-Option-49"
-    ''
-  );
-
   home.sessionVariables = {
     EDITOR = "vim";
   };

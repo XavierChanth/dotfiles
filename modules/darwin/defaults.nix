@@ -17,35 +17,6 @@ in {
   ];
 
   system.defaults = {
-    CustomUserPreferences."com.apple.symbolichotkeys" = {
-      AppleSymbolicHotKeys = {
-        # Spotlight search on Command-Space.
-        "64" = {
-          enabled = true;
-          value = {
-            parameters = [
-              32
-              49
-              1048576
-            ];
-            type = "standard";
-          };
-        };
-        # Disable finder search window on Command-Option-Space.
-        "65" = {
-          enabled = false;
-          value = {
-            parameters = [
-              32
-              49
-              1572864
-            ];
-            type = "standard";
-          };
-        };
-      };
-    };
-
     NSGlobalDomain = {
       ApplePressAndHoldEnabled = false;
       InitialKeyRepeat = 15;
