@@ -95,6 +95,8 @@
     "/usr/local/bin"
   ];
 in {
+  system.defaults.dock.expose-group-apps = true;
+
   services.aerospace = {
     enable = true;
     settings = {
