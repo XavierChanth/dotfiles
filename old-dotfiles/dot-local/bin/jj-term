@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+workdir="$(pwd -P)"
+if [[ "$workdir" == *"/work/"* ]]; then
+  work_parent="${workdir%%/work/*}"
+  work_path="${workdir#*"/work/"}"
+  repo="${work_path%%/*}"
+  rest="${work_path#*/}"
+  if [[ "$rest" == "$work_path" ]]; then
+    root="$work_parent/work/$repo"
+  else
+    ws="${rest%%/*}"
+    root="$work_parent/work/$repo/$ws"
+  fi
+else
+  root="$(git rev-parse --show-toplevel)"
+fi
+
+name="jj-"
+
+existing="$(tmux lsw -F "#{window_id}" -f "#{==:#W,$name}")"
+
+if [ -n "$existing" ]; then
+  tmux select-window -t "$existing"
+  exit 0
+fi
+
+tui=false
+log=false
+hook=false
+
+if $tui; then
+  command="jjui"
+  tmux neww -c "$root" "$command"
+elif $log; then
+  # create a vertical split in the sshnpd dir
+  tmux neww -c "$root"
+  jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
+  command="$HOME/.local/bin/cwatch -i 1 -c '$jj_command --no-pager'"
+  tmux splitw -l "45" -hbc "$root" "$command"
+  tmux select-pane -R
+
+  # set a hook to clean up after
+  tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"
+elif $hook; then
+  # could work if I got the cleanup part working
+  jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log --color always | less -Rc"
+  command="tmux send-keys -t .1 q C-c C-L '$jj_command' C-m"
+  tmux neww -c "$root"
+  tmux splitw -l 70% -hc "$root" -e "ZSH_PRECMD_HOOK=$command"
+
+  # set a hook to clean up after
+  tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"
+else
+  # tmux neww -e "SPACESHIP_JJ_LOG_SHOW=true" -e "SPACESHIP_DIR_PREFIX=" -c "$root"
+  tmux neww -c "$root"
+fi
+
+# Handle the created window
+tmux rename-window "$name"
+# move the window to #2 and focus
+tmux movew -b -t :2
+tmux selectw -t :2

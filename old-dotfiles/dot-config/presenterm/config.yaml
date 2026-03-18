@@ -1,0 +1,14 @@
+options:
+  end_slide_shorthand: true
+  command_prefix: "cmd:"
+  strict_front_matter_parsing: false
+
+defaults:
+  theme: xavierchanth
+  image_protocol: kitty-remote
+
+bindings:
+  go_to_slide: ["<number>G", "<number>gg"]
+
+mermaid:
+  scale: 2

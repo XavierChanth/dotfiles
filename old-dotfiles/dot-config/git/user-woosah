@@ -1,0 +1,4 @@
+[user]
+	name = xavierchanth
+	email = xavier@woosah.io
+	signingkey = ~/.ssh/id_ed25519.pub

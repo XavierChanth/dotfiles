@@ -104,5 +104,6 @@
 
   home.sessionVariables = {
     EDITOR = "vim";
+    SPACESHIP_PROMPT_DIR = "${pkgs.spaceship-prompt}/lib/spaceship-prompt";
   };
 }

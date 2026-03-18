@@ -1,0 +1,16 @@
+git:
+  mainBranches: [main, master, trunk]
+  paging:
+    pager: delta --paging=never --syntax-theme ansi -s --no-gitconfig
+
+os:
+  editPreset: nvim-remote
+
+gui:
+  filterMode: fuzzy
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - bold
+  authorColors:
+    "*": "cyan"

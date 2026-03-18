@@ -1,0 +1,43 @@
+prSections:
+  - title: My Pull Requests
+    filters: is:open author:@me archived:false
+  - title: Needs My Review
+    filters: is:open review-requested:@me archived:false
+  - title: Involved
+    filters: is:open involves:@me -author:@me archived:false
+issuesSections:
+  - title: My Issues
+    filters: is:open assignee:@me archived:false
+  - title: Created Issues
+    filters: is:open author:@me archived:false
+  - title: Involved
+    filters: is:open involves:@me -author:@me archived:false
+defaults:
+  layout:
+    issues:
+      creator:
+        hidden: true
+  refetchIntervalMinutes: 30
+keybindings:
+  issues: []
+  prs:
+    - key: c
+      command: >
+        source ~/.config/tmux/scripts/session.sh && add_session "{{.RepoPath}}"
+      # TODO: fix
+      # "" 'gt wt add "pr/{{.PrNumber}}" &&
+      #   gh pr checkout {{.PrNumber}} &&
+      #   nvim'
+      # 'neww -c {{.RepoPath}}'
+repoPaths:
+  xavierchanth/*: ~/src/xc/*
+  atsign-foundation/*: ~/src/af/*
+  atsign-company/*: ~/src/ac/*
+  :owner/:repo: ~/src/:owner/:repo
+theme:
+  ui:
+    table:
+      showSeparator: true
+pager:
+  diff: "delta"
+confirmQuit: false

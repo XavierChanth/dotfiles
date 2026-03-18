@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+
+/opt/homebrew/bin/sketchybar --reload
+$script_dir/borders

@@ -1,0 +1,79 @@
+#!/bin/zsh
+
+echo "Verifying environment..."
+source "$HOME/.zshrc"
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+check_commands=(
+  git
+  curl
+  ps
+  bash
+  zsh
+  sudo
+  base32   # coreutils
+  parallel # moreutils
+  wget
+  openssl
+  tmux
+  nvim
+  rg # ripgrep
+  fzf
+  fd
+  lazygit
+  git
+  jj
+  delta # git-delta
+  bat
+  stow
+  go # golang
+  # non-brew stuff
+  spaceship
+  lazygit
+  uv
+  python3 # python
+  cmake
+  ninja
+  gcc
+  zig
+  cargo # rust
+  rust-analyzer
+  node
+  dotnet # dotnet-sdk
+  gh
+  jq
+  yazi
+  tokei
+  ffmpegthumbnailer
+  pdfinfo # poppler
+  # non-brew stuff
+  dart
+  flutter
+  yazi
+  # gh dash can't be checked
+  csharp-ls
+  magick
+  just
+)
+
+missing=""
+for cmd in ${check_commands[@]}; do
+  if ! command_exists "$cmd"; then
+    missing="$missing $cmd "
+  fi
+done
+
+if [ -n "$missing" ]; then
+  echo "Missing the following commands:"
+  echo "$missing" | xargs -I% echo %
+fi
+
+echo "Done checking environment"
+if [ -z "$missing" ]; then
+  exit 0
+else
+  exit 1
+fi

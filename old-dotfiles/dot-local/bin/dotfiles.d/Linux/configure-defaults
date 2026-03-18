@@ -1,0 +1,28 @@
+#!/bin/sh
+
+(
+  sudo -v
+
+  # Enable possible locales
+  echo "en_CA.UTF-8 UTF-8" | sudo tee /etc/locale.gen
+  echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
+
+  # Setup preferred locales
+  echo "LANG=en_US.UTF-8" | sudo tee /etc/locale.conf
+  echo "LC_CTYPE=en_US.UTF-8" | sudo tee -a /etc/locale.conf
+
+  # Generate the locales
+  sudo locale-gen
+
+  if ! [ -f "$DOTFILES/install-once" ]; then
+    # Setup systemd logind behavior
+    echo "[Login]" | sudo tee /etc/systemd/logind.conf
+    echo "HandlePowerKey=ignore" | sudo tee -a /etc/systemd/logind.conf
+    echo "HandlePowerKeyLongPress=poweroff" | sudo tee -a /etc/systemd/logind.conf
+    echo "IdleAction=ignore" | sudo tee -a /etc/systemd/logind.conf
+
+    echo "[Settings]" | sudo tee /etc/iwd/main.conf
+    echo "AutoConnect=true" | sudo tee -a /etc/iwd/main.conf
+    touch "$DOTFILES/install-once"
+  fi
+)

@@ -32,7 +32,15 @@
     casks = [
       "ghostty"
       "google-chrome"
+      "helium-browser"
       "karabiner-elements"
+      "keepassxc"
+      "microsoft-office"
+      "microsoft-teams"
+      "obs"
+      "raycast"
+      "visual-studio-code"
+      "zed"
     ];
   };
 }

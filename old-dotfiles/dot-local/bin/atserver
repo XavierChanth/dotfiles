@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+if ! command -v openssl >/dev/null 2>&1; then
+  echo "openssl is required for atsign commands"
+  return
+fi
+
+atsign="$1"
+if [[ ${atsign:0:1} != "@" ]]; then
+  atsign="@$atsign"
+fi
+fqdn=$($script_dir/atdirectory "${atsign:1}" | tr -d '\r\n\t ')
+
+atkeys="$HOME/.atsign/keys/${atsign}_key.atKeys"
+
+coproc { openssl s_client -brief -connect "${fqdn:1}"; }
+
+echo "from:$atsign" >&${COPROC[1]}
+echo "from:$atsign"
+read -r line <&${COPROC[0]}
+echo $line
+
+challenge=$line
+pkamres="pkam:$(at_pkam -p $atkeys -r ${challenge:6})"
+echo $pkamres >&${COPROC[1]}
+echo "@$pkamres"
+
+# Connect stdout/stdin to terminal foreground
+exec {OUT}<&${COPROC[0]}-
+exec {IN}>&${COPROC[1]}-
+
+cat <&0 >&${IN} &
+cat <&${OUT} >&1 &
+
+wait $COPROC_PID

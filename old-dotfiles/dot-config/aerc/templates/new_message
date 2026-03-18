@@ -1,0 +1,14 @@
+X-Mailer: aerc {{version}}
+
+
+Xavier Chanthavong
+Senior Solutions Engineer | NoPorts & Atsign
+xavier@atsign.com | +1 647-909-1639 | @xavierchanth
+
+NoPorts<https://noports.com>
+Atsign<https://atsign.com>
+
+{{- with .Signature }}
+
+{{.}}
+{{- end -}}

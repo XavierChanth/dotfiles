@@ -1,0 +1,78 @@
+*.default=true
+
+# present in 'Send this email?' dialog
+title.fg=yellow
+title.bold=true
+
+# used in setup and in 'From:' etc
+header.fg=purple
+header.bold=true
+
+# decorative lines
+border.fg=gray
+
+# requires attention
+*error.fg=red
+*error.blink=true
+*error.bold=true
+
+*warning.fg=yellow
+*warning.blink=true
+
+*success.fg=green
+
+# statusline
+statusline_default.fg=blue
+statusline_default.reverse=false
+
+# message list colors
+msglist_default.fg=gray
+
+msglist_unread.fg=silver
+msglist_unread.bold=true
+
+msglist_marked.fg=yellow
+msglist_marked.reverse=true
+
+msglist_flagged.fg=white
+msglist_flagged.bg=red
+msglist_flagged.bold=true
+
+# inbox etc
+dirlist_default.fg=white
+
+# highlight selected item
+*.selected.reverse=true
+*.selected.fg=blue
+*.selected.bold=true
+
+# primarily used in account setup
+selector_default.fg=gray
+selector_chooser.bold=true
+
+selector_focused.bg=green
+selector_focused.bold=true
+
+# command completion
+completion_default.bg=gray
+completion_gutter.bg=gray
+completion_pill.bg=aqua
+
+[viewer]
+header.fg=pink
+header.bold=true
+signature.fg=3
+signature.dim=true
+diff_meta.fg=red
+diff_meta.bold=true
+diff_chunk.dim=true
+diff_add.fg=green
+diff_del.fg=red
+quote_1.fg=6
+quote_2.fg=7
+quote_3.fg=6
+quote_4.fg=7
+quote_3.dim=true
+quote_4.dim=true
+quote_x.fg=gray
+quote_x.dim=true

@@ -1,0 +1,16 @@
+[mgr]
+prepend_keymap = [
+  { on = [
+    "g",
+    "?",
+  ], run = "help", desc = "Help" },
+  { on = "<Enter>", run = "plugin smart-enter", desc = "Enter directory / Open File" },
+  { on = "<Backspace>", run = "leave", desc = "Leave the child directory" },
+  { on = "o", run = "create", desc = "Create file" },
+  { on = "<C-o>", run = "back", desc = "Go back" },
+  { on = "<C-i>", run = "forward", desc = "Go forward" },
+  { on = "<C-t>", run = "plugin fzf", desc = "fzf" },
+]
+
+[help]
+append_keymap = [{ on = "/", run = "filter", desc = "Filter help menu" }]

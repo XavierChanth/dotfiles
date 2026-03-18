@@ -1,0 +1,9 @@
+[main]
+color-tsharks = ['/bin/tshark']
+ignore-base16-colors = true
+last-used-tshark = '/bin/tshark'
+respect-colorterm = true
+term = 'xterm-256color'
+theme-256 = 'default'
+validated-tsharks = ['/bin/tshark']
+

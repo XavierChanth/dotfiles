@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+qute_command() {
+  printf "%s\n" "$@" >>"$QUTE_FIFO"
+}
+
+fake_key() {
+  qute_command "fake-key $@"
+}
+
+main() {
+  if [ -z "$QUTE_FIFO" ]; then
+    return
+  fi
+
+  source $HOME/.local/bin/pass-util
+  if [ -z "$QUTE_URL" ]; then
+    local items=$(pick_username_and_password)
+  else
+    local items=$(pick_username_and_password --url "$QUTE_URL")
+  fi
+
+  local user=$(printf "%s" "$items" | sed '1p;d')
+  local pass=$(printf "%s" "$items" | sed '2p;d')
+
+  if [ -z "$user" ] || [ -z "$pass" ]; then
+    return 1
+  fi
+
+  fake_key "$user"
+  fake_key "<Tab>"
+  fake_key "$pass"
+}
+
+main "$@"

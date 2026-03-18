@@ -1,0 +1,127 @@
+#!/bin/zsh
+
+# enable profiling
+# zmodload zsh/zprof
+
+# zsh options
+set keyseq-timeout 0   # no key delays
+setopt COMBINING_CHARS # better paste for emojis
+
+setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+setopt hist_ignore_all_dups
+setopt inc_append_history
+setopt share_history
+setopt extended_history
+
+# basic programs
+export TERMINAL="ghostty"
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+if [ -f "$HOME/.local/bin/docker" ]; then
+  export DOCKER_HOST=unix:///run/user/1000/docker.sock
+fi
+
+# sway specific config
+if [ -n "$SWAYSOCK" ]; then
+  alias swaylock='swaylock -p -f -c 000000'
+  alias ls='ls --color=always'
+
+fi
+
+# Pagers
+export LESS='--mouse'
+export MANPAGER="nvim -c 'set ft=man | AnsiHighlight' -"
+if command -v batman >/dev/null 2>&1; then
+  eval "$(batman --export-env)"
+elif command -v bat >/dev/null 2>&1; then
+  export PAGER="bat"
+  export BAT_PAGER="less -RFc"
+  export FZF_CTRL_T_OPTS="--preview 'bat --line-range :50 {}'"
+else
+  export PAGER="less -RFc"
+fi
+
+# basic exports
+export LANG="en_US.UTF-8"
+export CLICOLOR=1 # Colored ls output
+export XDG_CONFIG_HOME="$HOME/.config"
+if command -v dircolors 2>&1 >/dev/null; then
+  if ! [ -f $XDG_CONFIG_HOME/dircolors ]; then
+    dircolors -p >$XDG_CONFIG_HOME/dircolors
+  fi
+  eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
+fi
+export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
+export DOTFILES="$HOME/.dotfiles"
+export JJ_CONFIG="$XDG_CONFIG_HOME/jj/config.toml"
+export HOMEBREW_NO_ENV_HINTS=true
+export OPENCODE_EXPERIMENTAL_PLAN_MODE=true
+
+# vi mode - must be set before prompt
+source $XDG_CONFIG_HOME/zsh/vi_mode.sh
+source $XDG_CONFIG_HOME/zsh/spaceship_sections.sh
+
+# prompt
+source $XDG_CONFIG_HOME/spaceship-prompt/spaceship.zsh
+SPACESHIP_HOST_SHOW="true" # enable in ssh
+SPACESHIP_PROMPT_ORDER=(jj_log dir host exec_time async line_sep jobs exit_code sudo mode char)
+
+# custom commands
+source $XDG_CONFIG_HOME/zsh/alias.sh
+source $XDG_CONFIG_HOME/zsh/commands.sh
+
+#environment
+case "$(uname)" in
+Darwin)
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  ;;
+Linux)
+  [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  ;;
+esac
+
+# syntax highlighting
+if command -v brew 2>&1 >/dev/null; then
+  [[ -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+# history - load asynchronously
+
+HISTFILE="$HOME/.local/state/zsh/main_history"
+if [ -n "$TMUX" ]; then
+  TMUXHISTFILE="$(tmux showenv -h hist_file | cut -d= -f2)"
+  [ -n "$TMUXHISTFILE" ] && HISTFILE="$TMUXHISTFILE"
+fi
+source <(fzf --zsh 2>/dev/null)
+HISTSIZE=10000
+SAVEHIST=10000
+
+# Programming language setup
+source $XDG_CONFIG_HOME/zsh/lang.sh
+
+if [ -n "$ZSH_PRECMD_HOOK" ]; then
+  _precmd_hook() {
+    eval "$ZSH_PRECMD_HOOK"
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _precmd_hook
+fi
+
+#completion
+# FPATH="$XDG_CONFIG_HOME/zsh/cmp:$(brew --prefix)/share/zsh-completions:$FPATH"
+autoload -Uz compinit
+compinit
+
+# Export last so it's prioritized over other paths
+if command -v brew >/dev/null 2>&1; then
+  export PATH="$(brew --prefix):$PATH"
+fi
+export PATH="$HOME/.local/bin:$HOME/.local/share/bob/nvim-bin:$PATH:/usr/NX/bin"
+
+# enable profiling
+# zprof

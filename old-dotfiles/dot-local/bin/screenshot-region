@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Capture screenshot of selected region with annotation
+
+grim -g "$(slurp)" - | satty --filename - --fullscreen --output-filename ~/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png

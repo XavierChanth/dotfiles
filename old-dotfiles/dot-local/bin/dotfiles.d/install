@@ -1,0 +1,223 @@
+#!/usr/bin/env bash
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+
+install_desktop=false
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --desktop)
+    install_desktop=true
+    echo "Installing desktop packages"
+    shift
+    ;;
+  *)
+    echo "Unknown option: $1"
+    exit 1
+    ;;
+  esac
+done
+
+export DOTFILES="$HOME/.dotfiles"
+
+if [ -f /bin/zsh ] && [ "$SHELL" != "/bin/zsh" ]; then
+  chsh -s /bin/zsh
+fi
+
+# Make files and directories used but not "owned" by dotfiles
+zsh_state_dir="$HOME/.local/state/zsh"
+mkdir -p "$zsh_state_dir/history/"
+mkdir -p "$HOME/src"
+mkdir -p "$HOME/.ssh/config.d" # ssh profiles that I don't want tracked in git go here
+mkdir -p "$HOME/.ssh/control"
+mkdir -p "$HOME/.local/bin"
+mkdir -p "$HOME/.local/dev"
+mkdir -p "$HOME/.local/state/colorscheme"
+mkdir -p "$HOME/.cargo/bin"
+mkdir -p "$HOME/.config"
+mkdir -p "$HOME/Documents" "$HOME/Downloads" "$HOME/Recordings" "$HOME/Screenshots"
+
+touch "$HOME/.zshenv"
+touch "$zsh_state_dir/main_history"
+touch "$zsh_state_dir/tmux_history_cache"
+
+# Prevent stow from adopting certain folders, and instead only link the files
+touch "$HOME/.ssh/.stowkeep"
+touch "$HOME/.local/.stowkeep"
+touch "$HOME/.local/bin/.stowkeep"
+touch "$HOME/.local/dev/.stowkeep"
+touch "$HOME/.config/.stowkeep"
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# ensure git is installed
+if ! command_exists git; then
+  echo "git not found, install git before continuing..."
+  exit 1
+fi
+
+platform=""
+
+case "$(uname)" in
+Darwin)
+  $script_dir/configure-macos
+  brew_path=/opt/homebrew/bin/brew
+  platform="macos"
+  ;;
+Linux)
+  brew_path=""
+  platform="$(source /etc/os-release && echo $ID)"
+  case $platform in
+  ubuntu | fedora | arch) ;;
+  *)
+    echo "Distro not supported"
+    exit 1
+    ;;
+  esac
+  ;;
+esac
+
+# install brew
+if [ -f "$brew_path" ]; then
+  eval "$($brew_path shellenv)"
+elif [ -n "$brew_path" ]; then
+  echo "brew not found, installing it for you..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+  echo "not installing brew - unsupported"
+fi
+
+(curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash) 2>/dev/null
+
+source "$script_dir/packages/$platform"
+case "$platform" in
+macos)
+  brew analytics off
+  brew install $PACKAGES
+  if $install_desktop; then
+    brew tap $DESKTOP_TAPS
+    brew install $DESKTOP_PACKAGES
+  fi
+  ;;
+ubuntu)
+  sudo -v
+  sudo apt-get install -y $PACKAGES
+  ;;
+fedora)
+  sudo -v
+  sudo dnf install -y $PACKAGES
+
+  cargo binstall --disable-telemetry -y \
+    --strategies crate-meta-data,quick-install,compile \
+    $CARGO_PACKAGES
+  ;;
+arch)
+  sudo -v
+  if ! command -v yay 2>&1; then
+    # setup yay for access to aur
+    sudo pacman -S --noconfirm --needed git base-devel go
+    (
+      mkdir -p ~/.local/dev || true
+      git clone https://aur.archlinux.org/yay.git ~/.local/dev/yay
+      cd ~/.local/dev/yay || exit 1
+      makepkg -si --noconfirm
+    )
+  fi
+
+  [ -n "$PACKAGES" ] &&
+    yay -Sy \
+      --norebuild \
+      --noredownload \
+      --noconfirm \
+      --needed \
+      --answerclean=N \
+      --answerdiff=N \
+      $PACKAGES
+
+  [ -n "$CARGO_PACKAGES" ] &&
+    cargo binstall --disable-telemetry -y \
+      --strategies crate-meta-data,quick-install,compile \
+      $CARGO_PACKAGES
+
+  cargo install --git https://github.com/Andeskjerf/waybar-module-pomodoro
+  cargo install --features gpu-hipblas --git https://github.com/peteonrails/voxtype voxtype
+
+  [ -n "$GO_PACKAGES" ] &&
+    go install $GO_PACKAGES
+
+  if $install_desktop; then
+    [ -n "$DESKTOP_PACKAGES" ] &&
+      yay -Sy \
+        --norebuild \
+        --noredownload \
+        --noconfirm \
+        --needed \
+        --answerclean=N \
+        --answerdiff=N \
+        $DESKTOP_PACKAGES
+
+    for package in $FLATPAK_PACKAGES; do
+      flatpak install -y flathub "$package"
+    done
+  fi
+
+  ;;
+esac
+
+# install spaceship
+git clone --depth=1 https://github.com/spaceship-prompt/spaceship-prompt.git "$HOME/.config/spaceship-prompt" 2>/dev/null ||
+  git -C "$HOME/.config/spaceship-prompt" pull
+
+# sync dotfiles
+"$script_dir"/sync || exit $?
+
+if command_exists go; then
+  go install github.com/jesseduffield/lazygit@latest
+fi
+
+# Install flutter
+export FLUTTER_ROOT="$HOME/.local/dev/flutter"
+git clone https://github.com/flutter/flutter.git "$FLUTTER_ROOT" 2>/dev/null
+"$HOME"/.local/dev/flutter/bin/flutter --disable-analytics
+"$HOME"/.local/dev/flutter/bin/flutter channel stable
+
+# csharp-ls
+if command_exists dotnet; then
+  dotnet tool install --global csharp-ls
+fi
+
+# ruby-lsp
+if command_exists gem; then
+  gem install ruby-lsp rubocop
+fi
+
+# # install venv for nvim
+# if ! [ -d "$DOTFILES/.venv" ]; then
+#   (
+#     cd "$DOTFILES" || return 1
+#     uv venv
+#     source "$DOTFILES/.venv/bin/activate"
+#     uv pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip jupytext
+#   )
+# fi
+
+# Apply my colorscheme
+$script_dir/../color.d/apply-color tokyonight-storm
+
+# sync nvim
+bob use nightly
+# nvim --headless "+Lazy! sync" +qa # lazy.nvim
+nvim --headless +PackInstall +qa # vim pack with my user command
+
+# Do a healthcheck to ensure that everything I want is installed
+
+case "$platform" in
+arch)
+  pacman -Qe >"$script_dir/install-arch.lock"
+  pacman -Qne >"$script_dir/install-arch-native.lock"
+  pacman -Qme >"$script_dir/install-arch-foreign.lock"
+  ;;
+esac
+
+"$script_dir"/check-env
+exit $?

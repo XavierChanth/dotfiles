@@ -1,0 +1,5 @@
+# See, I could go through the hassle of getting bat work with my theme switcher
+# but then my config is less portable... for what...
+# the base 16 themes were also good but had some contrast issues
+--theme="ansi"
+--style="numbers,changes,header"

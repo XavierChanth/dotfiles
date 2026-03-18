@@ -1,0 +1,29 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[pull]
+	ff = only
+
+[commit]
+	gpgsign = true
+
+[gpg]
+	format = ssh
+
+[alias]
+  st = status
+	wt = worktree
+	wtls = worktree list
+
+[include]
+  path = ~/.config/git/user-default
+  path = ~/.config/git/delta
+
+[includeIf "hasconfig:remote.*.url:git@github.com:atsign-*/**"]
+  path = ~/.config/git/user-atsign
+
+[includeIf "hasconfig:remote.*.url:git@github.com:woosah-tech/**"]
+  path = ~/.config/git/user-woosah

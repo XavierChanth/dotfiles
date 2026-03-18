@@ -1,0 +1,53 @@
+#!/bin/sh
+
+PACKAGES=$(
+  cat <<EOF
+  zsh
+  zsh-syntax-highlighting
+  bash
+  coreutils
+  moreutils
+  openssl
+  wget
+  tmux
+  neovim
+  ripgrep
+  fzf
+  git
+  git-delta
+  bat
+  stow
+  golang
+  rust
+  uv
+  python
+  gcc
+  cmake
+  ninja
+  zig
+  rust-analyzer
+  node
+  gh
+  jq
+  tokei
+  ffmpegthumbnailer
+  unar
+  poppler
+  just
+  cargo
+  fd
+  ImageMagick
+  parallel
+  poppler-utils
+EOF
+)
+
+CARGO_PACKAGES=$(
+  cat <<EOF
+  jj-cli
+  yazi-fm
+  yazi-cli
+  hwatch
+EOF
+)
+export PACKAGES CARGO_PACKAGES

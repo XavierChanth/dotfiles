@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+zoneinfo_root="/usr/share/zoneinfo"
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "locale-switcher: fzf is required" >&2
+  exit 1
+fi
+
+if command -v fd >/dev/null 2>&1; then
+  tz_list="$(fd -t f . "${zoneinfo_root}" \
+    --exclude posix \
+    --exclude right \
+    --exclude Etc \
+    --exclude Factory \
+    --exclude zone.tab \
+    --exclude zone1970.tab \
+    --exclude iso3166.tab \
+    --exclude leapseconds \
+    --exclude localtime \
+    --exclude posixrules \
+    --exclude tzdata.zi \
+    --exclude ZONEINFO \
+    | sed "s|^${zoneinfo_root}/||")"
+else
+  tz_list="$(rg --files "${zoneinfo_root}" \
+    --glob '!posix/**' \
+    --glob '!right/**' \
+    --glob '!Etc/**' \
+    --glob '!Factory' \
+    --glob '!zone.tab' \
+    --glob '!zone1970.tab' \
+    --glob '!iso3166.tab' \
+    --glob '!leapseconds' \
+    --glob '!localtime' \
+    --glob '!posixrules' \
+    --glob '!tzdata.zi' \
+    --glob '!ZONEINFO' \
+    | sed "s|^${zoneinfo_root}/||")"
+fi
+
+tz_choice="$(printf '%s\n' "${tz_list}" | fzf --prompt='Timezone> ')"
+
+if [[ -z ${tz_choice} ]]; then
+  echo "locale-switcher: no timezone selected" >&2
+  exit 1
+fi
+
+sudo ln -sf "${zoneinfo_root}/${tz_choice}" /etc/localtime
+sudo hwclock --systohc

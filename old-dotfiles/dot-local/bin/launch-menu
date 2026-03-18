@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Launch application menu
+
+# Source the appropriate environment file based on the current session
+if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    [[ -f "$HOME/.config/env/hyprland" ]] && source "$HOME/.config/env/hyprland"
+elif [[ "$XDG_CURRENT_DESKTOP" == "sway" ]]; then
+    [[ -f "$HOME/.config/env/sway" ]] && source "$HOME/.config/env/sway"
+fi
+
+exec wofi --show drun

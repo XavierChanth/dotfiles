@@ -1,0 +1,31 @@
+# super numbers to tmux window
+keybind = super+physical:one=text:\x001
+keybind = super+physical:two=text:\x002
+keybind = super+physical:three=text:\x003
+keybind = super+physical:four=text:\x004
+keybind = super+physical:five=text:\x005
+keybind = super+physical:six=text:\x006
+keybind = super+physical:seven=text:\x007
+keybind = super+physical:eight=text:\x008
+keybind = super+physical:nine=text:\x009
+
+# hyper 1:1 mappings
+keybind =	super+ctrl+alt+shift+a=text:\x00a
+keybind =	super+ctrl+alt+shift+s=text:\x00s
+keybind =	super+ctrl+alt+shift+d=text:\x00d
+keybind =	super+ctrl+alt+shift+r=text:\x00r
+keybind =	super+ctrl+alt+shift+c=text:\x00c
+keybind =	super+ctrl+alt+shift+p=text:\x00p
+keybind =	super+ctrl+alt+shift+l=text:\x00l
+keybind =	super+ctrl+alt+shift+v=text:\x00v
+keybind =	super+ctrl+alt+shift+x=text:\x00x
+keybind =	super+ctrl+alt+shift+w=text:\x00w
+keybind =	super+ctrl+alt+shift+z=text:\x00z
+keybind =	super+ctrl+alt+shift+f=text:\x00f
+keybind =	super+ctrl+alt+shift+g=text:\x00g
+keybind =	super+ctrl+alt+shift+n=text:\x00n
+keybind =	super+ctrl+alt+shift+p=text:\x00p
+keybind =	super+ctrl+alt+shift+e=text:\x00e
+
+# hyper+q to prefix+d
+keybind =	super+ctrl+shift+alt+q=text:\x00d

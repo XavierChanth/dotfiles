@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Capture focused window screenshot with annotation
+
+# Get the geometry of the currently focused window
+if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    # Hyprland method
+    GEOMETRY=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+elif [[ "$XDG_CURRENT_DESKTOP" == "sway" ]]; then
+    # Sway method
+    GEOMETRY=$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | "\(.rect.x),\(.rect.y) \(.rect.width)x\(.rect.height)"')
+else
+    echo "Unsupported desktop environment"
+    exit 1
+fi
+
+grim -g "$GEOMETRY" - | satty --filename - --fullscreen --output-filename ~/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png

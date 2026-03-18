@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+if ! command_exists stow; then
+  echo "stow not found, install gnu stow before continuing..."
+  exit 2
+fi
+
+stow -d "$DOTFILES" -t "$HOME" --dotfiles dotfiles "$@"

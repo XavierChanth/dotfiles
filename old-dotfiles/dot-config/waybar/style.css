@@ -1,0 +1,81 @@
+* {
+  font-family: JetBrains Mono Nerd Font Propo;
+  font-size: 15px;
+  transition: background-color 0.3s ease-out;
+}
+
+window#waybar, menu {
+  background: rgba(26, 27, 38, 0.75);
+  color: #c0caf5;
+  font-family: JetBrains Mono Nerd Font Mono;
+  transition: background-color 0.5s;
+}
+
+menu {
+  font-size: 10px
+}
+
+menuitem {
+  border-radius: 15px;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  background: rgba(0, 0, 8, 0.7);
+  margin: 5px 10px;
+  padding: 0 10px;
+  border-radius: 15px;
+}
+
+.module {
+  padding: 0 10px;
+  border-radius: 15px;
+}
+
+.module:hover,
+.drawer,
+menuitem:hover {
+  background: rgba(26, 27, 38, 0.9);
+}
+
+/* Note that there is no comma, different selector than above */
+.drawer .module:hover {
+  background: rgba(0, 0, 8, 0.7);
+}
+
+.drawer {
+  padding: 3px 0;
+}
+
+#custom-tray,
+#custom-monitor,
+#custom-control {
+  padding: 0 5px;
+  border-radius: 15px;
+}
+
+/* Privacy specific */
+#privacy {
+  color: orange;
+}
+
+/* Workpaces specific */
+#workspaces button {
+  background: transparent;
+  font-weight: 900;
+  font-size: 13pt;
+  color: #c0caf5;
+  border: none;
+  border-radius: 15px;
+}
+
+#workspaces button.active {
+  background: #13131d;
+}
+
+#workspaces button:hover {
+  background: #11111b;
+  color: #cdd6f4;
+  box-shadow: none;
+}

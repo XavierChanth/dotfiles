@@ -1,0 +1,12 @@
+CompileFlags:
+  Compiler: /opt/homebrew/bin/gcc-14
+  Add:
+    - "-I/Users/chant/.local/include/"
+    - "-I/home/chant/.local/include/"
+    - "-isystem/opt/homebrew/opt/llvm/include/c++/v1"
+    - "-isystem/Applications/XCode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+    - "-Wall"
+    - "-Wextra"
+    - "-Werror"
+    - "-Werror-implicit-function-declaration"
+    - "-xc-header"

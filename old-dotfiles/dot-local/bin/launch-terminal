@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Launch default terminal
+
+exec ghostty "$@"

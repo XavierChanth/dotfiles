@@ -31,7 +31,9 @@ function zle-keymap-select() { # change cursor when swapping keymaps
     ;;
   esac
   # refresh spaceship when we change modes
-  spaceship::core::refresh_section "mode"
+  if (( $+functions[spaceship::core::refresh_section] )); then
+    spaceship::core::refresh_section "mode"
+  fi
   zle .reset-prompt && zle -R
 }
 

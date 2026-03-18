@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "DISABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY":"1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "USE_BUILTIN_RIPGREP": "0"
+  },
+  "model": "opusplan",
+  "permissions": {
+    "allow": ["Edit", "Write"],
+    "deny": [
+      "Write(./.jj)",
+      "Write(./.git)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./config/credentials.json)",
+      "Read(./build)"
+    ],
+    "ask": [],
+    "disableBypassPermissionsMode": "disable"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": ["jj", "git", "docker"]
+  },
+  "enableAllProjectMcpServers": false,
+  "enabledPlugins": {}
+}

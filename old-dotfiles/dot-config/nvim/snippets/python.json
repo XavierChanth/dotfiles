@@ -1,0 +1,12 @@
+{
+  "Marimo cell": {
+    "prefix": "mcell",
+    "body": [
+      "@app.cell",
+      "def _():",
+      "\t$0",
+      "\treturn"
+    ],
+    "description": "Create a cell in Marimo"
+  }
+}

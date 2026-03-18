@@ -1,0 +1,261 @@
+# Global config
+set $mod Alt
+set $mod2 Super
+set $hypr Super+Control+Alt+Shift
+floating_modifier Super
+
+set $script ~/.local/bin
+set $term $script/launch-terminal
+set $browser $script/launch-browser
+set $browser2 $script/launch-browser-alt
+set $notes $script/launch-notes
+set $menu $script/launch-menu
+set $menu2 $script/launch-menu-run
+set $lock_screen swaylock -p -f -c 000000
+
+set $builtin_display "eDP-1"
+
+# Set basic properties
+font pango:JetBrainsMonoNerdFontMono 10
+
+# Basic theming
+titlebar_border_thickness 0
+default_border none
+client.focused #ffffff #cccccc #000000
+
+# Setup keyboard defaults
+input "type:keyboard" {
+  xkb_layout us
+    xkb_variant ,nodeadkeys
+  repeat_delay 225
+  repeat_rate 40
+}
+
+# Trackpad config
+input "type:touchpad" {
+  tap enabled
+  natural_scroll enabled
+  scroll_factor 0.5
+  dwt enabled # disable while typing
+  # With acceleration
+  accel_profile "adaptive"
+  pointer_accel 0.35
+  # No acceleration
+  # accel_profile "flat"
+  # pointer_accel 0.7
+}
+focus_follows_mouse no
+
+# Status Bar (sway bar)
+bar {
+  swaybar_command waybar
+}
+
+# X compatibility
+xwayland enable
+
+# Connect session variables to systemd
+exec dbus-update-activation-environment --systemd \
+  DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && \
+  systemctl --user restart swaync
+
+# Lock on idle (5 mins) Suspend on idle (30 mins)
+exec_always killall swayidle; swayidle -w \
+  timeout 300 "$lock_screen" \
+  timeout 1800 'systemctl sleep' \
+  resume 'swaymsg "output * power on"' \
+  before-sleep '$lock_screen; swaymsg "output * power off"' \
+  after-resume 'swaymsg "output * power on"; $lock_screen'
+
+# Don't idle if an app is in full screen (i.e. watching something)
+for_window [class=".*"] inhibit_idle fullscreen
+for_window [app_id=".*"] inhibit_idle fullscreen
+
+# Enable clamshell mode (turn off builtin_display when closed)
+bindswitch --reload --locked lid:on output $builtin_display disable
+bindswitch --reload --locked lid:off output $builtin_display enable
+
+# Configure display scaling
+output "*" {
+# This will support up to any single hi-dpi display being connected
+  scale 2
+  pos 1440 0
+  # adaptive_sync on
+  subpixel rgb
+}
+
+# output "BNQ BenQ EX3210U ETR1R00865SL0" {
+# }
+
+# Built-in display settings must come after "*"
+output $builtin_display {
+  mode 2880x1920@120Hz
+  adaptive_sync on
+  scale 2
+  pos 0 0
+  subpixel rgb
+}
+
+# Gaps configuration
+gaps inner 8
+gaps outer 8
+smart_gaps on
+floating_maximum_size 1200 x 800
+
+# Workspace Configuration
+workspace_auto_back_and_forth yes
+
+# Startup App rules
+for_window [class="zoom" title="zoom"]  floating enable
+for_window [class="zoom" title="Meeting"] inhibit_idle open
+for_window [app_id="firefox|zen|floorp" title="Picture-in-Picture"] floating enable, sticky enable
+for_window [title="Picture in picture"] floating enable, sticky enable
+
+# Spotify miniplayer:
+for_window [app_id="chromium-browser"] floating enable, sticky enable, resize 300 x 300
+
+for_window [app_id="org.keepassxc.KeePassXC" title="Unlock Database - KeePassXC"] floating enable
+for_window [app_id="blueman-manager|system-config-printer|.*iwgtk|.*pwvucontrol"] floating enable, sticky enable
+
+for_window [class="Display"] floating enable, sticky enable, floating_minimum_size 1 x 1
+for_window [app_id="swayimg"] floating enable, sticky enable, floating_minimum_size 1 x 1
+
+# Auto tiling
+# exec_always killall autotiling; autotiling -sr 1.61 -l 3
+# bindsym $mod+f fullscreen
+
+# Manual tiling
+exec_always killall autotiling
+bindsym $mod+f layout toggle split tabbed
+bindsym $mod+s layout toggle splith splitv
+
+# Keybinds
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+Shift+space \
+  mark --add "swap"; \
+  focus output right; \
+  move workspace to output right; \
+  [con_mark="swap"] focus; \
+  move workspace to output right; \
+  unmark "swap"; \
+  focus output right
+  bindsym $mod+space move workspace to output right
+  bindsym $mod+r layout default
+  bindsym $mod+w kill
+
+# Apps
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+Return exec $term -e zsh
+bindsym $mod+$mod2+Return exec foot
+
+bindsym $mod+b exec $browser
+bindsym $mod+Shift+b exec $browser2
+
+
+# Focus movement
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Window movement
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Default workspace 3 on login
+exec swaymsg workspace 3
+
+# Workspace switching
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+
+# Move container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1; workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2; workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3; workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4; workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5; workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6; workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7; workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8; workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9; workspace number 9
+
+##
+## Scratchpad:
+##
+#    # Sway has a "scratchpad", which is a bag of holding for windows.
+#    # You can send windows there and get them back later.
+#
+#    # Move the currently focused window to the scratchpad
+bindsym $mod+Shift+g move scratchpad
+#
+#    # Show the next scratchpad window or hide the focused scratchpad window.
+#    # If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+g scratchpad show
+
+
+# Resizing
+bindsym $mod+Shift+minus resize shrink width 50px
+bindsym $mod+Shift+equal resize grow width 50px
+bindsym $mod+Shift+0 resize set width 50ppt
+
+# macOS binds
+bindsym $mod2+q kill
+bindsym $mod2+space exec $menu
+bindsym $mod+$mod2+space exec $menu2
+
+# bindsym $mod2+w exec wtype -k XF86Close
+# bindsym $mod2+c exec wtype -k XF86Copy
+# bindsym $mod2+x exec wtype -k XF86Cut
+# bindsym $mod2+v exec wtype -k XF86Paste
+# bindsym $mod2+minus exec wtype -k XF86ZoomOut
+# bindsym $mod2+equal exec wtype -k XF86ZoomIn
+# bindsym $mod2+r exec wtype -k XF86Refresh
+# bindsym $mod2+l exec wtype -M ctrl -k l
+# bindsym $mod2+a exec wtype -M ctrl -k a
+
+# Media keys binds (using scripts)
+bindcode --locked 160 exec wlogout
+bindsym --locked XF86PowerOff exec wlogout
+bindsym --locked XF86AudioMute exec $script/volume-mute
+bindsym --locked XF86AudioLowerVolume exec $script/volume-down
+bindsym --locked XF86AudioRaiseVolume exec $script/volume-up
+bindsym --locked XF86AudioPrev exec $script/media-prev
+bindsym --locked XF86AudioPlay exec $script/media-play-pause
+bindsym --locked XF86AudioNext exec $script/media-next
+bindsym --locked XF86MonBrightnessDown exec $script/brightness-down
+bindsym --locked XF86MonBrightnessUp exec $script/brightness-up
+# ALT_L+p = F9
+# bindsym --locked XF86RFKILL # F10
+# bindsym XF86AudioMedia # F12
+
+# Screenshot keybinds (using scripts)
+set $printscreen_mode 'printscreen (r:region, f:full, w:window)'
+
+mode $printscreen_mode {
+  bindsym r exec swaymsg 'mode "default"' && $script/screenshot-region
+  bindsym f exec swaymsg 'mode "default"' && $script/screenshot-full
+  bindsym w exec swaymsg 'mode "default"' && $script/screenshot-window
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym Print mode $printscreen_mode
+bindsym $hypr+2 exec $script/screenshot-region-view
+bindsym $hypr+3 exec $script/screenshot-window
+bindsym $hypr+4 exec $script/screenshot-region
+
+# Voice input
+bindsym --no-repeat $mod+v exec $script/voice-start
+bindsym --release $mod+v exec $script/voice-stop

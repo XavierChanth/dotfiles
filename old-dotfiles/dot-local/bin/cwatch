@@ -1,0 +1,129 @@
+#!/usr/bin/env -S uv run --script
+
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+# "anstrip==0.2.2"
+# ]
+# ///
+
+# MIT License
+
+# Copyright (c) 2025 textdev_
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+######################
+from subprocess import run
+from argparse import ArgumentParser
+from os import get_terminal_size, system
+from time import sleep
+from anstrip import PATTERN
+
+
+############################################################################################################
+def defineArgs():
+    parser = ArgumentParser(
+        description="Continuously watch and display the output of a command."
+    )
+
+    _ = parser.add_argument(
+        "-c",
+        "--command",
+        type=str,
+        default='printf "Default \\"cwatch\\" command.\nCommand test, using \\"date\\" command within \\"printf\\":\n\n$(date)"',
+        help="The command to execute and watch.",
+    )
+    _ = parser.add_argument(
+        "-i",
+        "--interval",
+        type=float,
+        default=1.0,  # Default interval in seconds
+        help="Time interval between command executions (in seconds, default: 1.0).",
+    )
+
+    # TODO add a way to stay at the top
+    return parser.parse_args()
+
+
+def captureCommandOutput(command: str):
+    output = run(
+        ["script", "-qec", command, "/dev/null"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return output.stdout
+
+
+# def handleAnsiChar(output: str, index: int) -> tuple[str, int, int]:
+#     if
+
+#################################
+args = defineArgs()
+
+command: str = args.command
+interval: int = args.interval
+
+output = ""
+error = ""
+
+# https://stackoverflow.com/questions/14693701/how-can-i-remove-the-ansi-escape-sequences-from-a-string-in-python
+
+############################################################
+while True:
+    try:
+        output = captureCommandOutput(command)
+        error = ""
+
+    except Exception as errorCode:
+        error = f"\nError for this iteration: {errorCode}\n"
+        _ = system("clear")
+        print(error, end="")
+        sleep(interval)
+        continue
+
+    size = get_terminal_size()
+
+    lines_used = 1
+    curr_line = 0
+
+    printed = 0
+    parsed_output = ""
+    for m in PATTERN.finditer(output):
+        if lines_used < size.lines - 4:
+            real_output = output[printed : m.start()]
+            parsed_output += real_output
+            for c in real_output:
+                while curr_line >= size.columns:
+                    curr_line = curr_line - size.columns
+                    lines_used += 1
+                if c == "\n":
+                    curr_line = 0
+                    lines_used += 1
+                else:
+                    curr_line += len(c)
+            printed += len(real_output)
+        parsed_output += m[0]
+        printed += len(m[0])
+    _ = system("clear")
+    print(parsed_output, end="")
+    # print(lines_used)
+    # print(size.columns)
+    sleep(interval)

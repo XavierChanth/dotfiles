@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+source "$script_dir/include.d/tmux_session.sh"
+
+includes=$(cat "$HOME/.ssh/config" | rg 'Include ' | cut -d ' ' -f2 | sed -e "s|^|$HOME/.ssh/|")
+files=$(echo $includes) # expands globs
+hosts=$(sed -e 's/ /\n/g' <<<$files | xargs -I % /bin/sh -c 'cat "%" | grep "Host " | grep -v "Host \*" | cut -d " " -f2')
+
+selected=$(
+  sed -e 's/ /\n/g' <<<$hosts | fzf -d=' ' --scheme=path --tiebreak=end,index --header "Open ssh session..."
+)
+
+[ -z $selected ] && exit
+
+name="ssh-$selected"
+# add sshnp to path so it works in ProxyCommands
+command="PATH='$PATH:$HOME/.local/bin'; ssh $selected"
+
+add_session "$selected" "$name" "$command"

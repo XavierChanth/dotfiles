@@ -1,0 +1,30 @@
+#!/bin/sh
+# WARN: This does not handle encryption
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+echo $script_dir/hello
+
+# ensure the script ends whenever a command exits with non-zero status
+set -e
+
+TEMP=$(mktemp /tmp/XXXXXX)
+EMAIL="$TEMP.eml"
+mv "$TEMP" "$EMAIL"
+
+clean_up() {
+  rm -f $EMAIL
+}
+
+account=$1
+shift
+
+# ensure clean_up() is called when we exit abnormally
+trap 'clean_up' 0 1 2 3 15
+
+# <stdin> of script gets the email, we save temporarily for using it twice
+cat >$EMAIL
+
+# First try to send the email, as it can cause more problems (i.e., connection)
+# `set -e` prevents the mail from entering the database in case this fails.
+# msmtp could be called with args from aerc, but --read-recipients already does the job
+msmtp --account="$account" --read-recipients --read-envelope-from <$EMAIL

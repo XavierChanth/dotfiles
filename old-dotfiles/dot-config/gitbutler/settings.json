@@ -1,0 +1,21 @@
+{
+  "claude": {
+    "autoCommitAfterCompletion": false,
+    "dangerouslyAllowAllPermissions": false,
+    "notifyOnCompletion": true,
+    "notifyOnPermissionRequest": true,
+    "useConfiguredModel": false
+  },
+  "featureFlags": {
+    "actions": true,
+    "rules": true
+  },
+  "fetch": {
+    "autoFetchIntervalMinutes": {
+      "$serde_json::private::Number": "15"
+    }
+  },
+  "reviews": {
+    "autoFillPrDescriptionFromCommit": false
+  }
+}

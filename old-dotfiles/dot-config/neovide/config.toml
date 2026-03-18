@@ -1,0 +1,13 @@
+fork = true
+frame = "buttonless"
+idle = true
+srgb = true
+tabs = false
+theme = "auto"
+vsync = true
+
+[font]
+normal = ["JetbrainsMono Nerd Font"]
+size = 20.0
+edging = "antialias"
+hinting = "none"

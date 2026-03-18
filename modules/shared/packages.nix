@@ -12,6 +12,7 @@
       coreutils
       less
       moreutils
+      spaceship-prompt
       vim
       zsh
 
@@ -38,6 +39,8 @@
       jq
       jujutsu
       just
+      nerd-fonts.commit-mono
+      nerd-fonts.jetbrains-mono
       pandoc
       parallel
       poppler

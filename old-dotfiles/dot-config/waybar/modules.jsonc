@@ -1,0 +1,221 @@
+{
+  "custom/tray": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/monitor": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/control": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/spacer": {
+    "format": "|",
+    "tooltip": false
+  },
+  "custom/voxtype": {
+    "exec": "~/.cargo/bin/voxtype status --follow --format json --extended",
+    "return-type": "json",
+    "format": "{} [{}]",
+    "format-alt": "{model}",
+    "tooltip": true
+  },
+  "custom/pomodoro": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.cargo/bin/waybar-module-pomodoro",
+    "menu": "on-click",
+    "menu-file": "~/.config/waybar/menus/pomodoro.xml",
+    "menu-actions": {
+      "toggle": "~/.cargo/bin/waybar-module-pomodoro toggle",
+      "timer01": "~/.cargo/bin/waybar-module-pomodoro set-work 25 set-short 5 set-long 15",
+      "timer02": "~/.cargo/bin/waybar-module-pomodoro set-work 50 set-short 10 set-long 30",
+    },
+  },
+  "custom/socks": {
+    "interval": 1,
+    "exec": "echo \"{ \\\"text\\\": \\\"$(systemctl status --user socks >/dev/null 2>&1 && echo on || echo off)\\\"}\"",
+    "return-type": "json",
+    "format": " {}",
+    "on-click": "systemctl status --user socks >/dev/null 2>&1 && systemctl stop --user socks || systemctl start --user socks"
+  },
+  "custom/darkmode": {
+    "interval": 1,
+    "format": "{}",
+    "exec": "echo \"{ \\\"text\\\": \\\"$( [ $(gsettings get org.gnome.desktop.interface color-scheme) = \"'prefer-dark'\" ] && echo  || echo )\\\"}\"",
+    "return-type": "json",
+    "on-click": "if [ $(gsettings get org.gnome.desktop.interface color-scheme) = \"'prefer-dark'\" ]; then gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'; else gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark';fi;"
+  },
+  "sway/workspaces": {
+    "format": "{name}{icon}",
+    "format-icons": {
+      "default": "",
+      "focused": "<sup>*</sup>",
+      "urgent": "<span foreground='red'><sup></sup></span>"
+    }
+  },
+  "hyprland/workspaces": {
+    "format": "{name}{icon}",
+    "format-icons": {
+      "default": "",
+      "active": "<sup>*</sup>",
+      "urgent": "<span foreground='red'><sup></sup></span>"
+    },
+    "on-click": "activate"
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 50,
+    "separate-outputs": true
+  },
+  "tray": {
+    "show-passive-items": false,
+    "icon-size": 15,
+    "spacing": 8,
+    "reverse-direction": true
+  },
+  "memory": {
+    "format": "󰍛 {percentage}%",
+    "tooltip": true,
+    "tooltip-format": "main: {percentage}%\nused: {used}GiB\navailable: {avail}GiB\nswap: {swapPercentage}\nused: {swapUsed}GiB\navailable: {swapAvail}GiB"
+  },
+  "cpu": {
+    "format": " {}%",
+    "tooltip": true
+  },
+  "temperature": {
+    "interval": 10,
+    "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 60,
+    "format-critical": " {temperatureC}°C<span foreground='red'><sup></sup></span>",
+    "format": " {temperatureC}°C",
+    "tooltip-format": "{temperatureC}°C / {temperatureF}°F"
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
+  },
+  "systemd-failed-units": {
+    "format": "{nr_failed} failed units",
+    "hide-on-ok": true
+  },
+  "privacy": {
+    "icon-spacing": 4,
+    "icon-size": 12,
+    "modules": [
+      {
+        "type": "screenshare",
+        "tooltip": true
+      },
+      {
+        "type": "audio-out",
+        "tooltip": true
+      },
+      {
+        "type": "audio-in",
+        "tooltip": true
+      }
+    ]
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "tooltip-format-activated": "machine will stay awake",
+    "tooltip-format-deactivated": "machine will sleep on idle",
+    "format-icons": {
+      "activated": "󰒳",
+      "deactivated": "󰒲"
+    },
+    "timeout": 120
+  },
+  "network": {
+    "format-wifi": "",
+    "format-ethernet": "󰈀",
+    "tooltip-format": "{ifname} via {gwaddr}\nup: {bandwidthUpBytes}\ndown: {bandwidthDownBytes}",
+    "tooltip-format-wifi": "{essid} via {gwaddr}\nup: {bandwidthUpBytes}\ndown: {bandwidthDownBytes}",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "󰖪",
+    "on-click": "iwgtk"
+  },
+  "bluetooth": {
+    "on-click": "blueman-manager",
+    "tooltip": true,
+    "tooltip-format": "controller: {controller_alias}\n{device_alias}",
+    "format": "",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "format-connected-battery": "󰂱"
+  },
+  "wireplumber": {
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{icon} {volume}%  {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": " {volume}%",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "on-click": "pwvucontrol"
+  },
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-full": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{icon} {time}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d  %H:%M}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  }
+}

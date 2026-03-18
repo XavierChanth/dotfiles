@@ -1,0 +1,118 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the // command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "when_closing_with_no_tabs": "close_window",
+  "always_treat_brackets_as_autoclosed": false,
+  "assistant": {
+    "enabled": false,
+    "version": "2"
+  },
+  "command_aliases": {
+    "W": "write",
+  },
+  "features": {
+    "copilot": false,
+    "inline_completion_provider": "none"
+  },
+  "toolbar": {
+    "selections_menu": false,
+    "quick_actions": false
+  },
+  "prettier": {
+    "allowed": true
+  },
+  "show_whitespaces": "all",
+  "unstable.ui_density": "comfortable",
+  "use_auto_surround": false,
+  "auto_install_extensions": {},
+  "buffer_font_size": 20,
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "git": {
+    "git_gutter": "hide"
+  },
+  "gutter": {
+    "code_actions": false,
+    "runnables": false,
+    "folds": false
+  },
+  "projects_online_by_default": false,
+  "ui_font_size": 16,
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "cursor_blink": false,
+  "tab_size": 2,
+  "languages": {
+    "Python": {
+      "tab_size": 4
+    }
+  },
+  "scrollbar": {
+    "show": "never"
+  },
+  "show_inline_completions": false,
+  "format_on_save": "language_server",
+  "inlay_hints": {
+    "enabled": false
+  },
+  "lsp": {},
+  "project_panel": {
+    "dock": "left",
+    "default_width": 4000, // fullscreen
+    "auto_reveal_entries": true,
+    "scrollbar": {
+      "show": "never"
+    },
+    "indent_size": 20,
+    "indent_guides": {
+      "show": "always"
+    }
+  },
+  "relative_line_numbers": true,
+  "tab_bar": {
+    "show": false,
+    "show_nav_history_buttons": false
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "terminal": {
+    "line_height": "comfortable"
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "Catppuccin Latte - No Italics",
+    "dark": "Catppuccin Mocha - No Italics"
+  },
+  "use_autoclose": false,
+  "vertical_scroll_margin": 8,
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_multiline_find": true,
+    "use_smartcase_find": true
+  },
+  "wrap_guides": [
+    80,
+    120
+  ],
+  "chat_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "calls": {
+    "mute_on_join": true,
+  },
+  "notification_panel": {
+    "dock": "right"
+  },
+  "outline_panel": {
+    "dock": "right"
+  }
+}

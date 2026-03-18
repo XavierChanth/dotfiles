@@ -1,0 +1,14 @@
+extends: tokyonight-storm
+
+intro_slide:
+  author:
+    positioning: below_title
+
+footer:
+  style: template
+  left: "{title}"
+  center: "{author}"
+  right: "{current_slide} / {total_slides}"
+
+mermaid:
+  background: transparent

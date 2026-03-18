@@ -1,0 +1,291 @@
+#!/bin/sh
+
+PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+  # Core
+  zsh
+  zsh-syntax-highlighting
+  zsh-completions
+  bash
+  less
+  coreutils
+  moreutils
+  vi
+  vim
+
+  # My Essentials
+  tmux-git
+  bob
+  tree-sitter
+  ripgrep
+  fzf
+  git
+  git-delta
+  difftastic
+  jujutsu
+  jjui
+  bat
+  bat-extras
+  stow
+  mesa-utils
+  github-cli
+  jq
+  just
+  parallel
+  fd
+  yazi
+  poppler
+  imagemagick
+  resvg
+  unzip
+  tree
+  unarchiver
+  fastfetch
+  pandoc-bin
+
+  # Networking tools
+  openssl
+  wget
+  iperf3
+  nmap
+  traceroute
+  iproute2
+  net-tools
+  bind
+
+  # Programming Languages
+  vscode-json-languageserver
+  yaml-language-server
+  tombi
+  go
+  gopls
+  gofumpt
+  uv
+  python
+  basedpyright
+  ruff
+  typst
+  tinymist
+  llvm
+  gcc
+  clang
+  cmake
+  neocmakelsp
+  python-gersemi
+  ninja
+  # asm-lsp
+  zig
+  zls
+  rust
+  rust-analyzer
+  ruby
+  bun
+  nodejs
+  npm
+  pnpm
+  svelte-language-server
+  # csharp-ls
+  # omnisharp-roslyn
+  # csharpier
+  dockerfile-language-server
+  nodejs-compose-language-service
+  hadolint-bin
+  gofumpt
+  goimports
+  gopls
+  lua-language-server
+  stylua
+  prettier
+  shellcheck
+  shfmt
+  tailwindcss-language-server
+  vtsls
+
+  # Development Dependencies
+  webkit2gtk
+  lsof
+EOF
+)
+
+
+DESKTOP_PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+  # Core Arch/Linux packages
+  linux-headers - Kernel APIs
+  fwupd - Firmware updater
+  reflector # Automatically
+  polkit # POLicyKIT - control privileges
+  gnome-keyring
+  gnome-keyring-daemon - Keychain
+
+  # Wayland core
+  wayland
+  xorg-xwayland
+  qt6-wayland
+
+  # Wayland portals and roots extensions
+  wlroots
+  wev
+  wlr-randr
+  wf-recorder
+  xdg-desktop-portal-wlr
+  xdg-desktop-portal-gtk
+  wl-clipboard
+  wtype
+  zenity
+
+  # DE packages
+  waybar
+  wofi
+  wmenu
+  wlogout
+
+  # Screenshots
+  satty-git
+  grim
+  slurp
+
+  # Sway WM
+  sway
+  swaylock-fprintd-git
+  swayidle
+  swayimg
+  swaync
+  foot # Foot is default terminal for sway
+
+  # Audio
+  pipewire
+  pipewire-pulse
+  pipewire-alsa
+  wireplumber
+  easyeffects
+  pwvucontrol
+
+  # Networking
+  iwgtk
+  bluez
+  bluez-utils
+  blueman
+  dante
+
+  # Other Hardware
+  fprintd # Fingerprint sensor
+  brightnessctl # Display brightness controls
+
+  # RTFM
+  man-db
+  man-pages
+
+  # Keyboard stuff
+  kanata-bin
+  qmk
+ 
+  # Fonts
+  ttf-jetbrains-mono-nerd
+  otf-commit-mono-nerd
+  noto-fonts
+  noto-fonts-cjk
+  noto-fonts-emoji
+
+  # Disk management
+  parted
+
+  # Package managers
+  flatpak
+
+  # Obs and extensions
+  obs-studio
+  obs-pipewire-audio-capture
+  obs-backgroundremoval
+  onnxruntime-rocm
+  v4l2loopback-dkms
+
+  # RDP/VNC client
+  remmina
+  freerdp2
+  libvncserver
+
+  # Network diagnostics
+  wireshark-cli
+  wireshark-qt
+  termshark
+
+  # Filesystem / Office tooling
+  thunar
+  zathura
+  zathura-pdf-poppler
+  onlyoffice-bin
+
+  # Media consumption
+  ffmpeg
+  imv
+  mpv
+  vlc
+  nom
+
+  # Browsers
+  helium-browser-bin # Chromium
+  google-chrome # Cuz we need widevine sometimes :/
+  brave-bin # streaming
+
+  # Social
+  steam
+  vesktop-bin
+  spotify
+
+  # Printers
+  cups
+  cups-browsed
+  cups-filters
+  cups-pdf
+  system-config-printer
+  splix
+
+  # Development
+  ghostty
+  docker # Couldn't get rootless containerd to work properly :(
+  asciinema-git # Great, just don't use kitty img protocol with it
+  zed
+  code
+
+  # AI
+  # gitbutler-bin
+  voxtype
+
+  # Ryzen packages
+  # lact
+  # ryzenadj
+  # ryzen_smu-dkms-git
+EOF
+)
+# Zoom requires environment to share wayland correctly:
+# XDG_CURRENT_DESKTOP=GNOME
+FLATPAK_PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+com.github.tchx84.Flatseal
+us.zoom.Zoom
+EOF
+)
+
+CARGO_PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+# bacon bacon-ls
+EOF
+)
+
+GO_PACKAGES=$(
+cat <<EOF | sed -e '/#.*$/d'
+github.com/wailsapp/wails/v2/cmd/wails@latest
+EOF
+  )
+
+NODE_PACKAGES=$(
+  cat <<EOF | sed -e '/#.*$/d'
+opencode-ai
+@openai/codex
+@playwright/cli
+EOF
+)
+
+export PACKAGES DESKTOP_PACKAGES FLATPAK_PACKAGES CARGO_PACKAGES PIP_PACKAGES \
+  GO_PACKAGES NODE_PACKAGES

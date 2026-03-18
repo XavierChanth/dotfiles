@@ -1,5 +1,13 @@
 {...}: {
   system.defaults = {
+    CustomUserPreferences."com.apple.symbolichotkeys" = {
+      AppleSymbolicHotKeys = {
+        "64" = {
+          enabled = false;
+        };
+      };
+    };
+
     NSGlobalDomain = {
       ApplePressAndHoldEnabled = false;
       InitialKeyRepeat = 15;

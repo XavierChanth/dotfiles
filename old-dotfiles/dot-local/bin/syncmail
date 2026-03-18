@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+NOTMUCH=$(pgrep notmuch)
+MBSYNC=$(pgrep mbsync)
+disable_mbsync=true
+
+profile=$1
+shift
+
+function main() {
+
+  [ "$disable_mbsync" ] && MBSYNC=false
+  export NOTMUCH_PROFILE="$profile"
+  if ! [ "$disable_mbsync" ] && [ -n "$MBSYNC" ]; then
+    echo "Already running one instance of mbsync. Exiting..."
+    exit 0
+  fi
+
+  if [ -n "$NOTMUCH" ]; then
+    echo "Already running one instance of notmuch. Exiting..."
+    exit 0
+  fi
+
+  if ! [ "$disable_mbsync" ]; then
+    echo "Syncing maildir"
+    mbsync "$profile"
+  fi
+
+  echo "Pulling new mails into database"
+  notmuch new
+
+  echo "Normalizing tags based on maildir path"
+  notmuch tag --batch <<EOF
+  -inbox -- "not path:INBOX/**"
+  +inbox -- "path:INBOX/**"
+  +archive -- "path:ARCHIVE/**"
+  +sent -- "path:SENT/**"
+EOF
+
+  echo "Deleting messages tagged as *deleted*"
+  notmuch search --format=text0 --output=files tag:deleted | xargs -0 --no-run-if-empty rm -v
+}
+main

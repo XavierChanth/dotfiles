@@ -1,0 +1,24 @@
+configpath: /home/chant/.config/nom/config.yml
+showfavourites: false
+version: ""
+feeds:
+  - url: https://blog.thestateofme.com/feed/
+    name: Chris Swan
+  - url: https://xavierchanth.com/rss.xml
+    name: XavierChanth
+  - url: https://blog.howardjohn.info/index.xml
+    name: Howard John
+  # - url: http://localhost:5173/rss.xml
+  #   name: '[Dev]'
+ordering: desc
+filtering:
+  defaultIncludeFeedName: true
+theme:
+  glamour: dark
+  titleColor: "62"
+  titleColorFg: "231"
+  filterColor: "62"
+  selectedItemColor: "170"
+  readIcon: ✓
+http:
+  mintls: TLS 1.2

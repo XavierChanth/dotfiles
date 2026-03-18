@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+source "$script_dir/include.d/tmux_session.sh"
+
+projects_dir=$(
+  { [ -d '/Volumes/xcdata/src' ] && echo '/Volumes/xcdata/src'; } ||
+    { [ -d '/mnt/xcdata/src' ] && echo '/mnt/xcdata/src'; } ||
+    echo "$HOME/src"
+)
+
+selected=$(
+  (
+    # tested find against fd, for a small set of directories like this find is slightly faster
+    # now, if you were recursively searching all files, fd wins by a mile
+    find "$projects_dir" -mindepth 0 -maxdepth 2 -type d
+    [ -d "$HOME/work" ] && find "$HOME/work" -mindepth 2 -maxdepth 2 -type d
+    # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
+    echo "$HOME/.dotfiles"
+    echo "main"
+  ) |
+    fzf --scheme=path --tiebreak=end,index --header "Open session in..."
+)
+
+name=""
+if [ -n "$selected" ]; then
+  case "$selected" in
+    "$projects_dir"/*)
+      rel_path="${selected#"$projects_dir"/}"
+      if [[ "$rel_path" == */* ]]; then
+        name="$(printf '%s' "$rel_path" | sed -e 's/\./_/g')"
+      fi
+      ;;
+  esac
+fi
+
+add_session "$selected" "$name"

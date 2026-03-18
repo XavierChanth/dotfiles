@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+script_dir="$(dirname -- "$(readlink -f -- "$0")")"
+source "$script_dir/include.d/tmux_session.sh"
+
+projects_dir=$(
+  { [ -d '/Volumes/xcdata/src' ] && echo '/Volumes/xcdata/src'; } ||
+    { [ -d '/mnt/xcdata/src' ] && echo '/mnt/xcdata/src'; } ||
+    echo "$HOME/src"
+)
+
+selected=$(
+  (
+    # tested find against fd, for a small set of directories like this find is slightly faster
+    # now, if you were recursively searching all files, fd wins by a mile
+    find "$projects_dir" -mindepth 2 -maxdepth 2 -type d
+    # fd . "$HOME/src" "$HOME/dev" --min-depth 0 -d 2 -t dir
+    echo "$HOME/.dotfiles"
+    echo "main"
+  ) |
+    fzf --scheme=path --tiebreak=end,index --header "Open new workspace in..."
+)
+
+if [ -z "$selected" ]; then exit 0; fi
+
+printf "Workspace name: "
+read -r name
+
+if [ -z "$name" ]; then exit 0; fi
+
+work_root="$HOME/work/$(basename "$selected")"
+workspace_path="$work_root/$name"
+
+if [ -e "$workspace_path" ]; then
+  echo "Workspace already exists: $workspace_path"
+  read -r name
+  exit 1
+fi
+
+(
+  set -e
+  cd "$selected"
+  mkdir -p "$work_root"
+  jj workspace add "$workspace_path"
+) || {
+  echo "Failed to create workspace. Press enter to continue.";
+  read -r name;
+  exit 1;
+}
+
+add_session "$workspace_path"

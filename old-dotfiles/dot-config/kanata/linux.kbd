@@ -1,0 +1,32 @@
+(defcfg
+  process-unmapped-keys yes
+  linux-dev-names-include ("AT Translated Set 2 keyboard")
+)
+
+(defsrc
+  caps a s d f j k l ;
+  lctl lmet lalt
+)
+
+(deflayer base
+  @caps @a @s @d @f @j @k @l @;
+  lctl lalt lmet
+)
+
+(defvar
+  tap_time 225
+  hold_time 200
+)
+
+(defalias
+    caps (tap-hold $tap_time $hold_time esc (multi lmet lctl lsft lalt))
+    a (tap-hold-release $tap_time $hold_time a lctl)
+    s (tap-hold-release $tap_time $hold_time s lsft)
+    d (tap-hold-release $tap_time $hold_time d lalt)
+    f (tap-hold-release $tap_time $hold_time f lmet)
+    j (tap-hold-release $tap_time $hold_time j rmet)
+    k (tap-hold-release $tap_time $hold_time k ralt)
+    l (tap-hold-release $tap_time $hold_time l rsft)
+    ; (tap-hold-release $tap_time $hold_time ; rctl)
+)
+

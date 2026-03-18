@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Skip to previous track
+
+exec playerctl previous
