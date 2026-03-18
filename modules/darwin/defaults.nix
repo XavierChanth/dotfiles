@@ -17,6 +17,20 @@ in {
   ];
 
   system.defaults = {
+    CustomUserPreferences."com.apple.Spotlight" = {
+      PasteboardHistoryEnabled = false;
+      orderedItems = [
+        {
+          enabled = false;
+          name = "CONTACT";
+        }
+        {
+          enabled = false;
+          name = "MENU_SPOTLIGHT_SUGGESTIONS";
+        }
+      ];
+    };
+
     NSGlobalDomain = {
       ApplePressAndHoldEnabled = false;
       InitialKeyRepeat = 15;

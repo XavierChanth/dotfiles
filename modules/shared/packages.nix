@@ -7,53 +7,24 @@
 }: {
   home.packages =
     (with pkgs; [
-      # Core
+      # Shell
       bash
-      coreutils
-      less
-      moreutils
-      spaceship-prompt
-      vim
       zsh
+      spaceship-prompt
 
-      # My Essentials
-      bat
-      bat-extras.batdiff
-      bat-extras.batgrep
-      bat-extras.batman
-      bat-extras.batpipe
-      bat-extras.batwatch
-      bat-extras.prettybat
-      codex
-      curl
-      delta
-      difftastic
-      fd
+      # Core Utilities
+      coreutils
+      moreutils
       fastfetch
-      fzf
-      gh
-      git
-      imagemagick
-      inputs.neovim-nightly-overlay.packages.${system}.default
-      jjui
-      jq
-      jujutsu
-      just
-      nerd-fonts.commit-mono
-      nerd-fonts.jetbrains-mono
-      pandoc
+      curl
+      vim
       parallel
-      poppler
-      resvg
-      ripgrep
       stow
       tmux
       tree
-      tree-sitter
       unar
       unzip
       wget
-      yazi
 
       # Networking tools
       bind
@@ -62,9 +33,49 @@
       nettools
       nmap
       openssl
-    ])
-    ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
-      # Apps
+
+      # Pagers
+      less
+      bat
+      bat-extras.batdiff
+      bat-extras.batgrep
+      bat-extras.batman
+      bat-extras.batpipe
+      bat-extras.batwatch
+      bat-extras.prettybat
+
+      # Development
+      inputs.neovim-nightly-overlay.packages.${system}.default
+      tree-sitter
+      fd
+      fzf
+      ripgrep
+      just
+      jq
+
+      # Fonts
+      nerd-fonts.commit-mono
+      nerd-fonts.jetbrains-mono
+
+      # Git
+      git
+      delta
+      difftastic
+      jujutsu
+
+      # File-format based Utilities
+      imagemagick
+      pandoc
+      poppler
+      resvg
+
+      # CLI Apps
+      codex
+      gh
+      yazi
+
+      # Keyboard
+      kanata
 
       # Programming Languages
       basedpyright
@@ -76,8 +87,6 @@
       gofumpt
       gopls
       hadolint
-      iproute2mac
-      kanata
       lua-language-server
       neocmakelsp
       ninja
@@ -104,7 +113,12 @@
       zig
       zls
     ])
+    ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
+      # Mac only
+      iproute2mac
+    ])
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+      # Linux
       pkgs.traceroute
       pkgs.iproute2
     ];

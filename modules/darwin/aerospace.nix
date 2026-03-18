@@ -113,7 +113,7 @@ in {
         outer.top = 8;
         outer.bottom = [
           {monitor.built-in = 8;}
-          {monitor.main = 48;}
+          {monitor.main = 8;}
           8
         ];
         outer.right = 8;
@@ -152,7 +152,6 @@ in {
           };
           check-further-callbacks = true;
           run = "move-node-to-workspace 4";
-
         }
         {
           "if" = {
