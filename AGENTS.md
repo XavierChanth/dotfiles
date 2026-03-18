@@ -5,8 +5,8 @@ This repository is a new port of the dotfiles setup. Treat it as the source of t
 ## Working Rules
 
 - Prefer adapting and extending the configuration in this repo instead of assuming the old setup should be copied over.
-- When configuring tools, it can sometimes be helpful to reference the old repo at [xavierchanth/dotfiles](https://github.com/xavierchanth/dotfiles).
-- Always ask the user before pulling, copying, or otherwise using config from the old repo.
+- When configuring tools, it can sometimes be helpful to reference the `v1` branch in this repo as historical context.
+- Always ask the user before pulling, copying, or otherwise using config from the `v1` branch.
 - Keep changes aligned with the current Nix-based structure unless the user asks for a broader redesign.
 
 ## Repo Shape
@@ -21,4 +21,4 @@ This repository is a new port of the dotfiles setup. Treat it as the source of t
 
 - Make focused edits that match the existing module layout.
 - Prefer adding or updating the relevant shared or host module over introducing ad hoc files.
-- If a tool is not configured yet and the old repo may be useful as reference, pause and ask first.
+- If a tool is not configured yet and the `v1` branch may be useful as reference, pause and ask first.
