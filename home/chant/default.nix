@@ -35,6 +35,7 @@
     mkdir -p "${config.home.homeDirectory}/.config/ghostty"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
     mkdir -p "${config.home.homeDirectory}/.config/kanata"
+    mkdir -p "${config.home.homeDirectory}/.config/zsh"
     mkdir -p "${config.home.homeDirectory}/.config/tmux"
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
@@ -42,13 +43,6 @@
 
     AGENT_SKILLS_DIR="${config.home.homeDirectory}/.config/agents/skills"
     CODEX_SKILLS_DIR="${config.home.homeDirectory}/.codex/skills"
-
-    ${pkgs.stow}/bin/stow \
-      --dir="$STOW_DIR" \
-      --dotfiles \
-      --target="${config.home.homeDirectory}" \
-      --restow \
-      zsh
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -73,6 +67,12 @@
       --target="${config.home.homeDirectory}/.config/kanata" \
       --restow \
       kanata
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.config/zsh" \
+      --restow \
+      zsh
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
