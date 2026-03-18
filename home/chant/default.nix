@@ -27,10 +27,12 @@
     STOW_DIR="${config.home.homeDirectory}/.dotfiles/stow"
 
     mkdir -p "${config.home.homeDirectory}/.config"
+    mkdir -p "${config.home.homeDirectory}/.config/ghostty"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
     mkdir -p "${config.home.homeDirectory}/.config/kanata"
     mkdir -p "${config.home.homeDirectory}/.config/tmux"
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
+    mkdir -p "${config.home.homeDirectory}/.config/zed"
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -38,6 +40,12 @@
       --target="${config.home.homeDirectory}" \
       --restow \
       git zsh
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.config/ghostty" \
+      --restow \
+      ghostty
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -62,6 +70,12 @@
       --target="${config.home.homeDirectory}/.config/nvim" \
       --restow \
       nvim
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.config/zed" \
+      --restow \
+      zed
   '';
 
   home.activation.linkApplications = lib.hm.dag.entryAfter ["linkGeneration"] ''
@@ -103,6 +117,12 @@
       ln -sfn "$app_target" "$apps_dir/$app_name"
     done
   '';
+
+  home.activation.configureRaycast = lib.hm.dag.entryAfter ["writeBoundary"] (
+    lib.mkIf pkgs.stdenv.isDarwin ''
+      /usr/bin/defaults write com.raycast.macos raycastGlobalHotkey -string "Command-Option-49"
+    ''
+  );
 
   home.sessionVariables = {
     EDITOR = "vim";
