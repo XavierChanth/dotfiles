@@ -7,6 +7,7 @@
   ...
 }: {
   imports = [
+    ../../modules/shared/git.nix
     ../../modules/shared/packages.nix
     ../../modules/shared/tmux.nix
   ];
@@ -40,7 +41,7 @@
       --dotfiles \
       --target="${config.home.homeDirectory}" \
       --restow \
-      git zsh
+      zsh
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

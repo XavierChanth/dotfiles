@@ -59,7 +59,6 @@
 
       # Git
       git
-      delta
       difftastic
       jujutsu
 
