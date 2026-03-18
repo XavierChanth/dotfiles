@@ -1,10 +1,12 @@
 {
   pkgs,
   username,
+  services,
   ...
 }: let
   kanataConfigDir = "/Users/${username}/.config/kanata";
 in {
+  services.karabiner-elements.enable = true;
   launchd.daemons.kanata = {
     serviceConfig = {
       ProgramArguments = [

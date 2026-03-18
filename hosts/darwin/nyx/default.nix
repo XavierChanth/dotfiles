@@ -16,7 +16,7 @@
   ];
 
   networking.hostName = hostname;
-  networking.computerName = "Xavier's MacBook Air";
+  networking.computerName = hostname;
 
   users.users.${username}.home = "/Users/${username}";
 
