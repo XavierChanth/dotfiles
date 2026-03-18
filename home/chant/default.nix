@@ -31,12 +31,17 @@
     STOW_DIR="${config.home.homeDirectory}/.dotfiles/stow"
 
     mkdir -p "${config.home.homeDirectory}/.config"
+    mkdir -p "${config.home.homeDirectory}/.config/agents"
     mkdir -p "${config.home.homeDirectory}/.config/ghostty"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
     mkdir -p "${config.home.homeDirectory}/.config/kanata"
     mkdir -p "${config.home.homeDirectory}/.config/tmux"
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
+    mkdir -p "${config.home.homeDirectory}/.codex"
+
+    AGENT_SKILLS_DIR="${config.home.homeDirectory}/.config/agents/skills"
+    CODEX_SKILLS_DIR="${config.home.homeDirectory}/.codex/skills"
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -44,6 +49,12 @@
       --target="${config.home.homeDirectory}" \
       --restow \
       zsh
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.config/agents" \
+      --restow \
+      agents
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -80,6 +91,26 @@
       --target="${config.home.homeDirectory}/.config/zed" \
       --restow \
       zed
+
+    if [ -d "$CODEX_SKILLS_DIR" ] && [ ! -L "$CODEX_SKILLS_DIR" ]; then
+      unmanaged_skill="$(${pkgs.findutils}/bin/find "$CODEX_SKILLS_DIR" -mindepth 1 -maxdepth 1 ! -name '.system' -print -quit)"
+
+      if [ -n "$unmanaged_skill" ]; then
+        printf 'Refusing to replace %s: found unmanaged Codex skill %s. Move it into %s first.\n' \
+          "$CODEX_SKILLS_DIR" \
+          "$(basename "$unmanaged_skill")" \
+          "$AGENT_SKILLS_DIR" >&2
+        exit 1
+      fi
+
+      if [ -e "$CODEX_SKILLS_DIR/.system" ] && [ ! -e "$AGENT_SKILLS_DIR/.system" ]; then
+        mv "$CODEX_SKILLS_DIR/.system" "$AGENT_SKILLS_DIR/.system"
+      fi
+
+      rmdir "$CODEX_SKILLS_DIR"
+    fi
+
+    ln -sfn "$AGENT_SKILLS_DIR" "$CODEX_SKILLS_DIR"
   '';
 
   home.activation.linkApplications = lib.hm.dag.entryAfter ["linkGeneration"] ''
