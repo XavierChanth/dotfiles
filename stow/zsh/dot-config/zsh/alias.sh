@@ -42,7 +42,6 @@ fi
 # rather than the whole site
 alias wgetsite='wget --no-parent -p -r'
 
-alias lg='lazygit'
 alias y='yazi'
 
 if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then

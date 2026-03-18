@@ -9,6 +9,7 @@
   imports = [
     ../../modules/shared/git.nix
     ../../modules/shared/packages.nix
+    ../../modules/shared/shell.nix
     ../../modules/shared/ssh.nix
     ../../modules/shared/tmux.nix
   ];
