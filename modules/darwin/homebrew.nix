@@ -41,6 +41,7 @@
       "raycast"
       "visual-studio-code"
       "zed"
+      "zoom"
     ];
   };
 }
