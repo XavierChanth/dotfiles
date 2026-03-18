@@ -26,5 +26,9 @@
       ShowPathbar = true;
       ShowStatusBar = true;
     };
+
+    trackpad = {
+      Clicking = true;
+    };
   };
 }
