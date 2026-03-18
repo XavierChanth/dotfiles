@@ -107,4 +107,11 @@
   home.sessionVariables = {
     EDITOR = "vim";
   };
+
+  services.macos-remap-keys = lib.mkIf pkgs.stdenv.isDarwin {
+    enable = true;
+    keyboard = {
+      Capslock = "Escape";
+    };
+  };
 }
