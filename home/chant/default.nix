@@ -8,6 +8,7 @@
 }: {
   imports = [
     ../../modules/shared/packages.nix
+    ../../modules/shared/tmux.nix
   ];
 
   home.username = username;
