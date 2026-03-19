@@ -30,6 +30,7 @@
       upgrade = false;
     };
     casks = [
+      "discord"
       "ghostty"
       "google-chrome"
       "helium-browser"
@@ -40,6 +41,7 @@
       "obs"
       "raycast"
       "spotify"
+      "vlc"
       "visual-studio-code"
       "windows-app"
       "zed"
