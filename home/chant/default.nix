@@ -40,6 +40,7 @@
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
     mkdir -p "${config.home.homeDirectory}/.codex"
+    mkdir -p "${config.home.homeDirectory}/.codex/rules"
 
     AGENT_SKILLS_DIR="${config.home.homeDirectory}/.config/agents/skills"
     CODEX_SKILLS_DIR="${config.home.homeDirectory}/.codex/skills"
@@ -49,6 +50,12 @@
       --target="${config.home.homeDirectory}/.config/agents" \
       --restow \
       agents
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.codex" \
+      --restow \
+      codex
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

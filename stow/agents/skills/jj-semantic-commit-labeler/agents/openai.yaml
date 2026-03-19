@@ -1,0 +1,4 @@
+interface:
+  display_name: "JJ Semantic Labeler"
+  short_description: "Label jj commits using Conventional Commit semantics."
+  default_prompt: "Analyze the current jj graph and suggest semantic commit labels with confidence and rationale."
