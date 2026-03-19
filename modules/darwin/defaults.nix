@@ -1,12 +1,10 @@
-{username, ...}: let
+{hostname, username, ...}: let
   userHome = "/Users/${username}";
-in {
-  # GUI apps on macOS inherit PATH from the per-user launchd session rather
-  # than from interactive shell startup files.
-  launchd.user.envVariables.PATH = [
+  guiPath = [
     "/run/current-system/sw/bin"
     "/etc/profiles/per-user/${username}/bin"
     "${userHome}/.dotfiles/bin/shared"
+    "${userHome}/.dotfiles/bin/hosts/${hostname}"
     "/opt/homebrew/bin"
     "/opt/homebrew/sbin"
     "/usr/local/bin"
@@ -15,6 +13,10 @@ in {
     "/usr/sbin"
     "/sbin"
   ];
+in {
+  # GUI apps on macOS inherit PATH from the per-user launchd session rather
+  # than from interactive shell startup files.
+  launchd.user.envVariables.PATH = builtins.concatStringsSep ":" guiPath;
 
   system.defaults = {
     CustomUserPreferences."com.apple.Spotlight" = {

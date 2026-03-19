@@ -3,24 +3,14 @@
 
 theme = "light:Flexoki Light,dark:tokyonight-storm"
 
-# font-family = "JetBrainsMono Nerd Font Mono"
-# font-size = 18
-
-# font-family = "CommitMonoDottedZero"
-# font-size = 15
-# adjust-cell-height = 20%
-
 font-family = "CommitMono Nerd Font"
 font-feature= +cv07,+ss03,+ss04,+ss05
 # ligatures ss01, arrows ss02
 font-size = 13
 adjust-cell-height = 20%
 
-macos-titlebar-style = hidden
-# window-padding-x = 6
-# window-padding-y = 0
-window-padding-balance = true
 
+window-padding-balance = true
 background-opacity = 0.95
 background-blur-radius = 20
 
@@ -43,7 +33,6 @@ mouse-shift-capture = false
 macos-option-as-alt = true
 
 keybind = ctrl+shift+t=unbind
-
 keybind = super+r=reload_config
 keybind = super+j=text:5j
 keybind = super+k=text:5k
