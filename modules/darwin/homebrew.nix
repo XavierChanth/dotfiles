@@ -41,6 +41,7 @@
       "raycast"
       "spotify"
       "visual-studio-code"
+      "windows-app"
       "zed"
       "zoom"
     ];
