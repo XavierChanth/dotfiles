@@ -7,6 +7,7 @@
   ...
 }: {
   imports = [
+    ../../modules/shared/ghostty.nix
     ../../modules/shared/git.nix
     ../../modules/shared/packages.nix
     ../../modules/shared/shell.nix
@@ -32,7 +33,6 @@
 
     mkdir -p "${config.home.homeDirectory}/.config"
     mkdir -p "${config.home.homeDirectory}/.config/agents"
-    mkdir -p "${config.home.homeDirectory}/.config/ghostty"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
     mkdir -p "${config.home.homeDirectory}/.config/kanata"
     mkdir -p "${config.home.homeDirectory}/.config/zsh"
@@ -49,12 +49,6 @@
       --target="${config.home.homeDirectory}/.config/agents" \
       --restow \
       agents
-
-    ${pkgs.stow}/bin/stow \
-      --dir="$STOW_DIR" \
-      --target="${config.home.homeDirectory}/.config/ghostty" \
-      --restow \
-      ghostty
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

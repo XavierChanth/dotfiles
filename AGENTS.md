@@ -8,6 +8,8 @@ This repository is a new port of the dotfiles setup. Treat it as the source of t
 - When configuring tools, it can sometimes be helpful to reference the `v1` branch in this repo as historical context.
 - Always ask the user before pulling, copying, or otherwise using config from the `v1` branch.
 - Keep changes aligned with the current Nix-based structure unless the user asks for a broader redesign.
+- Prefer reproducible, cross-machine configuration. Do not hardcode machine-specific paths, usernames, home directories, or profile locations when a Nix value can derive them.
+- When a path depends on a package or system context, derive it from Nix instead of spelling it literally. Example: prefer `${pkgs.tmux}/bin/tmux` or `${config.home.homeDirectory}` over hardcoded paths like `/etc/profiles/per-user/chant/bin/tmux` or `/Users/chant/...`.
 
 ## Repo Shape
 
