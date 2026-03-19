@@ -106,11 +106,11 @@ return {
       version = any,
       data = { config = "config/mini-diff" },
     },
-    {
-      src = "https://github.com/sudo-tee/opencode.nvim",
-      version = nil,
-      data = { config = "config/opencode" },
-    },
+    -- {
+    --   src = "https://github.com/sudo-tee/opencode.nvim",
+    --   version = nil,
+    --   data = { config = "config/opencode" },
+    -- },
     -- {
     --   src = "https://github.com/carlos-algms/agentic.nvim",
     --   version = nil,
