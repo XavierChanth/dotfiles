@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
-source "$script_dir/include.d/tmux_session.sh"
+source "$script_dir/add_session.sh"
 
 projects_dir=$(
   { [ -d '/Volumes/xcdata/src' ] && echo '/Volumes/xcdata/src'; } ||

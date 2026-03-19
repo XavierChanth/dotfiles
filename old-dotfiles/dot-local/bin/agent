@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-export EDITOR="nvim"
-
-# Oh boi, the race is on...
-# Codex may actually come out on top if it release plan mode.
-# exec claude "$@"
-exec opencode "$@"
-# exec codex "$@"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 script_dir="$(dirname -- "$(readlink -f -- "$0")")"
-source "$script_dir/include.d/tmux_session.sh"
+source "$script_dir/add_session.sh"
 
 includes=$(cat "$HOME/.ssh/config" | rg 'Include ' | cut -d ' ' -f2 | sed -e "s|^|$HOME/.ssh/|")
 files=$(echo $includes) # expands globs
