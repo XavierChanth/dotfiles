@@ -92,25 +92,8 @@
       --restow \
       zed
 
-    if [ -d "$CODEX_SKILLS_DIR" ] && [ ! -L "$CODEX_SKILLS_DIR" ]; then
-      unmanaged_skill="$(${pkgs.findutils}/bin/find "$CODEX_SKILLS_DIR" -mindepth 1 -maxdepth 1 ! -name '.system' -print -quit)"
-
-      if [ -n "$unmanaged_skill" ]; then
-        printf 'Refusing to replace %s: found unmanaged Codex skill %s. Move it into %s first.\n' \
-          "$CODEX_SKILLS_DIR" \
-          "$(basename "$unmanaged_skill")" \
-          "$AGENT_SKILLS_DIR" >&2
-        exit 1
-      fi
-
-      if [ -e "$CODEX_SKILLS_DIR/.system" ] && [ ! -e "$AGENT_SKILLS_DIR/.system" ]; then
-        mv "$CODEX_SKILLS_DIR/.system" "$AGENT_SKILLS_DIR/.system"
-      fi
-
-      rmdir "$CODEX_SKILLS_DIR"
-    fi
-
-    ln -sfn "$AGENT_SKILLS_DIR" "$CODEX_SKILLS_DIR"
+    mkdir -p "$CODEX_SKILLS_DIR"
+    ln -sfn "$AGENT_SKILLS_DIR" "$CODEX_SKILLS_DIR/agent-skills"
   '';
 
   home.activation.linkApplications = lib.hm.dag.entryAfter ["linkGeneration"] ''

@@ -39,6 +39,7 @@
       "microsoft-teams"
       "obs"
       "raycast"
+      "spotify"
       "visual-studio-code"
       "zed"
       "zoom"
