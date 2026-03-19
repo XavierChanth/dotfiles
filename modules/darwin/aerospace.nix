@@ -189,9 +189,8 @@ in {
         alt-r = "flatten-workspace-tree";
         alt-w = "close";
 
-        alt-enter = ["exec-and-forget open -n /Applications/Ghostty.app"];
-        alt-shift-enter = [
-          "exec-and-forget open -n /Applications/Ghostty.app --args -e zsh"
+        alt-enter = [
+          "exec-and-forget open -n /Applications/Ghostty.app --args -e ${pkgs.tmux}/bin/tmux new -A -s main"
         ];
 
         alt-t = [

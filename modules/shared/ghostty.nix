@@ -16,7 +16,6 @@
       background-blur-radius = 20;
 
       title = "Ghostty";
-      command = "${pkgs.tmux}/bin/tmux new -A -s main";
 
       confirm-close-surface = false;
       quit-after-last-window-closed = true;
