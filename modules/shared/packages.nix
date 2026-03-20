@@ -95,6 +95,7 @@
       python3
       ruby
       ruff
+      cargo
       rust-analyzer
       rustc
       shellcheck
