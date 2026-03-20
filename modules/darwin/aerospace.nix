@@ -4,6 +4,7 @@
   username,
   ...
 }: let
+  aerospaceBin = "${pkgs.aerospace}/bin/aerospace";
   dotfilesDir = "/Users/${username}/.dotfiles";
   swapWorkspaceMonitors = pkgs.writeShellScript "aerospace-swap-workspace-monitors" ''
     set -euo pipefail
@@ -43,22 +44,22 @@
     }
 
     summon() {
-      aerospace summon-workspace --fail-if-noop "$1"
+      ${aerospaceBin} summon-workspace --fail-if-noop "$1"
     }
 
     direction="$1"
 
     debug "grabbing w1, m1"
-    w1="$(aerospace list-workspaces --focused)"
-    m1="$(aerospace list-monitors --focused | sed -E 's/^(.*) \| .*$/\1/')"
+    w1="$(${aerospaceBin} list-workspaces --focused)"
+    m1="$(${aerospaceBin} list-monitors --focused | sed -E 's/^(.*) \| .*$/\1/')"
     debug "w1: $w1, m1: $m1"
 
     debug "going to m2 (direction $direction)"
-    aerospace focus-monitor "''${focus_args[@]}" "$direction"
+    ${aerospaceBin} focus-monitor "''${focus_args[@]}" "$direction"
 
     debug "grabbing w2"
-    w2="$(aerospace list-workspaces --focused)"
-    m2="$(aerospace list-monitors --focused | sed -E 's/^(.*) \| .*$/\1/')"
+    w2="$(${aerospaceBin} list-workspaces --focused)"
+    m2="$(${aerospaceBin} list-monitors --focused | sed -E 's/^(.*) \| .*$/\1/')"
     debug "w2: $w2, m2: $m2"
 
     debug "summoning w1: $w1"
@@ -67,14 +68,14 @@
       exit 1
     }
 
-    aerospace move-workspace-to-monitor --workspace "$w1" "$m2" || {
+    ${aerospaceBin} move-workspace-to-monitor --workspace "$w1" "$m2" || {
       echo "ERROR[move w1 m2]: can't move workspace $w1 to monitor $m2"
       exit 1
     }
     debug "summoned w1"
 
     debug "going back to m1: $m1"
-    aerospace focus-monitor "$m1"
+    ${aerospaceBin} focus-monitor "$m1"
     debug "focused monitor m1"
 
     debug "summoning w2: $w2"
@@ -177,7 +178,7 @@ in {
       ];
 
       mode.main.binding = {
-        alt-shift-r = ["exec-and-forget aerospace reload-config"];
+        alt-shift-r = "reload-config";
 
         alt-s = "layout tiles horizontal vertical";
         alt-f = "layout h_accordion tiles";
