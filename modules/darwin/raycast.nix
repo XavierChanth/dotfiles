@@ -10,7 +10,12 @@
 in {
   system.defaults.CustomUserPreferences = {
     "com.raycast.macos" = {
+      navigationCommandStyleIdentifierKey = "vim";
+      quickAIShowActionInRootSearch = false;
       raycastGlobalHotkey = "Command-49";
+      raycastPreferredWindowMode = "compact";
+      raycastWindowPresentationMode = 2;
+      useHyperKeyIcon = true;
     };
 
     "com.apple.symbolichotkeys" = {

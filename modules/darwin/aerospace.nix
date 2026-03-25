@@ -99,7 +99,7 @@ in {
   system.defaults.dock.expose-group-apps = true;
 
   services.aerospace = {
-    enable = true;
+    enable = false;
     settings = {
       after-startup-command = [
         "move-workspace-to-monitor --workspace 2 prev"
@@ -193,22 +193,9 @@ in {
         alt-enter = [
           "exec-and-forget open -n /Applications/Ghostty.app --args -e ${pkgs.tmux}/bin/tmux new -A -s main"
         ];
-
-        alt-t = [
+        alt-shift-enter = [
           "workspace 3"
           "exec-and-forget open -a /Applications/Ghostty.app"
-        ];
-        alt-b = [
-          "workspace 2"
-          "exec-and-forget open -a /Applications/Zen\\ Browser.app"
-        ];
-        alt-v = [
-          "workspace 2"
-          "exec-and-forget open -a /Applications/zoom.us.app"
-        ];
-        alt-p = [
-          "workspace 1"
-          "exec-and-forget open -a /Applications/KeePassXC.app"
         ];
 
         alt-h = "focus left --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors";

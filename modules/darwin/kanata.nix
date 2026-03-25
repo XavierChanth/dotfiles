@@ -1,18 +1,20 @@
 {
+  config,
   pkgs,
   username,
-  services,
   ...
 }: let
-  kanataConfigDir = "/Users/${username}/.config/kanata";
+  userHome = config.users.users.${username}.home;
+  kanataConfig = "${userHome}/.config/kanata/macos.kbd";
 in {
-  # services.karabiner-elements.enable = true;
+  environment.systemPackages = [pkgs.kanata];
+
   launchd.daemons.kanata = {
     serviceConfig = {
       ProgramArguments = [
         "${pkgs.kanata}/bin/kanata"
         "-c"
-        "${kanataConfigDir}/macos.kbd"
+        kanataConfig
       ];
       KeepAlive = true;
       RunAtLoad = true;

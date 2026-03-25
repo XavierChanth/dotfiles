@@ -73,9 +73,6 @@
       gh
       yazi
 
-      # Keyboard
-      kanata
-
       # Programming Languages
       basedpyright
       bun
@@ -117,9 +114,12 @@
       # Mac only
       iproute2mac
     ])
-    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+    ++ lib.optionals (!pkgs.stdenv.isDarwin) (with pkgs; [
+      # Keyboard
+      kanata
+
       # Linux
-      pkgs.traceroute
-      pkgs.iproute2
-    ];
+      traceroute
+      iproute2
+    ]);
 }

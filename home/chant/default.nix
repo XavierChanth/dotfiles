@@ -32,9 +32,11 @@
     STOW_DIR="${config.home.homeDirectory}/.dotfiles/stow"
 
     mkdir -p "${config.home.homeDirectory}/.config"
-    mkdir -p "${config.home.homeDirectory}/.config/agents"
+    mkdir -p "${config.home.homeDirectory}/.agents"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
+    ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
     mkdir -p "${config.home.homeDirectory}/.config/kanata"
+    ''}
     mkdir -p "${config.home.homeDirectory}/.config/zsh"
     mkdir -p "${config.home.homeDirectory}/.config/tmux"
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
@@ -42,12 +44,12 @@
     mkdir -p "${config.home.homeDirectory}/.codex"
     mkdir -p "${config.home.homeDirectory}/.codex/rules"
 
-    AGENT_SKILLS_DIR="${config.home.homeDirectory}/.config/agents/skills"
+    AGENT_SKILLS_DIR="${config.home.homeDirectory}/.agents/skills"
     CODEX_SKILLS_DIR="${config.home.homeDirectory}/.codex/skills"
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
-      --target="${config.home.homeDirectory}/.config/agents" \
+      --target="${config.home.homeDirectory}/.agents" \
       --restow \
       agents
 
@@ -63,11 +65,25 @@
       --restow \
       jj
 
+    ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
       --target="${config.home.homeDirectory}/.config/kanata" \
       --restow \
       kanata
+    ''}
+    ${lib.optionalString pkgs.stdenv.isDarwin ''
+    if [ -L "${config.home.homeDirectory}/.config/kanata/macos.kbd" ]; then
+      target="$(readlink "${config.home.homeDirectory}/.config/kanata/macos.kbd" || true)"
+      case "$target" in
+        *"/stow/kanata/"*)
+          rm -f "${config.home.homeDirectory}/.config/kanata/macos.kbd"
+          rmdir "${config.home.homeDirectory}/.config/kanata" 2>/dev/null || true
+          ;;
+      esac
+    fi
+    ''}
+
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

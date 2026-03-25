@@ -30,19 +30,21 @@
       upgrade = false;
     };
     casks = [
+      "cursor"
       "discord"
       "ghostty"
       "google-chrome"
       "helium-browser"
-      "karabiner-elements"
       "keepassxc"
       "microsoft-office"
       "microsoft-teams"
       "obs"
+      "opencode-desktop"
       "raycast"
       "spotify"
+      "tailscale"
       "vlc"
-      "visual-studio-code"
+      "whispering"
       "windows-app"
       "zed"
       "zoom"
