@@ -76,18 +76,7 @@
     "enabled": false
   },
   "lsp": {},
-  "project_panel": {
-    "dock": "left",
-    "default_width": 4000, // fullscreen
-    "auto_reveal_entries": true,
-    "scrollbar": {
-      "show": "never"
-    },
-    "indent_size": 20,
-    "indent_guides": {
-      "show": "always"
-    }
-  },
+  "project_panel": {},
   "relative_line_numbers": "enabled",
   "tab_bar": {
     "show": false,

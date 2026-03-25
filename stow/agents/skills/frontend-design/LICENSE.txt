@@ -1,2 +1,0 @@
-The skill references a LICENSE.txt, but there was no LICENSE.txt, so I added my
-own. The original skill can be found here: https://github.com/anthropics/claude-code/tree/bd78b216ed563e57767901dcdd80f9a7750434c9/plugins/frontend-designhttps://github.com/anthropics/claude-code/tree/bd78b216ed563e57767901dcdd80f9a7750434c9/plugins/frontend-design

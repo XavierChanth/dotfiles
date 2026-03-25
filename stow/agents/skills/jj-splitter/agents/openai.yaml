@@ -1,4 +1,0 @@
-interface:
-  display_name: "JJ Splitter"
-  short_description: "Split jj revisions into ordered like-work commits."
-  default_prompt: "Use $jj-splitter to analyze the current jj revision and return one copy-pasteable shell block with non-interactive split commands that embed commit messages via -m."

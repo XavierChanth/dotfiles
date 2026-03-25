@@ -1,4 +1,0 @@
-interface:
-  display_name: "Semantic Commit Message"
-  short_description: "Generate Conventional Commit message suggestions"
-  default_prompt: "Use $semantic-commit-message to inspect the current changes and suggest a Conventional Commit message without running git commit."
