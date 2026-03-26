@@ -43,10 +43,13 @@
     ...
   }: let
     username = "chant";
-    hostname = "nyx";
     system = "aarch64-darwin";
+    darwinHosts = [
+      "eris"
+      "nyx"
+    ];
 
-    specialArgs = {
+    specialArgsFor = hostname: {
       inherit inputs username hostname system;
     };
 
@@ -55,27 +58,42 @@
         system = targetSystem;
         config.allowUnfree = true;
       };
-  in {
-    darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
-      inherit system specialArgs;
-      modules = [
-        ./hosts/darwin/${hostname}
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = specialArgs;
-          home-manager.users.${username} = import ./home/${username};
-        }
-      ];
-    };
 
-    homeConfigurations."${username}@${hostname}" = home-manager.lib.homeManagerConfiguration {
-      pkgs = pkgsFor system;
-      extraSpecialArgs = specialArgs;
-      modules = [
-        ./home/${username}
-      ];
-    };
+    mkDarwinConfiguration = hostname:
+      nix-darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = specialArgsFor hostname;
+        modules = [
+          ./hosts/darwin/${hostname}
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = specialArgsFor hostname;
+            home-manager.users.${username} = import ./home/${username};
+          }
+        ];
+      };
+
+    mkHomeConfiguration = hostname:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgsFor system;
+        extraSpecialArgs = specialArgsFor hostname;
+        modules = [
+          ./home/${username}
+        ];
+      };
+  in {
+    darwinConfigurations = builtins.listToAttrs (map (hostname: {
+        name = hostname;
+        value = mkDarwinConfiguration hostname;
+      })
+      darwinHosts);
+
+    homeConfigurations = builtins.listToAttrs (map (hostname: {
+        name = "${username}@${hostname}";
+        value = mkHomeConfiguration hostname;
+      })
+      darwinHosts);
   };
 }

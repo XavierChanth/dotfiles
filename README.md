@@ -8,7 +8,7 @@ fit best as tracked dotfiles.
 ## Layout
 
 - `flake.nix`: top-level flake entrypoint and inputs.
-- `hosts/darwin/nyx`: host-specific nix-darwin configuration.
+- `hosts/darwin/<hostname>`: host-specific nix-darwin configuration.
 - `home/chant`: Home Manager user configuration.
 - `modules/shared`: shared modules for packages and shell tooling.
 - `modules/darwin`: macOS-specific modules such as defaults, Homebrew, and
@@ -26,10 +26,12 @@ fit best as tracked dotfiles.
 
 ## Apply The Configuration
 
-On the `nyx` host, build and switch the darwin configuration with:
+On a configured host, build and switch the matching darwin configuration with:
 
 ```bash
 darwin-rebuild switch --flake .#nyx
+# or
+darwin-rebuild switch --flake .#eris
 ```
 
 The host config also expects Rosetta to be installed on Apple Silicon before or
@@ -43,6 +45,8 @@ If you only want to evaluate the Home Manager profile, this flake also exposes:
 
 ```bash
 home-manager switch --flake .#chant@nyx
+# or
+home-manager switch --flake .#chant@eris
 ```
 
 ## Notes
