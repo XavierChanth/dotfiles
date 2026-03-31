@@ -9,6 +9,7 @@
   imports = [
     ../../../modules/shared/nix.nix
     ../../../modules/darwin/aerospace.nix
+    ../../../modules/darwin/close-ports.nix
     ../../../modules/darwin/defaults.nix
     ../../../modules/darwin/homebrew.nix
     ../../../modules/darwin/raycast.nix
