@@ -16,8 +16,11 @@ The user should only need to give you a slice issue number.
 Always load context in this order:
 
 1. Find the local `specs/**/slice-#<issue-number>.md` file.
-2. Load the sibling `specs/<phase>/PRD.md` file from the same phase directory.
+2. Load the sibling `specs/NN-phase-name/PRD.md` file from the same phase directory.
 3. Try to fetch the matching slice GitHub issue and the parent PRD GitHub issue, including comments.
+
+Phase directories must always use the format `NN-phase-name`, where `NN` is the two-digit creation-order prefix.
+Unlike slice numbers, this phase prefix does not map to a GitHub issue number.
 
 If the local slice file is missing, stop and ask the user to point you to the correct phase or slice file. Do not guess the phase from GitHub alone.
 

@@ -1,6 +1,6 @@
 ---
 name: update-spec
-description: Refine existing PRD and slice spec files with newly established design information. Infer scope from the current conversation, update the directly affected local docs first, and optionally recommend syncing linked GitHub issues afterward. Use when the user asks to update specs after elaborating on a design.
+description: Refine existing PRD and slice spec files with newly established design information. Infer scope from the current conversation, update the directly affected local docs first, and optionally recommend syncing linked GitHub issues afterward. Specs live under phase directories named `NN-phase-name`. Use when the user asks to update specs after elaborating on a design.
 ---
 
 # Update Spec
@@ -16,12 +16,15 @@ Infer the target docs from the current conversation first.
 Use the strongest scope signal available:
 
 1. A referenced slice issue number, slice file, or slice title
-2. A referenced phase or `specs/<phase>/PRD.md`
+2. A referenced phase or `specs/NN-phase-name/PRD.md`
 3. Traceability lines already present in local docs, such as:
-   - `Phase: <phase>`
+   - `Phase: NN-phase-name`
    - `GitHub Issue: #<number>`
    - `Parent PRD Issue: #<number>`
    - `Slice Issue: #<number>`
+
+Phase directories must always use the format `NN-phase-name`, where `NN` is the two-digit creation-order prefix.
+Unlike slice numbers, this phase prefix does not map to a GitHub issue number.
 
 Default behavior:
 

@@ -1,6 +1,6 @@
 ---
 name: prd-to-slices
-description: Break a local phase PRD in specs/<phase>/PRD.md into tracer-bullet vertical slices, then create GitHub slice issues and matching slice-#<issue-number>.md files once a parent PRD issue exists. Use when user wants to convert a PRD to slices, create implementation tickets, or break down a PRD into work items.
+description: Break a local phase PRD in specs/NN-phase-name/PRD.md into tracer-bullet vertical slices, then create GitHub slice issues and matching slice-#<issue-number>.md files once a parent PRD issue exists. Use when user wants to convert a PRD to slices, create implementation tickets, or break down a PRD into work items.
 ---
 
 # PRD to Slices
@@ -11,7 +11,10 @@ Break a local PRD into independently-grabbable vertical slices.
 
 ### 1. Locate the PRD
 
-Ask the user for the phase if it is not already clear, then load `specs/<phase>/PRD.md`.
+Ask the user for the phase if it is not already clear, then load `specs/NN-phase-name/PRD.md`.
+
+Phase directories must always use the format `NN-phase-name`, where `NN` is the two-digit creation-order prefix.
+Unlike slice numbers, this phase prefix does not map to a GitHub issue number.
 
 If the file does not exist, stop and ask the user to point you to the correct phase or PRD path.
 
@@ -25,7 +28,7 @@ Look for a recorded parent issue near the top of the PRD, for example:
 
 If there is no parent PRD issue yet, you may still draft the slice breakdown and get approval, but you must not create slice GitHub issues or local `slice-#<issue-number>.md` files until a parent PRD issue exists.
 
-If the parent PRD issue is missing, recommend creating it first and ask the user whether to do that now. If the user agrees, create it and record the issue number in `specs/<phase>/PRD.md`. Prefer GitHub app tools when available. If you invoke `gh`, request running it outside the sandbox first.
+If the parent PRD issue is missing, recommend creating it first and ask the user whether to do that now. If the user agrees, create it and record the issue number in `specs/NN-phase-name/PRD.md`. Prefer GitHub app tools when available. If you invoke `gh`, request running it outside the sandbox first.
 
 ### 3. Explore the codebase (optional)
 
@@ -65,7 +68,7 @@ If the parent PRD issue still does not exist and the user declines to create it,
 
 If the parent PRD issue exists, create slice GitHub issues in dependency order so blockers get real issue numbers first.
 
-After each slice issue is created successfully, write `specs/<phase>/slice-#<issue-number>.md`. The local file should closely match the created issue body and should start with a short traceability header:
+After each slice issue is created successfully, write `specs/NN-phase-name/slice-#<issue-number>.md`. The local file should closely match the created issue body and should start with a short traceability header:
 
 - `Parent PRD Issue: #<number>`
 - `Slice Issue: #<number>`
