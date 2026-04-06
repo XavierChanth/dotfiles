@@ -39,6 +39,7 @@
       "microsoft-office"
       "microsoft-teams"
       "obs"
+      "obsidian"
       "opencode-desktop"
       "raycast"
       "spotify"

@@ -154,7 +154,7 @@
   '';
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "nvim";
   };
 
   services.macos-remap-keys = lib.mkIf pkgs.stdenv.isDarwin {

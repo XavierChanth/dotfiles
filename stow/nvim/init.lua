@@ -2,6 +2,7 @@ P = function(...)
   vim.print(vim.inspect(...))
 end
 
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 

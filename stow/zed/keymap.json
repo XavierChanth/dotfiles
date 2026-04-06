@@ -21,8 +21,14 @@
     // Normal & Visual Mode
     "context": "VimControl && !menu",
     "bindings": {
-      "cmd-j": ["workspace::SendKeystrokes", "5 j"],
-      "cmd-k": ["workspace::SendKeystrokes", "5 k"],
+      "cmd-j": [
+        "workspace::SendKeystrokes",
+        "5 j"
+      ],
+      "cmd-k": [
+        "workspace::SendKeystrokes",
+        "5 k"
+      ],
       "space c a": "editor::ToggleCodeActions",
       "space a": "editor::ToggleCodeActions",
     }
@@ -63,8 +69,14 @@
     // Visual mode in buffer
     "context": "vim_mode == visual && !menu",
     "bindings": {
-      "<": ["workspace::SendKeystrokes", "g < g v"],
-      ">": ["workspace::SendKeystrokes", "g > g v"],
+      "<": [
+        "workspace::SendKeystrokes",
+        "g < g v"
+      ],
+      ">": [
+        "workspace::SendKeystrokes",
+        "g > g v"
+      ],
       "g <": "vim::Outdent",
       "g >": "vim::Indent"
     }
@@ -86,33 +98,10 @@
     }
   },
   {
-    // Pick buffers
-    "context": "TabSwitcher",
-    "bindings": {
-      "j": "menu::SelectNext",
-      "k": "menu::SelectPrevious",
-      "ctrl-d": "tab_switcher::CloseSelectedItem"
-    }
-  },
-  {
     // Project panel toggle
     "context": "Dock && !Terminal",
     "bindings": {
       "space e": "workspace::ToggleLeftDock"
-    }
-  },
-  {
-    // Project panel maps
-    "context": "ProjectPanel",
-    "bindings": {
-      "enter": ["workspace::SendKeystrokes", "shift enter space e"],
-      "shift enter": "project_panel::Open",
-      "o": "project_panel::NewFile",
-      "d": "project_panel::Delete",
-      "y": "project_panel::Copy",
-      "x": "project_panel::Cut",
-      "p": "project_panel::Paste",
-      "r": "project_panel::Rename"
     }
   },
 ]

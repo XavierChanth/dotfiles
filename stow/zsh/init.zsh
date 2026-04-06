@@ -97,7 +97,7 @@ if [ -n "$ZSH_PRECMD_HOOK" ]; then
   add-zsh-hook precmd _precmd_hook
 fi
 
-export PATH="$HOME/.local/bin:$HOME/.local/share/bob/nvim-bin:$PATH:/usr/NX/bin"
+export PATH="$HOME/.local/bin:$PATH:/usr/NX/bin"
 
 # enable profiling
 # zprof

@@ -45,7 +45,7 @@
       bat-extras.prettybat
 
       # Development
-      inputs.neovim-nightly-overlay.packages.${system}.default
+      neovim
       tree-sitter
       fd
       fzf

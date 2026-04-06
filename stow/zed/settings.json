@@ -6,8 +6,12 @@
 // To see all of Zed's default settings without changing your
 // custom settings, run `zed: open default settings` from the // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "provider": "none"
+  },
   "agent_servers": {
-    "claude": {
+    "claude-acp": {
+      "type": "registry",
       "default_mode": "plan"
     }
   },
@@ -33,8 +37,7 @@
     "W": "write",
   },
   "features": {
-    "copilot": false,
-    "edit_prediction_provider": "none"
+    "copilot": false
   },
   "toolbar": {
     "selections_menu": false,
