@@ -5,13 +5,13 @@ description: Analyze a Jujutsu (jj) revision or in-progress stack, infer Convent
 
 # JJ Stack Organizer
 
-Inspect jj work read-only and return a single manual command plan. By default, analyze `@` plus its contiguous empty-description ancestors, label every revision in scope, and only suggest `jj split` for revisions whose own diff is both larger than 1000 changed lines and spread across multiple semantic buckets.
+Inspect jj work read-only and return a single manual command plan. By default, analyze `@` plus its contiguous ancestors whose descriptions are empty or start with `wip:`, label every revision in scope, and only suggest `jj split` for revisions whose own diff is both larger than 1000 changed lines and spread across multiple semantic buckets.
 
 ## Workflow
 
 1. If the user names a revision, analyze that revision only.
 2. If the user names a revset, analyze that revset.
-3. Otherwise, resolve the default scope as `@` plus contiguous ancestors whose first-line descriptions are empty.
+3. Otherwise, resolve the default scope as `@` plus contiguous ancestors whose first-line descriptions are empty or start with `wip:`.
 4. Run [scripts/collect_stack_context.py](./scripts/collect_stack_context.py) to gather revision metadata, diff stats, changed files, label suggestions, suspicious-file warnings, and split recommendations.
 5. Audit the output for generated caches, machine-local paths, secrets, build outputs, or other files that likely should not be committed.
 6. Infer or refine a Conventional Commit label for every revision in scope.

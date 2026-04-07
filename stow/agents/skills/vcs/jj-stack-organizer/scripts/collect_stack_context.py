@@ -57,6 +57,11 @@ class DiffStats:
         return self.insertions + self.deletions
 
 
+def is_placeholder_description(description: str) -> bool:
+    normalized = description.strip()
+    return normalized == "" or normalized.lower().startswith("wip:")
+
+
 def run_jj(args: list[str]) -> str:
     global SNAPSHOT_MODE
 
@@ -129,7 +134,7 @@ def resolve_default_scope() -> list[RevisionInfo]:
             continue
         collected[current.commit_id] = current
         for parent in get_parent_revisions(rev):
-            if parent.description_empty and parent.commit_id not in collected:
+            if is_placeholder_description(parent.description) and parent.commit_id not in collected:
                 queue.append(parent.change_id)
 
     if not collected:
@@ -433,7 +438,7 @@ def main() -> int:
             scope_mode = f"revision:{args.revision}"
             revisions = parse_revision_block(args.revision)
         else:
-            scope_mode = "default:@+empty-ancestors"
+            scope_mode = "default:@+empty-or-wip-ancestors"
             revisions = resolve_default_scope()
 
         payload = {
