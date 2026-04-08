@@ -1,0 +1,7 @@
+interface:
+  display_name: "Auto Decisions"
+  short_description: "Keep moving and log phase decisions."
+  default_prompt: "Use $auto-decisions to keep working through a phase-scoped SDD task, make reasonable implementation decisions without stopping for option review, and record each material decision with alternatives in the phase's decisions.md file."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,7 +1,7 @@
 interface:
   display_name: "Clarify"
   short_description: "Restate the user's request for confirmation."
-  default_prompt: "Use $clarify to restate the user's most recent request, call out the main ambiguities or competing interpretations, and ask for confirmation before proceeding."
+  default_prompt: "Use $clarify to restate the user's most recent request, or do the same when they say things like 'can you clarify, please' or 'clarify, please', then call out the main ambiguities or competing interpretations and ask for confirmation before proceeding."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

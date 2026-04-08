@@ -1,6 +1,6 @@
 ---
 name: clarify
-description: Restate the user's most recent request so they can confirm the assistant's understanding before work proceeds. Use when the user explicitly invokes `/clarify` or `$clarify`, or explicitly asks the assistant to reflect their request back because it is ambiguous, dense, or easy to interpret in multiple ways.
+description: Restate the user's most recent request so they can confirm the assistant's understanding before work proceeds. Use when the user explicitly invokes `/clarify` or `$clarify`, or asks for clarification with phrases such as "can you clarify, please", "clarify, please", or "can you clarify for me", especially when they want the assistant to reflect their request back because it is ambiguous, dense, or easy to interpret in multiple ways.
 ---
 
 # Clarify
