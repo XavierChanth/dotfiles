@@ -1,7 +1,7 @@
 interface:
   display_name: "Auto Decisions"
-  short_description: "Keep moving and log phase decisions."
-  default_prompt: "Use $auto-decisions to keep working through a phase-scoped SDD task, make reasonable implementation decisions without stopping for option review, and record each material decision with alternatives in the phase's decisions.md file."
+  short_description: "Log user and agent decisions at the right spec scope."
+  default_prompt: "Use $auto-decisions whenever an SDD task involves material decisions. Record user-made decisions in user-decisions.md, agent-made decisions in auto-decisions.md, and choose the narrowest clear scope between spec/ and spec/<scope>/."
 
 policy:
   allow_implicit_invocation: true

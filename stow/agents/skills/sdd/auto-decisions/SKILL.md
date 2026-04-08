@@ -1,63 +1,60 @@
 ---
 name: auto-decisions
-description: Run phase-scoped SDD work autonomously, make reasonable implementation decisions without stopping for option review, and record each material decision plus rejected alternatives in `specs/NN-phase-name/decisions.md` for later human review. Use when the user wants the agent to keep moving, defer decision review until after the work is complete, or maintain a decision log for a specific phase or slice.
+description: Automatically log material SDD decisions as they happen. Record user-made decisions in `spec/user-decisions.md` or `spec/<scope>/user-decisions.md`, and agent-made decisions in `spec/auto-decisions.md` or `spec/<scope>/auto-decisions.md`, choosing the narrowest clear scope. Use whenever SDD work involves material decisions, even if the user did not explicitly ask for decision logging.
 ---
 
 # Auto Decisions
 
-Use this skill when the user wants forward progress without repeated plan-and-approval pauses.
+Use this skill when SDD work should keep moving while decision history stays audit-friendly.
 
 This is an execution mode for SDD work, not a replacement for the underlying planning or implementation skill.
 
 ## Scope resolution
 
-Resolve the target phase before logging any decisions.
+Resolve the narrowest clear spec scope before logging any decision.
 
 Use the strongest signal available:
 
-1. An explicit phase path such as `specs/NN-phase-name`
-2. A referenced `PRD.md` in a phase directory
-3. A referenced `slice-#<issue-number>.md` in a phase directory
-4. Traceability lines already present in local spec files, such as:
-   - `Phase: NN-phase-name`
-   - `Parent PRD Issue: #<number>`
-   - `Slice Issue: #<number>`
+1. An explicit scoped spec directory such as `spec/xx-foo-bar`
+2. A referenced `PRD.md`, `slice-#<issue-number>.md`, or similar spec doc that already lives in a specific spec directory
+3. Traceability lines or nearby file paths that clearly tie the work to one specific spec directory
+4. If no specific scope is clearly established, fall back to the root `spec/` scope
 
-Phase directories must always use the format `NN-phase-name`, where `NN` is the two-digit creation-order prefix.
-Unlike slice numbers, this phase prefix does not map to a GitHub issue number.
+Routing rule:
 
-If multiple plausible phases match, stop and ask the user to disambiguate.
+- If a decision is clearly about one specific area, log it in that area's directory, for example `spec/xx-foo-bar/`
+- If a decision is broad, vague, cross-cutting, or not yet attached to one clear area, log it at the root `spec/`
+- Do not duplicate the same decision at both root and specific scope unless the user explicitly asks for duplication
 
-If no phase can be resolved, stop and ask the user to point you to the correct phase or spec path. Do not guess.
+If multiple specific scopes plausibly match and the decision is not clearly broad enough for the root log, stop and ask the user to disambiguate.
 
-## Decision log location
+## Decision files
 
-Use exactly one decision log per phase:
+At each scope, there are up to two decision files:
 
-- `specs/NN-phase-name/decisions.md`
+- `spec/user-decisions.md` or `spec/<scope>/user-decisions.md`
+- `spec/auto-decisions.md` or `spec/<scope>/auto-decisions.md`
 
-If the file already exists, read it first before appending new entries.
+Create a file only when you have at least one material entry for it. Never create empty decision files.
 
-Never create a shared cross-phase decision log. If work spans multiple phases, record only the decisions that belong to each specific phase in that phase's `decisions.md`.
+If a target file already exists, read it before appending new entries.
 
-Do not create an empty `decisions.md`. Create it only when at least one material decision needs to be recorded.
+Do not create both files at a scope unless both types of decisions actually occurred there.
 
 ## Working mode
 
-1. Explore the repo and load the relevant phase docs first.
-2. Execute the task normally instead of stopping to present option menus for routine implementation choices.
-3. When a material decision is required, choose the best reasonable option from the available evidence and continue working.
-4. Append the decision to `specs/NN-phase-name/decisions.md` as soon as the autonomous decision is made so the log does not depend on memory.
-5. At the end of the task, point the user to the phase `decisions.md` file for review.
+1. Explore the repo and load the relevant spec docs first.
+2. Treat decision logging as continuous, not end-of-task cleanup.
+3. Every time a material decision is established, append it immediately to the correct decision file so the log does not depend on memory.
+4. Continue the task normally instead of stopping to present option menus for routine choices, unless the decision is high risk.
+5. At the end of the task, point the user to each decision file that was updated.
 
-Only log decisions that the agent made autonomously while moving the work forward.
+Route entries by who made the decision:
 
-Do not log decisions that were:
+- `user-decisions.md`: decisions explicitly made by the user, explicitly confirmed by the user, or jointly discussed and then approved by the user
+- `auto-decisions.md`: decisions the agent made autonomously while moving the work forward
 
-- explicitly requested by the user
-- explicitly confirmed by the user
-- jointly discussed and then agreed with the user
-- simply transcribed from the user's instruction into the specs or implementation
+Do not mirror the same decision into both files. If the user chose the high-level direction and the agent later made an additional material implementation choice within that direction, log those as separate entries in their respective files.
 
 ## What counts as a material decision
 
@@ -73,19 +70,16 @@ Record decisions that a human would likely want to audit later, including:
 
 Do not log trivial formatting, naming, or mechanical refactors unless they carry lasting product or maintenance impact.
 
-Do not log requirements the user directly provided. Those belong in the PRD, slices, or implementation itself unless the agent had to make an additional autonomous choice beyond the user's direction.
+Do not log facts that were merely copied into specs or implementation without any actual decision being made.
 
 ## What not to log
 
 Do not record:
 
-- Decisions explicitly made by the user
-- Decisions the user confirmed after discussion
-- Jointly worked out product choices that the user approved
-- Facts copied from the updated specs without additional autonomous judgment
-- Cross-phase summary notes that are not specific to one phase
-
-If the user provided the direction and the agent merely reflected it into the specs, do not add a decision-log entry for it.
+- Trivial edits with no lasting product or maintenance impact
+- Pure status notes, summaries, or progress updates
+- Facts copied from the specs without an actual choice
+- The same decision in multiple files unless the user explicitly wants duplication
 
 ## When to still interrupt the user
 
@@ -96,7 +90,7 @@ Stop and ask instead of auto-deciding when the choice could:
 - Delete or irreversibly rewrite user data
 - Change production infrastructure, billing, secrets, or security posture
 - Conflict with explicit requirements already given by the user
-- Affect multiple phases and no safe single-phase interpretation exists
+- Need a specific scope but multiple plausible scoped directories match
 - Require using external historical sources such as another branch when approval has not been granted
 
 ## Entry format
@@ -106,7 +100,7 @@ Append entries in chronological order. Separate entries with a line containing e
 ```md
 ## Decision: <short title>
 Date: YYYY-MM-DD
-Related: <slice, PRD, or task context>
+Related: <spec path, PRD, slice, or task context>
 
 ### Chosen
 <the decision that was made>
@@ -123,7 +117,7 @@ Related: <slice, PRD, or task context>
 - <important constraint or consequence>
 ```
 
-Keep each entry compact but specific.
+Keep each entry compact but specific. If no serious alternatives were considered, keep `### Alternatives` brief and say so directly.
 
 If a later decision supersedes an earlier one, append a new entry instead of deleting history. Make the supersession explicit in the new entry.
 
@@ -131,20 +125,18 @@ If a later decision supersedes an earlier one, append a new entry instead of del
 
 Log:
 
-- "I split registry extraction into a later slice so the first runtime slice can land earlier."
-- "I kept the first browser backend on native Tauri behind an adapter until implementation evidence justifies migration."
+- In `spec/user-decisions.md`: "The user wants root-scoped decisions when the work is still vague."
+- In `spec/xx-foo-bar/auto-decisions.md`: "I kept the first backend behind an adapter until implementation evidence justifies migration."
 
 Do not log:
 
-- "The app should support OpenAI, Anthropic, and Cloudflare."
-- "The default should be GPT-5 mini."
-
-Reason: those were directly specified by the user and should live only in the phase specs.
+- "Renamed a variable for clarity."
+- "Opened the PRD and reviewed it."
 
 ## Output
 
 At the end of the task:
 
 1. Summarize the work completed
-2. Link the user to `specs/NN-phase-name/decisions.md`
+2. Link the user to each updated decision file, for example `spec/user-decisions.md` or `spec/xx-foo-bar/auto-decisions.md`
 3. Call out any decisions that still look especially worth human review
