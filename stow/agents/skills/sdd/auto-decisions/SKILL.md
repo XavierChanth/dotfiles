@@ -1,6 +1,6 @@
 ---
 name: auto-decisions
-description: Automatically log material SDD decisions as they happen. Record user-made decisions in `spec/user-decisions.md` or `spec/<scope>/user-decisions.md`, and agent-made decisions in `spec/auto-decisions.md` or `spec/<scope>/auto-decisions.md`, choosing the narrowest clear scope. Use whenever SDD work involves material decisions, even if the user did not explicitly ask for decision logging.
+description: Automatically log material SDD decisions as they happen. Record user-made decisions in `specs/user-decisions.md` or `specs/<scope>/user-decisions.md`, and agent-made decisions in `specs/auto-decisions.md` or `specs/<scope>/auto-decisions.md`, choosing the narrowest clear scope. Use whenever SDD work involves material decisions, even if the user did not explicitly ask for decision logging.
 ---
 
 # Auto Decisions
@@ -11,19 +11,19 @@ This is an execution mode for SDD work, not a replacement for the underlying pla
 
 ## Scope resolution
 
-Resolve the narrowest clear spec scope before logging any decision.
+Resolve the narrowest clear scope under `specs/` before logging any decision.
 
 Use the strongest signal available:
 
-1. An explicit scoped spec directory such as `spec/xx-foo-bar`
-2. A referenced `PRD.md`, `slice-#<issue-number>.md`, or similar spec doc that already lives in a specific spec directory
-3. Traceability lines or nearby file paths that clearly tie the work to one specific spec directory
-4. If no specific scope is clearly established, fall back to the root `spec/` scope
+1. An explicit scoped directory such as `specs/xx-foo-bar`
+2. A referenced `PRD.md`, `slice-#<issue-number>.md`, or similar spec doc that already lives in a specific directory under `specs/`
+3. Traceability lines or nearby file paths that clearly tie the work to one specific directory under `specs/`
+4. If no specific scope is clearly established, fall back to the root `specs/` scope
 
 Routing rule:
 
-- If a decision is clearly about one specific area, log it in that area's directory, for example `spec/xx-foo-bar/`
-- If a decision is broad, vague, cross-cutting, or not yet attached to one clear area, log it at the root `spec/`
+- If a decision is clearly about one specific area, log it in that area's directory, for example `specs/xx-foo-bar/`
+- If a decision is broad, vague, cross-cutting, or not yet attached to one clear area, log it at the root `specs/`
 - Do not duplicate the same decision at both root and specific scope unless the user explicitly asks for duplication
 
 If multiple specific scopes plausibly match and the decision is not clearly broad enough for the root log, stop and ask the user to disambiguate.
@@ -32,8 +32,8 @@ If multiple specific scopes plausibly match and the decision is not clearly broa
 
 At each scope, there are up to two decision files:
 
-- `spec/user-decisions.md` or `spec/<scope>/user-decisions.md`
-- `spec/auto-decisions.md` or `spec/<scope>/auto-decisions.md`
+- `specs/user-decisions.md` or `specs/<scope>/user-decisions.md`
+- `specs/auto-decisions.md` or `specs/<scope>/auto-decisions.md`
 
 Create a file only when you have at least one material entry for it. Never create empty decision files.
 
@@ -43,7 +43,7 @@ Do not create both files at a scope unless both types of decisions actually occu
 
 ## Working mode
 
-1. Explore the repo and load the relevant spec docs first.
+1. Explore the repo and load the relevant docs under `specs/` first.
 2. Treat decision logging as continuous, not end-of-task cleanup.
 3. Every time a material decision is established, append it immediately to the correct decision file so the log does not depend on memory.
 4. Continue the task normally instead of stopping to present option menus for routine choices, unless the decision is high risk.
@@ -100,7 +100,7 @@ Append entries in chronological order. Separate entries with a line containing e
 ```md
 ## Decision: <short title>
 Date: YYYY-MM-DD
-Related: <spec path, PRD, slice, or task context>
+Related: <path under specs/, PRD, slice, or task context>
 
 ### Chosen
 <the decision that was made>
@@ -125,8 +125,8 @@ If a later decision supersedes an earlier one, append a new entry instead of del
 
 Log:
 
-- In `spec/user-decisions.md`: "The user wants root-scoped decisions when the work is still vague."
-- In `spec/xx-foo-bar/auto-decisions.md`: "I kept the first backend behind an adapter until implementation evidence justifies migration."
+- In `specs/user-decisions.md`: "The user wants root-scoped decisions when the work is still vague."
+- In `specs/xx-foo-bar/auto-decisions.md`: "I kept the first backend behind an adapter until implementation evidence justifies migration."
 
 Do not log:
 
@@ -138,5 +138,5 @@ Do not log:
 At the end of the task:
 
 1. Summarize the work completed
-2. Link the user to each updated decision file, for example `spec/user-decisions.md` or `spec/xx-foo-bar/auto-decisions.md`
+2. Link the user to each updated decision file, for example `specs/user-decisions.md` or `specs/xx-foo-bar/auto-decisions.md`
 3. Call out any decisions that still look especially worth human review
