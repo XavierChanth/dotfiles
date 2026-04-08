@@ -38,6 +38,8 @@ Use exactly one decision log per phase:
 
 If the file already exists, read it first before appending new entries.
 
+Never create a shared cross-phase decision log. If work spans multiple phases, record only the decisions that belong to each specific phase in that phase's `decisions.md`.
+
 Do not create an empty `decisions.md`. Create it only when at least one material decision needs to be recorded.
 
 ## Working mode
@@ -45,8 +47,17 @@ Do not create an empty `decisions.md`. Create it only when at least one material
 1. Explore the repo and load the relevant phase docs first.
 2. Execute the task normally instead of stopping to present option menus for routine implementation choices.
 3. When a material decision is required, choose the best reasonable option from the available evidence and continue working.
-4. Append the decision to `specs/NN-phase-name/decisions.md` as soon as the decision is made so the log does not depend on memory.
+4. Append the decision to `specs/NN-phase-name/decisions.md` as soon as the autonomous decision is made so the log does not depend on memory.
 5. At the end of the task, point the user to the phase `decisions.md` file for review.
+
+Only log decisions that the agent made autonomously while moving the work forward.
+
+Do not log decisions that were:
+
+- explicitly requested by the user
+- explicitly confirmed by the user
+- jointly discussed and then agreed with the user
+- simply transcribed from the user's instruction into the specs or implementation
 
 ## What counts as a material decision
 
@@ -61,6 +72,20 @@ Record decisions that a human would likely want to audit later, including:
 - Behavior changes that are not obvious from the original request
 
 Do not log trivial formatting, naming, or mechanical refactors unless they carry lasting product or maintenance impact.
+
+Do not log requirements the user directly provided. Those belong in the PRD, slices, or implementation itself unless the agent had to make an additional autonomous choice beyond the user's direction.
+
+## What not to log
+
+Do not record:
+
+- Decisions explicitly made by the user
+- Decisions the user confirmed after discussion
+- Jointly worked out product choices that the user approved
+- Facts copied from the updated specs without additional autonomous judgment
+- Cross-phase summary notes that are not specific to one phase
+
+If the user provided the direction and the agent merely reflected it into the specs, do not add a decision-log entry for it.
 
 ## When to still interrupt the user
 
@@ -101,6 +126,20 @@ Related: <slice, PRD, or task context>
 Keep each entry compact but specific.
 
 If a later decision supersedes an earlier one, append a new entry instead of deleting history. Make the supersession explicit in the new entry.
+
+### Examples
+
+Log:
+
+- "I split registry extraction into a later slice so the first runtime slice can land earlier."
+- "I kept the first browser backend on native Tauri behind an adapter until implementation evidence justifies migration."
+
+Do not log:
+
+- "The app should support OpenAI, Anthropic, and Cloudflare."
+- "The default should be GPT-5 mini."
+
+Reason: those were directly specified by the user and should live only in the phase specs.
 
 ## Output
 
