@@ -1,9 +1,42 @@
 {
   config,
+  hostProfile,
   inputs,
   username,
   ...
-}: {
+}: let
+  baseTaps = {
+    "homebrew/homebrew-core" = inputs.homebrew-core;
+    "homebrew/homebrew-cask" = inputs.homebrew-cask;
+  };
+
+  baseCasks = [
+    "cursor"
+    "ghostty"
+    "google-chrome"
+    "helium-browser"
+    "keepassxc"
+    "obs"
+    "obsidian"
+    "raycast"
+    "tailscale-app"
+    "vlc"
+    "zed"
+  ];
+
+  localOnlyCasks = [
+    "discord"
+    "hiddenbar"
+    "hyperkey"
+    "microsoft-office"
+    "microsoft-teams"
+    "shottr"
+    "spotify"
+    "steam"
+    "windows-app"
+    "zoom"
+  ];
+in {
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
   ];
@@ -13,10 +46,7 @@
     enableRosetta = true;
     user = username;
     autoMigrate = true;
-    taps = {
-      "homebrew/homebrew-core" = inputs.homebrew-core;
-      "homebrew/homebrew-cask" = inputs.homebrew-cask;
-    };
+    taps = baseTaps;
     mutableTaps = false;
   };
 
@@ -29,26 +59,6 @@
       cleanup = "uninstall";
       upgrade = false;
     };
-    casks = [
-      "cursor"
-      "discord"
-      "ghostty"
-      "google-chrome"
-      "helium-browser"
-      "keepassxc"
-      "microsoft-office"
-      "microsoft-teams"
-      "obs"
-      "obsidian"
-      "opencode-desktop"
-      "raycast"
-      "spotify"
-      "tailscale"
-      "vlc"
-      "whispering"
-      "windows-app"
-      "zed"
-      "zoom"
-    ];
+    casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);
   };
 }

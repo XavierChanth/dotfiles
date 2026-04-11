@@ -61,8 +61,16 @@
       fi
     }
 
+    pf_is_enabled() {
+      /sbin/pfctl -s info 2>/dev/null | /usr/bin/grep -q '^Status: Enabled'
+    }
+
     printf >&2 'configuring PF close-ports rules...\n'
     run_pfctl /sbin/pfctl -n -f /etc/pf.conf
-    run_pfctl /sbin/pfctl -e -f /etc/pf.conf
+    run_pfctl /sbin/pfctl -f /etc/pf.conf
+
+    if ! pf_is_enabled; then
+      run_pfctl /sbin/pfctl -e
+    fi
   '';
 }

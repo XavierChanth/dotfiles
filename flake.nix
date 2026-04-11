@@ -44,13 +44,20 @@
   }: let
     username = "chant";
     system = "aarch64-darwin";
-    darwinHosts = [
-      "eris"
-      "nyx"
-    ];
+    darwinHosts = {
+      eris = {
+        isRemote = true;
+      };
+      nyx = {
+        isRemote = false;
+      };
+    };
+    darwinHostnames = builtins.attrNames darwinHosts;
 
-    specialArgsFor = hostname: {
-      inherit inputs username hostname system;
+    specialArgsFor = hostname: let
+      hostProfile = darwinHosts.${hostname};
+    in {
+      inherit inputs username hostname system hostProfile;
     };
 
     pkgsFor = targetSystem:
@@ -88,12 +95,12 @@
         name = hostname;
         value = mkDarwinConfiguration hostname;
       })
-      darwinHosts);
+      darwinHostnames);
 
     homeConfigurations = builtins.listToAttrs (map (hostname: {
         name = "${username}@${hostname}";
         value = mkHomeConfiguration hostname;
       })
-      darwinHosts);
+      darwinHostnames);
   };
 }
