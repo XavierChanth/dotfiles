@@ -21,11 +21,6 @@ return {
       version = any,
     },
     {
-      src = "https://github.com/folke/persistence.nvim",
-      version = any,
-      data = { config = "config/persistence" },
-    },
-    {
       src = "https://github.com/folke/snacks.nvim",
       version = any,
       data = {
@@ -62,16 +57,6 @@ return {
       data = { config = "config/lint" },
     },
     {
-      src = "https://github.com/nvim-treesitter/nvim-treesitter",
-      version = nil,
-      data = {
-        build = function()
-          vim.cmd("TSUpdate")
-        end,
-        config = "config/treesitter",
-      },
-    },
-    {
       src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       version = nil,
     },
@@ -106,21 +91,6 @@ return {
       version = any,
       data = { config = "config/mini-diff" },
     },
-    -- {
-    --   src = "https://github.com/sudo-tee/opencode.nvim",
-    --   version = nil,
-    --   data = { config = "config/opencode" },
-    -- },
-    -- {
-    --   src = "https://github.com/carlos-algms/agentic.nvim",
-    --   version = nil,
-    --   data = { config = "config/agentic" },
-    -- },
-    -- {
-    --   src = "https://github.com/ThePrimeagen/99",
-    --   version = nil,
-    --   data = { config = "config/99" },
-    -- },
   },
   -- Loads on specific file type
   ft = {
