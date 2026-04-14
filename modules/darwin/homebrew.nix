@@ -30,6 +30,7 @@
     "hyperkey"
     "microsoft-office"
     "microsoft-teams"
+    "readdle-spark"
     "shottr"
     "spotify"
     "steam"
