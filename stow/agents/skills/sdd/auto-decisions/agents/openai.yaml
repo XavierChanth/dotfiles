@@ -1,7 +1,0 @@
-interface:
-  display_name: "Auto Decisions"
-  short_description: "Log user and agent decisions at the right scope under specs."
-  default_prompt: "Use $auto-decisions whenever an SDD task involves material decisions. Record user-made decisions in user-decisions.md, agent-made decisions in auto-decisions.md, and choose the narrowest clear scope between specs/ and specs/<scope>/."
-
-policy:
-  allow_implicit_invocation: true

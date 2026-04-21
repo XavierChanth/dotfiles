@@ -11,6 +11,10 @@
   };
 
   baseCasks = [
+    "claude"
+    "claude-code"
+    "codex"
+    "codex-app"
     "cursor"
     "ghostty"
     "google-chrome"
@@ -19,6 +23,7 @@
     "obs"
     "obsidian"
     "raycast"
+    "t3-code"
     "tailscale-app"
     "vlc"
     "zed"
