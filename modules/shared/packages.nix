@@ -77,6 +77,7 @@
       basedpyright
       bun
       cmake
+      docker-compose
       docker-compose-language-service
       dockerfile-language-server
       go

@@ -16,6 +16,7 @@
     "codex"
     "codex-app"
     "cursor"
+    "docker"
     "ghostty"
     "google-chrome"
     "helium-browser"
