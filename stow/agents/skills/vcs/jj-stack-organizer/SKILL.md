@@ -20,7 +20,8 @@ Inspect jj work read-only and return a single manual command plan. By default, a
    - the revision spans multiple semantic buckets that would produce reviewable commits
 8. Keep split buckets ordered from prerequisite refactor to behavior change, then tests, docs, tooling, or polish.
 9. Return exactly one fenced `bash` block containing every `jj split` and `jj describe` command in execution order. Do not emit a second command block.
-10. Do not run mutating jj commands unless the user explicitly asks you to execute them.
+10. Do not include shell comments inside the command block. The block must be pure copy/paste commands only.
+11. Do not run mutating jj commands unless the user explicitly asks you to execute them.
 
 ## Quick Start
 
@@ -57,6 +58,7 @@ Return results in this shape:
 3. One fenced `bash` block containing the full manual command plan for every targeted revision.
 
 The command block is mandatory. Keep any prose outside it short.
+Do not include shell comments in the command block.
 
 ## Command Guidance
 
