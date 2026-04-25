@@ -5,7 +5,7 @@
       "src": "https://github.com/ThePrimeagen/99"
     },
     "SchemaStore.nvim": {
-      "rev": "f5df9e70403b5d4c0642702a64534f04f3d71d03",
+      "rev": "c3709d579066ab8f9600f5b76ade2da5042ec1ac",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
     "blink.cmp": {
@@ -96,12 +96,12 @@
       "version": ">=0.0.0"
     },
     "omnisharp-extended-lsp.nvim": {
-      "rev": "a47388e",
+      "rev": "66a003874ca0539b91cb84876080d6200c796aa7",
       "src": "https://github.com/Hoffs/omnisharp-extended-lsp.nvim"
     },
     "pi.nvim": {
       "rev": "9a4425e3e601e7387b32065d78b812bc7d5603ad",
-      "src": "https://github.com/pablopunk/pi.nvim"
+      "src": "https://github.com/xavierchanth/pi.nvim"
     },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
