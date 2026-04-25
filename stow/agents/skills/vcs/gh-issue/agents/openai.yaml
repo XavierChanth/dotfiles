@@ -1,7 +1,0 @@
-interface:
-  display_name: "Issue"
-  short_description: "Explain GitHub issue workflows with gh."
-  default_prompt: "Use $issue to explain the relevant gh issue commands for this task and note that any gh invocation should be requested outside the sandbox."
-
-policy:
-  allow_implicit_invocation: false
