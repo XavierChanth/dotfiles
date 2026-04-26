@@ -10,6 +10,12 @@
     "provider": "none"
   },
   "agent_servers": {
+    "codex-acp": {
+      "type": "registry"
+    },
+    "pi-acp": {
+      "type": "registry"
+    },
     "claude-acp": {
       "type": "registry",
       "default_mode": "plan"

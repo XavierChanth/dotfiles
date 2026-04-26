@@ -8,4 +8,4 @@ script = ""
 [[actions]]
 name = "Build flake"
 icon = "run"
-command = "sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin -- switch --flake \"path:/Users/chant/.dotfiles#nyx\""
+command = "sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin -- switch --flake 'path:/Users/chant/.dotfiles#nyx'"
