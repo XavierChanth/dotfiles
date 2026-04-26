@@ -30,8 +30,13 @@
     "zed"
   ];
 
+  localOnlyTaps = {
+    "steipete/homebrew-tap" = inputs.homebrew-steipete;
+  };
+
   localOnlyCasks = [
     "discord"
+    "steipete/tap/codexbar"
     "hiddenbar"
     "hyperkey"
     "microsoft-office"
@@ -53,7 +58,7 @@ in {
     enableRosetta = true;
     user = username;
     autoMigrate = true;
-    taps = baseTaps;
+    taps = baseTaps // (if hostProfile.isRemote then {} else localOnlyTaps);
     mutableTaps = false;
   };
 

@@ -4,7 +4,7 @@
     package = null;
 
     settings = {
-      theme = "light:Flexoki Light,dark:tokyonight-storm";
+      theme = "light:Bluloco Light,dark:tokyonight-storm";
 
       font-family = "CommitMono Nerd Font";
       font-feature = "+cv07,+ss03,+ss04,+ss05";
