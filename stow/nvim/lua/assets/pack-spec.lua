@@ -28,6 +28,13 @@ return {
       },
     },
     {
+      src = "https://github.com/folke/persistence.nvim",
+      version = any,
+      data = {
+        config = "config/persistence",
+      },
+    },
+    {
       src = "https://github.com/ThePrimeagen/harpoon",
       version = "harpoon2",
       data = { config = "config/harpoon" },
@@ -67,8 +74,8 @@ return {
     {
       src = "https://github.com/xavierchanth/pi.nvim",
       version = nil,
-      data = { config = "config/pi" }
-    }
+      data = { config = "config/pi" },
+    },
   },
   -- Loads on VimEnter
   lazy = {

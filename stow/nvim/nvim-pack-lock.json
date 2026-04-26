@@ -99,8 +99,13 @@
       "rev": "66a003874ca0539b91cb84876080d6200c796aa7",
       "src": "https://github.com/Hoffs/omnisharp-extended-lsp.nvim"
     },
+    "persistence.nvim": {
+      "rev": "c45ff862b53ce07a853a753fb0b33e148dbb99d2",
+      "src": "https://github.com/folke/persistence.nvim",
+      "version": ">=0.0.0"
+    },
     "pi.nvim": {
-      "rev": "9a4425e3e601e7387b32065d78b812bc7d5603ad",
+      "rev": "77c79e656bdec2b2ef7a1b7f69b74f6f8faf719b",
       "src": "https://github.com/xavierchanth/pi.nvim"
     },
     "plenary.nvim": {
