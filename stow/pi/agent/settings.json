@@ -1,14 +1,14 @@
 {
   "lastChangelogVersion": "0.70.6",
-  "defaultProvider": "opencode-go",
-  "defaultModel": "minimax-m2.7",
-  "defaultThinkingLevel": "minimal",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.3-codex",
+  "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "enabledModels": [
+    "gpt-5.5",
     "gpt-5.4",
     "gpt-5.3-codex",
     "gpt-5.4-mini",
-    "claude-sonnet-4-6",
     "kimi-k2.6",
     "minimax-m2.7"
   ],
@@ -22,5 +22,5 @@
   "packages": [
     "https://github.com/xavierchanth/pi-tai"
   ],
-  "theme": "ansi-light"
+  "theme": "ansi-dark"
 }
