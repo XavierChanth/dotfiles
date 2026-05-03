@@ -17,7 +17,7 @@
   },
   {
     "bindings": {
-      "ctrl-alt-cmd-shift-t": "workspace::NewCenterTerminal",
+      "ctrl-alt-cmd-shift-c": "workspace::NewCenterTerminal",
       "ctrl-alt-cmd-shift-x": [
         "task::Spawn",
         { "task_name": "pi", "reveal_target": "center" },
