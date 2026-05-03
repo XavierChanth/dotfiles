@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.70.6",
+  "lastChangelogVersion": "0.72.1",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
-  "defaultThinkingLevel": "medium",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "high",
   "hideThinkingBlock": false,
   "enabledModels": [
     "gpt-5.5",
@@ -22,5 +22,6 @@
   "packages": [
     "https://github.com/xavierchanth/pi-tai"
   ],
-  "theme": "ansi-dark"
+  "theme": "ansi-light",
+  "steeringMode": "all"
 }

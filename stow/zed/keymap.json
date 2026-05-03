@@ -13,7 +13,15 @@
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
-      "ctrl-w": "pane::CloseActiveItem"
-    }
-  }
+    },
+  },
+  {
+    "bindings": {
+      "ctrl-alt-cmd-shift-t": "workspace::NewCenterTerminal",
+      "ctrl-alt-cmd-shift-x": [
+        "task::Spawn",
+        { "task_name": "pi", "reveal_target": "center" },
+      ],
+    },
+  },
 ]

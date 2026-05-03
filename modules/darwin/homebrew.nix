@@ -12,8 +12,6 @@
 
   baseCasks = [
     "claude"
-    "claude-code"
-    "codex"
     "codex-app"
     "cursor"
     "docker"
@@ -30,12 +28,10 @@
   ];
 
   localOnlyTaps = {
-    "steipete/homebrew-tap" = inputs.homebrew-steipete;
   };
 
   localOnlyCasks = [
     "discord"
-    "steipete/tap/codexbar"
     "hiddenbar"
     "hyperkey"
     "macshot"

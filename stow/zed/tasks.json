@@ -1,0 +1,10 @@
+[
+  {
+    "label": "pi",
+    "command": "pi",
+    "hide": "on_success",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "env": {},
+  },
+]

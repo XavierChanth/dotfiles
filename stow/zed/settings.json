@@ -1,133 +1,120 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "diff_view_style": "unified",
+  "use_auto_surround": false,
+  "use_autoclose": false,
+  "ui_font_family": "Helvetica Neue",
   "edit_predictions": {
-    "provider": "none"
+    "provider": "copilot",
+    "mode": "subtle",
+  },
+  "show_edit_predictions": true,
+
+  "command_aliases": {
+    "w": "workspace::Save",
+    "W": "workspace::SaveWithoutFormat",
+    "wa": "workspace::SaveAll",
+  },
+  "use_system_window_tabs": true,
+  "debugger": {
+    "button": true,
+  },
+  "terminal": {
+    "toolbar": {
+      "breadcrumbs": true,
+    },
+    "button": true,
+    "env": {
+      "EDITOR": "zed -w",
+      "VISUAL": "zed -w",
+    },
+  },
+  "project_panel": {
+    "button": true,
   },
   "agent_servers": {
     "codex-acp": {
-      "type": "registry"
+      "type": "registry",
     },
     "pi-acp": {
-      "type": "registry"
-    },
-    "claude-acp": {
+      "favorite_models": [
+        "openai-codex/gpt-5.4",
+        "openai-codex/gpt-5.4-mini",
+        "opencode-go/minimax-m2.7",
+        "opencode-go/kimi-k2.6",
+      ],
       "type": "registry",
-      "default_mode": "plan"
-    }
+    },
   },
-  "search": {
-    "regex": true
-  },
-  "sticky_scroll": {
-    "enabled": true
-  },
-  "audio": {
-    "experimental.auto_microphone_volume": true,
-    "experimental.rodio_audio": true
-  },
-  "disable_ai": false,
-  "auto_update": false,
-  "formatter": "language_server",
-  "when_closing_with_no_tabs": "close_window",
-  "always_treat_brackets_as_autoclosed": false,
-  "agent": {
-    "enabled": true
-  },
- "command_aliases": {
-    "W": "write",
-  },
-  "features": {
-    "copilot": false
-  },
-  "toolbar": {
-    "selections_menu": false,
-    "quick_actions": false
-  },
-  "prettier": {
-    "allowed": true
-  },
-  "show_whitespaces": "all",
-  "unstable.ui_density": "comfortable",
-  "use_auto_surround": false,
-  "auto_install_extensions": {},
-  "buffer_font_size": 20,
-  "buffer_font_family": "CommitMono Nerd Font",
-  "git": {
-    "git_gutter": "hide"
-  },
-  "gutter": {
-    "code_actions": false,
-    "runnables": false,
-    "folds": false
-  },
-  "projects_online_by_default": false,
-  "ui_font_size": 12,
-  "ui_font_family": "CommitMono Nerd Font",
-  "cursor_blink": false,
-  "tab_size": 2,
-  "languages": {
-    "Python": {
-      "tab_size": 4
-    }
-  },
-  "scrollbar": {
-    "show": "never"
-  },
-  "show_edit_predictions": false,
-  "format_on_save": "on",
-  "inlay_hints": {
-    "enabled": false
-  },
-  "lsp": {},
-  "project_panel": {},
-  "relative_line_numbers": "enabled",
   "tab_bar": {
-    "show": false,
-    "show_nav_history_buttons": false
+    "show_pinned_tabs_in_separate_row": true,
+    "show_tab_bar_buttons": true,
+    "show_nav_history_buttons": false,
   },
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false,
+  "git": {
+    "blame": {
+      "show_avatar": true,
+    },
   },
-  "terminal": {
-    "line_height": "comfortable"
-  },
-  "theme": {
-    "mode": "system",
-    "light": "Ayu Light",
-    "dark": "Tokyo Night Storm"
-  },
-  "use_autoclose": false,
-  "vertical_scroll_margin": 8,
-  "vim_mode": true,
-  "vim": {
-    "use_system_clipboard": "always",
-    "use_multiline_find": true,
-    "use_smartcase_find": true
-  },
-  "wrap_guides": [
-    80,
-    120
-  ],
-  "chat_panel": {
-    "dock": "right"
-  },
-  "collaboration_panel": {
-    "dock": "right"
+  "proxy": "",
+  "agent": {
+    "expand_edit_card": true,
+    "favorite_models": [],
+    "model_parameters": [],
   },
   "calls": {
     "mute_on_join": true,
   },
-  "notification_panel": {
-    "dock": "right"
+  "tabs": {
+    "file_icons": false,
+    "close_position": "right",
+    "git_status": false,
   },
-  "outline_panel": {
-    "dock": "right"
-  }
+  "title_bar": {
+    "show_user_menu": true,
+    "show_menus": false,
+    "show_onboarding_banner": false,
+    "show_project_items": true,
+    "show_user_picture": true,
+    "show_sign_in": false,
+    "show_branch_name": false,
+    "show_branch_status_icon": false,
+  },
+  "status_bar": {
+    "cursor_position_button": true,
+    "show_active_file": true,
+  },
+  "seed_search_query_from_cursor": "never",
+  "search": {
+    "button": true,
+    "regex": true,
+  },
+  "diagnostics": {
+    "button": true,
+    "inline": {
+      "enabled": true,
+    },
+  },
+  "prettier": {
+    "allowed": true,
+  },
+  "document_symbols": "on",
+  "document_folding_ranges": "on",
+  "semantic_tokens": "combined",
+  "vim_mode": true,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark",
+  },
+  "auto_update": false,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "restore_on_startup": "launchpad",
+  "redact_private_values": true,
+  "on_last_window_closed": "quit_app",
+  "when_closing_with_no_tabs": "close_window",
+  "buffer_font_family": "CommitMono Nerd Font Mono",
+  "wrap_guides": [80, 120],
 }

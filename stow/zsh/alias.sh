@@ -12,7 +12,7 @@ alias s='source $HOME/.zshenv && source $HOME/.zshrc'
 alias q='exit'
 
 alias v='nvim'
-alias c='~/.local/bin/agent'
+alias c='pi'
 alias m='aerc'
 
 alias clera='clear' # Mistakes happen ok... I make this one alot
@@ -31,7 +31,7 @@ wrapped_alias() {
   eval "function $1() { if [ \$# -gt 0 ]; then $2 \$@; else $2 $3; fi; }"
 }
 wrapped_alias "t" "tmux" "new -A -s 'main'"
-wrapped_alias "z" "zeditor" "."
+wrapped_alias "z" "zed" "."
 
 if [ "$(uname)" = 'Darwin' ]; then
   alias net='open "x-apple.systempreferences:com.apple.preference.network"'
@@ -43,7 +43,3 @@ fi
 alias wgetsite='wget --no-parent -p -r'
 
 alias y='yazi'
-
-if ! command -v code >/dev/null 2>&1 && command -v codium >/dev/null 2>&1; then
-  alias code="codium"
-fi

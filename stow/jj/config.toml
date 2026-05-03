@@ -25,9 +25,9 @@ default-command = "log"
 conflict-marker-style = "snapshot"
 # conflict-marker-style = "diff" # shows +/- at start of line
 
-diff-formatter = "delta"
+diff-formatter = "difft"
 diff-editor = ":builtin"
-merge-editor = "nvim" 
+merge-editor = "nvim"
 
 [merge-tools.delta]
 diff-args=[
@@ -38,7 +38,7 @@ diff-args=[
 diff-expected-exit-codes = [0, 1]
 
 [merge-tools.difft]
-diff-args = ["--color=always", "$left", "$right"]
+diff-args = ["--color=always", "--display=inline", "$left", "$right"]
 
 [merge-tools.nvim]
 diff-invocation-mode = "file-by-file"
@@ -69,8 +69,8 @@ backend = "ssh"
 key = "~/.ssh/id_ed25519.pub"
 
 [git]
-auto-local-bookmark = false
 private-commits = "description(glob:'wip:*') | description(glob:'private:*')"
+track-default-bookmark-on-clone = true
 
 [aliases]
 e = ["edit"]

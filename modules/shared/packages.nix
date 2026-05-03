@@ -69,7 +69,7 @@
       resvg
 
       # CLI Apps
-      codex
+      flyctl
       gh
       yazi
 
