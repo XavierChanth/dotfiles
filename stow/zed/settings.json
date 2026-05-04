@@ -1,4 +1,8 @@
 {
+  "vim": {
+    "toggle_relative_line_numbers": false
+  },
+  "relative_line_numbers": "enabled",
   "diff_view_style": "unified",
   "use_auto_surround": false,
   "use_autoclose": false,
