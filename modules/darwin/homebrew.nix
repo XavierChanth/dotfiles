@@ -14,7 +14,7 @@
     "claude"
     "codex-app"
     "cursor"
-    "docker"
+    "docker-desktop"
     "ghostty"
     "google-chrome"
     "helium-browser"

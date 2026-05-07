@@ -1,6 +1,22 @@
 {
+  "ui_font_size": 14.0,
+  "buffer_font_size": 14.0,
+  "context_servers": {
+    "mcp-server-brave-search": {
+      "enabled": true,
+      "remote": false,
+      "settings": {}
+    }
+  },
+  "language_models": {
+    "opencode": {
+      "show_zen_models": false,
+      "show_go_models": true,
+      "show_free_models": false,
+    },
+  },
   "vim": {
-    "toggle_relative_line_numbers": false
+    "toggle_relative_line_numbers": false,
   },
   "relative_line_numbers": "enabled",
   "diff_view_style": "unified",
@@ -36,15 +52,32 @@
     "button": true,
   },
   "agent_servers": {
+    "cursor": {
+      "type": "registry"
+    },
     "codex-acp": {
+      "default_config_options": {
+        "reasoning_effort": "medium",
+        "model": "gpt-5.3-codex"
+      },
+      "favorite_config_option_values": {
+        "model": [
+          "gpt-5.5",
+          "gpt-5.3-codex",
+          "gpt-5.4-mini"
+        ]
+      },
       "type": "registry",
     },
     "pi-acp": {
+      "default_model": "openai-codex/gpt-5.5",
+      "default_mode": "low",
       "favorite_models": [
         "openai-codex/gpt-5.4",
         "openai-codex/gpt-5.4-mini",
         "opencode-go/minimax-m2.7",
         "opencode-go/kimi-k2.6",
+        "openai-codex/gpt-5.5"
       ],
       "type": "registry",
     },

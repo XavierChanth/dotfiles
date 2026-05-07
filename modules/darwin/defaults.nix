@@ -19,6 +19,14 @@ in {
   launchd.user.envVariables.PATH = builtins.concatStringsSep ":" guiPath;
 
   system.defaults = {
+    CustomUserPreferences."com.apple.symbolichotkeys".AppleSymbolicHotKeys = {
+      # Keyboard Shortcuts > Input Sources:
+      # - Select the previous input source (Control-Space)
+      # - Select next source in Input menu (Control-Option-Space)
+      "60".enabled = false;
+      "61".enabled = false;
+    };
+
     CustomUserPreferences."com.apple.Spotlight" = {
       PasteboardHistoryEnabled = false;
       orderedItems = [
