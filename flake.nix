@@ -21,6 +21,11 @@
       flake = false;
     };
 
+    homebrew-rwx = {
+      url = "github:rwx-cloud/homebrew-tap";
+      flake = false;
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,6 +40,7 @@
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
+    homebrew-rwx,
     home-manager,
     ...
   }: let

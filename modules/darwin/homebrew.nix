@@ -5,10 +5,17 @@
   username,
   ...
 }: let
-  baseTaps = {
+  managedTaps = {
     "homebrew/homebrew-core" = inputs.homebrew-core;
     "homebrew/homebrew-cask" = inputs.homebrew-cask;
+    "rwx-cloud/homebrew-tap" = inputs.homebrew-rwx;
   };
+
+  brewTaps = [
+    "homebrew/homebrew-cask"
+    "homebrew/homebrew-core"
+    "rwx-cloud/tap"
+  ];
 
   baseCasks = [
     "claude"
@@ -50,21 +57,23 @@ in {
     enableRosetta = true;
     user = username;
     autoMigrate = true;
-    taps = baseTaps;
+    taps = managedTaps;
     mutableTaps = false;
   };
 
   homebrew = {
     enable = true;
     # Keep Brew Bundle from trying to mutate the immutable Taps dir.
-    taps = builtins.attrNames baseTaps;
+    taps = brewTaps;
     caskArgs.appdir = "/Applications";
     onActivation = {
       autoUpdate = false;
       cleanup = "uninstall";
       upgrade = false;
     };
-    brews = [];
+    brews = [
+      "rwx"
+    ];
     casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);
   };
 }

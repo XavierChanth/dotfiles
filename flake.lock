@@ -69,6 +69,22 @@
         "type": "github"
       }
     },
+    "homebrew-rwx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777662244,
+        "narHash": "sha256-TmK5XdS/QCitoH8W8p2pzylQcDH8YlqqU4MLY9OZorc=",
+        "owner": "rwx-cloud",
+        "repo": "homebrew-tap",
+        "rev": "ba27dddee7e9ea8e561f8fcb6f2351bc52a06dc3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rwx-cloud",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -128,6 +144,7 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-rwx": "homebrew-rwx",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs"
