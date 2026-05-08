@@ -26,9 +26,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-    };
   };
 
   outputs = inputs@{
@@ -39,7 +36,6 @@
     homebrew-core,
     homebrew-cask,
     home-manager,
-    neovim-nightly-overlay,
     ...
   }: let
     username = "chant";
