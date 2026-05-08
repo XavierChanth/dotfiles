@@ -13,14 +13,42 @@
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-alt-cmd-shift-c": "workspace::NewCenterTerminal",
+      "ctrl-alt-cmd-shift-n": "workspace::NewFile",
+      "ctrl-alt-cmd-shift-g": "git::Diff",
     },
   },
   {
+    // whole file text object with ag
+    "context": "vim_mode == visual",
     "bindings": {
-      "ctrl-alt-cmd-shift-c": "workspace::NewCenterTerminal",
-      "ctrl-alt-cmd-shift-x": [
-        "task::Spawn",
-        { "task_name": "pi", "reveal_target": "center" },
+      "a g": "editor::SelectAll",
+    },
+  },
+  {
+    "context": "vim_mode == operator && vim_operator == y",
+    "bindings": {
+      "a g": [
+        "action::Sequence",
+        ["editor::SelectAll", "editor::Copy", "vim::NormalBefore"],
+      ],
+    },
+  },
+  {
+    "context": "vim_mode == operator && vim_operator == d",
+    "bindings": {
+      "a g": [
+        "action::Sequence",
+        ["editor::SelectAll", "editor::Cut", "vim::SwitchToNormalMode"],
+      ],
+    },
+  },
+  {
+    "context": "vim_mode == operator && vim_operator == c",
+    "bindings": {
+      "a g": [
+        "action::Sequence",
+        ["editor::SelectAll", "editor::Cut", "vim::SwitchToInsertMode"],
       ],
     },
   },
