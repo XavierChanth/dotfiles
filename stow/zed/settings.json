@@ -57,8 +57,8 @@
     },
     "codex-acp": {
       "default_config_options": {
-        "reasoning_effort": "medium",
-        "model": "gpt-5.3-codex"
+        "reasoning_effort": "low",
+        "model": "gpt-5.5"
       },
       "favorite_config_option_values": {
         "model": [
@@ -103,7 +103,7 @@
   },
   "tabs": {
     "file_icons": false,
-    "close_position": "right",
+    "close_position": "left",
     "git_status": false,
   },
   "title_bar": {
