@@ -27,9 +27,6 @@
     "zed"
   ];
 
-  localOnlyTaps = {
-  };
-
   localOnlyCasks = [
     "discord"
     "hiddenbar"
@@ -53,19 +50,21 @@ in {
     enableRosetta = true;
     user = username;
     autoMigrate = true;
-    taps = baseTaps // (if hostProfile.isRemote then {} else localOnlyTaps);
+    taps = baseTaps;
     mutableTaps = false;
   };
 
   homebrew = {
     enable = true;
-    taps = builtins.attrNames config.nix-homebrew.taps;
+    # Keep Brew Bundle from trying to mutate the immutable Taps dir.
+    taps = builtins.attrNames baseTaps;
     caskArgs.appdir = "/Applications";
     onActivation = {
       autoUpdate = false;
       cleanup = "uninstall";
       upgrade = false;
     };
+    brews = [];
     casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);
   };
 }

@@ -94,6 +94,7 @@
       ruby
       ruff
       cargo
+      cue
       rust-analyzer
       rustc
       shellcheck
