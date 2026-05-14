@@ -19,6 +19,13 @@
     },
   },
   {
+    // keep Enter as newline while composing in the Agent chat editor
+    "context": "AcpThread > Editor && vim_mode == insert",
+    "bindings": {
+      "enter": "editor::Newline",
+    },
+  },
+  {
     // whole file text object with ag
     "context": "vim_mode == visual",
     "bindings": {
