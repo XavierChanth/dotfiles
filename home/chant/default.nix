@@ -42,11 +42,9 @@
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
     mkdir -p "${config.home.homeDirectory}/.codex"
+    mkdir -p "${config.home.homeDirectory}/.codex/agents"
     mkdir -p "${config.home.homeDirectory}/.codex/rules"
     mkdir -p "${config.home.homeDirectory}/.pi"
-
-    AGENT_SKILLS_DIR="${config.home.homeDirectory}/.agents/skills"
-    CODEX_SKILLS_DIR="${config.home.homeDirectory}/.codex/skills"
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -115,9 +113,6 @@
       --target="${config.home.homeDirectory}/.pi" \
       --restow \
       pi
-
-    mkdir -p "$CODEX_SKILLS_DIR"
-    ln -sfn "$AGENT_SKILLS_DIR" "$CODEX_SKILLS_DIR/agent-skills"
   '';
 
   home.activation.linkApplications = lib.hm.dag.entryAfter ["linkGeneration"] ''
