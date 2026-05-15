@@ -19,10 +19,10 @@
     },
   },
   {
-    // keep Enter as newline while composing in the Agent chat editor
+    // keep Enter aligned with Shift-Enter while composing in the Agent chat editor
     "context": "AcpThread > Editor && vim_mode == insert",
     "bindings": {
-      "enter": "editor::Newline",
+      "enter": ["workspace::SendKeystrokes", "shift-enter"],
     },
   },
   {
