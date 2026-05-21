@@ -49,6 +49,17 @@
     "button": true,
   },
   "agent_servers": {
+    "cursor": {
+      "favorite_config_option_values": {
+        "model": [
+          "default[]",
+          "composer-2.5[fast=true]",
+          "gpt-5.5[context=272k,reasoning=medium,fast=false]",
+          "gpt-5.3-codex[reasoning=medium,fast=false]"
+        ]
+      },
+      "type": "registry"
+    },
     "codex-acp": {
       "default_config_options": {
         "reasoning_effort": "low",
