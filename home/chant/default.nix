@@ -41,6 +41,8 @@
     mkdir -p "${config.home.homeDirectory}/.config/tmux"
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
+    mkdir -p "${config.home.homeDirectory}/.cursor"
+    mkdir -p "${config.home.homeDirectory}/.cursor/rules"
     mkdir -p "${config.home.homeDirectory}/.codex"
     mkdir -p "${config.home.homeDirectory}/.codex/agents"
     mkdir -p "${config.home.homeDirectory}/.codex/rules"
@@ -57,6 +59,12 @@
       --target="${config.home.homeDirectory}/.codex" \
       --restow \
       codex
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.cursor" \
+      --restow \
+      cursor
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

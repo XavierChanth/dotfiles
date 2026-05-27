@@ -30,6 +30,16 @@
     "context": "vim_mode == visual",
     "bindings": {
       "a g": "editor::SelectAll",
+      ">": ["workspace::SendKeystrokes", "> g v"],
+      "<": ["workspace::SendKeystrokes", "< g v"],
+    },
+  },
+  {
+    // Move by visual lines in normal mode.
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "j": ["workspace::SendKeystrokes", "g j"],
+      "k": ["workspace::SendKeystrokes", "g k"],
     },
   },
   {
