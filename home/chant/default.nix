@@ -42,6 +42,7 @@
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
     mkdir -p "${config.home.homeDirectory}/.cursor"
+    mkdir -p "${config.home.homeDirectory}/.cursor/agents"
     mkdir -p "${config.home.homeDirectory}/.cursor/rules"
     mkdir -p "${config.home.homeDirectory}/.codex"
     mkdir -p "${config.home.homeDirectory}/.codex/agents"
