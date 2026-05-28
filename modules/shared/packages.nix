@@ -75,7 +75,7 @@
 
       # Programming Languages
       basedpyright
-      bun
+      # bun
       cmake
       docker-compose
       docker-compose-language-service
