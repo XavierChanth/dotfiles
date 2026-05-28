@@ -1,4 +1,9 @@
 {
+  "languages": {
+    "Nix": {
+      "enable_language_server": false
+    }
+  },
   "icon_theme": "Zed (Default)",
   "tab_size": 2,
   "cli_default_open_behavior": "existing_window",
