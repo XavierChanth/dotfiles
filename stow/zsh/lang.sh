@@ -89,7 +89,7 @@ if command_exists arduino-cli; then
   }
 fi
 
-if command_exists bun; then
+if command_exists bun || [ -x "$HOME/.bun/bin/bun" ]; then
   __path="$HOME/.bun/bin:$__path"
 fi
 
