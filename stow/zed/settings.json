@@ -1,8 +1,8 @@
 {
   "languages": {
     "Nix": {
-      "enable_language_server": false
-    }
+      "enable_language_server": false,
+    },
   },
   "icon_theme": "Zed (Default)",
   "tab_size": 2,
@@ -59,11 +59,11 @@
         "model": [
           "default[]",
           "composer-2.5[fast=true]",
-          "gpt-5.5[context=272k,reasoning=medium,fast=false]",
-          "gpt-5.3-codex[reasoning=medium,fast=false]"
-        ]
+          "gpt-5.5[context=272k,reasoning=low,fast=false]",
+          "gpt-5.3-codex[reasoning=medium,fast=false]",
+        ],
       },
-      "type": "registry"
+      "type": "registry",
     },
     "codex-acp": {
       "default_config_options": {
@@ -133,7 +133,7 @@
   "theme": {
     "mode": "system",
     "light": "Github Plus Light",
-    "dark": "Github Plus Dark",
+    "dark": "One Dark",
   },
   "auto_update": false,
   "telemetry": {
