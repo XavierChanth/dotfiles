@@ -16,20 +16,14 @@
       "ctrl-alt-cmd-shift-c": "workspace::NewCenterTerminal",
       "ctrl-alt-cmd-shift-n": "workspace::NewFile",
       "ctrl-alt-cmd-shift-g": "git::Diff",
-    },
-  },
-  {
-    // keep Enter aligned with Shift-Enter while composing in the Agent chat editor
-    "context": "AcpThread > Editor && vim_mode == insert",
-    "bindings": {
-      "enter": ["workspace::SendKeystrokes", "shift-enter"],
+      "ctrl-alt-cmd-shift-e": "vim::ToggleProjectPanelFocus",
+      "ctrl-alt-cmd-shift-a": "agent::ToggleFocus",
     },
   },
   {
     // whole file text object with ag
     "context": "vim_mode == visual",
     "bindings": {
-      "a g": "editor::SelectAll",
       ">": ["workspace::SendKeystrokes", "> g v"],
       "<": ["workspace::SendKeystrokes", "< g v"],
     },
@@ -43,42 +37,19 @@
     },
   },
   {
-    "context": "vim_mode == operator && vim_operator == y",
+    // Queries for quotes/brackets/file
+    "context": "vim_operator == a || vim_operator == i",
     "bindings": {
-      "a g": [
-        "action::Sequence",
-        ["editor::SelectAll", "editor::Copy", "vim::NormalBefore"],
-      ],
+      "q": "vim::MiniQuotes",
+      "b": "vim::MiniBrackets",
+      "g": "vim::EntireFile",
     },
   },
   {
-    "context": "vim_mode == operator && vim_operator == d",
+    // keep Enter aligned with Shift-Enter while composing in the Agent chat editor
+    "context": "AcpThread > Editor && vim_mode == insert",
     "bindings": {
-      "a g": [
-        "action::Sequence",
-        ["editor::SelectAll", "editor::Cut", "vim::SwitchToNormalMode"],
-      ],
+      "enter": ["workspace::SendKeystrokes", "shift-enter"],
     },
   },
-  {
-    "context": "vim_mode == operator && vim_operator == c",
-    "bindings": {
-      "a g": [
-        "action::Sequence",
-        ["editor::SelectAll", "editor::Cut", "vim::SwitchToInsertMode"],
-      ],
-    },
-  },
-  {
-    "context": "Workspace",
-    "bindings": {
-      "ctrl-alt-cmd-shift-a": "agent::ToggleFocus"
-    }
-  },
-  {
-    "context": "Workspace",
-    "unbind": {
-      "cmd-?": "agent::ToggleFocus"
-    }
-  }
 ]
