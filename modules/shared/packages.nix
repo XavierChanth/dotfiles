@@ -95,8 +95,10 @@
       ruff
       cargo
       cue
+      clippy
       rust-analyzer
       rustc
+      rustfmt
       shellcheck
       shfmt
       stylua
