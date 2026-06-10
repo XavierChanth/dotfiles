@@ -9,9 +9,11 @@
     "homebrew/homebrew-core" = inputs.homebrew-core;
     "homebrew/homebrew-cask" = inputs.homebrew-cask;
     "rwx-cloud/homebrew-tap" = inputs.homebrew-rwx;
+    "CleverCloud/homebrew-misc" = inputs.homebrew-clevercloud-misc;
   };
 
   brewTaps = [
+    "CleverCloud/misc"
     "homebrew/homebrew-cask"
     "homebrew/homebrew-core"
     "rwx-cloud/tap"
@@ -72,6 +74,7 @@ in {
       upgrade = false;
     };
     brews = [
+      "mdr"
       "rwx"
     ];
     casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);
