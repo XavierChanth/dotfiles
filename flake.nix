@@ -26,11 +26,6 @@
       flake = false;
     };
 
-    homebrew-clevercloud-misc = {
-      url = "github:CleverCloud/homebrew-misc";
-      flake = false;
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,7 +41,6 @@
     homebrew-core,
     homebrew-cask,
     homebrew-rwx,
-    homebrew-clevercloud-misc,
     home-manager,
     ...
   }: let
