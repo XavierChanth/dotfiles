@@ -1,10 +1,23 @@
 {
+  "outline_panel": {
+    "dock": "right",
+  },
+  "collaboration_panel": {
+    "dock": "right",
+  },
+  "git_panel": {
+    "dock": "right",
+  },
   "languages": {
     "Nix": {
       "enable_language_server": false,
     },
   },
-  "icon_theme": "Zed (Default)",
+  "icon_theme": {
+    "mode": "system",
+    "light": "JetBrains Icons Light",
+    "dark": "JetBrains Icons Dark",
+  },
   "tab_size": 2,
   "cli_default_open_behavior": "existing_window",
   "ui_font_size": 14.0,
@@ -51,6 +64,7 @@
     },
   },
   "project_panel": {
+    "dock": "right",
     "button": true,
   },
   "agent_servers": {
@@ -85,6 +99,7 @@
   },
   "proxy": "",
   "agent": {
+    "dock": "left",
     "expand_edit_card": true,
     "favorite_models": [],
     "model_parameters": [],
