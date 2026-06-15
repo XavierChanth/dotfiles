@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+if len(sys.argv) < 2:
+    print(f"Usage: {Path(sys.argv[0]).parts[-1]} input.md [output.pdf]")
+    sys.exit(1)
+
+input_path = Path(sys.argv[1])
+output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else input_path.with_suffix(".pdf")
+mainfont = os.environ.get("MD2PDF_MAINFONT", "New Computer Modern")
+
+source = input_path.read_text(encoding="utf-8")
+
+IMPORT = """```{=typst}
+#import "@preview/mmdr:0.2.2": mermaid
+```
+
+"""
+
+
+def replace_mermaid(match: re.Match) -> str:
+    diagram = match.group(1).strip()
+    typst_string = json.dumps(diagram)
+    return f"""```{{=typst}}
+#mermaid({typst_string})
+```"""
+
+
+converted = re.sub(
+    r"```mermaid\s*\n(.*?)\n```",
+    replace_mermaid,
+    source,
+    flags=re.DOTALL,
+)
+
+converted = IMPORT + converted
+
+with tempfile.TemporaryDirectory() as tmp:
+    tmp_md = Path(tmp) / "input.md"
+    tmp_typ = Path(tmp) / "input.typ"
+
+    tmp_md.write_text(converted, encoding="utf-8")
+
+    subprocess.run(
+        [
+            "pandoc",
+            str(tmp_md),
+            "--from",
+            "markdown+yaml_metadata_block",
+            "--to",
+            "typst",
+            "--standalone",
+            "--variable",
+            f"mainfont={mainfont}",
+            "-o",
+            str(tmp_typ),
+        ],
+        check=True,
+    )
+
+    subprocess.run(
+        ["typst", "compile", str(tmp_typ), str(output_path)],
+        check=True,
+    )
+
+print(f"Wrote {output_path}")
