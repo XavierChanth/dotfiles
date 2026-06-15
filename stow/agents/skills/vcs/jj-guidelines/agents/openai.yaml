@@ -1,0 +1,4 @@
+interface:
+  display_name: "JJ Guidelines"
+  short_description: "Use jj safely for version-control work."
+  default_prompt: "Use $jj-guidelines when performing version-control work, checkpoints, or history cleanup in a repository with a `.jj` directory. Prefer jj over git, inspect status and diffs first, and follow the safety rules before mutating history."
