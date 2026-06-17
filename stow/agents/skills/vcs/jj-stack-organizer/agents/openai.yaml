@@ -1,4 +1,0 @@
-interface:
-  display_name: "JJ Stack Organizer"
-  short_description: "Organize jj stacks with split and label plans."
-  default_prompt: "Use $jj-stack-organizer to analyze @ plus ancestors whose descriptions are empty or start with `wip:` and return one fenced bash block with any needed jj split -m and jj describe -r ... -m ... commands."
