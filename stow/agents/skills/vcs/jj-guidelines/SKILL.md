@@ -36,10 +36,8 @@ Inspection workflow:
 1. Run jj status and jj log or jj diff as needed to understand the current stack.
 2. If the user names a revision or revset, inspect only that scope.
 3. Otherwise inspect @ plus contiguous mutable ancestors whose descriptions are empty, start with wip:, or clearly look temporary.
-4. Use the repository-local or user skill collector when available:
-   python ~/.agents/skills/vcs/jj-stack-organizer/scripts/collect_stack_context.py --json
-5. If the collector is unavailable, fall back to jj log, jj diff --stat, jj diff -r <rev>, and changed file inspection.
-6. Check for suspicious files before suggesting checkpoint or cleanup commands.
+4. Use jj log, jj diff --stat, jj diff -r <rev>, and changed file inspection to gather context.
+5. Check for suspicious files before suggesting checkpoint or cleanup commands.
 
 Checkpoint policy:
 - Create a checkpoint when the current work has reached a coherent, buildable or reviewable milestone.
