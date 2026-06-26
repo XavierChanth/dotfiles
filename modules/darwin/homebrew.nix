@@ -78,7 +78,7 @@ in {
     onActivation = {
       autoUpdate = false;
       cleanup = "uninstall";
-      upgrade = false;
+      upgrade = true;
     };
     brews = [
       "rwx"
