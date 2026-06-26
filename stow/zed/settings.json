@@ -8,6 +8,7 @@
   "git_panel": {
     "dock": "right",
   },
+  "close_panel_on_toggle": true,
   "languages": {
     "Nix": {
       "enable_language_server": false,
@@ -99,6 +100,7 @@
   },
   "proxy": "",
   "agent": {
+    "sidebar_side": "left",
     "dock": "left",
     "expand_edit_card": true,
     "favorite_models": [],
