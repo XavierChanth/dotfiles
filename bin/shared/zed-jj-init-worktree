@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+worktree_name() {
+  local path="${1%/}"
+  local base
+  base="$(basename "$path")"
+
+  local parent="${path%/*}"
+  local suffix=""
+  local component
+
+  while [ "$parent" != "/" ] && [ "$parent" != "$path" ]; do
+    component="$(basename "$parent")"
+    if [ "$component" = "$base" ]; then
+      if [ -n "$suffix" ]; then
+        printf '%s\n' "${suffix%/}"
+        return 0
+      fi
+      break
+    fi
+
+    suffix="${component}/${suffix}"
+    path="$parent"
+    parent="${parent%/*}"
+  done
+
+  basename "$(dirname "$1")"
+}
+
+if [ "${1:-}" = "--print-name" ]; then
+  worktree_name "${2:?usage: zed-jj-init-worktree --print-name PATH}"
+  exit 0
+fi
+
+worktree_root="${ZED_WORKTREE_ROOT:-}"
+
+if [ -z "$worktree_root" ]; then
+  echo "ZED_WORKTREE_ROOT is not set" >&2
+  exit 1
+fi
+
+cd "$worktree_root"
+
+name="$(worktree_name "$worktree_root")"
+
+jj git init --git-repo "$(git rev-parse --git-dir)" .
+jj git import
+jj bookmark create "zed/$name" -r @ || jj bookmark set "zed/$name" -r @

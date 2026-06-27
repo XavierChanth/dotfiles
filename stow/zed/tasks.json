@@ -1,11 +1,8 @@
 [
   {
     "label": "Initialize isolated jj repo in Zed worktree",
-    "command": "sh",
-    "args": [
-      "-lc",
-      "cd \"$ZED_WORKTREE_ROOT\" && name=$(basename \"$(dirname \"$ZED_WORKTREE_ROOT\")\") && jj git init --git-repo \"$(git rev-parse --git-dir)\" . && jj git import && (jj bookmark create \"zed/$name\" -r @ || jj bookmark set \"zed/$name\" -r @)",
-    ],
+    "command": "zed-jj-init-worktree",
+    "args": [],
     "hooks": ["create_worktree"],
     "reveal": "no_focus",
     "hide": "on_success",
