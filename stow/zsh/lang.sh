@@ -57,7 +57,7 @@ if command_exists go; then
 fi
 
 # rust / cargo
-if command_exists cargo; then
+if command_exists cargo || command_exists rustup; then
   __path="$HOME/.cargo/bin:$__path"
 fi
 
