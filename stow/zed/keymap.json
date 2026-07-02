@@ -16,8 +16,12 @@
       "ctrl-alt-cmd-shift-c": "workspace::NewCenterTerminal",
       "ctrl-alt-cmd-shift-n": "workspace::NewFile",
       "ctrl-alt-cmd-shift-g": "git::Diff",
-      "ctrl-alt-cmd-shift-e": "vim::ToggleProjectPanelFocus",
+      "ctrl-alt-cmd-shift-e": "project_panel::ToggleFocus",
       "ctrl-alt-cmd-shift-a": "agent::ToggleFocus",
+      "ctrl-alt-cmd-shift-b": "multi_workspace::ToggleWorkspaceSidebar",
+      "cmd-e": "project_panel::ToggleFocus",
+      "cmd-a": "agent::ToggleFocus",
+      "cmd-b": "multi_workspace::ToggleWorkspaceSidebar",
     },
   },
   {

@@ -82,7 +82,8 @@
     },
     "codex-acp": {
       "default_config_options": {
-        "reasoning_effort": "low",
+        "fast-mode": "off",
+        "reasoning_effort": "medium",
         "model": "gpt-5.5",
       },
       "type": "registry",
@@ -100,6 +101,7 @@
   },
   "proxy": "",
   "agent": {
+    "flexible": true,
     "sidebar_side": "left",
     "dock": "left",
     "expand_edit_card": true,
