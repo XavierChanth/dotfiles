@@ -1,10 +1,33 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
   system,
   ...
 }: {
+  home.activation.ensureRustupStable = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    export CARGO_HOME="${config.home.homeDirectory}/.cargo"
+    export RUSTUP_HOME="${config.home.homeDirectory}/.rustup"
+
+    ${pkgs.rustup}/bin/rustup toolchain install stable \
+      --profile minimal \
+      --component cargo \
+      --component clippy \
+      --component rustc \
+      --component rust-analyzer \
+      --component rustfmt \
+      --target wasm32-unknown-unknown
+
+    ${pkgs.rustup}/bin/rustup default stable
+
+    rust_host="$(${pkgs.rustup}/bin/rustup run stable rustc -vV | ${pkgs.gawk}/bin/awk '/^host: / { print $2 }')"
+    rust_sysroot="$(${pkgs.rustup}/bin/rustup run stable rustc --print sysroot)"
+    rust_lld="$rust_sysroot/lib/rustlib/$rust_host/bin/rust-lld"
+    test -x "$rust_lld"
+    ln -sfn "$rust_lld" "$CARGO_HOME/bin/rust-lld"
+  '';
+
   home.packages =
     (with pkgs; [
       # Shell
@@ -93,12 +116,8 @@
       python3
       ruby
       ruff
-      cargo
       cue
-      clippy
-      rust-analyzer
-      rustc
-      rustfmt
+      rustup
       shellcheck
       shfmt
       stylua
