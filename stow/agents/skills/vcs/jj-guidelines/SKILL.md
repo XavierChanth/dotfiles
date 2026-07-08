@@ -41,9 +41,10 @@ Inspection workflow:
 
 Checkpoint policy:
 - Create a checkpoint when the current work has reached a coherent, buildable or reviewable milestone.
-- If the checkpoint would be empty, skip it; do not run jj new or jj commit just to create an empty checkpoint.
+- Do not create or keep empty described commits in history; skip empty commit-style checkpoints and never describe an empty revision just to record progress.
+- After completing a coherent checkpoint, prefer leaving @ on a fresh empty unnamed commit so the working copy is clean and future edits land in the right place.
 - Prefer describing the current revision when it already contains exactly one coherent change.
-- Prefer jj new after a coherent checkpoint when more unrelated work remains.
+- Prefer jj new after a coherent checkpoint, especially when more unrelated work remains.
 - Prefer jj commit only when the user specifically wants a closed commit-style checkpoint.
 - Avoid checkpointing pure formatting, generated output, dependency churn, or incidental cleanup together with behavior changes unless that is the coherent task.
 
