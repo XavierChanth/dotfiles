@@ -69,6 +69,9 @@
     "button": true,
   },
   "agent_servers": {
+    "grok-build": {
+      "type": "registry"
+    },
     "cursor": {
       "favorite_config_option_values": {
         "model": [

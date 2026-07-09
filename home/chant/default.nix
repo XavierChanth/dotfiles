@@ -47,6 +47,7 @@
     mkdir -p "${config.home.homeDirectory}/.codex"
     mkdir -p "${config.home.homeDirectory}/.codex/agents"
     mkdir -p "${config.home.homeDirectory}/.codex/rules"
+    mkdir -p "${config.home.homeDirectory}/.grok"
     mkdir -p "${config.home.homeDirectory}/.pi"
 
     ${pkgs.stow}/bin/stow \
@@ -72,6 +73,12 @@
       --target="${config.home.homeDirectory}/.config/jj" \
       --restow \
       jj
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.grok" \
+      --restow \
+      grok
 
     ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
     ${pkgs.stow}/bin/stow \
