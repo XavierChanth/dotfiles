@@ -45,7 +45,7 @@
       stow
       tmux
       tree
-      unar
+      # unar
       unzip
       wget
 
@@ -92,8 +92,10 @@
       resvg
 
       # CLI Apps
+      awscli2
       flyctl
       gh
+      terraform
       yazi
 
       # Programming Languages

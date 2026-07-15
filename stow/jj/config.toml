@@ -17,7 +17,7 @@ email = "xavier@woosah.io"
 [[--scope]]
 --when.repositories = ["~/src/cc/"]
 [--scope.user]
-email = "xavier@chanthvongconsulting.ca"
+email = "xavier@chanthavongconsulting.ca"
 
 [ui]
 default-command = "log"

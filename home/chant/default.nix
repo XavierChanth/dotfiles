@@ -40,6 +40,7 @@
     mkdir -p "${config.home.homeDirectory}/.config/zsh"
     mkdir -p "${config.home.homeDirectory}/.config/tmux"
     mkdir -p "${config.home.homeDirectory}/.config/nvim"
+    mkdir -p "${config.home.homeDirectory}/.config/opencode"
     mkdir -p "${config.home.homeDirectory}/.config/zed"
     mkdir -p "${config.home.homeDirectory}/.cursor"
     mkdir -p "${config.home.homeDirectory}/.cursor/agents"
@@ -117,6 +118,12 @@
       --target="${config.home.homeDirectory}/.config/nvim" \
       --restow \
       nvim
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.config/opencode" \
+      --restow \
+      opencode
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

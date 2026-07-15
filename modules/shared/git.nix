@@ -20,6 +20,13 @@
     	signingkey = ~/.ssh/id_ed25519.pub
   '';
 
+  home.file.".config/git/user-consulting".text = ''
+    [user]
+    	name = xavierchanth
+    	email = xavier@chanthavongconsulting.ca
+    	signingkey = ~/.ssh/id_ed25519.pub
+  '';
+
   programs.bat = {
     enable = true;
     config = {
@@ -56,6 +63,22 @@
       {
         condition = "hasconfig:remote.*.url:git@github.com:woosah-tech/**";
         path = "${config.home.homeDirectory}/.config/git/user-woosah";
+      }
+      {
+        condition = "gitdir:${config.home.homeDirectory}/src/af/";
+        path = "${config.home.homeDirectory}/.config/git/user-atsign";
+      }
+      {
+        condition = "gitdir:${config.home.homeDirectory}/src/ac/";
+        path = "${config.home.homeDirectory}/.config/git/user-atsign";
+      }
+      {
+        condition = "gitdir:${config.home.homeDirectory}/src/ws/";
+        path = "${config.home.homeDirectory}/.config/git/user-woosah";
+      }
+      {
+        condition = "gitdir:${config.home.homeDirectory}/src/cc/";
+        path = "${config.home.homeDirectory}/.config/git/user-consulting";
       }
     ];
     lfs.enable = true;

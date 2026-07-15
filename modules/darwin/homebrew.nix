@@ -55,6 +55,7 @@
     "readdle-spark"
     "spotify"
     "steam"
+    "t3-code"
     "windows-app"
     "zoom"
   ];
@@ -83,6 +84,10 @@ in {
       upgrade = true;
     };
     brews = [
+      {
+        name = "cliproxyapi";
+        restart_service = true;
+      }
       "rwx"
     ];
     casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);

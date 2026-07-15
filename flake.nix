@@ -26,6 +26,11 @@
       flake = false;
     };
 
+    homebrew-humanlayer = {
+      url = "github:humanlayer/homebrew-humanlayer";
+      flake = false;
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +46,7 @@
     homebrew-core,
     homebrew-cask,
     homebrew-rwx,
+    homebrew-humanlayer,
     home-manager,
     ...
   }: let

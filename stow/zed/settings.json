@@ -69,6 +69,22 @@
     "button": true,
   },
   "agent_servers": {
+    "opencode": {
+      "default_config_options": {
+        "effort": "low",
+        "model": "opencode/big-pickle"
+      },
+      "favorite_config_option_values": {
+        "model": [
+          "openai/gpt-5.6-sol",
+          "openai/gpt-5.6-luna",
+          "opencode/claude-fable-5",
+          "cloudflare-ai-gateway/anthropic/claude-fable-5",
+          "cloudflare-ai-gateway/moonshotai/kimi-k3"
+        ]
+      },
+      "type": "registry"
+    },
     "grok-build": {
       "type": "registry"
     },
@@ -86,8 +102,8 @@
     "codex-acp": {
       "default_config_options": {
         "fast-mode": "off",
-        "reasoning_effort": "medium",
-        "model": "gpt-5.5",
+        "reasoning_effort": "high",
+        "model": "gpt-5.6-sol",
       },
       "type": "registry",
     },
@@ -104,6 +120,7 @@
   },
   "proxy": "",
   "agent": {
+    "terminal_init_command": "opencode2",
     "flexible": true,
     "sidebar_side": "left",
     "dock": "left",
