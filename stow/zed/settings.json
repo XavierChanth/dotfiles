@@ -69,6 +69,9 @@
     "button": true,
   },
   "agent_servers": {
+    "pi-acp": {
+      "type": "registry"
+    },
     "opencode": {
       "default_config_options": {
         "effort": "low",
@@ -85,19 +88,13 @@
       },
       "type": "registry"
     },
-    "grok-build": {
-      "type": "registry"
-    },
-    "cursor": {
-      "favorite_config_option_values": {
-        "model": [
-          "default[]",
-          "composer-2.5[fast=true]",
-          "gpt-5.5[context=272k,reasoning=low,fast=false]",
-          "gpt-5.3-codex[reasoning=medium,fast=false]",
-        ],
+    "codex-acp-rs": {
+      "type": "custom",
+      "command": "/Users/chant/.cargo/bin/codex-acp",
+      "args": [],
+      "env": {
+        "CODEX_PATH": "/Users/chant/.bun/install/global/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
       },
-      "type": "registry",
     },
     "codex-acp": {
       "default_config_options": {
@@ -121,6 +118,11 @@
   "proxy": "",
   "agent": {
     "terminal_init_command": "opencode2",
+    "thread_summary_model": {
+      "provider": "openai-subscribed",
+      "model": "gpt-5.6-luna",
+      "enable_thinking": false,
+    },
     "flexible": true,
     "sidebar_side": "left",
     "dock": "left",
