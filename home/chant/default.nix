@@ -49,7 +49,6 @@
     mkdir -p "${config.home.homeDirectory}/.codex/agents"
     mkdir -p "${config.home.homeDirectory}/.codex/rules"
     mkdir -p "${config.home.homeDirectory}/.grok"
-    mkdir -p "${config.home.homeDirectory}/.pi"
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \
@@ -131,11 +130,6 @@
       --restow \
       zed
 
-    ${pkgs.stow}/bin/stow \
-      --dir="$STOW_DIR" \
-      --target="${config.home.homeDirectory}/.pi" \
-      --restow \
-      pi
   '';
 
   home.activation.linkApplications = lib.hm.dag.entryAfter ["linkGeneration"] ''
