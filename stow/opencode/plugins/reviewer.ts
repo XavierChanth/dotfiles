@@ -29,7 +29,7 @@ or:
 `;
 
 const DEFAULT_MODELS: ReadonlyArray<ReviewerModel> = [
-  { provider: "openai", model: "gpt-5.6-luna", effort: null },
+  { provider: "openai", model: "gpt-5.6-luna", effort: "high" },
 ];
 
 const DEFAULT_TIMEOUT_MS = 90_000;

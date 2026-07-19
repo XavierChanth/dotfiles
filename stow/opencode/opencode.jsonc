@@ -11,7 +11,7 @@
           {
             "provider": "openai",
             "model": "gpt-5.6-luna",
-            "effort": null,
+            "effort": "high",
           },
         ],
         "timeoutMs": 90000,
