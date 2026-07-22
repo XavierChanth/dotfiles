@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema.json",
+  "schemaVersion": 1,
+  "id": "clarity-paper",
+  "name": "Clarity Paper",
+  "appearance": "light",
+  "description": "A crisp, dual-use light palette with dark normal colors and balanced bright accents.",
+  "ui": {
+    "background": "#fafafa",
+    "foreground": "#2a2c33",
+    "cursor": "#4778df",
+    "selectionBackground": "#d9e2f7",
+    "selectionForeground": "#20242b"
+  },
+  "palette": {
+    "normal": {
+      "black": "#20242b",
+      "red": "#b42335",
+      "green": "#28752d",
+      "yellow": "#7a5700",
+      "blue": "#1f57bd",
+      "magenta": "#74207c",
+      "cyan": "#00667c",
+      "white": "#68707a"
+    },
+    "bright": {
+      "black": "#565c66",
+      "red": "#d24a57",
+      "green": "#4c984a",
+      "yellow": "#aa7500",
+      "blue": "#4778df",
+      "magenta": "#b45dbf",
+      "cyan": "#168aa0",
+      "white": "#f0f1f3"
+    }
+  }
+}

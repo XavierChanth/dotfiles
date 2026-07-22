@@ -1,11 +1,13 @@
-{lib, ...}: {
+{lib, ...}: let
+  selection = builtins.fromJSON (builtins.readFile ../../themes/selection.json);
+in {
   programs.ghostty = {
     enable = true;
     package = null;
     enableZshIntegration = false;
 
     settings = {
-      theme = "light:GitHub Light High Contrast, dark:GitHub Dark High Contrast";
+      theme = "light:${selection.light},dark:${selection.dark}";
 
       font-family = "CommitMono Nerd Font";
       font-feature = "+cv07,+ss03,+ss04,+ss05";
@@ -63,65 +65,6 @@
 
         "super+ctrl+shift+alt+q=text:\\x00d"
       ];
-    };
-
-    # Zed's built-in One Light terminal palette, with its low-contrast colors
-    # pre-adjusted for readability because cmux transparency breaks Ghostty's
-    # dynamic minimum-contrast correction.
-    themes.zed-light = {
-      palette = [
-        "0=#000000"
-        "1=#de3e35"
-        "2=#3f953a"
-        "3=#b28c3d"
-        "4=#2f5af3"
-        "5=#950095"
-        "6=#0997b3"
-        "7=#929292"
-        "8=#000000"
-        "9=#de3e35"
-        "10=#3f953a"
-        "11=#b28c3d"
-        "12=#2f5af3"
-        "13=#a00095"
-        "14=#09a0b6"
-        "15=#929292"
-      ];
-
-      background = "#fafafa";
-      foreground = "#2a2c33";
-      cursor-color = "#5c78e2";
-      selection-background = "#d4dbf4";
-      selection-foreground = "#2a2c33";
-    };
-
-    # My preferred version of tokyonight-storm
-    # There are multiple versions of the theme on the internet... I explicitly want this one.
-    themes.tokyonight-storm = {
-      palette = [
-        "0=#1d202f"
-        "1=#f7768e"
-        "2=#9ece6a"
-        "3=#e0af68"
-        "4=#7aa2f7"
-        "5=#bb9af7"
-        "6=#7dcfff"
-        "7=#a9b1d6"
-        "8=#414868"
-        "9=#ff899d"
-        "10=#9fe044"
-        "11=#faba4a"
-        "12=#8db0ff"
-        "13=#c7a9ff"
-        "14=#a4daff"
-        "15=#c0caf5"
-      ];
-
-      background = "#24283b";
-      foreground = "#c0caf5";
-      cursor-color = "#c0caf5";
-      selection-background = "#2e3c64";
-      selection-foreground = "#c0caf5";
     };
   };
 

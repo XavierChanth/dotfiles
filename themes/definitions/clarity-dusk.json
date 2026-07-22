@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema.json",
+  "schemaVersion": 1,
+  "id": "clarity-dusk",
+  "name": "Clarity Dusk",
+  "appearance": "dark",
+  "description": "A cool deep-blue palette pairing subdued surfaces with clear, luminous accents.",
+  "ui": {
+    "background": "#171a22",
+    "foreground": "#e6e9ef",
+    "cursor": "#82adff",
+    "selectionBackground": "#30374a",
+    "selectionForeground": "#e6e9ef"
+  },
+  "palette": {
+    "normal": {
+      "black": "#171a22",
+      "red": "#e05a67",
+      "green": "#75b866",
+      "yellow": "#d0a84d",
+      "blue": "#6795e8",
+      "magenta": "#bd72c8",
+      "cyan": "#54aebe",
+      "white": "#a9afba"
+    },
+    "bright": {
+      "black": "#626a78",
+      "red": "#ff7a88",
+      "green": "#94d47f",
+      "yellow": "#ebc866",
+      "blue": "#82adff",
+      "magenta": "#d58ae0",
+      "cyan": "#75c8d8",
+      "white": "#e6e9ef"
+    }
+  }
+}

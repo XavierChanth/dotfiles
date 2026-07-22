@@ -47,7 +47,7 @@ for ft, ft_spec in pairs(spec.ft) do
 end
 
 vim.api.nvim_create_autocmd("UIEnter", {
-  command = "colorscheme tokyonight-cterm",
+  command = "colorscheme clarity-cterm",
 })
 
 vim.api.nvim_create_autocmd("VimEnter", {

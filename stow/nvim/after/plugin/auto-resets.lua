@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 vim.api.nvim_create_autocmd("OptionSet", {
   pattern = "background",
   callback = function()
-    vim.cmd([[colorscheme tokyonight-cterm]])
+    vim.cmd([[colorscheme clarity-cterm]])
   end,
 })
 

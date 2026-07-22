@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema.json",
+  "schemaVersion": 1,
+  "id": "clarity-midnight",
+  "name": "Clarity Midnight",
+  "appearance": "dark",
+  "description": "An almost-black palette with layered blue depth and vivid, cool highlights.",
+  "ui": {
+    "background": "#0b0d14",
+    "foreground": "#d5def5",
+    "cursor": "#9ab8ff",
+    "selectionBackground": "#26304a",
+    "selectionForeground": "#d5def5"
+  },
+  "palette": {
+    "normal": {
+      "black": "#0b0d14",
+      "red": "#ff757f",
+      "green": "#c3e88d",
+      "yellow": "#ffc777",
+      "blue": "#82aaff",
+      "magenta": "#c099ff",
+      "cyan": "#86e1fc",
+      "white": "#b4c2f0"
+    },
+    "bright": {
+      "black": "#3b4261",
+      "red": "#ff8b93",
+      "green": "#d0f0a1",
+      "yellow": "#ffd98c",
+      "blue": "#9ab8ff",
+      "magenta": "#d1adff",
+      "cyan": "#a4edff",
+      "white": "#d5def5"
+    }
+  }
+}

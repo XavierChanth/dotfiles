@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema.json",
+  "schemaVersion": 1,
+  "id": "clarity-solarized",
+  "name": "Clarity Solarized",
+  "appearance": "light",
+  "description": "A warm paper palette with blue-green neutrals adapted for dual-use ANSI roles.",
+  "ui": {
+    "background": "#fdf6e3",
+    "foreground": "#586e75",
+    "cursor": "#1676b8",
+    "selectionBackground": "#ded7c4",
+    "selectionForeground": "#073642"
+  },
+  "palette": {
+    "normal": {
+      "black": "#073642",
+      "red": "#c72d31",
+      "green": "#607900",
+      "yellow": "#8c6d00",
+      "blue": "#1676b8",
+      "magenta": "#b52c74",
+      "cyan": "#147f78",
+      "white": "#586e75"
+    },
+    "bright": {
+      "black": "#657b83",
+      "red": "#cf4f4a",
+      "green": "#789000",
+      "yellow": "#a98000",
+      "blue": "#3b8ac6",
+      "magenta": "#c84a83",
+      "cyan": "#218f87",
+      "white": "#f5efdc"
+    }
+  }
+}

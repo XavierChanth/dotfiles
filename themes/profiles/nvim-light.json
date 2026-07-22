@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "application": "neovim",
+  "appearance": "light",
+  "label": "Neovim ANSI light",
+  "sourceTheme": "clarity-cterm",
+  "groups": {
+    "Comment": {
+      "foreground": 8,
+      "styles": [
+        "italic"
+      ]
+    },
+    "Keyword": {
+      "foreground": 3,
+      "styles": [
+        "italic"
+      ]
+    },
+    "Statement": {
+      "foreground": 13,
+      "styles": [
+        "bold"
+      ]
+    },
+    "Function": {
+      "foreground": 4
+    },
+    "String": {
+      "foreground": 2
+    },
+    "Type": {
+      "foreground": 14
+    },
+    "Constant": {
+      "foreground": 1
+    },
+    "Visual": {
+      "foreground": 15,
+      "background": 7
+    },
+    "DiffAdd": {
+      "foreground": 15,
+      "background": 2
+    },
+    "DiffChange": {
+      "foreground": 15,
+      "background": 6
+    },
+    "DiffDelete": {
+      "foreground": 15,
+      "background": 1
+    },
+    "Pmenu": {
+      "foreground": 15,
+      "background": 0
+    },
+    "RenderMarkdownH1Bg": {
+      "foreground": 0,
+      "background": 12
+    },
+    "RenderMarkdownH2Bg": {
+      "foreground": 0,
+      "background": 11
+    },
+    "RenderMarkdownH3Bg": {
+      "foreground": 0,
+      "background": 10
+    },
+    "RenderMarkdownH4Bg": {
+      "foreground": 0,
+      "background": 13
+    },
+    "RenderMarkdownH5Bg": {
+      "foreground": 0,
+      "background": 14
+    },
+    "RenderMarkdownH6Bg": {
+      "foreground": 0,
+      "background": 9
+    }
+  }
+}

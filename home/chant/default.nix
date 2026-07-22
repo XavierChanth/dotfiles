@@ -33,6 +33,7 @@
 
     mkdir -p "${config.home.homeDirectory}/.config"
     mkdir -p "${config.home.homeDirectory}/.agents"
+    mkdir -p "${config.home.homeDirectory}/.config/ghostty/themes"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
     ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
     mkdir -p "${config.home.homeDirectory}/.config/kanata"
@@ -61,6 +62,23 @@
       --target="${config.home.homeDirectory}/.codex" \
       --restow \
       codex
+
+    ghostty_theme_dir="${config.home.homeDirectory}/.config/ghostty/themes"
+    for theme in "$ghostty_theme_dir"/*; do
+      [ -L "$theme" ] || continue
+      target="$(readlink "$theme" || true)"
+      case "$target" in
+        /nix/store/*-home-manager-files/.config/ghostty/themes/*)
+          rm -f "$theme"
+          ;;
+      esac
+    done
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="$ghostty_theme_dir" \
+      --restow \
+      ghostty-themes
 
     ${pkgs.stow}/bin/stow \
       --dir="$STOW_DIR" \

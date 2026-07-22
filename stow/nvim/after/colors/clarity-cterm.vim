@@ -1,13 +1,11 @@
-" A theme modeled after syntax highlighting for tokyonight-storm
-" Note: it's not exactly the same...
-" This only uses cterm colors so it automatically syncs with your terminal theme
-let colors_name = "tokyonight-cterm"
-
+" Clarity syntax highlighting using the terminal's ANSI palette.
+" This only uses cterm colors so it automatically syncs with the active theme.
 set notermguicolors
 hi clear
 if exists("syntax_on")
   syntax reset
 endif
+let g:colors_name = "clarity-cterm"
 
 if &background == "dark"
   hi Comment ctermfg=8 cterm=italic

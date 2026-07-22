@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dotfiles.local/schemas/clarity-theme.json",
+  "title": "Clarity terminal theme",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "name", "appearance", "description", "ui", "palette"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^clarity-[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "appearance": { "enum": ["light", "dark"] },
+    "description": { "type": "string", "minLength": 1 },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "foreground", "cursor", "selectionBackground", "selectionForeground"],
+      "properties": {
+        "background": { "$ref": "#/$defs/color" },
+        "foreground": { "$ref": "#/$defs/color" },
+        "cursor": { "$ref": "#/$defs/color" },
+        "selectionBackground": { "$ref": "#/$defs/color" },
+        "selectionForeground": { "$ref": "#/$defs/color" }
+      }
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normal", "bright"],
+      "properties": {
+        "normal": { "$ref": "#/$defs/bank" },
+        "bright": { "$ref": "#/$defs/bank" }
+      }
+    }
+  },
+  "$defs": {
+    "color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+    "bank": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"],
+      "properties": {
+        "black": { "$ref": "#/$defs/color" },
+        "red": { "$ref": "#/$defs/color" },
+        "green": { "$ref": "#/$defs/color" },
+        "yellow": { "$ref": "#/$defs/color" },
+        "blue": { "$ref": "#/$defs/color" },
+        "magenta": { "$ref": "#/$defs/color" },
+        "cyan": { "$ref": "#/$defs/color" },
+        "white": { "$ref": "#/$defs/color" }
+      }
+    }
+  }
+}
