@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model Invariants"
+  short_description: "Make invalid software states unrepresentable"
+  default_prompt: "Use $model-invariants to design this domain model around explicit invariants and valid state transitions."
