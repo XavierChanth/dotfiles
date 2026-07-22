@@ -117,7 +117,7 @@
   },
   "proxy": "",
   "agent": {
-    "terminal_init_command": "opencode2",
+    "terminal_init_command": "pi-tai-dev",
     "thread_summary_model": {
       "provider": "openai-subscribed",
       "model": "gpt-5.6-luna",
