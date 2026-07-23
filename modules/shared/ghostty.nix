@@ -18,8 +18,6 @@ in {
       background-opacity = 0.95;
       background-blur-radius = 20;
 
-      title = "Ghostty";
-
       confirm-close-surface = false;
       quit-after-last-window-closed = true;
       link-url = true;
