@@ -6,6 +6,18 @@
   system,
   ...
 }: {
+  home.file.".bunfig.toml".text = ''
+    [install]
+    linker = "isolated"
+    globalStore = true
+  '';
+
+  home.file.".cargo/config.toml".text = ''
+    [build]
+    rustc-wrapper = "sccache"
+    incremental = false
+  '';
+
   home.activation.ensureRustupStable = lib.hm.dag.entryAfter ["writeBoundary"] ''
     export CARGO_HOME="${config.home.homeDirectory}/.cargo"
     export RUSTUP_HOME="${config.home.homeDirectory}/.rustup"
@@ -120,6 +132,7 @@
       ruff
       cue
       rustup
+      sccache
       shellcheck
       shfmt
       stylua
