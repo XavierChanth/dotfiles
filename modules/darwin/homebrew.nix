@@ -84,6 +84,7 @@ in {
       upgrade = true;
     };
     brews = [
+      "cliproxyapi"
       "rwx"
     ];
     casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);

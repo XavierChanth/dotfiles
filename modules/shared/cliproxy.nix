@@ -1,0 +1,160 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  keyDir = "${config.home.homeDirectory}/.config/cli-proxy-api";
+  confPath = "/opt/homebrew/etc/cliproxyapi.conf";
+
+  # Models served through OpenCode Zen (pay-per-token). gpt-* and claude-* are
+  # deliberately absent: gpt-* names must route to the Codex OAuth account, and
+  # Claude models stay on the subscription via plain `claude`.
+  zenModels = [
+    "glm-5.2"
+    "glm-5.1"
+    "kimi-k2.7-code"
+    "kimi-k2.6"
+    "qwen3.6-plus"
+    "deepseek-v4-pro"
+    "deepseek-v4-flash"
+    "gemini-3.1-pro"
+    "gemini-3.6-flash"
+    "grok-4.5"
+    "minimax-m3"
+    "big-pickle" # free tier
+  ];
+
+  # Indentation is baked in because interpolations into '' strings are inserted
+  # verbatim; these lines must sit under openai-compatibility[0].models.
+  zenModelYaml = lib.concatMapStrings (m: "      - name: \"${m}\"\n        alias: \"${m}\"\n") zenModels;
+
+  # @LOCAL_KEY@ / @MGMT_KEY@ / @ZEN_KEY@ are spliced in at activation from
+  # untracked files under ~/.config/cli-proxy-api so no secret enters the store.
+  confTemplate = pkgs.writeText "cliproxyapi.conf.in" ''
+    host: "127.0.0.1"
+    port: 8317
+
+    remote-management:
+      allow-remote: false
+      secret-key: "@MGMT_KEY@"
+
+    auth-dir: "~/.cli-proxy-api"
+
+    api-keys:
+      - "@LOCAL_KEY@"
+
+    # CPA-Manager-Plus reads the usage queue for request history/cost analytics.
+    usage-statistics-enabled: true
+    redis-usage-queue-retention-seconds: 3600
+
+    request-retry: 3
+
+    openai-compatibility:
+      - name: "opencode-zen"
+        base-url: "https://opencode.ai/zen/v1"
+        api-key-entries:
+          - api-key: "@ZEN_KEY@"
+        models:
+    ${zenModelYaml}'';
+
+  cpampVersion = "1.11.7";
+  cpampTarball = pkgs.fetchurl {
+    url = "https://github.com/seakee/CPA-Manager-Plus/releases/download/v${cpampVersion}/cpa-manager-plus_v${cpampVersion}_darwin_arm64.tar.gz";
+    sha256 = "61e895a357eea749588c203ff2ce6483bdafa45b52afaf4c452caf75960ddc33";
+  };
+
+  # CPAMP writes its data/ directory next to its own binary, so it cannot run
+  # from the read-only store; activation installs it into this dir instead.
+  cpampHome = "${config.home.homeDirectory}/.local/share/cpa-manager-plus";
+
+  ccx = pkgs.writeShellApplication {
+    name = "ccx";
+    text = ''
+      key_file="${keyDir}/local.key"
+      if [ ! -f "$key_file" ]; then
+        echo "ccx: ${keyDir}/local.key missing; run a home-manager switch first" >&2
+        exit 1
+      fi
+      exec env \
+        ANTHROPIC_BASE_URL="http://127.0.0.1:8317" \
+        ANTHROPIC_AUTH_TOKEN="$(cat "$key_file")" \
+        ANTHROPIC_MODEL="''${CCX_MODEL:-gpt-5.3-codex}" \
+        ANTHROPIC_SMALL_FAST_MODEL="''${CCX_SMALL_MODEL:-glm-5.2}" \
+        claude "$@"
+    '';
+  };
+in {
+  home.packages = [ccx];
+
+  home.activation.cliProxyApi = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    key_dir="${keyDir}"
+    mkdir -p "$key_dir"
+    chmod 700 "$key_dir"
+
+    # Local API key (what ccx presents) and management-UI key: generated once,
+    # never stored in the repo.
+    for key in local.key management.key; do
+      if [ ! -s "$key_dir/$key" ]; then
+        /usr/bin/od -An -tx1 -N24 /dev/urandom | tr -d ' \n' >"$key_dir/$key"
+        chmod 600 "$key_dir/$key"
+      fi
+    done
+
+    if [ -s "$key_dir/zen.key" ]; then
+      zen_key="$(cat "$key_dir/zen.key")"
+    else
+      zen_key="MISSING-ZEN-KEY"
+      echo "cliproxy.nix: put your OpenCode Zen API key in $key_dir/zen.key (Zen models will 401 until then)" >&2
+    fi
+
+    conf="${confPath}"
+    if [ -d "$(dirname "$conf")" ]; then
+      tmp="$(mktemp)"
+      /usr/bin/sed \
+        -e "s|@LOCAL_KEY@|$(cat "$key_dir/local.key")|" \
+        -e "s|@MGMT_KEY@|$(cat "$key_dir/management.key")|" \
+        -e "s|@ZEN_KEY@|$zen_key|" \
+        ${confTemplate} >"$tmp"
+      if ! /usr/bin/cmp -s "$tmp" "$conf"; then
+        mv "$tmp" "$conf"
+        # Restart the brew service so the new config is picked up; harmless if
+        # the service isn't loaded yet (first install).
+        /bin/launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.cliproxyapi" 2>/dev/null || true
+      else
+        rm -f "$tmp"
+      fi
+    else
+      echo "cliproxy.nix: ${confPath} parent missing; is homebrew's cliproxyapi installed?" >&2
+    fi
+  '';
+
+  home.activation.cpaManagerPlus = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    cpamp_home="${cpampHome}"
+    mkdir -p "$cpamp_home"
+    if [ ! -f "$cpamp_home/.version" ] || [ "$(cat "$cpamp_home/.version")" != "${cpampVersion}" ]; then
+      tmp_dir="$(mktemp -d)"
+      /usr/bin/tar -xzf ${cpampTarball} -C "$tmp_dir"
+      install -m 755 "$tmp_dir/cpa-manager-plus_v${cpampVersion}_darwin_arm64/cpa-manager-plus" \
+        "$cpamp_home/cpa-manager-plus"
+      rm -rf "$tmp_dir"
+      echo "${cpampVersion}" >"$cpamp_home/.version"
+      /bin/launchctl kickstart -k "gui/$(id -u)/cpa-manager-plus" 2>/dev/null || true
+    fi
+  '';
+
+  launchd.agents.cpa-manager-plus = lib.mkIf pkgs.stdenv.isDarwin {
+    enable = true;
+    config = {
+      ProgramArguments = ["${cpampHome}/cpa-manager-plus"];
+      WorkingDirectory = cpampHome;
+      RunAtLoad = true;
+      KeepAlive = true;
+      # First run prints the CPAMP admin key here; retrieve it with:
+      #   grep "admin key" ~/.local/share/cpa-manager-plus/cpamp.log
+      StandardOutPath = "${cpampHome}/cpamp.log";
+      StandardErrorPath = "${cpampHome}/cpamp.log";
+      ProcessType = "Background";
+    };
+  };
+}

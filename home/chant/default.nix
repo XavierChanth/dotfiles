@@ -7,6 +7,8 @@
   ...
 }: {
   imports = [
+    ../../modules/shared/claude.nix
+    ../../modules/shared/cliproxy.nix
     ../../modules/shared/ghostty.nix
     ../../modules/shared/git.nix
     ../../modules/shared/packages.nix
