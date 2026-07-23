@@ -33,6 +33,7 @@
 
     mkdir -p "${config.home.homeDirectory}/.config"
     mkdir -p "${config.home.homeDirectory}/.agents"
+    mkdir -p "${config.home.homeDirectory}/.config/cmux"
     mkdir -p "${config.home.homeDirectory}/.config/ghostty/themes"
     mkdir -p "${config.home.homeDirectory}/.config/jj"
     ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
@@ -62,6 +63,12 @@
       --target="${config.home.homeDirectory}/.codex" \
       --restow \
       codex
+
+    ${pkgs.stow}/bin/stow \
+      --dir="$STOW_DIR" \
+      --target="${config.home.homeDirectory}/.config/cmux" \
+      --restow \
+      cmux
 
     ghostty_theme_dir="${config.home.homeDirectory}/.config/ghostty/themes"
     for theme in "$ghostty_theme_dir"/*; do
