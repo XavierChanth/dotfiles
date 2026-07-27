@@ -97,6 +97,10 @@ if [ -n "$ZSH_PRECMD_HOOK" ]; then
   add-zsh-hook precmd _precmd_hook
 fi
 
+if [[ -n "$CMUX_BUNDLED_CLI_PATH" ]]; then
+  path=("$CMUX_BUNDLED_CLI_PATH" $path)
+fi
+
 export PATH="$HOME/.local/bin:$PATH:/usr/NX/bin"
 
 # enable profiling
