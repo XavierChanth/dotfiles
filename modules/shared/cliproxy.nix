@@ -11,18 +11,10 @@
   # deliberately absent: gpt-* names must route to the Codex OAuth account, and
   # Claude models stay on the subscription via plain `claude`.
   zenModels = [
+    "kimi-k3"
     "glm-5.2"
-    "glm-5.1"
-    "kimi-k2.7-code"
-    "kimi-k2.6"
-    "qwen3.6-plus"
-    "deepseek-v4-pro"
-    "deepseek-v4-flash"
-    "gemini-3.1-pro"
-    "gemini-3.6-flash"
     "grok-4.5"
-    "minimax-m3"
-    "big-pickle" # free tier
+
   ];
 
   # Indentation is baked in because interpolations into '' strings are inserted
@@ -79,8 +71,9 @@
       exec env \
         ANTHROPIC_BASE_URL="http://127.0.0.1:8317" \
         ANTHROPIC_AUTH_TOKEN="$(cat "$key_file")" \
-        ANTHROPIC_MODEL="''${CCX_MODEL:-gpt-5.3-codex}" \
-        ANTHROPIC_SMALL_FAST_MODEL="''${CCX_SMALL_MODEL:-glm-5.2}" \
+        ANTHROPIC_MODEL="''${CCX_MODEL:-gpt-5.6-sol}" \
+        ANTHROPIC_SMALL_FAST_MODEL="''${CCX_SMALL_MODEL:-gpt-5.6-luna}" \
+        CLAUDE_CODE_EFFORT_LEVEL="''${CCX_EFFORT:-low}" \
         claude "$@"
     '';
   };
