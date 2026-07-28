@@ -29,6 +29,7 @@
   baseCasks = [
     "codex-app"
     "docker-desktop"
+    "firefox"
     "ghostty"
     "google-chrome"
     "google-drive"
