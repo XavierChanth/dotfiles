@@ -48,46 +48,15 @@
   "schemaVersion" : 1,
   "shortcuts" : {
     "bindings" : {
-      "focusDown" : {
-        "first" : {
-          "command" : false,
-          "control" : true,
-          "key" : "j",
-          "keyCode" : 38,
-          "option" : false,
-          "shift" : false
-        }
-      },
-      "focusLeft" : {
-        "first" : {
-          "command" : false,
-          "control" : true,
-          "key" : "h",
-          "keyCode" : 4,
-          "option" : false,
-          "shift" : false
-        }
-      },
-      "focusRight" : {
-        "first" : {
-          "command" : false,
-          "control" : true,
-          "key" : "l",
-          "keyCode" : 37,
-          "option" : false,
-          "shift" : false
-        }
-      },
-      "focusUp" : {
-        "first" : {
-          "command" : false,
-          "control" : true,
-          "key" : "k",
-          "keyCode" : 40,
-          "option" : false,
-          "shift" : false
-        }
-      }
+      "commandPalette" : "cmd+ctrl+alt+shift+space",
+      "equalizeSplits" : "cmd+ctrl+alt+shift+equal",
+      "focusDown" : "cmd+ctrl+alt+shift+j",
+      "focusLeft" : "cmd+ctrl+alt+shift+h",
+      "focusRight" : "cmd+ctrl+alt+shift+l",
+      "focusUp" : "cmd+ctrl+alt+shift+k",
+      "splitDown" : "cmd+ctrl+alt+shift+minus",
+      "splitRight" : "cmd+ctrl+alt+shift+backslash",
+      "toggleSplitZoom" : "cmd+ctrl+alt+shift+f"
     }
   },
   "ui" : {
