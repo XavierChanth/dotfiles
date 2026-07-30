@@ -71,11 +71,6 @@ return {
       src = "https://github.com/b0o/SchemaStore.nvim",
       version = nil,
     },
-    {
-      src = "https://github.com/xavierchanth/pi.nvim",
-      version = nil,
-      data = { config = "config/pi" },
-    },
   },
   -- Loads on VimEnter
   lazy = {
