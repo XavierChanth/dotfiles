@@ -98,7 +98,7 @@ if [ -n "$ZSH_PRECMD_HOOK" ]; then
 fi
 
 if [[ -n "$CMUX_BUNDLED_CLI_PATH" ]]; then
-  path=("$CMUX_BUNDLED_CLI_PATH" $path)
+  path=("${CMUX_BUNDLED_CLI_PATH:h}" $path)
 fi
 
 export PATH="$HOME/.local/bin:$PATH:/usr/NX/bin"
