@@ -1,9 +1,6 @@
 {hostname, username, ...}: {
   imports = [
     ../shared/nix.nix
-    ./defaults.nix
-    ./homebrew.nix
-    ./raycast.nix
   ];
 
   networking.hostName = hostname;

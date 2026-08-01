@@ -1,17 +1,17 @@
-{config, hostname, lib, pkgs, username, ...}: {
+{config, hostname, hostProfile, lib, pkgs, username, ...}: let
+  isWorkstation = hostProfile.profile == "workstation";
+in {
   imports = [
-    ../../modules/home/nb.nix
     ../../modules/home/stow.nix
-    ../../modules/home/darwin-applications.nix
-    ../../modules/shared/claude.nix
-    ../../modules/shared/cliproxy.nix
-    ../../modules/shared/ghostty.nix
     ../../modules/shared/git.nix
     ../../modules/shared/identities.nix
-    ../../modules/shared/packages.nix
     ../../modules/shared/shell.nix
     ../../modules/shared/ssh.nix
     ../../modules/shared/tmux.nix
+  ] ++ lib.optionals isWorkstation [
+    ../../modules/home/workstation.nix
+  ] ++ lib.optionals (!isWorkstation) [
+    ../../modules/home/server.nix
   ];
 
   home = {

@@ -7,28 +7,26 @@
   ...
 }: let
   userHome = config.users.users.${username}.home;
+  isWorkstation = hostProfile.profile == "workstation";
 
   managedTaps = {
     "homebrew/homebrew-core" = inputs.homebrew-core;
     "homebrew/homebrew-cask" = inputs.homebrew-cask;
+  } // lib.optionalAttrs isWorkstation {
     "rwx-cloud/homebrew-tap" = inputs.homebrew-rwx;
   };
 
   brewTaps = [
     "homebrew/homebrew-cask"
     "homebrew/homebrew-core"
-    "rwx-cloud/tap"
-  ];
+  ] ++ lib.optionals isWorkstation ["rwx-cloud/tap"];
 
-  trustedThirdPartyTaps = [
-    "rwx-cloud/tap"
-  ];
+  trustedThirdPartyTaps = lib.optionals isWorkstation ["rwx-cloud/tap"];
 
   trustedThirdPartyTapArgs = lib.escapeShellArgs trustedThirdPartyTaps;
 
-  baseCasks = [
+  workstationCasks = [
     "codex-app"
-    "docker-desktop"
     "firefox"
     "ghostty"
     "google-chrome"
@@ -40,9 +38,6 @@
     "tailscale-app"
     "vlc"
     "zed"
-  ];
-
-  localOnlyCasks = [
     "discord"
     "hiddenbar"
     "hyperkey"
@@ -60,6 +55,10 @@
     "windows-app"
     "zoom"
   ];
+
+  serverCasks = [
+    "tailscale-app"
+  ];
 in {
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -67,7 +66,7 @@ in {
 
   nix-homebrew = {
     enable = true;
-    enableRosetta = true;
+    enableRosetta = isWorkstation;
     user = username;
     autoMigrate = true;
     taps = managedTaps;
@@ -84,35 +83,37 @@ in {
       cleanup = "uninstall";
       upgrade = true;
     };
-    brews = [
+    brews = lib.optionals isWorkstation [
       "cliproxyapi"
       "nb"
       "rwx"
     ];
-    casks = baseCasks ++ (if hostProfile.isRemote then [] else localOnlyCasks);
+    casks = if isWorkstation then workstationCasks else serverCasks;
   };
 
-  system.activationScripts.homebrew.text = lib.mkOrder 750 ''
-    # Homebrew tap trust is user-scoped. nix-darwin invokes brew bundle with
-    # sudo --set-home, which may not see trust created from an interactive shell.
-    echo >&2 "Trusting Homebrew taps..."
-    if [ -f "${config.homebrew.prefix}/bin/brew" ]; then
-      PATH="${config.homebrew.prefix}/bin:$PATH" \
-      sudo \
-        --preserve-env=PATH \
-        --user=${lib.escapeShellArg username} \
-        --set-home \
-        env \
-        "${config.homebrew.prefix}/bin/brew" trust --tap ${trustedThirdPartyTapArgs}
+  system.activationScripts = lib.mkIf isWorkstation {
+    homebrew.text = lib.mkOrder 750 ''
+      # Homebrew tap trust is user-scoped. nix-darwin invokes brew bundle with
+      # sudo --set-home, which may not see trust created from an interactive shell.
+      echo >&2 "Trusting Homebrew taps..."
+      if [ -f "${config.homebrew.prefix}/bin/brew" ]; then
+        PATH="${config.homebrew.prefix}/bin:$PATH" \
+        sudo \
+          --preserve-env=PATH \
+          --user=${lib.escapeShellArg username} \
+          --set-home \
+          env \
+          "${config.homebrew.prefix}/bin/brew" trust --tap ${trustedThirdPartyTapArgs}
 
-      PATH="${config.homebrew.prefix}/bin:$PATH" \
-      sudo \
-        --preserve-env=PATH \
-        --user=${lib.escapeShellArg username} \
-        --set-home \
-        env \
-        XDG_CONFIG_HOME="${userHome}/.config" \
-        "${config.homebrew.prefix}/bin/brew" trust --tap ${trustedThirdPartyTapArgs}
-    fi
-  '';
+        PATH="${config.homebrew.prefix}/bin:$PATH" \
+        sudo \
+          --preserve-env=PATH \
+          --user=${lib.escapeShellArg username} \
+          --set-home \
+          env \
+          XDG_CONFIG_HOME="${userHome}/.config" \
+          "${config.homebrew.prefix}/bin/brew" trust --tap ${trustedThirdPartyTapArgs}
+      fi
+    '';
+  };
 }

@@ -95,3 +95,8 @@ fi
 
 # prepend local path to PATH
 export PATH="$__path:$PATH"
+
+# Runtime and tool version management
+if command_exists mise; then
+  eval "$(mise activate zsh)"
+fi

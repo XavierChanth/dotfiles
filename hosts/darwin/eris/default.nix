@@ -1,4 +1,3 @@
 {...}: {
-  # Bootstrap Rosetta once before or alongside the first darwin-rebuild switch.
-  imports = [../../../modules/darwin/common.nix];
+  imports = [../../../modules/darwin/server.nix];
 }

@@ -48,17 +48,35 @@
     darwinHosts = {
       eris = {
         system = "aarch64-darwin";
-        isRemote = true;
+        profile = "server";
       };
       nyx = {
         system = "aarch64-darwin";
-        isRemote = false;
+        profile = "workstation";
       };
     };
     darwinHostnames = builtins.attrNames darwinHosts;
 
+    nixosHosts = {
+      hades = {
+        system = "x86_64-linux";
+        profile = "server";
+      };
+      poseidon = {
+        system = "x86_64-linux";
+        profile = "server";
+      };
+      zeus = {
+        system = "x86_64-linux";
+        profile = "server";
+      };
+    };
+    nixosHostnames = builtins.attrNames nixosHosts;
+    allHosts = darwinHosts // nixosHosts;
+    allHostnames = builtins.attrNames allHosts;
+
     specialArgsFor = hostname: let
-      hostProfile = darwinHosts.${hostname};
+      hostProfile = allHosts.${hostname};
     in {
       inherit inputs username hostname hostProfile;
     };
@@ -87,10 +105,26 @@
 
     mkHomeConfiguration = hostname:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor darwinHosts.${hostname}.system;
+        pkgs = pkgsFor allHosts.${hostname}.system;
         extraSpecialArgs = specialArgsFor hostname;
         modules = [
           ./home/${username}
+        ];
+      };
+
+    mkNixosConfiguration = hostname:
+      nixpkgs.lib.nixosSystem {
+        system = nixosHosts.${hostname}.system;
+        specialArgs = specialArgsFor hostname;
+        modules = [
+          ./hosts/nixos/${hostname}
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = specialArgsFor hostname;
+            home-manager.users.${username} = import ./home/${username};
+          }
         ];
       };
   in {
@@ -100,10 +134,16 @@
       })
       darwinHostnames);
 
+    nixosConfigurations = builtins.listToAttrs (map (hostname: {
+        name = hostname;
+        value = mkNixosConfiguration hostname;
+      })
+      nixosHostnames);
+
     homeConfigurations = builtins.listToAttrs (map (hostname: {
         name = "${username}@${hostname}";
         value = mkHomeConfiguration hostname;
       })
-      darwinHostnames);
+      allHostnames);
   };
 }

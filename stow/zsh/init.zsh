@@ -21,10 +21,6 @@ export TERMINAL="ghostty"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-if [ -f "$HOME/.local/bin/docker" ]; then
-  export DOCKER_HOST=unix:///run/user/1000/docker.sock
-fi
-
 # sway specific config
 if [ -n "$SWAYSOCK" ]; then
   alias swaylock='swaylock -p -f -c 000000'

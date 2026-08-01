@@ -129,11 +129,11 @@
       basedpyright
       # bun
       cmake
-      docker-compose
       docker-compose-language-service
       dockerfile-language-server
       go
       gofumpt
+      mise
       gopls
       hadolint
       lua-language-server
@@ -142,6 +142,7 @@
       nodejs
       pnpm
       prettier
+      postgresql_16
       python3
       ruby
       ruff
