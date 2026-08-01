@@ -20,3 +20,47 @@ rollup() {
   done
   git push
 }
+
+_nb_ensure_notebook() {
+  nb notebooks show "$1" --name >/dev/null 2>&1 || nb notebooks add "$1"
+}
+
+# Capture a note in the shared inbox. With no arguments, open the editor.
+nbi() {
+  _nb_ensure_notebook inbox || return
+
+  if (( $# )); then
+    nb inbox:add "$*"
+  else
+    nb inbox:add
+  fi
+}
+
+# Capture a todo in the shared inbox.
+nbt() {
+  if (( ! $# )); then
+    echo "Usage: nbt <todo>" >&2
+    return 1
+  fi
+
+  _nb_ensure_notebook inbox || return
+  nb todo add inbox: "$*"
+}
+
+# Browse the notebook matching the current project root.
+nbp() {
+  local project_root project_name
+
+  if command -v jj >/dev/null 2>&1 && project_root="$(jj root 2>/dev/null)"; then
+    :
+  elif project_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+    :
+  else
+    project_root="$PWD"
+  fi
+
+  project_name="${project_root:t}"
+
+  _nb_ensure_notebook "$project_name" || return
+  nb browse "${project_name}:" --gui
+}
