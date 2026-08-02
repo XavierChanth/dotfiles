@@ -1,9 +1,10 @@
 {
+  config,
   lib,
   username,
   ...
 }: let
-  userHome = "/Users/${username}";
+  userHome = config.users.users.${username}.home;
   extensionUrl = "raycast://extensions/pabroux/keepassxc";
   stateDir = "${userHome}/Library/Application Support/com.raycast.macos/nix";
   extensionMarker = "${stateDir}/keepassxc-extension-installed";

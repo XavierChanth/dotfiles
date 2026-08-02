@@ -69,22 +69,6 @@
         "type": "github"
       }
     },
-    "homebrew-humanlayer": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1784428016,
-        "narHash": "sha256-QxNrT+t5Pb8DAriI5PpTmNl+qhWsXLCUHjWG358Ck24=",
-        "owner": "humanlayer",
-        "repo": "homebrew-humanlayer",
-        "rev": "4666317e05a34d807fd2786d9c6d0d001468dc92",
-        "type": "github"
-      },
-      "original": {
-        "owner": "humanlayer",
-        "repo": "homebrew-humanlayer",
-        "type": "github"
-      }
-    },
     "homebrew-rwx": {
       "flake": false,
       "locked": {
@@ -160,7 +144,6 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
-        "homebrew-humanlayer": "homebrew-humanlayer",
         "homebrew-rwx": "homebrew-rwx",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",

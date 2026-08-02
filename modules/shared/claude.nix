@@ -56,7 +56,7 @@
     '';
   };
 in {
-  home.packages = [themeSync];
+  home.packages = lib.optionals pkgs.stdenv.isDarwin [themeSync];
 
   home.activation.claudeSettings = lib.hm.dag.entryAfter ["writeBoundary"] ''
     settings="${settingsPath}"
@@ -73,7 +73,7 @@ in {
       echo "claude.nix: could not merge settings into $settings" >&2
     fi
 
-    ${themeSync}/bin/claude-theme-sync || true
+    ${lib.optionalString pkgs.stdenv.isDarwin "${themeSync}/bin/claude-theme-sync || true"}
   '';
 
   # Claude Code only discovers ~/.claude/skills/<name>/SKILL.md — no recursion,
@@ -97,7 +97,7 @@ in {
     done
 
     [ -d "$skills_src" ] || exit 0
-    /usr/bin/find -L "$skills_src" -maxdepth 4 -name SKILL.md 2>/dev/null | while read -r skill_md; do
+    ${pkgs.findutils}/bin/find -L "$skills_src" -maxdepth 4 -name SKILL.md 2>/dev/null | while read -r skill_md; do
       skill_dir="$(dirname "$skill_md")"
       name="$(basename "$skill_dir")"
       existing="$skills_dest/$name"
@@ -111,14 +111,16 @@ in {
 
   # WatchPaths catches the appearance toggle as cfprefsd flushes the global
   # preferences; StartInterval is a backstop for when that write is coalesced.
-  launchd.agents.claude-theme-sync = lib.mkIf pkgs.stdenv.isDarwin {
-    enable = true;
-    config = {
-      ProgramArguments = ["${themeSync}/bin/claude-theme-sync"];
-      RunAtLoad = true;
-      StartInterval = 30;
-      WatchPaths = ["${config.home.homeDirectory}/Library/Preferences/.GlobalPreferences.plist"];
-      ProcessType = "Background";
+  launchd.agents = lib.optionalAttrs pkgs.stdenv.isDarwin {
+    claude-theme-sync = {
+      enable = true;
+      config = {
+        ProgramArguments = ["${themeSync}/bin/claude-theme-sync"];
+        RunAtLoad = true;
+        StartInterval = 30;
+        WatchPaths = ["${config.home.homeDirectory}/Library/Preferences/.GlobalPreferences.plist"];
+        ProcessType = "Background";
+      };
     };
   };
 }

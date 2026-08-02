@@ -1,25 +1,7 @@
-{
-  username,
-  hostname,
-  ...
-}: {
-  # Bootstrap Rosetta once on this Apple Silicon host before or alongside the
-  # first darwin-rebuild switch:
-  # softwareupdate --install-rosetta --agree-to-license
+{...}: {
+  # Bootstrap Rosetta once before or alongside the first darwin-rebuild switch.
   imports = [
-    ../../../modules/shared/nix.nix
-    ../../../modules/darwin/aerospace.nix
+    ../../../modules/darwin/common.nix
     ../../../modules/darwin/close-ports.nix
-    ../../../modules/darwin/defaults.nix
-    ../../../modules/darwin/homebrew.nix
-    ../../../modules/darwin/raycast.nix
   ];
-
-  networking.hostName = hostname;
-  networking.computerName = hostname;
-
-  users.users.${username}.home = "/Users/${username}";
-
-  system.primaryUser = username;
-  system.stateVersion = 6;
 }

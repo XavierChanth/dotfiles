@@ -46,8 +46,7 @@
       pass out all keep state
 
       # Allowed inbound services.
-      pass in quick proto { tcp udp } to port { 53 } # DNS
-      pass in quick proto { udp } to port { 68 } # DHCP client
+      pass in quick proto udp to port 68 # DHCP client replies
     '';
   };
 

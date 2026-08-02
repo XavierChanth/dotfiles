@@ -1,12 +1,12 @@
-{hostname, username, ...}: let
-  userHome = "/Users/${username}";
+{config, hostname, username, ...}: let
+  userHome = config.users.users.${username}.home;
   guiPath = [
     "/run/current-system/sw/bin"
     "/etc/profiles/per-user/${username}/bin"
     "${userHome}/.dotfiles/bin/shared"
     "${userHome}/.dotfiles/bin/hosts/${hostname}"
-    "/opt/homebrew/bin"
-    "/opt/homebrew/sbin"
+    "${config.homebrew.prefix}/bin"
+    "${config.homebrew.prefix}/sbin"
     "/usr/local/bin"
     "/usr/bin"
     "/bin"
@@ -49,6 +49,7 @@ in {
 
     dock = {
       autohide = true;
+      expose-group-apps = true;
       show-recents = false;
       tilesize = 40;
     };

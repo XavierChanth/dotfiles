@@ -5,7 +5,8 @@
   ...
 }: let
   keyDir = "${config.home.homeDirectory}/.config/cli-proxy-api";
-  confPath = "/opt/homebrew/etc/cliproxyapi.conf";
+  brewPrefix = if pkgs.stdenv.hostPlatform.isAarch64 then "/opt/homebrew" else "/usr/local";
+  confPath = "${brewPrefix}/etc/cliproxyapi.conf";
 
   # Models served through OpenCode Zen (pay-per-token). gpt-* and claude-* are
   # deliberately absent: gpt-* names must route to the Codex OAuth account, and
@@ -29,12 +30,12 @@
 
     remote-management:
       allow-remote: false
-      secret-key: "@MGMT_KEY@"
+      secret-key: @MGMT_KEY@
 
     auth-dir: "~/.cli-proxy-api"
 
     api-keys:
-      - "@LOCAL_KEY@"
+      - @LOCAL_KEY@
 
     # CPA-Manager-Plus reads the usage queue for request history/cost analytics.
     usage-statistics-enabled: true
@@ -46,14 +47,20 @@
       - name: "opencode-zen"
         base-url: "https://opencode.ai/zen/v1"
         api-key-entries:
-          - api-key: "@ZEN_KEY@"
+          - api-key: @ZEN_KEY@
         models:
     ${zenModelYaml}'';
 
   cpampVersion = "1.11.7";
+  cpampArtifact =
+    if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then {
+      name = "cpa-manager-plus_v${cpampVersion}_darwin_arm64";
+      sha256 = "61e895a357eea749588c203ff2ce6483bdafa45b52afaf4c452caf75960ddc33";
+    }
+    else throw "CPA Manager Plus is unsupported on ${pkgs.stdenv.hostPlatform.system}";
   cpampTarball = pkgs.fetchurl {
-    url = "https://github.com/seakee/CPA-Manager-Plus/releases/download/v${cpampVersion}/cpa-manager-plus_v${cpampVersion}_darwin_arm64.tar.gz";
-    sha256 = "61e895a357eea749588c203ff2ce6483bdafa45b52afaf4c452caf75960ddc33";
+    url = "https://github.com/seakee/CPA-Manager-Plus/releases/download/v${cpampVersion}/${cpampArtifact.name}.tar.gz";
+    inherit (cpampArtifact) sha256;
   };
 
   # CPAMP writes its data/ directory next to its own binary, so it cannot run
@@ -94,21 +101,34 @@ in {
       fi
     done
 
-    if [ -s "$key_dir/zen.key" ]; then
-      zen_key="$(cat "$key_dir/zen.key")"
-    else
-      zen_key="MISSING-ZEN-KEY"
+    if [ ! -s "$key_dir/zen.key" ]; then
       echo "cliproxy.nix: put your OpenCode Zen API key in $key_dir/zen.key (Zen models will 401 until then)" >&2
     fi
 
     conf="${confPath}"
     if [ -d "$(dirname "$conf")" ]; then
       tmp="$(mktemp)"
-      /usr/bin/sed \
-        -e "s|@LOCAL_KEY@|$(cat "$key_dir/local.key")|" \
-        -e "s|@MGMT_KEY@|$(cat "$key_dir/management.key")|" \
-        -e "s|@ZEN_KEY@|$zen_key|" \
-        ${confTemplate} >"$tmp"
+      # JSON strings are valid YAML scalars. Python reads secrets directly from
+      # files, avoiding shell and sed interpolation entirely (including newlines).
+      ${pkgs.python3}/bin/python3 - ${confTemplate} "$key_dir/local.key" \
+        "$key_dir/management.key" "$key_dir/zen.key" "$tmp" <<'PY'
+import json, pathlib, sys
+source, local, management, zen, output = map(pathlib.Path, sys.argv[1:])
+# Key files are conventionally newline-terminated. Remove only trailing line
+# endings; spaces and every other character are part of the key.
+def read_key(path):
+    return path.read_text().rstrip("\r\n")
+
+values = {
+    "@LOCAL_KEY@": read_key(local),
+    "@MGMT_KEY@": read_key(management),
+    "@ZEN_KEY@": read_key(zen) if zen.exists() and zen.stat().st_size else "MISSING-ZEN-KEY",
+}
+text = source.read_text()
+for marker, value in values.items():
+    text = text.replace(marker, json.dumps(value))
+output.write_text(text)
+PY
       if ! /usr/bin/cmp -s "$tmp" "$conf"; then
         mv "$tmp" "$conf"
         # Restart the brew service so the new config is picked up; harmless if
@@ -128,7 +148,7 @@ in {
     if [ ! -f "$cpamp_home/.version" ] || [ "$(cat "$cpamp_home/.version")" != "${cpampVersion}" ]; then
       tmp_dir="$(mktemp -d)"
       /usr/bin/tar -xzf ${cpampTarball} -C "$tmp_dir"
-      install -m 755 "$tmp_dir/cpa-manager-plus_v${cpampVersion}_darwin_arm64/cpa-manager-plus" \
+      install -m 755 "$tmp_dir/${cpampArtifact.name}/cpa-manager-plus" \
         "$cpamp_home/cpa-manager-plus"
       rm -rf "$tmp_dir"
       echo "${cpampVersion}" >"$cpamp_home/.version"

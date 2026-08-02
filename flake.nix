@@ -26,11 +26,6 @@
       flake = false;
     };
 
-    homebrew-humanlayer = {
-      url = "github:humanlayer/homebrew-humanlayer";
-      flake = false;
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,17 +41,17 @@
     homebrew-core,
     homebrew-cask,
     homebrew-rwx,
-    homebrew-humanlayer,
     home-manager,
     ...
   }: let
     username = "chant";
-    system = "aarch64-darwin";
     darwinHosts = {
       eris = {
+        system = "aarch64-darwin";
         isRemote = true;
       };
       nyx = {
+        system = "aarch64-darwin";
         isRemote = false;
       };
     };
@@ -65,7 +60,7 @@
     specialArgsFor = hostname: let
       hostProfile = darwinHosts.${hostname};
     in {
-      inherit inputs username hostname system hostProfile;
+      inherit inputs username hostname hostProfile;
     };
 
     pkgsFor = targetSystem:
@@ -76,7 +71,7 @@
 
     mkDarwinConfiguration = hostname:
       nix-darwin.lib.darwinSystem {
-        inherit system;
+        system = darwinHosts.${hostname}.system;
         specialArgs = specialArgsFor hostname;
         modules = [
           ./hosts/darwin/${hostname}
@@ -92,7 +87,7 @@
 
     mkHomeConfiguration = hostname:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor system;
+        pkgs = pkgsFor darwinHosts.${hostname}.system;
         extraSpecialArgs = specialArgsFor hostname;
         modules = [
           ./home/${username}
