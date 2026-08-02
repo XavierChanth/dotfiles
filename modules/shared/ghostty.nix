@@ -58,7 +58,6 @@ in {
         "super+ctrl+alt+shift+f=text:\\x00f"
         "super+ctrl+alt+shift+g=text:\\x00g"
         "super+ctrl+alt+shift+n=text:\\x00n"
-        "super+ctrl+alt+shift+p=text:\\x00p"
         "super+ctrl+alt+shift+e=text:\\x00e"
 
         "super+ctrl+shift+alt+q=text:\\x00d"
