@@ -57,7 +57,6 @@ if command -v dircolors 2>&1 >/dev/null; then
 fi
 export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
 export DOTFILES="$HOME/.dotfiles"
-export JJ_CONFIG="$XDG_CONFIG_HOME/jj/config.toml"
 export OPENCODE_EXPERIMENTAL_PLAN_MODE=true
 
 # vi mode - must be set before prompt

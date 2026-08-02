@@ -35,7 +35,7 @@ if $tui; then
 elif $log; then
   # create a vertical split in the sshnpd dir
   tmux neww -c "$root"
-  jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log-watch"
+  jj_command="jj log-watch"
   command="$HOME/.local/bin/cwatch -i 1 -c '$jj_command --no-pager'"
   tmux splitw -l "45" -hbc "$root" "$command"
   tmux select-pane -R
@@ -44,7 +44,7 @@ elif $log; then
   tmux set-hook -w pane-exited "run '$HOME/.local/bin/jj-term-cleanup'"
 elif $hook; then
   # could work if I got the cleanup part working
-  jj_command="JJ_CONFIG=$HOME/.config/jj/config.toml jj log --color always | less -Rc"
+  jj_command="jj log --color always | less -Rc"
   command="tmux send-keys -t .1 q C-c C-L '$jj_command' C-m"
   tmux neww -c "$root"
   tmux splitw -l 70% -hc "$root" -e "ZSH_PRECMD_HOOK=$command"
