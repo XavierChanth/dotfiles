@@ -16,6 +16,12 @@ ruby = "3.3.12"
 zig = "latest"
 # dart = "latest" # Optional; Flutter currently supplies Dart.
 
+# Rust command-line tools
+"cargo:squawk" = "latest"
+"cargo:tauri-pilot-cli" = "latest"
+"cargo:vtracer" = "latest"
+"cargo:wasm-bindgen-cli" = "latest"
+
 # Global command-line tools remain independent of the selected Bun runtime.
 "aqua:earendil-works/pi" = "latest"
 "npm:@openai/codex" = "latest"
