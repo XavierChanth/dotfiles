@@ -16,7 +16,34 @@
   managedSettings = {
     "$schema" = "https://json.schemastore.org/claude-code-settings.json";
     includeCoAuthoredBy = false;
-    permissions.defaultMode = "auto";
+    model = "opus";
+    permissions = {
+      defaultMode = "auto";
+      deny = [
+        "Artifact"
+        "PushNotification"
+        "RemoteTrigger"
+        "mcp__*"
+      ];
+    };
+    disableAgentView = true;
+    disableAllHooks = true;
+    disableArtifact = true;
+    disableClaudeAiConnectors = true;
+    disableRemoteControl = true;
+    disableWorkflows = true;
+    agentPushNotifEnabled = false;
+    autoMemoryEnabled = false;
+    autoUploadSessions = false;
+    inputNeededNotifEnabled = false;
+    remoteControlAtStartup = false;
+    env = {
+      CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY = "1";
+      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
+      CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS = "1";
+      DISABLE_ERROR_REPORTING = "1";
+      DISABLE_TELEMETRY = "1";
+    };
     sandbox = {
       enabled = true;
       autoAllowBashIfSandboxed = true;
