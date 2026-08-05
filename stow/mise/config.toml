@@ -3,7 +3,6 @@ paranoid = true
 disable_backends = ["asdf", "vfox"]
 minimum_release_age = "3d"
 lockfile = true
-npm.bun = true
 python.compile = false
 ruby.compile = false
 
