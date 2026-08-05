@@ -5,6 +5,11 @@
   username,
   ...
 }: {
+  imports = [
+    ../cluster
+    ./harmonia-peer-cache.nix
+  ];
+
   boot = {
     loader = {
       efi.canTouchEfiVariables = true;
