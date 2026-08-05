@@ -1,0 +1,159 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+usage() { echo "usage: $0 [--dry-run] hades" >&2; }
+die() { echo "lab-update: $*" >&2; exit 1; }
+quote() { printf '%q ' "$@"; }
+
+DRY_RUN=0
+if [[ ${1:-} == --dry-run ]]; then DRY_RUN=1; shift; fi
+[[ $# == 1 ]] || { usage; exit 64; }
+HOST=$1
+# Deliberately narrow: add hosts only after their attended recovery runbook is proven.
+case $HOST in hades) ;; *) die "unsupported host '$HOST' (allowed: hades)" ;; esac
+
+SSH=(ssh -o BatchMode=yes -o ConnectTimeout=10 "$HOST")
+phases=("snapshot source" "read-only remote preflight" "confirm mutation" "stage unique source tree" "one target-local build" "inspect closure and generated configuration" "start sleep inhibitor" "arm 15-minute dead-man reboot" "detached test activation" "fresh-SSH polling and postflight" "cancel reboot, commit exact closure for boot" "confirm attended reboot verification")
+if (( DRY_RUN )); then
+  echo "DRY RUN: no SSH or network calls will be made"
+  printf 'host: %s\n' "$HOST"
+  printf 'phase: %s\n' "${phases[@]}"
+  cat <<EOF
+planned commands (not executed):
+  git ls-files --cached --others --exclude-standard | filter .git,tmp,result | sorted tar archive
+  ssh $HOST '<read-only preflight>'
+  ssh $HOST 'mktemp -d /var/tmp/lab-update.XXXXXX; extract (never ~/.dotfiles)'
+  ssh $HOST "nix build --no-link --print-out-paths --builders '' .#nixosConfigurations.$HOST.config.system.build.toplevel"
+  ssh $HOST '<path-info, closure diff, sshd/fstab checks>'
+  ssh $HOST 'systemd-run --unit=lab-update-inhibit systemd-inhibit ... infinity'
+  ssh $HOST 'shutdown -r +15; systemd-run --no-block <exact>/bin/switch-to-configuration test'
+  fresh ssh polling; postflight; shutdown -c only after success
+  ssh $HOST 'nix-env --set <exact>; <exact>/bin/switch-to-configuration boot'
+  prompt before optional attended reboot (never automatic without confirmation)
+EOF
+  exit 0
+fi
+
+if ! command -v git >/dev/null || ! command -v tar >/dev/null || ! command -v ssh >/dev/null; then
+  die "git, tar, and ssh are required"
+fi
+ROOT=$(git rev-parse --show-toplevel) || die "not in a git worktree"
+cd "$ROOT"
+TMPDIR_LOCAL=$(mktemp -d "${TMPDIR:-/tmp}/lab-update.XXXXXX")
+trap 'rm -rf "$TMPDIR_LOCAL"' EXIT
+LIST=$TMPDIR_LOCAL/files.zlist
+MANIFEST=$TMPDIR_LOCAL/manifest
+ARCHIVE=$TMPDIR_LOCAL/source.tar
+# NUL-safe selection includes tracked and untracked non-ignored files. The explicit
+# filter protects against accidentally tracked staging/build directories.
+git ls-files -z --cached --others --exclude-standard |
+  while IFS= read -r -d '' f; do
+    case $f in .git|.git/*|tmp|tmp/*|result|result/*) continue ;; esac
+    printf '%s\0' "$f"
+  done | LC_ALL=C sort -z >"$LIST"
+[[ -s $LIST ]] || die "source manifest is empty"
+tr '\0' '\n' <"$LIST" >"$MANIFEST"
+REVISION=$(git rev-parse HEAD)
+if git diff --quiet --ignore-submodules -- && git diff --cached --quiet --ignore-submodules -- &&
+   [[ -z $(git ls-files --others --exclude-standard) ]]; then DIRTY=clean; else DIRTY=dirty; fi
+# COPYFILE_DISABLE suppresses macOS AppleDouble/xattrs; numeric metadata and fixed
+# mtime make identical input deterministic enough across repeated local runs.
+COPYFILE_DISABLE=1 tar --no-xattrs --no-acls --no-fflags --format=ustar \
+  --uid=0 --gid=0 --numeric-owner --mtime='UTC 1970-01-01' -cf "$ARCHIVE" --null -T "$LIST" 2>/dev/null ||
+COPYFILE_DISABLE=1 tar -cf "$ARCHIVE" --null -T "$LIST"
+SHA256=$(shasum -a 256 "$ARCHIVE" | awk '{print $1}')
+printf 'revision=%s\ndirty=%s\nsha256=%s\n' "$REVISION" "$DIRTY" "$SHA256" >"$TMPDIR_LOCAL/source-info"
+echo "snapshot: revision=$REVISION status=$DIRTY files=$(wc -l <"$MANIFEST" | tr -d ' ') sha256=$SHA256"
+
+PRE=$("${SSH[@]}" 'bash -se' <<'REMOTE'
+set -Eeuo pipefail
+sudo -n true
+[[ $(uname -s) == Linux && -e /etc/NIXOS ]]
+current=$(readlink -f /run/current-system)
+booted=$(readlink -f /run/booted-system)
+profile=$(readlink -f /nix/var/nix/profiles/system)
+[[ $current == "$booted" && $current == "$profile" ]]
+echo "identity host=$(hostname) os=$(. /etc/os-release; echo "$ID") arch=$(uname -m) user=$USER"
+echo "closures current=$current booted=$booted profile=$profile"
+echo "password $(passwd -S "$USER")"
+echo "mount-root $(findmnt -nro SOURCE,FSTYPE,OPTIONS /)"
+if findmnt /boot >/dev/null; then echo "mount-boot $(findmnt -nro SOURCE,FSTYPE,OPTIONS /boot)"; sudo -n test -w /boot; else echo 'mount-boot absent'; fi
+for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do
+  printf 'service %s ' "$u"; systemctl is-active "$u" || true
+done
+printf 'sleep-masks '; for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do printf '%s=%s ' "$u" "$(systemctl is-enabled "$u" 2>/dev/null || true)"; done; echo
+printf 'dns '; getent ahosts cache.nixos.org | head -1
+printf 'disk '; df -h / /boot 2>/dev/null | tail -n +2
+printf 'FAILED='; systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -
+REMOTE
+) || die "preflight failed (no remote mutation was attempted)"
+printf '%s\n' "$PRE"
+BASE_FAILED=$(sed -n 's/^FAILED=//p' <<<"$PRE")
+read -r -p "Type 'update $HOST' to stage, build, and test: " ANSWER
+[[ $ANSWER == "update $HOST" ]] || die "not confirmed"
+
+REMOTE_DIR=$("${SSH[@]}" 'sudo -n mktemp -d /var/tmp/lab-update.XXXXXXXX') || die "cannot create staging directory"
+cleanup_remote() { "${SSH[@]}" "sudo -n rm -rf -- $(quote "$REMOTE_DIR")" >/dev/null 2>&1 || true; }
+trap 'cleanup_remote; rm -rf "$TMPDIR_LOCAL"' EXIT
+cat "$ARCHIVE" | "${SSH[@]}" "sudo -n tar --no-same-owner -xf - -C $(quote "$REMOTE_DIR")"
+cat "$MANIFEST" | "${SSH[@]}" "sudo -n tee $(quote "$REMOTE_DIR/manifest") >/dev/null"
+cat "$TMPDIR_LOCAL/source-info" | "${SSH[@]}" "sudo -n tee $(quote "$REMOTE_DIR/source-info") >/dev/null"
+
+BUILD_OUTPUT=$("${SSH[@]}" "cd $(quote "$REMOTE_DIR"); sudo -n nix build --no-link --print-out-paths --builders '' $(quote ".#nixosConfigurations.$HOST.config.system.build.toplevel")") || die "build failed"
+mapfile -t CLOSURES < <(printf '%s\n' "$BUILD_OUTPUT" | grep '^/nix/store/' || true)
+[[ ${#CLOSURES[@]} == 1 ]] || die "build returned ${#CLOSURES[@]} closure paths, expected exactly one"
+CLOSURE=${CLOSURES[0]}
+"${SSH[@]}" "sudo -n nix path-info $(quote "$CLOSURE") >/dev/null && test -x $(quote "$CLOSURE/bin/switch-to-configuration")" || die "invalid closure"
+
+"${SSH[@]}" 'bash -se' -- "$CLOSURE" <<'REMOTE'
+set -Eeuo pipefail
+c=$1; old=$(readlink -f /run/current-system)
+echo 'closure diff:'; sudo -n nix store diff-closures "$old" "$c"
+[[ -r $c/etc/ssh/sshd_config ]]; sudo -n "$c/sw/bin/sshd" -t -f "$c/etc/ssh/sshd_config"
+[[ -r $c/etc/fstab ]]; sudo -n findmnt --verify --tab-file "$c/etc/fstab"
+for target in / /boot; do
+  findmnt "$target" >/dev/null || [[ $target == /boot ]]
+  awk -v t="$target" '$2==t {found=1} END {if (!found && t=="/") exit 1}' "$c/etc/fstab"
+done
+REMOTE
+
+echo "validated exact closure: $CLOSURE"
+# Inhibitor is a detached host unit, independent of this SSH session.
+"${SSH[@]}" "sudo -n systemd-run --unit=lab-update-inhibit --collect systemd-inhibit --what=sleep --why='lab-update activation' --mode=block /bin/sh -c 'exec sleep infinity'" >/dev/null
+# From here on, any failure intentionally leaves the dead-man reboot armed.
+"${SSH[@]}" "sudo -n shutdown -r +15 'lab-update activation dead-man reboot'"
+FAIL_MSG="activation/postflight failed; scheduled reboot remains armed"
+"${SSH[@]}" "sudo -n systemd-run --unit=lab-update-test --collect --no-block $(quote "$CLOSURE/bin/switch-to-configuration") test" >/dev/null || die "$FAIL_MSG"
+
+OK=0
+for _ in {1..36}; do
+  sleep 5
+  if OUT=$("${SSH[@]}" 'bash -se' -- "$CLOSURE" "$BASE_FAILED" 2>/dev/null <<'REMOTE'
+set -Eeuo pipefail
+want=$1 baseline=$2
+[[ $(readlink -f /run/current-system) == "$want" ]]
+sudo -n true; passwd -S "$USER" >/dev/null
+findmnt / >/dev/null; if grep -Eq '[[:space:]]/boot[[:space:]]' "$want/etc/fstab"; then findmnt /boot >/dev/null; fi
+for u in sshd.service tailscaled.service NetworkManager.service; do systemctl is-active --quiet "$u"; done
+systemctl is-active --quiet display-manager.service || systemctl is-enabled --quiet display-manager.service || true
+getent ahosts cache.nixos.org >/dev/null
+for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do [[ $(systemctl is-enabled "$u" 2>/dev/null) == masked ]]; done
+now=$(systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -)
+[[ $now == "$baseline" ]]
+echo POSTFLIGHT_OK
+REMOTE
+); then echo "$OUT"; OK=1; break; fi
+done
+(( OK )) || die "$FAIL_MSG"
+
+# Only successful postflight may disarm the reboot and commit the tested closure.
+"${SSH[@]}" "sudo -n shutdown -c; sudo -n nix-env -p /nix/var/nix/profiles/system --set $(quote "$CLOSURE"); sudo -n $(quote "$CLOSURE/bin/switch-to-configuration") boot; sudo -n systemctl stop lab-update-inhibit.service || true"
+echo "committed exact tested closure for boot: $CLOSURE"
+read -r -p "Type 'reboot $HOST' for attended reboot verification, or press Enter to finish without reboot: " REBOOT
+if [[ $REBOOT == "reboot $HOST" ]]; then
+  "${SSH[@]}" 'sudo -n systemctl reboot'
+  echo "reboot requested; verify console and reconnect manually to confirm $CLOSURE"
+else
+  echo "no reboot requested; attended reboot verification remains pending"
+fi
