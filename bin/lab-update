@@ -25,51 +25,63 @@ else
   COPYFILE_DISABLE=1 tar --no-xattrs --no-acls --no-fflags -cf "$T/source.tar" --null -T "$T/list"
 fi
 cat >"$T/driver" <<'DRIVER'
-#!/usr/bin/env bash
+#!/run/current-system/sw/bin/bash
 set -Eeuo pipefail
 (( BASH_VERSINFO[0] >= 5 )) || { echo 'rollout driver: Bash 5 is required' >&2; exit 69; }
+SYS=$(/run/current-system/sw/bin/readlink -f /run/current-system)
+[[ ${PATH-} == "$SYS/sw/bin" ]] || { echo 'rollout driver: pinned PATH drift' >&2; exit 70; }
+export PATH="$SYS/sw/bin" HOME=/root LC_ALL=C
+B="$SYS/sw/bin"
 closure=$1 baseline=${2-}
 [[ $baseline != __LAB_UPDATE_EMPTY__ ]] || baseline=
-[[ $closure =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+?=-]+$ ]] || exit 64
-old=$(readlink -f /nix/var/nix/profiles/system)
-mutated=0 success=0
+[[ $closure =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+=-]+$ ]] || exit 64
+old=$($B/readlink -f /nix/var/nix/profiles/system)
+armed=0 mutated=0 success=0
 finish() {
-  rc=$?
-  trap - EXIT
+  rc=$? profile_rc=0 boot_rc=0
+  trap - EXIT TERM INT HUP
   if (( ! success && mutated )); then
-    # RuntimeMaxSec leaves TimeoutStopSec for these bounded recovery operations.
-    timeout 60 nix-env -p /nix/var/nix/profiles/system --set "$old" || true
-    timeout 60 "$old/bin/switch-to-configuration" boot || true
+    $B/timeout 60 $B/nix-env -p /nix/var/nix/profiles/system --set "$old" || profile_rc=$?
+    $B/timeout 120 "$old/bin/switch-to-configuration" boot || boot_rc=$?
+    printf 'rollback profile=%s boot=%s; dead-man remains armed\n' "$profile_rc" "$boot_rc" >&2
+    rc=71
+  elif (( ! success && armed )); then
+    echo 'rollout failed before profile mutation; no rollback required, dead-man remains armed' >&2
+  elif (( ! success )); then
+    echo 'rollout failed before dead-man was armed; no rollback required' >&2
   fi
-  rm -f -- /run/lab-update-driver
+  $B/rm -f -- /run/lab-update-driver
   exit "$rc"
 }
-trap finish EXIT TERM INT HUP
-# Refuse to inherit stale rollout state and replace only our bounded inhibitor.
-systemctl stop lab-update-inhibit.service 2>/dev/null || true
-systemctl reset-failed lab-update-inhibit.service 2>/dev/null || true
-systemd-run --unit=lab-update-inhibit --collect systemd-inhibit --what=sleep --why=lab-update --mode=block /run/current-system/sw/bin/sleep 1200
-shutdown -r +15 'lab-update dead-man reboot'
+trap finish EXIT
+trap 'exit 143' TERM HUP
+trap 'exit 130' INT
+$B/systemctl stop lab-update-inhibit.service 2>/dev/null || true
+$B/systemctl reset-failed lab-update-inhibit.service 2>/dev/null || true
+$B/systemd-run --unit=lab-update-inhibit --collect "$B/systemd-inhibit" --what=sleep --why=lab-update --mode=block "$B/sleep" 1200
+$B/shutdown -r +15 'lab-update dead-man reboot'; armed=1
 "$closure/bin/switch-to-configuration" test
-[[ $(readlink -f /run/current-system) == "$closure" ]]
-now=$(systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -)
+[[ $($B/readlink -f /run/current-system) == "$closure" ]]
+now=$({ $B/systemctl --failed --no-legend --plain || true; } | $B/awk '{print $1}' | $B/sort | $B/paste -sd, -)
 [[ $now == "$baseline" ]]
-getent ahosts cache.nixos.org >/dev/null
-findmnt / >/dev/null
-if grep -Eq '[[:space:]]/boot[[:space:]]' "$closure/etc/fstab"; then findmnt /boot >/dev/null; fi
-for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do systemctl is-active --quiet "$u"; done
-for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do [[ $(systemctl is-enabled "$u" 2>/dev/null) == masked ]]; done
-shutdown -r +15 'lab-update commit dead-man reboot'
-nix-env -p /nix/var/nix/profiles/system --set "$closure"; mutated=1
+$B/getent ahosts cache.nixos.org >/dev/null
+$B/findmnt / >/dev/null
+if $B/grep -Eq '[[:space:]]/boot[[:space:]]' "$closure/etc/fstab"; then $B/findmnt /boot >/dev/null; fi
+for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do $B/systemctl is-active --quiet "$u"; done
+for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do [[ $($B/systemctl is-enabled "$u" 2>/dev/null) == masked ]]; done
+$B/shutdown -r +15 'lab-update commit dead-man reboot'
+mutated=1
+$B/nix-env -p /nix/var/nix/profiles/system --set "$closure"
 "$closure/bin/switch-to-configuration" boot
-[[ $(readlink -f /nix/var/nix/profiles/system) == "$closure" ]]
-[[ $(readlink -f /run/current-system) == "$closure" ]]
-shutdown -c
+[[ $($B/readlink -f /nix/var/nix/profiles/system) == "$closure" ]]
+[[ $($B/readlink -f /run/current-system) == "$closure" ]]
 success=1
-systemctl stop lab-update-inhibit.service || true
+if ! $B/shutdown -c; then echo 'rollout committed, but dead-man cancellation failed; reboot remains armed' >&2; exit 72; fi
+$B/systemctl stop lab-update-inhibit.service || true
 DRIVER
 chmod 700 "$T/driver"
-DRIVER_SHA=$(shasum -a 256 "$T/driver" | awk '{print $1}')
+DRIVER_SHA=$(shasum -a 256 "$T/driver" | cut -d ' ' -f 1)
+[[ $DRIVER_SHA =~ ^[0-9a-f]{64}$ ]] || die 'invalid driver SHA-256'
 
 # Every data-bearing and observational connection is non-PTY and unprivileged.
 PRE=$("${SSH[@]}" "$HOST" 'bash -s' <<'REMOTE'
@@ -79,39 +91,53 @@ u=$(id -un); id -nG "$u" | tr ' ' '\n' | grep -qx wheel
 status=$(passwd -S "$u"); set -- $status; [[ ${2:-} == P ]]
 current=$(readlink -f /run/current-system); booted=$(readlink -f /run/booted-system); profile=$(readlink -f /nix/var/nix/profiles/system)
 [[ $current == "$booted" && $current == "$profile" ]]
-printf 'CURRENT=%s\nBOOTED=%s\nPROFILE=%s\n' "$current" "$booted" "$profile"
-printf 'FAILED='; systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -
+[[ $booted =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+=-]+$ ]]
+B=$booted/sw/bin
+for c in bash readlink rm timeout nix-env systemctl systemd-run systemd-inhibit sleep shutdown awk sort paste getent findmnt grep; do [[ -x $B/$c ]] || { echo "missing driver binary: $B/$c" >&2; exit 68; }; done
+major=$($B/bash -c 'printf %s "$BASH_VERSINFO"'); (( major >= 5 ))
+printf 'CURRENT=%s\nBOOTED=%s\nPROFILE=%s\nBASH_MAJOR=%s\n' "$current" "$booted" "$profile" "$major"
+printf 'FAILED='; { systemctl --failed --no-legend --plain || true; } | awk '{print $1}' | LC_ALL=C sort | paste -sd, -
 REMOTE
 ) || die 'preflight failed (wheel membership and a real password are required)'
-printf '%s\n' "$PRE"; BASE_FAILED=$(sed -n 's/^FAILED=//p' <<<"$PRE")
+printf '%s\n' "$PRE"; BASE_FAILED=$(sed -n 's/^FAILED=//p' <<<"$PRE"); BOOTED=$(sed -n 's/^BOOTED=//p' <<<"$PRE")
 [[ $BASE_FAILED =~ ^[A-Za-z0-9@_.:,~-]*$ ]] || die 'unsafe failed-unit baseline'
+[[ $BOOTED =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+=-]+$ ]] || die 'unsafe booted system path'
 read -r -p "Type 'update $HOST' to stage and build: " a; [[ $a == "update $HOST" ]] || die 'not confirmed'
 REMOTE_DIR=$("${SSH[@]}" "$HOST" 'umask 077; d=$(mktemp -d /var/tmp/lab-update.XXXXXXXX); printf "%s\n" "$d"')
 [[ $REMOTE_DIR =~ ^/var/tmp/lab-update\.[A-Za-z0-9]{8}$ ]] || die 'unsafe staging path'
-cleanup() { "${SSH[@]}" "$HOST" "rm -rf -- $REMOTE_DIR" >/dev/null 2>&1 || true; rm -rf "$T"; }; trap cleanup EXIT
+cleanup() { "${SSH[@]}" "$HOST" "rm -rf -- $REMOTE_DIR" >/dev/null 2>&1 || true; rm -rf "$T"; }
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM HUP
 "${SSH[@]}" "$HOST" "tar --no-same-owner -xf - -C $REMOTE_DIR" <"$T/source.tar"
 "${SSH[@]}" "$HOST" "cat >$REMOTE_DIR/rollout-driver && chmod 0700 $REMOTE_DIR/rollout-driver" <"$T/driver"
 REMOTE_SHA=$("${SSH[@]}" "$HOST" "sha256sum $REMOTE_DIR/rollout-driver" | awk '{print $1}')
 [[ $REMOTE_SHA == "$DRIVER_SHA" ]] || die 'staged driver hash mismatch'
 BUILD=$("${SSH[@]}" "$HOST" "nix build --no-link --no-write-lock-file --print-out-paths --builders '' $REMOTE_DIR#nixosConfigurations.$HOST.config.system.build.toplevel") || die 'build failed'
 mapfile -t paths < <(grep '^/nix/store/' <<<"$BUILD"); [[ ${#paths[@]} == 1 ]] || die 'expected one closure'; CLOSURE=${paths[0]}
-[[ $CLOSURE =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+?=-]+$ ]] || die 'unsafe closure path'
-"${SSH[@]}" "$HOST" "nix path-info $CLOSURE >/dev/null && test -x $CLOSURE/bin/switch-to-configuration && nix store diff-closures \$(readlink -f /run/current-system) $CLOSURE && test -r $CLOSURE/etc/ssh/sshd_config && $CLOSURE/sw/bin/sshd -t -f $CLOSURE/etc/ssh/sshd_config && test -r $CLOSURE/etc/fstab && findmnt --verify --tab-file $CLOSURE/etc/fstab && awk '\$2==\"/\"{ok=1} END{exit !ok}' $CLOSURE/etc/fstab && ! findmnt -nro OPTIONS /boot 2>/dev/null | grep -qw ro"
+[[ $CLOSURE =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+=-]+$ ]] || die 'unsafe closure path'
+"${SSH[@]}" "$HOST" "nix path-info $CLOSURE >/dev/null && test -x $CLOSURE/bin/switch-to-configuration && test -x $CLOSURE/sw/bin/sshd && nix store diff-closures \$(readlink -f /run/current-system) $CLOSURE && test -r $CLOSURE/etc/ssh/sshd_config && test -r $CLOSURE/etc/fstab && findmnt --verify --tab-file $CLOSURE/etc/fstab && awk '\$2==\"/\"{ok=1} END{exit !ok}' $CLOSURE/etc/fstab && ! findmnt -nro OPTIONS /boot 2>/dev/null | grep -Eq '(^|,)ro(,|$)'" || die 'closure inspection failed (check fstab, root entry, and /boot mount options)'
 read -r -p "Type 'activate $HOST' to start the rollback-protected rollout: " a; [[ $a == "activate $HOST" ]] || die 'activation not confirmed'
 [[ -t 0 ]] || die 'the attended privileged phase requires a local stdin TTY'
 # Exactly one data-free attended connection. sudo reads the password directly from its TTY.
 # Encode empty distinctly so argv[2] is present through both remote-shell layers.
 if [[ -z $BASE_FAILED ]]; then qbase=__LAB_UPDATE_EMPTY__; else printf -v qbase '%q' "$BASE_FAILED"; fi
-PTY_CMD="sudo /bin/sh -ceu 'test \"\$(sha256sum $REMOTE_DIR/rollout-driver | awk \"{print \\\$1}\")\" = $DRIVER_SHA; systemctl stop lab-update-rollout.service 2>/dev/null || true; systemctl reset-failed lab-update-rollout.service 2>/dev/null || true; install -o root -g root -m 0500 $REMOTE_DIR/rollout-driver /run/lab-update-driver; test \"\$(stat -c %U:%G:%a /run/lab-update-driver)\" = root:root:500; test \"\$(sha256sum /run/lab-update-driver | awk \"{print \\\$1}\")\" = $DRIVER_SHA; systemd-run --unit=lab-update-rollout --property=RemainAfterExit=yes --property=RuntimeMaxSec=720 --property=TimeoutStopSec=130 --no-block /run/lab-update-driver $CLOSURE $qbase'"
+PTY_CMD="sudo /bin/sh -ceu 'test \"\$(sha256sum $REMOTE_DIR/rollout-driver | cut -d \" \" -f 1)\" = $DRIVER_SHA; $CLOSURE/sw/bin/sshd -t -f $CLOSURE/etc/ssh/sshd_config; systemctl stop lab-update-rollout.service 2>/dev/null || true; systemctl reset-failed lab-update-rollout.service 2>/dev/null || true; install -o root -g root -m 0500 $REMOTE_DIR/rollout-driver /run/lab-update-driver; test \"\$(stat -c %U:%G:%a /run/lab-update-driver)\" = root:root:500; test \"\$(sha256sum /run/lab-update-driver | cut -d \" \" -f 1)\" = $DRIVER_SHA; systemd-run --unit=lab-update-rollout --property=RemainAfterExit=yes --property=RuntimeMaxSec=600 --property=TimeoutStopSec=210 --setenv=PATH=$BOOTED/sw/bin --setenv=HOME=/root --setenv=LC_ALL=C --no-block /run/lab-update-driver $CLOSURE $qbase'"
 "${SSH[@]}" -tt "$HOST" "$PTY_CMD" || die 'rollout launch failed; an armed reboot may remain pending (rollback is not guaranteed)'
-# Fresh, bounded, non-privileged observations. Retained status is removed only by a later rollout.
-deadline=$((SECONDS+900)); observed=0
+# 780s leaves a two-minute margin before the 900s dead-man while covering RuntimeMaxSec plus rollback.
+deadline=$((SECONDS+780)); observed=0
 while (( SECONDS < deadline )); do
-  out=$("${SSH[@]}" "$HOST" "timeout 25 sh -c 'systemctl show lab-update-rollout.service -p LoadState -p ActiveState -p SubState -p Result -p ExecMainStatus --value; readlink -f /run/current-system; readlink -f /nix/var/nix/profiles/system'" 2>/dev/null) || { sleep 5; continue; }
-  mapfile -t state <<<"$out"
-  ((${#state[@]} >= 7)) || die 'rollout unit returned incomplete state'
-  load=${state[0]}; active=${state[1]}; sub=${state[2]}; result=${state[3]}; status=${state[4]}; current=${state[5]}; profile=${state[6]}
+  out=$("${SSH[@]}" "$HOST" "timeout 25 sh -c 'systemctl show lab-update-rollout.service -p LoadState -p ActiveState -p SubState -p Result -p ExecMainStatus; printf \"CURRENT=%s\\nPROFILE=%s\\n\" \"\$(readlink -f /run/current-system)\" \"\$(readlink -f /nix/var/nix/profiles/system)\"'" 2>/dev/null) || { sleep 5; continue; }
+  declare -A state=(); complete=1
+  while IFS='=' read -r key value; do case $key in LoadState|ActiveState|SubState|Result|ExecMainStatus|CURRENT|PROFILE) state[$key]=$value;; esac; done <<<"$out"
+  for key in LoadState ActiveState SubState Result ExecMainStatus CURRENT PROFILE; do [[ -v state[$key] ]] || complete=0; done
+  (( complete )) || { sleep 5; continue; }
+  load=${state[LoadState]}; active=${state[ActiveState]}; sub=${state[SubState]}; result=${state[Result]}; status=${state[ExecMainStatus]}; current=${state[CURRENT]}; profile=${state[PROFILE]}
   [[ $load == loaded ]] || die 'rollout unit is unknown or collected; dead-man may remain armed'
+  if [[ $status == 64 ]]; then die 'rollout rejected an unsafe closure before reboot was armed'; fi
+  if [[ $status == 69 || $status == 70 ]]; then die 'rollout interpreter/environment failed before reboot was armed'; fi
+  [[ $status != 72 ]] || die 'new closure is active, but dead-man cancellation failed; reboot remains armed'
+  [[ $status != 71 ]] || die 'rollout failed after mutation and rollback was attempted; dead-man remains armed'
   if [[ $active == failed || $result == failed || ( $status =~ ^[0-9]+$ && $status != 0 ) ]]; then die 'rollout failed; dead-man may remain armed'; fi
   if [[ $active == active && $sub == exited && $result == success && $status == 0 ]]; then
     [[ $current == "$CLOSURE" && $profile == "$CLOSURE" ]] || die 'rollout terminal state has wrong closure/profile; dead-man may remain armed'

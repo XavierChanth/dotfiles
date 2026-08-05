@@ -18,18 +18,28 @@ for needle in 'mktemp -d /var/tmp' 'tar --no-same-owner' 'nix build' 'nix path-i
   line=$(grep -F "$needle" "$S" | head -1); [[ $line != *sudo* ]] || fail "$needle is privileged"
 done
 has 'umask 077'; has 'sha256sum $REMOTE_DIR/rollout-driver'; has 'install -o root -g root -m 0500'; has 'root:root:500'
-has 'RuntimeMaxSec=720'; has 'TimeoutStopSec=130'; has "shutdown -r +15 'lab-update dead-man reboot'"
+has 'RuntimeMaxSec=600'; has 'TimeoutStopSec=210'; has "shutdown -r +15 'lab-update dead-man reboot'"
 has 'baseline=${2-}'; has 'baseline != __LAB_UPDATE_EMPTY__'; has 'BASH_VERSINFO[0] >= 5'; has 'RemainAfterExit=yes'
 has 'sha256sum /run/lab-update-driver'; has 'LoadState'; has 'SubState'
 has 'current == "$CLOSURE" && $profile == "$CLOSURE"'
 has 'sshd -t -f'; has 'findmnt --verify --tab-file'; has 'getent ahosts cache.nixos.org'
 has 'sleep.target suspend.target hibernate.target hybrid-sleep.target'
-has '[[ -t 0 ]]'; has 'rm -f -- /run/lab-update-driver'
+has '[[ -t 0 ]]'; has '$B/rm -f -- /run/lab-update-driver'
+has '#!/run/current-system/sw/bin/bash'; has '[[ ${PATH-} == "$SYS/sw/bin" ]]'
+has '--setenv=PATH=$BOOTED/sw/bin'; has '--setenv=HOME=/root'; has '--setenv=LC_ALL=C'
+has 'for c in bash readlink rm timeout nix-env systemctl systemd-run systemd-inhibit sleep shutdown awk sort paste getent findmnt grep'
+has 'test -x $CLOSURE/sw/bin/sshd'
+# Driver external invocations are explicitly pinned (allow closure and saved-profile executables).
+driver_text=$(awk '/^cat >"\$T\/driver" <<'\''DRIVER'\''$/{p=1;next} p&&/^DRIVER$/{exit} p{print}' "$S")
+! grep -E '(^|[;|&][[:space:]]*)(readlink|rm|timeout|nix-env|systemctl|systemd-run|systemd-inhibit|sleep|shutdown|awk|sort|paste|getent|findmnt|grep)([[:space:]]|$)' <<<"$driver_text" || fail 'bare external command in driver compound/pipeline context'
+for invocation in '$B/readlink -f' '$B/rm -f' '$B/timeout 60 $B/nix-env' '$B/timeout 120 "$old/bin/switch-to-configuration"' '$B/systemctl --failed' '$B/systemd-run --unit=lab-update-inhibit' '"$B/systemd-inhibit"' '"$B/sleep"' '$B/shutdown -r' '$B/shutdown -c' '$B/awk' '$B/sort' '$B/paste' '$B/getent' '$B/findmnt' '$B/grep'; do grep -Fq -- "$invocation" <<<"$driver_text" || fail "missing pinned invocation: $invocation"; done
 # Rollback exists and dead-man cancellation occurs only after both retained path checks.
 setline=$(grep -n 'nix-env -p .* --set "$closure"' "$S" | tail -1 | cut -d: -f1)
+mutatedline=$(grep -n '^mutated=1$' "$S" | cut -d: -f1)
+[[ $mutatedline -lt $setline ]] || fail 'mutated must be set before profile mutation'
 restore=$(grep -n 'nix-env -p .* --set "$old"' "$S" | head -1 | cut -d: -f1)
 bootold=$(grep -n '"$old/bin/switch-to-configuration" boot' "$S" | head -1 | cut -d: -f1)
-cancel=$(grep -n '^shutdown -c' "$S" | cut -d: -f1)
+cancel=$(grep -n 'shutdown -c' "$S" | tail -1 | cut -d: -f1)
 [[ $restore -lt $setline && $bootold -lt $setline && $setline -lt $cancel ]] || fail 'rollback/cancel ordering'
 # Dry run cannot invoke even a fake ssh.
 t=$(mktemp -d); trap 'rm -rf "$t"' EXIT
@@ -49,7 +59,7 @@ case $cmd in
     [[ $cmd == *'/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake __LAB_UPDATE_EMPTY__'* ]] || exit 70 ;;
   *'bash -s'*)
     cat >/dev/null
-    printf 'CURRENT=/nix/store/old\nBOOTED=/nix/store/old\nPROFILE=/nix/store/old\nFAILED=\n' ;;
+    printf 'CURRENT=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\nBOOTED=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\nPROFILE=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\nBASH_MAJOR=5\nFAILED=\n' ;;
   *'mktemp -d /var/tmp'*) echo /var/tmp/lab-update.A1b2C3d4 ;;
   *'cat >/var/tmp/lab-update.A1b2C3d4/rollout-driver'*) cat >"$STATE/driver" ;;
   *'sha256sum /var/tmp/lab-update.A1b2C3d4/rollout-driver'*) shasum -a 256 "$STATE/driver" ;;
@@ -58,11 +68,11 @@ case $cmd in
   *'systemctl show lab-update-rollout.service'*)
     n=0; [[ ! -f $STATE/polls ]] || n=$(cat "$STATE/polls"); n=$((n+1)); echo "$n" >"$STATE/polls"
     if [[ ${MODE:-success} == success && $n == 1 ]]; then
-      printf 'loaded\nactive\nrunning\nsuccess\n0\n/nix/store/old\n/nix/store/old\n'
+      printf 'LoadState=loaded\nActiveState=active\nSubState=running\nResult=success\nExecMainStatus=0\nCURRENT=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\nPROFILE=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\n'
     elif [[ ${MODE:-success} == success ]]; then
-      printf 'loaded\nactive\nexited\nsuccess\n0\n/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake\n/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake\n'
+      printf 'LoadState=loaded\nActiveState=active\nSubState=exited\nResult=success\nExecMainStatus=0\nCURRENT=/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake\nPROFILE=/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake\n'
     else
-      printf 'loaded\nfailed\nfailed\nfailed\n1\n/nix/store/old\n/nix/store/old\n'
+      printf 'LoadState=loaded\nActiveState=failed\nSubState=failed\nResult=failed\nExecMainStatus=1\nCURRENT=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\nPROFILE=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old\n'
     fi ;;
   *) : ;;
 esac
@@ -107,14 +117,16 @@ if run_attended failed "$t/failure.out"; then fail 'injected terminal failure su
 # Execute the staged driver body itself under command shims. Only its store-path
 # validation is replaced because this unprivileged test cannot create /nix/store.
 awk '/^cat >"\$T\/driver" <<'\''DRIVER'\''$/{copy=1;next} copy&&/^DRIVER$/{exit} copy{print}' "$S" >"$t/driver"
-sed -E 's/^\[\[ \$closure =~ .*$/#: store path validated by production driver/' "$t/driver" >"$t/driver-run"
+{ printf '#!%s\n' "$(command -v bash)"; tail -n +2 "$t/driver" | sed -E -e 's|^SYS=\$\(/run/current-system/sw/bin/readlink.*$|SYS=${TEST_SYS:?}|' -e '/^\[\[ \$closure =~ /a\
+closure=${TEST_CLOSURE:-$closure}'; } >"$t/driver-run"
 chmod +x "$t/driver-run"
-mkdir -p "$t/driver-bin" "$t/closure/bin" "$t/closure/etc" "$t/old/bin" "$t/driver-state"
+mkdir -p "$t/driver-root/sw/bin" "$t/closure/bin" "$t/closure/etc" "$t/old/bin" "$t/driver-state"
+ln -s "$t/driver-root/sw/bin" "$t/driver-bin"
 : >"$t/closure/etc/fstab"; : >"$t/driver-state/log"
 cat >"$t/closure/bin/switch-to-configuration" <<'SHIM'
 #!/bin/sh
 echo "new-switch $*" >>"$DRIVER_LOG"
-[[ $1 != boot ]]
+[ "${DRIVER_MODE:-fail}" != fail ] || [ "$1" != boot ]
 SHIM
 cat >"$t/old/bin/switch-to-configuration" <<'SHIM'
 #!/bin/sh
@@ -122,7 +134,10 @@ echo "old-switch $*" >>"$DRIVER_LOG"
 SHIM
 cat >"$t/driver-bin/readlink" <<'SHIM'
 #!/bin/sh
-case $* in */nix/var/nix/profiles/system*) echo "$OLD";; */run/current-system*) echo "$CLOSURE";; esac
+case $* in
+  */nix/var/nix/profiles/system*) [ -e "$DRIVER_STATE/profile-new" ] && [ "${PROOF_MODE:-}" != profile-bad ] && echo "$CLOSURE" || echo "$OLD";;
+  */run/current-system*) [ -e "$DRIVER_STATE/profile-new" ] && [ "${PROOF_MODE:-}" = current-bad ] && echo "$OLD" || echo "$CLOSURE";;
+esac
 SHIM
 cat >"$t/driver-bin/systemctl" <<'SHIM'
 #!/bin/sh
@@ -131,19 +146,26 @@ SHIM
 cat >"$t/driver-bin/shutdown" <<'SHIM'
 #!/bin/sh
 echo "shutdown $*" >>"$DRIVER_LOG"
+[ "$*" != -c ] || [ "${DRIVER_MODE:-fail}" != cancel-fail ]
 SHIM
 cat >"$t/driver-bin/nix-env" <<'SHIM'
 #!/bin/sh
 echo "nix-env $*" >>"$DRIVER_LOG"
+case $* in *"--set $CLOSURE") : >"$DRIVER_STATE/profile-new"; [ "${DRIVER_MODE:-}" != set-fail ];; *) rm -f "$DRIVER_STATE/profile-new";; esac
 SHIM
 cat >"$t/driver-bin/timeout" <<'SHIM'
 #!/bin/sh
 shift; exec "$@"
 SHIM
-for c in systemd-run getent findmnt; do printf '#!/bin/sh\nexit 0\n' >"$t/driver-bin/$c"; done
-chmod +x "$t/driver-bin/"* "$t/closure/bin/"* "$t/old/bin/"*
-if DRIVER_LOG=$t/driver-state/log OLD=$t/old CLOSURE=$t/closure PATH="$t/driver-bin:$PATH" \
-  "$t/driver-run" "$t/closure" __LAB_UPDATE_EMPTY__; then
+for c in systemd-run getent findmnt systemd-inhibit sleep; do printf '#!/bin/sh\nexit 0\n' >"$t/driver-bin/$c"; done
+for c in awk sort paste grep rm; do ln -s "$(command -v "$c")" "$t/driver-bin/$c"; done
+for f in "$t/driver-bin/"* "$t/closure/bin/"* "$t/old/bin/"*; do [[ -L $f ]] || chmod +x "$f"; done
+# Preserve production PATH-drift and closure-regex checks: both must reject.
+if env -i TEST_SYS="$t/driver-root" PATH=/wrong HOME=/root "$t/driver-run" /nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake __LAB_UPDATE_EMPTY__ >/dev/null 2>&1; then fail 'driver accepted PATH drift'; fi
+if env -i TEST_SYS="$t/driver-root" PATH="$t/driver-root/sw/bin" HOME=/root "$t/driver-run" "$t/closure" __LAB_UPDATE_EMPTY__ >/dev/null 2>&1; then fail 'driver accepted invalid closure'; fi
+VALID_CLOSURE=/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-lab-update-test
+if env -i DRIVER_LOG="$t/driver-state/log" DRIVER_STATE="$t/driver-state" OLD="$t/old" CLOSURE="$t/closure" TEST_CLOSURE="$t/closure" TEST_SYS="$t/driver-root" PATH="$t/driver-root/sw/bin" HOME=/root \
+  "$t/driver-run" "$VALID_CLOSURE" __LAB_UPDATE_EMPTY__; then
   fail 'actual driver accepted injected post-mutation boot failure'
 fi
 grep -Fq "nix-env -p /nix/var/nix/profiles/system --set $t/old" "$t/driver-state/log" || fail 'actual driver did not restore old profile'
@@ -152,4 +174,116 @@ grep -Fq 'old-switch boot' "$t/driver-state/log" || fail 'actual driver did not 
 # Sentinel decoding is exercised: an empty failed-unit list passed the comparison
 # and reached the injected boot failure rather than aborting during postflight.
 grep -Fq 'new-switch boot' "$t/driver-state/log" || fail 'empty baseline sentinel did not decode to empty'
+: >"$t/driver-state/log"; rm -f "$t/driver-state/profile-new"
+env -i DRIVER_MODE=success DRIVER_LOG="$t/driver-state/log" DRIVER_STATE="$t/driver-state" OLD="$t/old" CLOSURE="$t/closure" TEST_CLOSURE="$t/closure" TEST_SYS="$t/driver-root" PATH="$t/driver-root/sw/bin" HOME=/root "$t/driver-run" "$VALID_CLOSURE" __LAB_UPDATE_EMPTY__ 2>"$t/driver-state/success.err" || fail 'driver full success failed'
+[[ ! -s $t/driver-state/success.err ]] || fail 'successful driver emitted failure warning'
+grep -Fq 'shutdown -c' "$t/driver-state/log" || fail 'success did not cancel dead-man'
+grep -Fq 'systemctl stop lab-update-inhibit.service' "$t/driver-state/log" || fail 'success did not stop inhibitor'
+! grep -Fq -- "--set $t/old" "$t/driver-state/log" || fail 'success rolled back'
+: >"$t/driver-state/log"; rm -f "$t/driver-state/profile-new"; rc=0
+env -i DRIVER_MODE=cancel-fail DRIVER_LOG="$t/driver-state/log" DRIVER_STATE="$t/driver-state" OLD="$t/old" CLOSURE="$t/closure" TEST_CLOSURE="$t/closure" TEST_SYS="$t/driver-root" PATH="$t/driver-root/sw/bin" HOME=/root "$t/driver-run" "$VALID_CLOSURE" __LAB_UPDATE_EMPTY__ >/dev/null 2>"$t/driver-state/cancel.err" || rc=$?
+[[ $rc == 72 ]] || fail "cancel failure exit was $rc, expected 72"
+grep -Fq 'reboot remains armed' "$t/driver-state/cancel.err" || fail 'cancel failure warning missing'
+! grep -Fq 'failed before dead-man' "$t/driver-state/cancel.err" || fail 'cancel failure emitted pre-dead-man warning'
+! grep -Fq -- "--set $t/old" "$t/driver-state/log" || fail 'cancel failure rolled back'
+# A profile-set failure must rollback because mutated was set first.
+: >"$t/driver-state/log"; rm -f "$t/driver-state/profile-new"; rc=0
+env -i DRIVER_MODE=set-fail DRIVER_LOG="$t/driver-state/log" DRIVER_STATE="$t/driver-state" OLD="$t/old" CLOSURE="$t/closure" TEST_CLOSURE="$t/closure" TEST_SYS="$t/driver-root" PATH="$t/driver-root/sw/bin" HOME=/root "$t/driver-run" "$VALID_CLOSURE" __LAB_UPDATE_EMPTY__ >/dev/null 2>&1 || rc=$?
+if [[ $rc == 0 ]] || ! grep -Fq -- "--set $t/old" "$t/driver-state/log"; then fail 'set failure did not rollback'; fi
+# Both terminal path proofs are independently required.
+for proof in profile-bad current-bad; do
+  : >"$t/driver-state/log"; rm -f "$t/driver-state/profile-new"; rc=0
+  env -i DRIVER_MODE=success PROOF_MODE="$proof" DRIVER_LOG="$t/driver-state/log" DRIVER_STATE="$t/driver-state" OLD="$t/old" CLOSURE="$t/closure" TEST_CLOSURE="$t/closure" TEST_SYS="$t/driver-root" PATH="$t/driver-root/sw/bin" HOME=/root "$t/driver-run" "$VALID_CLOSURE" __LAB_UPDATE_EMPTY__ >/dev/null 2>&1 || rc=$?
+  [[ $rc != 0 ]] || fail "driver omitted effective $proof proof"
+done
+# Execute the actual REMOTE preflight body; only the immutable store binary root is
+# redirected to the shim tree because tests cannot write /nix/store.
+awk '/^PRE=\$\("\$\{SSH\[@\]\}".*<<'\''REMOTE'\''$/{p=1;next} p&&/^REMOTE$/{exit} p{print}' "$S" >"$t/preflight"
+{ echo 'pf(){'; sed -e 's| && -e /etc/NIXOS||' -e 's|B=$booted/sw/bin|B=$PFROOT/bin|' -e 's/\[\[ ${2:-} == P \]\]/[[ ${2:-} == P ]] || return 1/' -e 's/^\(\[\[ .*\]\]\)$/\1 || return 1/' "$t/preflight"; echo '}; pf'; } >"$t/preflight-run"
+mkdir -p "$t/pf/bin" "$t/pf-path"; for c in readlink rm timeout nix-env systemctl systemd-run systemd-inhibit sleep shutdown awk sort paste getent findmnt grep; do printf '#!/bin/sh\nexit 0\n' >"$t/pf/bin/$c"; done
+cat >"$t/pf/bin/bash" <<'SH'
+#!/bin/sh
+case $1 in -c) printf '%s' "${PF_MAJOR:-5}";; *) exit 64;; esac
+SH
+cat >"$t/pf-path/uname" <<'SH'
+#!/bin/sh
+echo Linux
+SH
+cat >"$t/pf-path/id" <<'SH'
+#!/bin/sh
+if [ "$1" = -un ]; then echo tester; else printf '%s\n' "${PF_GROUPS:-users wheel}"; fi
+SH
+cat >"$t/pf-path/passwd" <<'SH'
+#!/bin/sh
+printf 'tester %s 1 1 1 1 1\n' "${PF_PASS:-P}"
+SH
+cat >"$t/pf-path/readlink" <<'SH'
+#!/bin/sh
+case $2 in /run/current-system) echo /nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-test;; /run/booted-system) echo /nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-test;; /nix/var/nix/profiles/system) [ "${PF_MISMATCH:-0}" = 1 ] && echo /nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-other || echo /nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-test;; esac
+SH
+cat >"$t/pf-path/systemctl" <<'SH'
+#!/bin/sh
+exit 0
+SH
+chmod +x "$t/pf/bin/"* "$t/pf-path/"*
+BASH5=$(command -v bash); (( BASH_VERSINFO[0] >= 5 )) || fail 'test suite itself requires Bash 5'
+run_pf(){ PF_PATH="$t/pf-path:/usr/bin:/bin" PF_ROOT="$t/pf" PF_GROUPS_ARG="${1:-users wheel}" PF_PASS_ARG="${2:-P}" PF_MISMATCH_ARG="${3:-0}" PF_MAJOR_ARG="${4:-5}" BASH5_ARG="$BASH5" python3 - "$t/preflight-run" <<'PY'
+import os,subprocess,sys
+e={'PATH':os.environ['PF_PATH'],'PFROOT':os.environ['PF_ROOT'],'PF_GROUPS':os.environ['PF_GROUPS_ARG'],'PF_PASS':os.environ['PF_PASS_ARG'],'PF_MISMATCH':os.environ['PF_MISMATCH_ARG'],'PF_MAJOR':os.environ['PF_MAJOR_ARG']}
+raise SystemExit(subprocess.run([os.environ['BASH5_ARG'],sys.argv[1]],env=e,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode)
+PY
+}
+run_pf || fail 'valid actual preflight failed'
+expect_pf_fail(){ set +e; run_pf "$@"; r=$?; set -e; (( r != 0 )) || fail 'actual preflight rejection case succeeded'; }
+expect_pf_fail users P 0
+expect_pf_fail 'users wheel' L 0
+expect_pf_fail 'users wheel' NP 0
+expect_pf_fail 'users wheel' P 1
+expect_pf_fail 'users wheel' P 0 4
+mv "$t/pf/bin/getent" "$t/pf/bin/getent.missing"; expect_pf_fail; mv "$t/pf/bin/getent.missing" "$t/pf/bin/getent"
+
+# Materialize and execute the complete privileged POSIX-sh payload.
+mkdir -p "$t/pay/remote" "$t/pay/closure/sw/bin" "$t/pay/closure/etc/ssh" "$t/pay/bin" "$t/pay/run"
+printf driver >"$t/pay/remote/rollout-driver"; chmod 700 "$t/pay/remote/rollout-driver"; : >"$t/pay/closure/etc/ssh/sshd_config"
+cat >"$t/pay/closure/sw/bin/sshd" <<'SH'
+#!/bin/sh
+echo "sshd $*" >>"$PAYLOG"; exit 0
+SH
+cat >"$t/pay/bin/sha256sum" <<'SH'
+#!/bin/sh
+shasum -a 256 "$1"
+SH
+cat >"$t/pay/bin/install" <<'SH'
+#!/bin/sh
+while [ "$#" -gt 2 ]; do shift; done
+cp "$1" "$2"; chmod 500 "$2"
+SH
+cat >"$t/pay/bin/stat" <<'SH'
+#!/bin/sh
+echo "${STAT_META:-root:root:500}"
+SH
+cat >"$t/pay/bin/systemctl" <<'SH'
+#!/bin/sh
+echo "systemctl $*" >>"$PAYLOG"; exit 0
+SH
+cat >"$t/pay/bin/systemd-run" <<'SH'
+#!/bin/sh
+{ printf 'systemd-run'; printf ' <%s>' "$@"; printf '\n'; } >>"$PAYLOG"
+SH
+chmod +x "$t/pay/bin/"* "$t/pay/closure/sw/bin/sshd"
+REMOTE_DIR="$t/pay/remote" CLOSURE="$t/pay/closure" BOOTED=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old DRIVER_SHA=$(shasum -a 256 "$t/pay/remote/rollout-driver" | cut -d ' ' -f1) qbase=__LAB_UPDATE_EMPTY__ \
+  bash -c "$(grep '^PTY_CMD=' "$S"); printf '%s' \"\$PTY_CMD\"" >"$t/pay/cmd"
+PAY_DEST="$t/pay/run/lab-update-driver" python3 - "$t/pay/cmd" "$t/pay/payload" <<'PY'
+import os,shlex,sys
+v=shlex.split(open(sys.argv[1]).read()); i=v.index('-ceu'); p=v[i+1].replace('/run/lab-update-driver',os.environ['PAY_DEST']); open(sys.argv[2],'w').write(p)
+PY
+PAYLOG="$t/pay/log" PATH="$t/pay/bin:/usr/bin:/bin" /bin/sh -ceu "$(cat "$t/pay/payload")"
+grep -Fq 'sshd -t -f' "$t/pay/log" || fail 'payload skipped sshd validation'
+grep -Fq '<--setenv=PATH=/nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-old/sw/bin>' "$t/pay/log" || fail 'payload PATH setenv argv'
+grep -Fq '<--setenv=HOME=/root>' "$t/pay/log"; grep -Fq '<--setenv=LC_ALL=C>' "$t/pay/log"
+printf corrupt >"$t/pay/remote/rollout-driver"
+PAYLOG="$t/pay/log2" PATH="$t/pay/bin:/usr/bin:/bin" /bin/sh -ceu "$(cat "$t/pay/payload")" >/dev/null 2>&1 && fail 'payload accepted source corruption'
+printf driver >"$t/pay/remote/rollout-driver"
+STAT_META=user:staff:755 PAYLOG="$t/pay/log3" PATH="$t/pay/bin:/usr/bin:/bin" /bin/sh -ceu "$(cat "$t/pay/payload")" >/dev/null 2>&1 && fail 'payload accepted wrong install metadata'
+
 echo 'lab-update local regressions: PASS'
