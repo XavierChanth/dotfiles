@@ -73,11 +73,18 @@ else
 fi
 [[ -s $LIST ]] || die "source manifest is empty"
 tr '\0' '\n' <"$LIST" >"$MANIFEST"
-COPYFILE_DISABLE=1 tar --no-xattrs --no-acls --no-fflags --format=ustar \
-  --uid=0 --gid=0 --numeric-owner --mtime='UTC 1970-01-01' -cf "$ARCHIVE" --null -T "$LIST" 2>/dev/null ||
-  COPYFILE_DISABLE=1 tar -cf "$ARCHIVE" --null -T "$LIST"
+if tar --version 2>/dev/null | grep -q 'GNU tar'; then
+  ARCHIVE_MODE=gnu-tar-deterministic
+  tar --format=ustar --owner=0 --group=0 --numeric-owner --mtime='UTC 1970-01-01' \
+    --sort=name --no-recursion -cf "$ARCHIVE" --null -T "$LIST"
+else
+  # macOS bsdtar cannot honestly promise GNU tar's normalized metadata.
+  ARCHIVE_MODE=bsdtar-integrity-only
+  echo "archive: bsdtar integrity-only mode (content hash, metadata not normalized)" >&2
+  COPYFILE_DISABLE=1 tar --no-xattrs --no-acls --no-fflags -cf "$ARCHIVE" --null -T "$LIST"
+fi
 SHA256=$(shasum -a 256 "$ARCHIVE" | awk '{print $1}')
-printf 'vcs=%s\nrevision=%s\ndirty=%s\nsha256=%s\n' "$VCS" "$REVISION" "$DIRTY" "$SHA256" >"$TMPDIR_LOCAL/source-info"
+printf 'vcs=%s\nrevision=%s\ndirty=%s\narchive_mode=%s\nsha256=%s\n' "$VCS" "$REVISION" "$DIRTY" "$ARCHIVE_MODE" "$SHA256" >"$TMPDIR_LOCAL/source-info"
 echo "snapshot: vcs=$VCS revision=$REVISION status=$DIRTY files=$(wc -l <"$MANIFEST" | tr -d ' ') sha256=$SHA256"
 
 PRE=$(ssh_host 'exec bash -se -- "$@"' <<'REMOTE'
@@ -90,10 +97,9 @@ echo "identity host=$(hostname) os=$(. /etc/os-release; echo "$ID") arch=$(uname
 echo "closures current=$current booted=$booted profile=$profile"
 echo "password $(passwd -S "$USER")"
 echo "mount-root $(findmnt -nro SOURCE,FSTYPE,OPTIONS /)"
-if findmnt /boot >/dev/null; then echo "mount-boot $(findmnt -nro SOURCE,FSTYPE,OPTIONS /boot)"; sudo -n test -w /boot; else echo 'mount-boot absent'; fi
 for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do printf 'service %s ' "$u"; systemctl is-active "$u" || true; done
-printf 'dns '; getent ahosts cache.nixos.org | awk 'NR==1 {print; exit}'
-printf 'disk '; df -h / /boot 2>/dev/null | tail -n +2
+dns=$(getent ahosts cache.nixos.org); printf 'dns %s\n' "${dns%%$'\n'*}"
+printf 'disk '; df -h / | tail -n +2
 printf 'FAILED='; systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -
 REMOTE
 ) || die "preflight failed (no remote mutation was attempted)"
@@ -102,7 +108,7 @@ BASE_FAILED=$(sed -n 's/^FAILED=//p' <<<"$PRE")
 read -r -p "Type 'update $HOST' to stage and build: " ANSWER
 [[ $ANSWER == "update $HOST" ]] || die "not confirmed"
 
-REMOTE_DIR=$(ssh_host 'sudo -n mktemp -d /var/tmp/lab-update.XXXXXXXX') || die "cannot create staging directory"
+REMOTE_DIR=$(ssh_host 'd=$(sudo -n mktemp -d /var/tmp/lab-update.XXXXXXXX) && sudo -n chmod 0700 "$d" && printf "%s\n" "$d"') || die "cannot create staging directory"
 # Validate before this value is ever interpolated, passed to rm, or used as a path.
 [[ $REMOTE_DIR =~ ^/var/tmp/lab-update\.[A-Za-z0-9]{8}$ ]] || die "remote returned an unsafe staging path"
 cleanup_remote() { ssh_host 'sudo -n rm -rf -- "$1"' "$REMOTE_DIR" >/dev/null 2>&1 || true; }
@@ -111,7 +117,7 @@ ssh_host 'sudo -n tar --no-same-owner -xf - -C "$1"' "$REMOTE_DIR" <"$ARCHIVE"
 ssh_host 'sudo -n tee "$1/manifest" >/dev/null' "$REMOTE_DIR" <"$MANIFEST"
 ssh_host 'sudo -n tee "$1/source-info" >/dev/null' "$REMOTE_DIR" <"$TMPDIR_LOCAL/source-info"
 
-BUILD_OUTPUT=$(ssh_host 'cd "$1" && sudo -n nix build --no-link --no-write-lock-file --print-out-paths --builders "" "$2"' "$REMOTE_DIR" ".#nixosConfigurations.$HOST.config.system.build.toplevel") || die "build failed"
+BUILD_OUTPUT=$(ssh_host 'sudo -n nix build --no-link --no-write-lock-file --print-out-paths --builders "" "$1#nixosConfigurations.$2.config.system.build.toplevel"' "$REMOTE_DIR" "$HOST") || die "build failed"
 mapfile -t CLOSURES < <(printf '%s\n' "$BUILD_OUTPUT" | grep '^/nix/store/' || true)
 [[ ${#CLOSURES[@]} == 1 ]] || die "build returned ${#CLOSURES[@]} closure paths, expected exactly one"
 CLOSURE=${CLOSURES[0]}
@@ -124,22 +130,29 @@ sudo -n nix store diff-closures "$old" "$c"
 sudo -n "$c/sw/bin/sshd" -t -f "$c/etc/ssh/sshd_config"
 sudo -n findmnt --verify --tab-file "$c/etc/fstab"
 awk '$2=="/" {found=1} END {exit !found}' "$c/etc/fstab"
+if awk '$2=="/boot" {found=1} END {exit !found}' "$c/etc/fstab"; then
+  findmnt /boot >/dev/null
+  sudo -n test -w /boot
+fi
 REMOTE
 read -r -p "Type 'activate $HOST' to arm recovery and test this closure: " ANSWER
 [[ $ANSWER == "activate $HOST" ]] || die "activation not confirmed"
 
 # Bounded independently of our cleanup; never stop it while the dead-man is armed.
-ssh_host 'sudo -n systemd-run --unit=lab-update-inhibit --collect systemd-inhibit --what=sleep --why=lab-update --mode=block /bin/sleep 1200' >/dev/null
+ssh_host 'sudo -n systemd-run --unit=lab-update-inhibit --collect systemd-inhibit --what=sleep --why=lab-update --mode=block /run/current-system/sw/bin/sleep 1800' >/dev/null
 ssh_host 'sudo -n shutdown -r +15 "lab-update activation dead-man reboot"'
 FAIL_MSG="activation/commit failed; scheduled reboot remains armed"
-ssh_host 'sudo -n systemd-run --unit=lab-update-test --no-block "$1/bin/switch-to-configuration" test' "$CLOSURE" >/dev/null || die "$FAIL_MSG"
+ssh_host 'sudo -n systemctl stop lab-update-test.service 2>/dev/null || true; sudo -n systemctl reset-failed lab-update-test.service 2>/dev/null || true; sudo -n systemd-run --unit=lab-update-test --property=RemainAfterExit=yes --no-block "$1/bin/switch-to-configuration" test' "$CLOSURE" >/dev/null || die "$FAIL_MSG"
 
-check_remote() { ssh_host 'exec bash -se -- "$@"' "$CLOSURE" "$BASE_FAILED" "$1" <<'REMOTE'
+check_remote() { ssh_host '/run/current-system/sw/bin/timeout 25 bash -se -- "$@"' "$CLOSURE" "$BASE_FAILED" "$1" <<'REMOTE'
 set -Eeuo pipefail
 want=$1 baseline=${2-} unit=$3
 load=$(systemctl show "$unit" -p LoadState --value); active=$(systemctl show "$unit" -p ActiveState --value)
-result=$(systemctl show "$unit" -p Result --value); status=$(systemctl show "$unit" -p ExecMainStatus --value)
-[[ $load == loaded && $active == inactive && $result == success && $status == 0 ]]
+sub=$(systemctl show "$unit" -p SubState --value); result=$(systemctl show "$unit" -p Result --value)
+status=$(systemctl show "$unit" -p ExecMainStatus --value)
+[[ $load == loaded ]] || exit 1
+if [[ $active == activating || ( $active == active && $sub != exited ) || -z $result ]]; then exit 1; fi
+[[ $active == active && $sub == exited && $result == success && $status == 0 ]] || exit 2
 [[ $(readlink -f /run/current-system) == "$want" ]]
 now=$(systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -)
 [[ $now == "$baseline" ]]
@@ -150,20 +163,22 @@ getent ahosts cache.nixos.org >/dev/null
 for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do [[ $(systemctl is-enabled "$u" 2>/dev/null) == masked ]]; done
 REMOTE
 }
-OK=0
-for _ in {1..36}; do sleep 5; if check_remote lab-update-test.service; then OK=1; break; fi; done
-(( OK )) || die "$FAIL_MSG"
+poll_unit() {
+  local unit=$1 deadline=$((SECONDS + 300)) rc
+  while (( SECONDS < deadline )); do
+    sleep 5
+    if check_remote "$unit"; then return 0; else rc=$?; fi
+    (( rc == 1 )) || return "$rc"
+  done
+  return 1
+}
+poll_unit lab-update-test.service || die "$FAIL_MSG"
 
-# Refresh the recovery deadline before the detached, checked boot commit.
+# Refresh the recovery deadline after test success and before the detached commit.
 ssh_host 'sudo -n shutdown -r +15 "lab-update commit dead-man reboot"'
-ssh_host 'sudo -n systemd-run --unit=lab-update-commit --no-block /bin/sh -ceu '\''nix-env -p /nix/var/nix/profiles/system --set "$1"; "$1/bin/switch-to-configuration" boot'\'' sh "$1"' "$CLOSURE" >/dev/null || die "$FAIL_MSG"
-OK=0
-for _ in {1..36}; do
-  sleep 5
-  if check_remote lab-update-commit.service &&
-     ssh_host 'test "$(readlink -f /nix/var/nix/profiles/system)" = "$1" && test "$(readlink -f /run/current-system)" = "$1"' "$CLOSURE"; then OK=1; break; fi
-done
-(( OK )) || die "$FAIL_MSG"
+ssh_host 'sudo -n systemctl stop lab-update-commit.service 2>/dev/null || true; sudo -n systemctl reset-failed lab-update-commit.service 2>/dev/null || true; sudo -n systemd-run --unit=lab-update-commit --property=RemainAfterExit=yes --no-block /bin/sh -ceu '\''/run/current-system/sw/bin/nix-env -p /nix/var/nix/profiles/system --set "$1"; "$1/bin/switch-to-configuration" boot'\'' sh "$1"' "$CLOSURE" >/dev/null || die "$FAIL_MSG"
+poll_unit lab-update-commit.service || die "$FAIL_MSG"
+ssh_host '/run/current-system/sw/bin/timeout 25 sh -ceu '\''test "$(readlink -f /nix/var/nix/profiles/system)" = "$1"; test "$(readlink -f /run/current-system)" = "$1"'\'' sh "$1"' "$CLOSURE" || die "$FAIL_MSG"
 # Cancellation is deliberately its own final command after every commit assertion.
 ssh_host 'sudo -n shutdown -c' || die "$FAIL_MSG"
 ssh_host 'sudo -n systemctl stop lab-update-inhibit.service || true'

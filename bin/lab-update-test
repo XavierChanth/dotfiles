@@ -81,4 +81,62 @@ fi
 grep -Fq 'Git fallback refuses untracked files' "$t/git.err" || fail "wrong Git fallback failure"
 [[ ! -e $t/contacted ]] || fail "Git rejection contacted ssh"
 
+# Execute the attended path against a stateful fake SSH. This checks actual command
+# ordering and the fail-closed cancellation rule without contacting any host.
+cat >"$t/ssh" <<'EOF'
+#!/usr/bin/env bash
+set -eu
+printf '%s\n' "$*" >>"${FAKE_SSH_LOG:?}"
+cmd=$*
+case $cmd in
+  *print-out-paths*) echo /nix/store/fake-system ;;
+  *mktemp*lab-update*) echo /var/tmp/lab-update.A1b2C3d4 ;;
+  *lab-update-test*RemainAfterExit=yes*)
+    [[ ${FAKE_SSH_FAIL_TEST:-0} == 0 ]] || exit 1 ;;
+  *bash*-se* )
+    if [[ ! -e ${FAKE_SSH_PREFLIGHT:?} ]]; then
+      : >"$FAKE_SSH_PREFLIGHT"
+      cat <<'OUT'
+identity host=hades os=nixos arch=x86_64 user=test
+closures current=/nix/store/old booted=/nix/store/old profile=/nix/store/old
+FAILED=
+OUT
+    fi ;;
+esac
+# Consume the archive stream so the producer cannot see a misleading SIGPIPE.
+case $cmd in *tar*'-xf'*) cat >/dev/null || true ;; esac
+EOF
+chmod +x "$t/ssh"
+run_fake() {
+  rm -f "$t/ssh.log" "$t/preflight"
+  printf 'update hades\nactivate hades\n\n\n' |
+    FAKE_SSH_LOG="$t/ssh.log" FAKE_SSH_PREFLIGHT="$t/preflight" \
+    PATH="$t:$PATH" "$SCRIPT" hades >"$t/fake.out" 2>"$t/fake.err"
+}
+run_fake || { cat "$t/fake.out" >&2; cat "$t/fake.err" >&2; fail "fake SSH success path failed"; }
+line() { grep -n -F -- "$1" "$t/ssh.log" | head -1 | cut -d: -f1; }
+test_launch=$(grep -n 'lab-update-test.*RemainAfterExit=yes' "$t/ssh.log" | head -1 | cut -d: -f1)
+rearm=$(grep -n 'lab-update.*commit.*dead-man.*reboot' "$t/ssh.log" | cut -d: -f1)
+commit_launch=$(grep -n 'lab-update-commit.*RemainAfterExit=yes' "$t/ssh.log" | head -1 | cut -d: -f1)
+cancel_line=$(grep -n 'shutdown.*-c' "$t/ssh.log" | head -1 | cut -d: -f1)
+[[ $test_launch -lt $rearm && $rearm -lt $commit_launch && $commit_launch -lt $cancel_line ]] ||
+  fail "fake SSH observed unsafe ordering"
+[[ $(grep -c 'shutdown.*-c' "$t/ssh.log") == 1 ]] || fail "fake path did not cancel exactly once"
+grep -Fq 'RemainAfterExit=yes' "$t/ssh.log" || fail "transient result was not retained"
+grep -Eq '/run/current-system/sw/bin/timeout.*25' "$t/ssh.log" || fail "remote checks lack timeout"
+
+rm -f "$t/ssh.log" "$t/preflight"
+if printf 'update hades\nactivate hades\n' | FAKE_SSH_FAIL_TEST=1 FAKE_SSH_LOG="$t/ssh.log" \
+  FAKE_SSH_PREFLIGHT="$t/preflight" PATH="$t:$PATH" "$SCRIPT" hades >"$t/fail.out" 2>"$t/fail.err"; then
+  fail "injected test-launch failure succeeded"
+fi
+! grep -Eq 'shutdown.*-c' "$t/ssh.log" || fail "injected failure cancelled dead-man"
+! grep -Eq 'lab-update-commit.*RemainAfterExit=yes' "$t/ssh.log" || fail "commit ran after test failure"
+
+# The two archive contracts are explicit; deterministic claims are GNU-only.
+has 'ARCHIVE_MODE=gnu-tar-deterministic'
+has 'ARCHIVE_MODE=bsdtar-integrity-only'
+has 'bsdtar integrity-only mode (content hash, metadata not normalized)'
+has 'archive_mode=%s'
+
 echo 'lab-update local regressions: PASS'
