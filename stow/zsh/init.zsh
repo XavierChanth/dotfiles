@@ -68,7 +68,6 @@ fi
 
 # custom commands
 source $XDG_CONFIG_HOME/zsh/alias.sh
-source $XDG_CONFIG_HOME/zsh/commands.sh
 
 # history - load asynchronously
 
