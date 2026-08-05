@@ -3,6 +3,7 @@ paranoid = true
 disable_backends = ["asdf", "vfox"]
 minimum_release_age = "3d"
 lockfile = false
+npm.bun = true
 
 [tools]
 rust = { version = "stable", profile = "minimal", components = "cargo,clippy,rustc,rustfmt,rust-analyzer", targets = "wasm32-unknown-unknown" }
