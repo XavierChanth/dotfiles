@@ -50,8 +50,20 @@ local function is_library(fname)
 
   local rustup_home = os.getenv 'RUSTUP_HOME' or user_home .. '/.rustup'
   local toolchains = rustup_home .. '/toolchains'
+  local library_roots = { toolchains, registry, git_registry }
 
-  for _, item in ipairs { toolchains, registry, git_registry } do
+  -- mise's native Rust backend is self-contained rather than necessarily using
+  -- ~/.rustup. Ask the active compiler for its sysroot so stdlib sources still
+  -- reuse the current workspace's rust-analyzer client.
+  local rustc = vim.fn.exepath 'rustc'
+  if rustc ~= '' then
+    local result = vim.system({ rustc, '--print', 'sysroot' }, { text = true }):wait()
+    if result.code == 0 and result.stdout then
+      table.insert(library_roots, vim.trim(result.stdout))
+    end
+  end
+
+  for _, item in ipairs(library_roots) do
     if vim.fs.relpath(item, fname) then
       local clients = vim.lsp.get_clients { name = 'rust_analyzer' }
       return #clients > 0 and clients[#clients].config.root_dir or nil

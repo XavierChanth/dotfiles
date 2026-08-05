@@ -25,7 +25,6 @@ in {
       "${config.home.homeDirectory}/.local/share/mise/shims"
       "${config.home.homeDirectory}/.cargo/bin"
       "${config.home.homeDirectory}/go/bin"
-      "${config.home.homeDirectory}/.local/share/gem/ruby/bin"
     ];
     sessionVariables.EDITOR = "nvim";
     file.".config/spaceship-prompt".source = "${pkgs.spaceship-prompt}/lib/spaceship-prompt";

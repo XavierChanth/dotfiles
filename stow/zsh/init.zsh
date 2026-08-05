@@ -92,36 +92,38 @@ if [ -n "$ZSH_PRECMD_HOOK" ]; then
   add-zsh-hook precmd _precmd_hook
 fi
 
-# Keep repository-controlled paths ahead of package-manager profiles. mise's
-# activation above stays ahead of language-specific user install directories.
-typeset -a base_path mise_path language_path brew_path nix_path
-for path_entry in $path; do
-  case "$path_entry" in
-    "$HOME/.dotfiles/bin/hosts/"*|"$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
-    "$HOME/.local/share/mise/"*) mise_path+=("$path_entry") ;;
-    "$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.pub-cache/bin"|"$HOME/.local/share/gem/"*/bin) language_path+=("$path_entry") ;;
-    /opt/homebrew/bin|/opt/homebrew/sbin|/usr/local/Homebrew/bin|/usr/local/Homebrew/sbin) brew_path+=("$path_entry") ;;
-    "$HOME/.nix-profile/bin"|/etc/profiles/per-user/*/bin|/nix/var/nix/profiles/default/bin) nix_path+=("$path_entry") ;;
-    *) base_path+=("$path_entry") ;;
-  esac
-done
-path=(
-  "$HOME/.dotfiles/bin/hosts/$(hostname)"
-  "$HOME/.dotfiles/bin/shared"
-  "$HOME/.local/bin"
-  $mise_path
-  "$HOME/.local/share/mise/shims"
-  $language_path
-  $base_path
-  $brew_path
-  $nix_path
-)
+# mise rewrites PATH from its precmd hook. Normalize after that hook every time
+# so repository bins retain precedence and Nix remains the final bucket.
+_normalize_path_order() {
+  local path_entry
+  local -a mise_path language_path system_path nix_path
+  for path_entry in $path; do
+    case "$path_entry" in
+      "$HOME/.dotfiles/bin/hosts/"*|"$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
+      "$HOME/.local/share/mise/shims") ;; # session/GUI only; activation needs no shim
+      "$HOME/.local/share/mise/"*) mise_path+=("$path_entry") ;;
+      "$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.pub-cache/bin"|"$HOME/.local/share/gem/"*/bin) language_path+=("$path_entry") ;;
+      "$HOME/.nix-profile/bin"|/etc/profiles/per-user/*/bin|/nix/var/nix/profiles/default/bin|/run/current-system/sw/bin) nix_path+=("$path_entry") ;;
+      *) system_path+=("$path_entry") ;;
+    esac
+  done
+  path=(
+    ${CMUX_BUNDLED_CLI_PATH:+${CMUX_BUNDLED_CLI_PATH:h}}
+    "$HOME/.dotfiles/bin/hosts/$(hostname)"
+    "$HOME/.dotfiles/bin/shared"
+    "$HOME/.local/bin"
+    $mise_path
+    $language_path
+    $system_path
+    /usr/NX/bin
+    $nix_path
+  )
+  typeset -gU path PATH
+}
 
-if [[ -n "$CMUX_BUNDLED_CLI_PATH" ]]; then
-  path=("${CMUX_BUNDLED_CLI_PATH:h}" $path)
-fi
-
-export PATH="$PATH:/usr/NX/bin"
+_normalize_path_order
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _normalize_path_order
 
 # enable profiling
 # zprof
