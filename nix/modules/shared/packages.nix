@@ -64,6 +64,10 @@
       just
       jq
 
+      # Containers
+      docker-client
+      docker-compose
+
       # Fonts
       nerd-fonts.commit-mono
       nerd-fonts.jetbrains-mono
