@@ -1,6 +1,7 @@
 # Harmonia peer cache operations
 
-The three caches are reachable only over Tailscale TCP 5000. Cache signing keys are
+The three caches are reachable only over the cluster LAN on TCP 5000, using their
+`HOST.xavierchanth.local` names. Cache signing keys are
 host-specific and versioned (`HOST-harmonia-VERSION`), with each version set by
 that host's `cacheKeyVersion` inventory field. The private file is generated on
 the host at `/var/lib/harmonia-keys/HOST-harmonia-VERSION.secret` (root, mode 0400); it
@@ -57,14 +58,14 @@ sudo systemctl is-active harmonia-keygen harmonia.socket
 sudo ss -ltnp | grep ':5000'
 sudo nft list ruleset | grep -C3 5000
 nix config show | grep -E '^(substituters|trusted-public-keys|connect-timeout|stalled-download-timeout|fallback|require-sigs) ='
-curl --fail --connect-timeout 3 http://PEER_TAILSCALE_IP:5000/nix-cache-info
+curl --fail --connect-timeout 3 http://PEER.xavierchanth.local:5000/nix-cache-info
 ```
 
 Harmonia intentionally listens on the wildcard IPv6 socket (`[::]:5000`, which
-also accepts IPv4 on the normal Linux configuration) because a Tailscale address
-may not exist when the service starts. The NixOS firewall exposes TCP 5000 only on
-`tailscale0`; this interface firewall—not address binding—is the network boundary.
-Confirm port 5000 appears only in the `tailscale0` firewall rules, every configured
+also accepts IPv4 on the normal Linux configuration). The NixOS firewall exposes
+TCP 5000 only on each host's declared cluster LAN interface (`enp1s0`); this
+interface firewall—not address binding—is the network boundary. Confirm port 5000
+appears only in the `enp1s0` firewall rules, every configured
 peer has its matching key, self is absent, and `https://cache.nixos.org/` plus its
 standard key remain present. A peer outage delays connection by at most the
 configured timeout and then falls back to another substituter or local builds;

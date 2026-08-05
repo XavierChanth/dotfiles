@@ -1,7 +1,8 @@
 {config, hostname, lib, pkgs, ...}: let
   hosts = config.cluster.hosts;
   keyDirectory = "/var/lib/harmonia-keys";
-  keyVersion = hosts.${hostname}.cacheKeyVersion;
+  localHost = hosts.${hostname};
+  keyVersion = localHost.cacheKeyVersion;
   keyName = "${hostname}-harmonia-${keyVersion}";
   privateKey = "${keyDirectory}/${keyName}.secret";
   publicKey = "${keyDirectory}/${keyName}.public";
@@ -18,7 +19,7 @@ in {
   nix = {
     distributedBuilds = false;
     settings = {
-      extra-substituters = map (peer: "http://${peer.tailscaleAddress}:5000") peerValues;
+      extra-substituters = map (peer: "http://${peer.cacheAddress}:5000") peerValues;
       extra-trusted-public-keys = map (peer: peer.cachePublicKey) peerValues;
       connect-timeout = 3;
       stalled-download-timeout = 60;
@@ -27,7 +28,7 @@ in {
     };
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [5000];
+  networking.firewall.interfaces.${localHost.cacheInterface}.allowedTCPPorts = [5000];
 
   systemd.services.harmonia-keygen = {
     description = "Create the host-local Harmonia signing key";

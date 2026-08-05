@@ -2,9 +2,13 @@
   options.cluster.hosts = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submodule {
       options = {
-        tailscaleAddress = lib.mkOption {
+        cacheAddress = lib.mkOption {
           type = lib.types.str;
-          description = "Tailscale IPv4 address used for cluster-only services.";
+          description = "LAN DNS name used for the host's binary cache.";
+        };
+        cacheInterface = lib.mkOption {
+          type = lib.types.str;
+          description = "LAN interface on which the host exposes its binary cache.";
         };
         cacheKeyVersion = lib.mkOption {
           type = lib.types.str;

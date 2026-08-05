@@ -1,16 +1,19 @@
 {
   hades = {
-    tailscaleAddress = "100.78.41.72";
+    cacheAddress = "hades.xavierchanth.local";
+    cacheInterface = "enp1s0";
     cacheKeyVersion = "v1";
     cachePublicKey = null;
   };
   poseidon = {
-    tailscaleAddress = "100.82.80.85";
+    cacheAddress = "poseidon.xavierchanth.local";
+    cacheInterface = "enp1s0";
     cacheKeyVersion = "v1";
     cachePublicKey = null;
   };
   zeus = {
-    tailscaleAddress = "100.96.152.36";
+    cacheAddress = "zeus.xavierchanth.local";
+    cacheInterface = "enp1s0";
     cacheKeyVersion = "v1";
     cachePublicKey = null;
   };
