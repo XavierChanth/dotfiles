@@ -80,7 +80,6 @@
       resvg
 
       # CLI Apps
-      awscli2
       gh
       yazi
 

@@ -2,16 +2,18 @@
 paranoid = true
 disable_backends = ["asdf", "vfox"]
 minimum_release_age = "3d"
-lockfile = false
+lockfile = true
 npm.bun = true
+python.compile = false
+ruby.compile = false
 
 [tools]
 rust = { version = "stable", profile = "minimal", components = "cargo,clippy,rustc,rustfmt,rust-analyzer", targets = "wasm32-unknown-unknown" }
 node = "lts"
 bun = "latest"
 go = "latest"
-python = "latest"
-ruby = "latest"
+python = "3.13.14"
+ruby = "3.3.12"
 zig = "latest"
 # dart = "latest" # Optional; Flutter currently supplies Dart.
 
@@ -47,3 +49,4 @@ zig = "latest"
 "aqua:tombi-toml/tombi" = "latest"
 "aqua:hadolint/hadolint" = "latest"
 "aqua:mozilla/sccache" = "latest"
+"aqua:aws/aws-cli" = { version = "latest", symlink_bins = true }
