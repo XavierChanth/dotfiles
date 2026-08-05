@@ -1,187 +1,124 @@
 #!/usr/bin/env bash
-# SC2016 is intentional: these snippets expand positional parameters remotely.
 # shellcheck disable=SC2016
 set -Eeuo pipefail
 IFS=$'\n\t'
-
-usage() { echo "usage: $0 [--dry-run] hades" >&2; }
+(( BASH_VERSINFO[0] >= 5 )) || { echo 'lab-update: Bash 5 is required' >&2; exit 1; }
 die() { echo "lab-update: $*" >&2; exit 1; }
-
+usage() { echo "usage: $0 [--dry-run] hades" >&2; }
 DRY_RUN=0
-if [[ ${1:-} == --dry-run ]]; then DRY_RUN=1; shift; fi
+[[ ${1:-} != --dry-run ]] || { DRY_RUN=1; shift; }
 [[ $# == 1 ]] || { usage; exit 64; }
-HOST=$1
-case $HOST in hades) ;; *) die "unsupported host '$HOST' (allowed: hades)" ;; esac
-
-# Do not permit a stale master socket to bypass these connection liveness bounds.
-SSH=(ssh -o BatchMode=yes -o ControlMaster=no -o ControlPath=none -o ConnectTimeout=10
-  -o ServerAliveInterval=5 -o ServerAliveCountMax=3)
-# OpenSSH joins command arguments with spaces before the remote shell sees them.
-# Keep the audited command fragment literal and shell-quote every data argument.
-ssh_host() {
-  local script=$1 command arg
-  shift
-  printf -v command 'bash -c %q bash' "$script"
-  for arg in "$@"; do printf -v command '%s %q' "$command" "$arg"; done
-  "${SSH[@]}" "$HOST" "$command"
-}
-
-phases=("snapshot tracked source" "read-only remote preflight" "confirm staging"
-  "validate and stage unique remote tree" "one target-local build" "inspect exact closure"
-  "confirm activation" "start bounded sleep inhibitor" "arm 15-minute dead-man reboot"
-  "detached test activation" "observe test result and postflight over fresh SSH"
-  "re-arm dead-man" "detached boot commit" "observe commit result and verify profile"
-  "cancel dead-man last" "optional attended reboot")
+HOST=$1; [[ $HOST == hades ]] || die "unsupported host: $HOST"
+SSH=(ssh -o BatchMode=yes -o ControlMaster=no -o ControlPath=none -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3)
+phases=("snapshot tracked source" "unprivileged remote preflight" "confirm staging" "unprivileged private staging" "unprivileged target-local build" "unprivileged closure inspection" "confirm activation" "one attended PTY sudo rollout" "unprivileged bounded rollout observation" "optional attended reboot")
 if (( DRY_RUN )); then
-  echo "DRY RUN: no SSH or network calls will be made"
-  printf 'host: %s\n' "$HOST"
-  printf 'phase: %s\n' "${phases[@]}"
-  cat <<'PLAN'
-Safety: every SSH is fresh (multiplexing disabled) and has connect/keepalive bounds.
-The failed-unit baseline, including an empty baseline, is passed as a quoted argument.
-Test and boot commit run as observable transient units.  The reboot is cancelled only
-after commit Result=success, profile/current verification, and postflight all succeed.
-PLAN
-  exit 0
+  echo 'DRY RUN: no SSH or network calls will be made'; printf 'host: %s\n' "$HOST"; printf 'phase: %s\n' "${phases[@]}"; exit
 fi
-
-for cmd in tar ssh shasum; do command -v "$cmd" >/dev/null || die "$cmd is required"; done
-TMPDIR_LOCAL=$(mktemp -d "${TMPDIR:-/tmp}/lab-update.XXXXXX")
-trap 'rm -rf "$TMPDIR_LOCAL"' EXIT
-LIST=$TMPDIR_LOCAL/files.zlist
-MANIFEST=$TMPDIR_LOCAL/manifest
-ARCHIVE=$TMPDIR_LOCAL/source.tar
-
-# jj is authoritative in jj workspaces. Git fallback is intentionally tracked-only:
-# deploying an accidental untracked secret is worse than requiring it to be added.
-if command -v jj >/dev/null 2>&1 && ROOT=$(jj root 2>/dev/null); then
-  cd "$ROOT"
-  jj file list -T 'path ++ "\0"' | LC_ALL=C sort -z >"$LIST"
-  REVISION=$(jj log --no-graph -r @ -T 'commit_id' 2>/dev/null)
-  [[ -n $REVISION ]] || die "cannot identify jj working copy"
-  if [[ -n $(jj diff --summary) ]]; then DIRTY=dirty; else DIRTY=clean; fi
-  VCS=jj
-else
-  command -v git >/dev/null || die "jj or git is required"
-  ROOT=$(git rev-parse --show-toplevel) || die "not in a jj or git worktree"
-  cd "$ROOT"
-  [[ -z $(git ls-files --others --exclude-standard) ]] || die "Git fallback refuses untracked files"
-  git ls-files -z | LC_ALL=C sort -z >"$LIST"
-  REVISION=$(git rev-parse HEAD)
-  if git diff --quiet --ignore-submodules -- && git diff --cached --quiet --ignore-submodules --; then DIRTY=clean; else DIRTY=dirty; fi
-  VCS=git
-fi
-[[ -s $LIST ]] || die "source manifest is empty"
-tr '\0' '\n' <"$LIST" >"$MANIFEST"
+for c in ssh tar shasum jj; do command -v "$c" >/dev/null || die "$c is required"; done
+T=$(mktemp -d "${TMPDIR:-/tmp}/lab-update.XXXXXX"); trap 'rm -rf "$T"' EXIT
+ROOT=$(jj root) || die 'not in a jj workspace'; cd "$ROOT"
+jj file list -T 'path ++ "\0"' | LC_ALL=C sort -z >"$T/list"
+[[ -s $T/list ]] || die 'empty source manifest'
 if tar --version 2>/dev/null | grep -q 'GNU tar'; then
-  ARCHIVE_MODE=gnu-tar-deterministic
-  tar --format=ustar --owner=0 --group=0 --numeric-owner --mtime='UTC 1970-01-01' \
-    --sort=name --no-recursion -cf "$ARCHIVE" --null -T "$LIST"
+  tar --format=ustar --owner=0 --group=0 --numeric-owner --mtime='UTC 1970-01-01' --sort=name --no-recursion -cf "$T/source.tar" --null -T "$T/list"
 else
-  # macOS bsdtar cannot honestly promise GNU tar's normalized metadata.
-  ARCHIVE_MODE=bsdtar-integrity-only
-  echo "archive: bsdtar integrity-only mode (content hash, metadata not normalized)" >&2
-  COPYFILE_DISABLE=1 tar --no-xattrs --no-acls --no-fflags -cf "$ARCHIVE" --null -T "$LIST"
+  COPYFILE_DISABLE=1 tar --no-xattrs --no-acls --no-fflags -cf "$T/source.tar" --null -T "$T/list"
 fi
-SHA256=$(shasum -a 256 "$ARCHIVE" | awk '{print $1}')
-printf 'vcs=%s\nrevision=%s\ndirty=%s\narchive_mode=%s\nsha256=%s\n' "$VCS" "$REVISION" "$DIRTY" "$ARCHIVE_MODE" "$SHA256" >"$TMPDIR_LOCAL/source-info"
-echo "snapshot: vcs=$VCS revision=$REVISION status=$DIRTY files=$(wc -l <"$MANIFEST" | tr -d ' ') sha256=$SHA256"
-
-PRE=$(ssh_host 'exec bash -se -- "$@"' <<'REMOTE'
+cat >"$T/driver" <<'DRIVER'
+#!/usr/bin/env bash
 set -Eeuo pipefail
-sudo -n true
-[[ $(uname -s) == Linux && -e /etc/NIXOS ]]
-current=$(readlink -f /run/current-system); booted=$(readlink -f /run/booted-system); profile=$(readlink -f /nix/var/nix/profiles/system)
-[[ $current == "$booted" && $current == "$profile" ]]
-echo "identity host=$(hostname) os=$(. /etc/os-release; echo "$ID") arch=$(uname -m) user=$USER"
-echo "closures current=$current booted=$booted profile=$profile"
-echo "password $(passwd -S "$USER")"
-echo "mount-root $(findmnt -nro SOURCE,FSTYPE,OPTIONS /)"
-for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do printf 'service %s ' "$u"; systemctl is-active "$u" || true; done
-dns=$(getent ahosts cache.nixos.org); printf 'dns %s\n' "${dns%%$'\n'*}"
-printf 'disk '; df -h / | tail -n +2
-printf 'FAILED='; systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -
-REMOTE
-) || die "preflight failed (no remote mutation was attempted)"
-printf '%s\n' "$PRE"
-BASE_FAILED=$(sed -n 's/^FAILED=//p' <<<"$PRE")
-read -r -p "Type 'update $HOST' to stage and build: " ANSWER
-[[ $ANSWER == "update $HOST" ]] || die "not confirmed"
-
-REMOTE_DIR=$(ssh_host 'd=$(sudo -n mktemp -d /var/tmp/lab-update.XXXXXXXX) && sudo -n chmod 0700 "$d" && printf "%s\n" "$d"') || die "cannot create staging directory"
-# Validate before this value is ever interpolated, passed to rm, or used as a path.
-[[ $REMOTE_DIR =~ ^/var/tmp/lab-update\.[A-Za-z0-9]{8}$ ]] || die "remote returned an unsafe staging path"
-cleanup_remote() { ssh_host 'sudo -n rm -rf -- "$1"' "$REMOTE_DIR" >/dev/null 2>&1 || true; }
-trap 'cleanup_remote; rm -rf "$TMPDIR_LOCAL"' EXIT
-ssh_host 'sudo -n tar --no-same-owner -xf - -C "$1"' "$REMOTE_DIR" <"$ARCHIVE"
-ssh_host 'sudo -n tee "$1/manifest" >/dev/null' "$REMOTE_DIR" <"$MANIFEST"
-ssh_host 'sudo -n tee "$1/source-info" >/dev/null' "$REMOTE_DIR" <"$TMPDIR_LOCAL/source-info"
-
-BUILD_OUTPUT=$(ssh_host 'sudo -n nix build --no-link --no-write-lock-file --print-out-paths --builders "" "$1#nixosConfigurations.$2.config.system.build.toplevel"' "$REMOTE_DIR" "$HOST") || die "build failed"
-mapfile -t CLOSURES < <(printf '%s\n' "$BUILD_OUTPUT" | grep '^/nix/store/' || true)
-[[ ${#CLOSURES[@]} == 1 ]] || die "build returned ${#CLOSURES[@]} closure paths, expected exactly one"
-CLOSURE=${CLOSURES[0]}
-ssh_host 'sudo -n nix path-info "$1" >/dev/null && test -x "$1/bin/switch-to-configuration"' "$CLOSURE" || die "invalid closure"
-ssh_host 'exec bash -se -- "$@"' "$CLOSURE" <<'REMOTE'
-set -Eeuo pipefail
-c=$1; old=$(readlink -f /run/current-system)
-sudo -n nix store diff-closures "$old" "$c"
-[[ -r $c/etc/ssh/sshd_config && -r $c/etc/fstab ]]
-sudo -n "$c/sw/bin/sshd" -t -f "$c/etc/ssh/sshd_config"
-sudo -n findmnt --verify --tab-file "$c/etc/fstab"
-awk '$2=="/" {found=1} END {exit !found}' "$c/etc/fstab"
-if awk '$2=="/boot" {found=1} END {exit !found}' "$c/etc/fstab"; then
-  findmnt /boot >/dev/null
-  sudo -n test -w /boot
-fi
-REMOTE
-read -r -p "Type 'activate $HOST' to arm recovery and test this closure: " ANSWER
-[[ $ANSWER == "activate $HOST" ]] || die "activation not confirmed"
-
-# Bounded independently of our cleanup; never stop it while the dead-man is armed.
-ssh_host 'sudo -n systemd-run --unit=lab-update-inhibit --collect systemd-inhibit --what=sleep --why=lab-update --mode=block /run/current-system/sw/bin/sleep 1800' >/dev/null
-ssh_host 'sudo -n shutdown -r +15 "lab-update activation dead-man reboot"'
-FAIL_MSG="activation/commit failed; scheduled reboot remains armed"
-ssh_host 'sudo -n systemctl stop lab-update-test.service 2>/dev/null || true; sudo -n systemctl reset-failed lab-update-test.service 2>/dev/null || true; sudo -n systemd-run --unit=lab-update-test --property=RemainAfterExit=yes --no-block "$1/bin/switch-to-configuration" test' "$CLOSURE" >/dev/null || die "$FAIL_MSG"
-
-check_remote() { ssh_host '/run/current-system/sw/bin/timeout 25 bash -se -- "$@"' "$CLOSURE" "$BASE_FAILED" "$1" <<'REMOTE'
-set -Eeuo pipefail
-want=$1 baseline=${2-} unit=$3
-load=$(systemctl show "$unit" -p LoadState --value); active=$(systemctl show "$unit" -p ActiveState --value)
-sub=$(systemctl show "$unit" -p SubState --value); result=$(systemctl show "$unit" -p Result --value)
-status=$(systemctl show "$unit" -p ExecMainStatus --value)
-[[ $load == loaded ]] || exit 1
-if [[ $active == activating || ( $active == active && $sub != exited ) || -z $result ]]; then exit 1; fi
-[[ $active == active && $sub == exited && $result == success && $status == 0 ]] || exit 2
-[[ $(readlink -f /run/current-system) == "$want" ]]
+(( BASH_VERSINFO[0] >= 5 )) || { echo 'rollout driver: Bash 5 is required' >&2; exit 69; }
+closure=$1 baseline=${2-}
+[[ $baseline != __LAB_UPDATE_EMPTY__ ]] || baseline=
+[[ $closure =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+?=-]+$ ]] || exit 64
+old=$(readlink -f /nix/var/nix/profiles/system)
+mutated=0 success=0
+finish() {
+  rc=$?
+  trap - EXIT
+  if (( ! success && mutated )); then
+    # RuntimeMaxSec leaves TimeoutStopSec for these bounded recovery operations.
+    timeout 60 nix-env -p /nix/var/nix/profiles/system --set "$old" || true
+    timeout 60 "$old/bin/switch-to-configuration" boot || true
+  fi
+  rm -f -- /run/lab-update-driver
+  exit "$rc"
+}
+trap finish EXIT TERM INT HUP
+# Refuse to inherit stale rollout state and replace only our bounded inhibitor.
+systemctl stop lab-update-inhibit.service 2>/dev/null || true
+systemctl reset-failed lab-update-inhibit.service 2>/dev/null || true
+systemd-run --unit=lab-update-inhibit --collect systemd-inhibit --what=sleep --why=lab-update --mode=block /run/current-system/sw/bin/sleep 1200
+shutdown -r +15 'lab-update dead-man reboot'
+"$closure/bin/switch-to-configuration" test
+[[ $(readlink -f /run/current-system) == "$closure" ]]
 now=$(systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -)
 [[ $now == "$baseline" ]]
-sudo -n true; findmnt / >/dev/null
-if grep -Eq '[[:space:]]/boot[[:space:]]' "$want/etc/fstab"; then findmnt /boot >/dev/null; fi
-for u in sshd.service tailscaled.service NetworkManager.service; do systemctl is-active --quiet "$u"; done
 getent ahosts cache.nixos.org >/dev/null
+findmnt / >/dev/null
+if grep -Eq '[[:space:]]/boot[[:space:]]' "$closure/etc/fstab"; then findmnt /boot >/dev/null; fi
+for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do systemctl is-active --quiet "$u"; done
 for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do [[ $(systemctl is-enabled "$u" 2>/dev/null) == masked ]]; done
-REMOTE
-}
-poll_unit() {
-  local unit=$1 deadline=$((SECONDS + 300)) rc
-  while (( SECONDS < deadline )); do
-    sleep 5
-    if check_remote "$unit"; then return 0; else rc=$?; fi
-    (( rc == 1 )) || return "$rc"
-  done
-  return 1
-}
-poll_unit lab-update-test.service || die "$FAIL_MSG"
+shutdown -r +15 'lab-update commit dead-man reboot'
+nix-env -p /nix/var/nix/profiles/system --set "$closure"; mutated=1
+"$closure/bin/switch-to-configuration" boot
+[[ $(readlink -f /nix/var/nix/profiles/system) == "$closure" ]]
+[[ $(readlink -f /run/current-system) == "$closure" ]]
+shutdown -c
+success=1
+systemctl stop lab-update-inhibit.service || true
+DRIVER
+chmod 700 "$T/driver"
+DRIVER_SHA=$(shasum -a 256 "$T/driver" | awk '{print $1}')
 
-# Refresh the recovery deadline after test success and before the detached commit.
-ssh_host 'sudo -n shutdown -r +15 "lab-update commit dead-man reboot"'
-ssh_host 'sudo -n systemctl stop lab-update-commit.service 2>/dev/null || true; sudo -n systemctl reset-failed lab-update-commit.service 2>/dev/null || true; sudo -n systemd-run --unit=lab-update-commit --property=RemainAfterExit=yes --no-block /bin/sh -ceu '\''/run/current-system/sw/bin/nix-env -p /nix/var/nix/profiles/system --set "$1"; "$1/bin/switch-to-configuration" boot'\'' sh "$1"' "$CLOSURE" >/dev/null || die "$FAIL_MSG"
-poll_unit lab-update-commit.service || die "$FAIL_MSG"
-ssh_host '/run/current-system/sw/bin/timeout 25 sh -ceu '\''test "$(readlink -f /nix/var/nix/profiles/system)" = "$1"; test "$(readlink -f /run/current-system)" = "$1"'\'' sh "$1"' "$CLOSURE" || die "$FAIL_MSG"
-# Cancellation is deliberately its own final command after every commit assertion.
-ssh_host 'sudo -n shutdown -c' || die "$FAIL_MSG"
-ssh_host 'sudo -n systemctl stop lab-update-inhibit.service || true'
-echo "committed exact tested closure for boot: $CLOSURE"
-read -r -p "Type 'reboot $HOST' for attended reboot verification, or press Enter to finish: " REBOOT
-if [[ $REBOOT == "reboot $HOST" ]]; then ssh_host 'sudo -n systemctl reboot'; else echo "no reboot requested; verification remains pending"; fi
+# Every data-bearing and observational connection is non-PTY and unprivileged.
+PRE=$("${SSH[@]}" "$HOST" 'bash -s' <<'REMOTE'
+set -Eeuo pipefail
+[[ $(uname -s) == Linux && -e /etc/NIXOS ]]
+u=$(id -un); id -nG "$u" | tr ' ' '\n' | grep -qx wheel
+status=$(passwd -S "$u"); set -- $status; [[ ${2:-} == P ]]
+current=$(readlink -f /run/current-system); booted=$(readlink -f /run/booted-system); profile=$(readlink -f /nix/var/nix/profiles/system)
+[[ $current == "$booted" && $current == "$profile" ]]
+printf 'CURRENT=%s\nBOOTED=%s\nPROFILE=%s\n' "$current" "$booted" "$profile"
+printf 'FAILED='; systemctl --failed --no-legend --plain | awk '{print $1}' | LC_ALL=C sort | paste -sd, -
+REMOTE
+) || die 'preflight failed (wheel membership and a real password are required)'
+printf '%s\n' "$PRE"; BASE_FAILED=$(sed -n 's/^FAILED=//p' <<<"$PRE")
+[[ $BASE_FAILED =~ ^[A-Za-z0-9@_.:,~-]*$ ]] || die 'unsafe failed-unit baseline'
+read -r -p "Type 'update $HOST' to stage and build: " a; [[ $a == "update $HOST" ]] || die 'not confirmed'
+REMOTE_DIR=$("${SSH[@]}" "$HOST" 'umask 077; d=$(mktemp -d /var/tmp/lab-update.XXXXXXXX); printf "%s\n" "$d"')
+[[ $REMOTE_DIR =~ ^/var/tmp/lab-update\.[A-Za-z0-9]{8}$ ]] || die 'unsafe staging path'
+cleanup() { "${SSH[@]}" "$HOST" "rm -rf -- $REMOTE_DIR" >/dev/null 2>&1 || true; rm -rf "$T"; }; trap cleanup EXIT
+"${SSH[@]}" "$HOST" "tar --no-same-owner -xf - -C $REMOTE_DIR" <"$T/source.tar"
+"${SSH[@]}" "$HOST" "cat >$REMOTE_DIR/rollout-driver && chmod 0700 $REMOTE_DIR/rollout-driver" <"$T/driver"
+REMOTE_SHA=$("${SSH[@]}" "$HOST" "sha256sum $REMOTE_DIR/rollout-driver" | awk '{print $1}')
+[[ $REMOTE_SHA == "$DRIVER_SHA" ]] || die 'staged driver hash mismatch'
+BUILD=$("${SSH[@]}" "$HOST" "nix build --no-link --no-write-lock-file --print-out-paths --builders '' $REMOTE_DIR#nixosConfigurations.$HOST.config.system.build.toplevel") || die 'build failed'
+mapfile -t paths < <(grep '^/nix/store/' <<<"$BUILD"); [[ ${#paths[@]} == 1 ]] || die 'expected one closure'; CLOSURE=${paths[0]}
+[[ $CLOSURE =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+?=-]+$ ]] || die 'unsafe closure path'
+"${SSH[@]}" "$HOST" "nix path-info $CLOSURE >/dev/null && test -x $CLOSURE/bin/switch-to-configuration && nix store diff-closures \$(readlink -f /run/current-system) $CLOSURE && test -r $CLOSURE/etc/ssh/sshd_config && $CLOSURE/sw/bin/sshd -t -f $CLOSURE/etc/ssh/sshd_config && test -r $CLOSURE/etc/fstab && findmnt --verify --tab-file $CLOSURE/etc/fstab && awk '\$2==\"/\"{ok=1} END{exit !ok}' $CLOSURE/etc/fstab && ! findmnt -nro OPTIONS /boot 2>/dev/null | grep -qw ro"
+read -r -p "Type 'activate $HOST' to start the rollback-protected rollout: " a; [[ $a == "activate $HOST" ]] || die 'activation not confirmed'
+[[ -t 0 ]] || die 'the attended privileged phase requires a local stdin TTY'
+# Exactly one data-free attended connection. sudo reads the password directly from its TTY.
+# Encode empty distinctly so argv[2] is present through both remote-shell layers.
+if [[ -z $BASE_FAILED ]]; then qbase=__LAB_UPDATE_EMPTY__; else printf -v qbase '%q' "$BASE_FAILED"; fi
+PTY_CMD="sudo /bin/sh -ceu 'test \"\$(sha256sum $REMOTE_DIR/rollout-driver | awk \"{print \\\$1}\")\" = $DRIVER_SHA; systemctl stop lab-update-rollout.service 2>/dev/null || true; systemctl reset-failed lab-update-rollout.service 2>/dev/null || true; install -o root -g root -m 0500 $REMOTE_DIR/rollout-driver /run/lab-update-driver; test \"\$(stat -c %U:%G:%a /run/lab-update-driver)\" = root:root:500; test \"\$(sha256sum /run/lab-update-driver | awk \"{print \\\$1}\")\" = $DRIVER_SHA; systemd-run --unit=lab-update-rollout --property=RemainAfterExit=yes --property=RuntimeMaxSec=720 --property=TimeoutStopSec=130 --no-block /run/lab-update-driver $CLOSURE $qbase'"
+"${SSH[@]}" -tt "$HOST" "$PTY_CMD" || die 'rollout launch failed; an armed reboot may remain pending (rollback is not guaranteed)'
+# Fresh, bounded, non-privileged observations. Retained status is removed only by a later rollout.
+deadline=$((SECONDS+900)); observed=0
+while (( SECONDS < deadline )); do
+  out=$("${SSH[@]}" "$HOST" "timeout 25 sh -c 'systemctl show lab-update-rollout.service -p LoadState -p ActiveState -p SubState -p Result -p ExecMainStatus --value; readlink -f /run/current-system; readlink -f /nix/var/nix/profiles/system'" 2>/dev/null) || { sleep 5; continue; }
+  mapfile -t state <<<"$out"
+  ((${#state[@]} >= 7)) || die 'rollout unit returned incomplete state'
+  load=${state[0]}; active=${state[1]}; sub=${state[2]}; result=${state[3]}; status=${state[4]}; current=${state[5]}; profile=${state[6]}
+  [[ $load == loaded ]] || die 'rollout unit is unknown or collected; dead-man may remain armed'
+  if [[ $active == failed || $result == failed || ( $status =~ ^[0-9]+$ && $status != 0 ) ]]; then die 'rollout failed; dead-man may remain armed'; fi
+  if [[ $active == active && $sub == exited && $result == success && $status == 0 ]]; then
+    [[ $current == "$CLOSURE" && $profile == "$CLOSURE" ]] || die 'rollout terminal state has wrong closure/profile; dead-man may remain armed'
+    observed=1; echo "rollout succeeded: $CLOSURE"; break
+  fi
+  sleep 5
+done
+(( observed )) || die 'rollout observation timed out; dead-man may remain armed'
+read -r -p "Type 'reboot $HOST' for an attended reboot, or Enter to finish: " a
+if [[ $a == "reboot $HOST" ]]; then "${SSH[@]}" -tt "$HOST" 'sudo systemctl reboot' || echo 'reboot requested; SSH disconnected during reboot' >&2; fi

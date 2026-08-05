@@ -162,10 +162,8 @@
     vim
   ];
 
-  # Bootstrap with SSH-key-authenticated administrative access. Set a local
-  # password on each host, then change this back to true once all hosts have
-  # been verified.
-  security.sudo.wheelNeedsPassword = false;
+  security.sudo.wheelNeedsPassword = true;
+  security.sudo.execWheelOnly = true;
   services.fstrim.enable = true;
   zramSwap.enable = true;
 

@@ -2,141 +2,154 @@
 # shellcheck disable=SC2016
 set -Eeuo pipefail
 cd "$(dirname "$0")/.."
-SCRIPT=bin/lab-update
-fail() { echo "FAIL: $*" >&2; exit 1; }
-has() { grep -Fq -- "$1" "$SCRIPT" || fail "missing: $1"; }
-
-bash -n "$SCRIPT"
-shellcheck "$SCRIPT"
-
-# Dry-run must not even invoke an ssh found on PATH, and its ordering is contractual.
+S=bin/lab-update
+fail(){ echo "FAIL: $*" >&2; exit 1; }
+has(){ grep -Fq -- "$1" "$S" || fail "missing $1"; }
+not(){ ! grep -Eqi -- "$1" "$S" || fail "prohibited pattern: $1"; }
+bash -n "$S"; shellcheck "$S"
+# No credential transport or noninteractive sudo escape hatches.
+not 'sudo[[:space:]]+-[[:alnum:]]*n|sudo[[:space:]]+-S|sshpass|(^|[^[:alnum:]_])expect([[:space:]]|$)|SUDO_ASKPASS|read[[:space:]]+-s|timestamp_timeout|tty_tickets|NOPASSWD|set[[:space:]]+-x'
+has 'passwd -S'; has 'grep -qx wheel'; has '[[ ${2:-} == P ]]'
+# One rollout PTY, with a second occurrence confined to optional reboot.
+[[ $(grep -c '"${SSH\[@\]}" -tt' "$S") == 2 ]] || fail 'unexpected PTY count'
+pty=$(grep '"${SSH\[@\]}" -tt.*PTY_CMD' "$S"); [[ $pty != *'<'* && $pty != *'<<'* && $pty != *' | '* ]] || fail 'PTY has stdin payload'
+# Build, staging, inspection, and polling contain no sudo.
+for needle in 'mktemp -d /var/tmp' 'tar --no-same-owner' 'nix build' 'nix path-info' 'nix store diff-closures' 'systemctl show lab-update-rollout'; do
+  line=$(grep -F "$needle" "$S" | head -1); [[ $line != *sudo* ]] || fail "$needle is privileged"
+done
+has 'umask 077'; has 'sha256sum $REMOTE_DIR/rollout-driver'; has 'install -o root -g root -m 0500'; has 'root:root:500'
+has 'RuntimeMaxSec=720'; has 'TimeoutStopSec=130'; has "shutdown -r +15 'lab-update dead-man reboot'"
+has 'baseline=${2-}'; has 'baseline != __LAB_UPDATE_EMPTY__'; has 'BASH_VERSINFO[0] >= 5'; has 'RemainAfterExit=yes'
+has 'sha256sum /run/lab-update-driver'; has 'LoadState'; has 'SubState'
+has 'current == "$CLOSURE" && $profile == "$CLOSURE"'
+has 'sshd -t -f'; has 'findmnt --verify --tab-file'; has 'getent ahosts cache.nixos.org'
+has 'sleep.target suspend.target hibernate.target hybrid-sleep.target'
+has '[[ -t 0 ]]'; has 'rm -f -- /run/lab-update-driver'
+# Rollback exists and dead-man cancellation occurs only after both retained path checks.
+setline=$(grep -n 'nix-env -p .* --set "$closure"' "$S" | tail -1 | cut -d: -f1)
+restore=$(grep -n 'nix-env -p .* --set "$old"' "$S" | head -1 | cut -d: -f1)
+bootold=$(grep -n '"$old/bin/switch-to-configuration" boot' "$S" | head -1 | cut -d: -f1)
+cancel=$(grep -n '^shutdown -c' "$S" | cut -d: -f1)
+[[ $restore -lt $setline && $bootold -lt $setline && $setline -lt $cancel ]] || fail 'rollback/cancel ordering'
+# Dry run cannot invoke even a fake ssh.
 t=$(mktemp -d); trap 'rm -rf "$t"' EXIT
-cat >"$t/ssh" <<'EOF'
-#!/bin/sh
-echo contacted >"${LAB_UPDATE_SSH_MARKER:?}"
-exit 99
-EOF
-chmod +x "$t/ssh"
-LAB_UPDATE_SSH_MARKER=$t/contacted PATH="$t:$PATH" "$SCRIPT" --dry-run hades >"$t/plan"
-[[ ! -e $t/contacted ]] || fail "dry-run contacted ssh"
-awk '/^phase: / {sub(/^phase: /, ""); print}' "$t/plan" >"$t/phases"
-diff -u - "$t/phases" <<'EOF'
-snapshot tracked source
-read-only remote preflight
-confirm staging
-validate and stage unique remote tree
-one target-local build
-inspect exact closure
-confirm activation
-start bounded sleep inhibitor
-arm 15-minute dead-man reboot
-detached test activation
-observe test result and postflight over fresh SSH
-re-arm dead-man
-detached boot commit
-observe commit result and verify profile
-cancel dead-man last
-optional attended reboot
-EOF
-
-# Focused structural regressions for safety properties whose commands must run remotely.
-has 'ControlMaster=no'; has 'ControlPath=none'; has 'ServerAliveInterval=5'; has 'ServerAliveCountMax=3'
-has 'baseline=${2-}'
-has 'Result --value'; has 'ExecMainStatus --value'
-has 'remote returned an unsafe staging path'
-has '^/var/tmp/lab-update\.[A-Za-z0-9]{8}$'
-has "jj file list -T 'path ++ \"\\0\"'"
-has 'Git fallback refuses untracked files'
-has '--no-write-lock-file'
-has "Type 'activate \$HOST'"
-
-# Cancellation follows commit launch, result/profile verification, and the armed-failure guard.
-commit=$(grep -n 'unit=lab-update-commit' "$SCRIPT" | cut -d: -f1)
-profile=$(grep -n 'readlink -f /nix/var/nix/profiles/system' "$SCRIPT" | tail -1 | cut -d: -f1)
-cancel=$(grep -n "ssh_host 'sudo -n shutdown -c'" "$SCRIPT" | cut -d: -f1)
-[[ $commit -lt $profile && $profile -lt $cancel ]] || fail "unsafe commit/cancel ordering"
-[[ $(grep -c "shutdown -c" "$SCRIPT") == 1 ]] || fail "shutdown cancellation must have one guarded site"
-
-# Prove this jj version emits a NUL-safe tracked manifest and a stable identity.
-jj root >/dev/null
-jj file list -T 'path ++ "\0"' >"$t/jj-files"
-[[ -s $t/jj-files && $(tr -cd '\0' <"$t/jj-files" | wc -c) -gt 0 ]] || fail "jj manifest is not NUL-delimited"
-[[ -n $(jj log --no-graph -r @ -T 'commit_id') ]] || fail "jj identity empty"
-
-# With jj unavailable, an untracked Git file aborts before SSH or snapshotting.
-mkdir "$t/fake-git-root"
-cat >"$t/git" <<EOF
-#!/bin/sh
-case "\$*" in
-  'rev-parse --show-toplevel') echo '$t/fake-git-root' ;;
-  'ls-files --others --exclude-standard') echo secret-untracked ;;
-  *) exit 2 ;;
-esac
-EOF
-chmod +x "$t/git"
-rm -f "$t/contacted"
-if LAB_UPDATE_SSH_MARKER=$t/contacted PATH="$t:/usr/bin:/bin" "$SCRIPT" hades >"$t/git.out" 2>"$t/git.err"; then
-  fail "Git fallback accepted untracked file"
-fi
-grep -Fq 'Git fallback refuses untracked files' "$t/git.err" || fail "wrong Git fallback failure"
-[[ ! -e $t/contacted ]] || fail "Git rejection contacted ssh"
-
-# Execute the attended path against a stateful fake SSH. This checks actual command
-# ordering and the fail-closed cancellation rule without contacting any host.
-cat >"$t/ssh" <<'EOF'
+printf '#!/bin/sh\ntouch "$MARK"; exit 99\n' >"$t/ssh"; chmod +x "$t/ssh"
+MARK=$t/contact PATH="$t:$PATH" "$S" --dry-run hades >"$t/plan"
+[[ ! -e $t/contact ]] || fail 'dry run contacted network'
+grep -Fq 'one attended PTY sudo rollout' "$t/plan"
+# Stateful no-network SSH executes the complete attended path under a local PTY.
+cat >"$t/ssh" <<'FAKE'
 #!/usr/bin/env bash
-set -eu
-printf '%s\n' "$*" >>"${FAKE_SSH_LOG:?}"
+set -Eeuo pipefail
+printf '%s\n' "$*" >>"$LOG"
 cmd=$*
 case $cmd in
-  *print-out-paths*) echo /nix/store/fake-system ;;
-  *mktemp*lab-update*) echo /var/tmp/lab-update.A1b2C3d4 ;;
-  *lab-update-test*RemainAfterExit=yes*)
-    [[ ${FAKE_SSH_FAIL_TEST:-0} == 0 ]] || exit 1 ;;
-  *bash*-se* )
-    if [[ ! -e ${FAKE_SSH_PREFLIGHT:?} ]]; then
-      : >"$FAKE_SSH_PREFLIGHT"
-      cat <<'OUT'
-identity host=hades os=nixos arch=x86_64 user=test
-closures current=/nix/store/old booted=/nix/store/old profile=/nix/store/old
-FAILED=
-OUT
+  *'systemd-run --unit=lab-update-rollout'*)
+    : >"$STATE/launched"
+    [[ $cmd == *'/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake __LAB_UPDATE_EMPTY__'* ]] || exit 70 ;;
+  *'bash -s'*)
+    cat >/dev/null
+    printf 'CURRENT=/nix/store/old\nBOOTED=/nix/store/old\nPROFILE=/nix/store/old\nFAILED=\n' ;;
+  *'mktemp -d /var/tmp'*) echo /var/tmp/lab-update.A1b2C3d4 ;;
+  *'cat >/var/tmp/lab-update.A1b2C3d4/rollout-driver'*) cat >"$STATE/driver" ;;
+  *'sha256sum /var/tmp/lab-update.A1b2C3d4/rollout-driver'*) shasum -a 256 "$STATE/driver" ;;
+  *'nix build'*) echo /nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake ;;
+  *'tar --no-same-owner'*) cat >/dev/null ;;
+  *'systemctl show lab-update-rollout.service'*)
+    n=0; [[ ! -f $STATE/polls ]] || n=$(cat "$STATE/polls"); n=$((n+1)); echo "$n" >"$STATE/polls"
+    if [[ ${MODE:-success} == success && $n == 1 ]]; then
+      printf 'loaded\nactive\nrunning\nsuccess\n0\n/nix/store/old\n/nix/store/old\n'
+    elif [[ ${MODE:-success} == success ]]; then
+      printf 'loaded\nactive\nexited\nsuccess\n0\n/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake\n/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake\n'
+    else
+      printf 'loaded\nfailed\nfailed\nfailed\n1\n/nix/store/old\n/nix/store/old\n'
     fi ;;
+  *) : ;;
 esac
-# Consume the archive stream so the producer cannot see a misleading SIGPIPE.
-case $cmd in *tar*'-xf'*) cat >/dev/null || true ;; esac
-EOF
+FAKE
 chmod +x "$t/ssh"
-run_fake() {
-  rm -f "$t/ssh.log" "$t/preflight"
-  printf 'update hades\nactivate hades\n\n\n' |
-    FAKE_SSH_LOG="$t/ssh.log" FAKE_SSH_PREFLIGHT="$t/preflight" \
-    PATH="$t:$PATH" "$SCRIPT" hades >"$t/fake.out" 2>"$t/fake.err"
+printf '#!/bin/sh\nexit 0\n' >"$t/sleep"; chmod +x "$t/sleep"
+run_attended() {
+  local mode=$1 out=$2 rc=0
+  rm -rf "$t/state"; mkdir "$t/state"; : >"$t/log"
+  LOG=$t/log STATE=$t/state MODE=$mode PATH="$t:$PATH" \
+    python3 - "$S" "$out" <<'PY' || rc=$?
+import os, pty, select, sys
+pid, fd = pty.fork()
+if pid == 0:
+    os.execv(sys.argv[1], [sys.argv[1], "hades"])
+os.write(fd, b"update hades\nactivate hades\n\n")
+data = b""
+while True:
+    try:
+        ready, _, _ = select.select([fd], [], [], 30)
+        if not ready: raise SystemExit(124)
+        chunk = os.read(fd, 65536)
+        if not chunk: break
+        data += chunk
+    except OSError:
+        break
+_, status = os.waitpid(pid, 0)
+open(sys.argv[2], "wb").write(data)
+raise SystemExit(os.waitstatus_to_exitcode(status))
+PY
+  return "$rc"
 }
-run_fake || { cat "$t/fake.out" >&2; cat "$t/fake.err" >&2; fail "fake SSH success path failed"; }
-line() { grep -n -F -- "$1" "$t/ssh.log" | head -1 | cut -d: -f1; }
-test_launch=$(grep -n 'lab-update-test.*RemainAfterExit=yes' "$t/ssh.log" | head -1 | cut -d: -f1)
-rearm=$(grep -n 'lab-update.*commit.*dead-man.*reboot' "$t/ssh.log" | cut -d: -f1)
-commit_launch=$(grep -n 'lab-update-commit.*RemainAfterExit=yes' "$t/ssh.log" | head -1 | cut -d: -f1)
-cancel_line=$(grep -n 'shutdown.*-c' "$t/ssh.log" | head -1 | cut -d: -f1)
-[[ $test_launch -lt $rearm && $rearm -lt $commit_launch && $commit_launch -lt $cancel_line ]] ||
-  fail "fake SSH observed unsafe ordering"
-[[ $(grep -c 'shutdown.*-c' "$t/ssh.log") == 1 ]] || fail "fake path did not cancel exactly once"
-grep -Fq 'RemainAfterExit=yes' "$t/ssh.log" || fail "transient result was not retained"
-grep -Eq '/run/current-system/sw/bin/timeout.*25' "$t/ssh.log" || fail "remote checks lack timeout"
+run_attended success "$t/success.out" || { cat "$t/success.out" >&2; fail 'attended success path failed'; }
+[[ -e $t/state/launched && -e $t/state/polls && $(cat "$t/state/polls") == 2 ]] || { cat "$t/success.out" >&2; cat "$t/log" >&2; fail 'running and terminal success paths were not both observed'; }
+[[ $(grep -c -- ' -tt hades ' "$t/log") == 1 ]] || fail 'rollout did not use exactly one PTY'
+grep -Fq '/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-fake __LAB_UPDATE_EMPTY__' "$t/log" || fail 'empty baseline sentinel was not argv[2]'
+! grep -E '(^| )-tt( |$)' "$t/log" | grep -Eq 'tar|cat >|nix build|systemctl show' || fail 'data/observation call used PTY'
+if run_attended failed "$t/failure.out"; then fail 'injected terminal failure succeeded'; fi
+[[ $(grep -c 'systemd-run --unit=lab-update-rollout' "$t/log") == 1 ]] || fail 'failure path rollout launch count'
+! grep -Fq 'shutdown -c' "$t/log" || fail 'observer failure path attempted dead-man cancellation'
 
-rm -f "$t/ssh.log" "$t/preflight"
-if printf 'update hades\nactivate hades\n' | FAKE_SSH_FAIL_TEST=1 FAKE_SSH_LOG="$t/ssh.log" \
-  FAKE_SSH_PREFLIGHT="$t/preflight" PATH="$t:$PATH" "$SCRIPT" hades >"$t/fail.out" 2>"$t/fail.err"; then
-  fail "injected test-launch failure succeeded"
+# Execute the staged driver body itself under command shims. Only its store-path
+# validation is replaced because this unprivileged test cannot create /nix/store.
+awk '/^cat >"\$T\/driver" <<'\''DRIVER'\''$/{copy=1;next} copy&&/^DRIVER$/{exit} copy{print}' "$S" >"$t/driver"
+sed -E 's/^\[\[ \$closure =~ .*$/#: store path validated by production driver/' "$t/driver" >"$t/driver-run"
+chmod +x "$t/driver-run"
+mkdir -p "$t/driver-bin" "$t/closure/bin" "$t/closure/etc" "$t/old/bin" "$t/driver-state"
+: >"$t/closure/etc/fstab"; : >"$t/driver-state/log"
+cat >"$t/closure/bin/switch-to-configuration" <<'SHIM'
+#!/bin/sh
+echo "new-switch $*" >>"$DRIVER_LOG"
+[[ $1 != boot ]]
+SHIM
+cat >"$t/old/bin/switch-to-configuration" <<'SHIM'
+#!/bin/sh
+echo "old-switch $*" >>"$DRIVER_LOG"
+SHIM
+cat >"$t/driver-bin/readlink" <<'SHIM'
+#!/bin/sh
+case $* in */nix/var/nix/profiles/system*) echo "$OLD";; */run/current-system*) echo "$CLOSURE";; esac
+SHIM
+cat >"$t/driver-bin/systemctl" <<'SHIM'
+#!/bin/sh
+case $1 in --failed) exit 0;; is-active) exit 0;; is-enabled) echo masked;; *) echo "systemctl $*" >>"$DRIVER_LOG";; esac
+SHIM
+cat >"$t/driver-bin/shutdown" <<'SHIM'
+#!/bin/sh
+echo "shutdown $*" >>"$DRIVER_LOG"
+SHIM
+cat >"$t/driver-bin/nix-env" <<'SHIM'
+#!/bin/sh
+echo "nix-env $*" >>"$DRIVER_LOG"
+SHIM
+cat >"$t/driver-bin/timeout" <<'SHIM'
+#!/bin/sh
+shift; exec "$@"
+SHIM
+for c in systemd-run getent findmnt; do printf '#!/bin/sh\nexit 0\n' >"$t/driver-bin/$c"; done
+chmod +x "$t/driver-bin/"* "$t/closure/bin/"* "$t/old/bin/"*
+if DRIVER_LOG=$t/driver-state/log OLD=$t/old CLOSURE=$t/closure PATH="$t/driver-bin:$PATH" \
+  "$t/driver-run" "$t/closure" __LAB_UPDATE_EMPTY__; then
+  fail 'actual driver accepted injected post-mutation boot failure'
 fi
-! grep -Eq 'shutdown.*-c' "$t/ssh.log" || fail "injected failure cancelled dead-man"
-! grep -Eq 'lab-update-commit.*RemainAfterExit=yes' "$t/ssh.log" || fail "commit ran after test failure"
-
-# The two archive contracts are explicit; deterministic claims are GNU-only.
-has 'ARCHIVE_MODE=gnu-tar-deterministic'
-has 'ARCHIVE_MODE=bsdtar-integrity-only'
-has 'bsdtar integrity-only mode (content hash, metadata not normalized)'
-has 'archive_mode=%s'
-
+grep -Fq "nix-env -p /nix/var/nix/profiles/system --set $t/old" "$t/driver-state/log" || fail 'actual driver did not restore old profile'
+grep -Fq 'old-switch boot' "$t/driver-state/log" || fail 'actual driver did not restore old boot configuration'
+! grep -Fq 'shutdown -c' "$t/driver-state/log" || fail 'actual failing driver cancelled dead-man'
+# Sentinel decoding is exercised: an empty failed-unit list passed the comparison
+# and reached the injected boot failure rather than aborting during postflight.
+grep -Fq 'new-switch boot' "$t/driver-state/log" || fail 'empty baseline sentinel did not decode to empty'
 echo 'lab-update local regressions: PASS'
