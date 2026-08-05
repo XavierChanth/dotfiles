@@ -12,13 +12,13 @@ rust = { version = "stable", profile = "minimal", components = "cargo,clippy,rus
 node = "lts"
 bun = "latest"
 go = "latest"
-python = "3.13.14"
+python = "3.14.6"
 ruby = "3.3.12"
 zig = "latest"
 # dart = "latest" # Optional; Flutter currently supplies Dart.
 
 # Global command-line tools remain independent of the selected Bun runtime.
-"npm:@earendil-works/pi-coding-agent" = "latest"
+"aqua:earendil-works/pi" = "latest"
 "npm:@openai/codex" = "latest"
 "npm:codeburn" = "latest"
 "npm:convex" = "latest"
