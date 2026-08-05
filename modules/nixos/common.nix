@@ -5,8 +5,6 @@
   username,
   ...
 }: {
-  imports = [./distributed-builds.nix];
-
   boot = {
     loader = {
       efi.canTouchEfiVariables = true;
