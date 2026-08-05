@@ -6,10 +6,6 @@ command_exists() {
 
 __path=""
 
-# if command_exists vfox; then
-#   alias vfox='if [ -z $__VFOX_SHELL ]; then eval "$(\vfox activate zsh)"; fi; vfox'
-# fi
-
 # flutter
 export FLUTTER_ROOT="$HOME/.local/dev/flutter"
 if [ -d $FLUTTER_ROOT ]; then
@@ -87,10 +83,6 @@ if command_exists arduino-cli; then
     fi
     arduino-cli upload "$p" -b "$(echo $selected | rev | cut -w -f2 | rev)" -p "$(echo $selected | cut -w -f1)"
   }
-fi
-
-if command_exists bun || [ -x "$HOME/.bun/bin/bun" ]; then
-  __path="$HOME/.bun/bin:$__path"
 fi
 
 # prepend local path to PATH

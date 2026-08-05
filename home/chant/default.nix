@@ -19,8 +19,13 @@ in {
     homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${username}" else "/home/${username}";
     stateVersion = "25.05";
     sessionPath = [
-      "${config.home.homeDirectory}/.dotfiles/bin/shared"
       "${config.home.homeDirectory}/.dotfiles/bin/hosts/${hostname}"
+      "${config.home.homeDirectory}/.dotfiles/bin/shared"
+      "${config.home.homeDirectory}/.local/bin"
+      "${config.home.homeDirectory}/.local/share/mise/shims"
+      "${config.home.homeDirectory}/.cargo/bin"
+      "${config.home.homeDirectory}/go/bin"
+      "${config.home.homeDirectory}/.local/share/gem/ruby/bin"
     ];
     sessionVariables.EDITOR = "nvim";
     file.".config/spaceship-prompt".source = "${pkgs.spaceship-prompt}/lib/spaceship-prompt";

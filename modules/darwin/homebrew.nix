@@ -85,7 +85,6 @@ in {
     };
     brews = lib.optionals isWorkstation [
       "cliproxyapi"
-      "nb"
       "rwx"
     ];
     casks = if isWorkstation then workstationCasks else serverCasks;

@@ -5,6 +5,7 @@
     {name = "agents"; target = ".agents"; prepare = [".agents"];}
     {name = "codex"; target = ".codex"; prepare = [".codex/rules"];}
     {name = "jj"; target = ".config/jj"; prepare = [".config/jj"];}
+    {name = "mise"; target = ".config/mise"; prepare = [".config/mise"];}
     {name = "grok"; target = ".grok"; prepare = [".grok"];}
     {name = "zsh"; target = ".config/zsh"; prepare = [".config/zsh"];}
     {name = "tmux"; target = ".config/tmux"; prepare = [".config/tmux"];}
