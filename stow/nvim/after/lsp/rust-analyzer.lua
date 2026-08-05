@@ -42,6 +42,25 @@ local function reload_workspace(bufnr)
   end
 end
 
+local rust_sysroot
+local rust_sysroot_resolved = false
+
+local function get_rust_sysroot()
+  if rust_sysroot_resolved then
+    return rust_sysroot
+  end
+
+  rust_sysroot_resolved = true
+  local rustc = vim.fn.exepath 'rustc'
+  if rustc ~= '' then
+    local result = vim.system({ rustc, '--print', 'sysroot' }, { text = true }):wait()
+    if result.code == 0 and result.stdout then
+      rust_sysroot = vim.trim(result.stdout)
+    end
+  end
+  return rust_sysroot
+end
+
 local function is_library(fname)
   local user_home = vim.fs.normalize(vim.env.HOME)
   local cargo_home = os.getenv 'CARGO_HOME' or user_home .. '/.cargo'
@@ -53,14 +72,11 @@ local function is_library(fname)
   local library_roots = { toolchains, registry, git_registry }
 
   -- mise's native Rust backend is self-contained rather than necessarily using
-  -- ~/.rustup. Ask the active compiler for its sysroot so stdlib sources still
-  -- reuse the current workspace's rust-analyzer client.
-  local rustc = vim.fn.exepath 'rustc'
-  if rustc ~= '' then
-    local result = vim.system({ rustc, '--print', 'sysroot' }, { text = true }):wait()
-    if result.code == 0 and result.stdout then
-      table.insert(library_roots, vim.trim(result.stdout))
-    end
+  -- ~/.rustup. Cache the active compiler's sysroot so this does not block once
+  -- for every Rust buffer while still reusing the workspace LSP client.
+  local active_sysroot = get_rust_sysroot()
+  if active_sysroot then
+    table.insert(library_roots, active_sysroot)
   end
 
   for _, item in ipairs(library_roots) do

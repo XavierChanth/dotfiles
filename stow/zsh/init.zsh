@@ -96,10 +96,12 @@ fi
 # so repository bins retain precedence and Nix remains the final bucket.
 _normalize_path_order() {
   local path_entry
-  local -a mise_path language_path system_path nix_path
+  local -a host_path mise_path language_path system_path nix_path
   for path_entry in $path; do
+    [[ -n "$path_entry" ]] || continue
     case "$path_entry" in
-      "$HOME/.dotfiles/bin/hosts/"*|"$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
+      "$HOME/.dotfiles/bin/hosts/"*) host_path+=("$path_entry") ;;
+      "$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
       "$HOME/.local/share/mise/shims") ;; # session/GUI only; activation needs no shim
       "$HOME/.local/share/mise/"*) mise_path+=("$path_entry") ;;
       "$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.pub-cache/bin"|"$HOME/.local/share/gem/"*/bin) language_path+=("$path_entry") ;;
@@ -109,7 +111,7 @@ _normalize_path_order() {
   done
   path=(
     ${CMUX_BUNDLED_CLI_PATH:+${CMUX_BUNDLED_CLI_PATH:h}}
-    "$HOME/.dotfiles/bin/hosts/$(hostname)"
+    $host_path
     "$HOME/.dotfiles/bin/shared"
     "$HOME/.local/bin"
     $mise_path
