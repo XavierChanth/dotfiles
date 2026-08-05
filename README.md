@@ -8,15 +8,15 @@ fit best as tracked dotfiles.
 ## Layout
 
 - `flake.nix`: thin flake entrypoint and inputs; `nix/default.nix` constructs outputs from `nix/inventory.nix`.
-- `nix/hosts/{darwin,nixos}/<hostname>`: host-specific nix-darwin configuration.
+- `nix/hosts/{darwin,nixos}/<hostname>`: host-specific system configuration.
 - `nix/home/chant`: Home Manager user configuration.
 - `nix/modules/shared`: shared modules for packages and shell tooling.
 - `nix/modules/darwin`: macOS-specific modules such as defaults, Homebrew, and
   input tooling.
 - `stow`: application configs that are linked into place during Home Manager
   activation.
-- `bin`: shared and host-specific helper scripts.
-- `scripts`: repository maintenance entrypoints for building, cleaning, and updating.
+- `bin`: shared and host-specific commands installed on the user PATH.
+- `scripts`: repository-local maintenance and deployment entrypoints.
 - `docs`: operational notes for lab hosts, strategy, and peer caching.
 - `tests`: shell-based regression tests for repository scripts.
 
@@ -42,6 +42,13 @@ alongside the first switch:
 
 ```bash
 softwareupdate --install-rosetta --agree-to-license
+```
+
+Deploy a NixOS lab host from the repository root with:
+
+```bash
+scripts/deploy-lab.sh hades build
+scripts/deploy-lab.sh hades switch
 ```
 
 If you only want to evaluate the Home Manager profile, this flake also exposes:
