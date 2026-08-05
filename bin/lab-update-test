@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2016
+set -Eeuo pipefail
+cd "$(dirname "$0")/.."
+SCRIPT=bin/lab-update
+fail() { echo "FAIL: $*" >&2; exit 1; }
+has() { grep -Fq -- "$1" "$SCRIPT" || fail "missing: $1"; }
+
+bash -n "$SCRIPT"
+shellcheck "$SCRIPT"
+
+# Dry-run must not even invoke an ssh found on PATH, and its ordering is contractual.
+t=$(mktemp -d); trap 'rm -rf "$t"' EXIT
+cat >"$t/ssh" <<'EOF'
+#!/bin/sh
+echo contacted >"${LAB_UPDATE_SSH_MARKER:?}"
+exit 99
+EOF
+chmod +x "$t/ssh"
+LAB_UPDATE_SSH_MARKER=$t/contacted PATH="$t:$PATH" "$SCRIPT" --dry-run hades >"$t/plan"
+[[ ! -e $t/contacted ]] || fail "dry-run contacted ssh"
+awk '/^phase: / {sub(/^phase: /, ""); print}' "$t/plan" >"$t/phases"
+diff -u - "$t/phases" <<'EOF'
+snapshot tracked source
+read-only remote preflight
+confirm staging
+validate and stage unique remote tree
+one target-local build
+inspect exact closure
+confirm activation
+start bounded sleep inhibitor
+arm 15-minute dead-man reboot
+detached test activation
+observe test result and postflight over fresh SSH
+re-arm dead-man
+detached boot commit
+observe commit result and verify profile
+cancel dead-man last
+optional attended reboot
+EOF
+
+# Focused structural regressions for safety properties whose commands must run remotely.
+has 'ControlMaster=no'; has 'ControlPath=none'; has 'ServerAliveInterval=5'; has 'ServerAliveCountMax=3'
+has 'baseline=${2-}'
+has 'Result --value'; has 'ExecMainStatus --value'
+has 'remote returned an unsafe staging path'
+has '^/var/tmp/lab-update\.[A-Za-z0-9]{8}$'
+has "jj file list -T 'path ++ \"\\0\"'"
+has 'Git fallback refuses untracked files'
+has '--no-write-lock-file'
+has "Type 'activate \$HOST'"
+
+# Cancellation follows commit launch, result/profile verification, and the armed-failure guard.
+commit=$(grep -n 'unit=lab-update-commit' "$SCRIPT" | cut -d: -f1)
+profile=$(grep -n 'readlink -f /nix/var/nix/profiles/system' "$SCRIPT" | tail -1 | cut -d: -f1)
+cancel=$(grep -n "ssh_host 'sudo -n shutdown -c'" "$SCRIPT" | cut -d: -f1)
+[[ $commit -lt $profile && $profile -lt $cancel ]] || fail "unsafe commit/cancel ordering"
+[[ $(grep -c "shutdown -c" "$SCRIPT") == 1 ]] || fail "shutdown cancellation must have one guarded site"
+
+# Prove this jj version emits a NUL-safe tracked manifest and a stable identity.
+jj root >/dev/null
+jj file list -T 'path ++ "\0"' >"$t/jj-files"
+[[ -s $t/jj-files && $(tr -cd '\0' <"$t/jj-files" | wc -c) -gt 0 ]] || fail "jj manifest is not NUL-delimited"
+[[ -n $(jj log --no-graph -r @ -T 'commit_id') ]] || fail "jj identity empty"
+
+# With jj unavailable, an untracked Git file aborts before SSH or snapshotting.
+mkdir "$t/fake-git-root"
+cat >"$t/git" <<EOF
+#!/bin/sh
+case "\$*" in
+  'rev-parse --show-toplevel') echo '$t/fake-git-root' ;;
+  'ls-files --others --exclude-standard') echo secret-untracked ;;
+  *) exit 2 ;;
+esac
+EOF
+chmod +x "$t/git"
+rm -f "$t/contacted"
+if LAB_UPDATE_SSH_MARKER=$t/contacted PATH="$t:/usr/bin:/bin" "$SCRIPT" hades >"$t/git.out" 2>"$t/git.err"; then
+  fail "Git fallback accepted untracked file"
+fi
+grep -Fq 'Git fallback refuses untracked files' "$t/git.err" || fail "wrong Git fallback failure"
+[[ ! -e $t/contacted ]] || fail "Git rejection contacted ssh"
+
+echo 'lab-update local regressions: PASS'
