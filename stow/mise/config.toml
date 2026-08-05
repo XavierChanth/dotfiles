@@ -17,10 +17,8 @@ zig = "latest"
 # Global command-line tools remain independent of the selected Bun runtime.
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:@openai/codex" = "latest"
-"npm:@opencode-ai/cli" = "latest"
 "npm:codeburn" = "latest"
 "npm:convex" = "latest"
-"npm:opencode-ai" = "latest"
 "npm:playwright" = "latest"
 
 "npm:basedpyright" = "latest"
