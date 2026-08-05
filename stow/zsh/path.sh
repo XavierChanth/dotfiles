@@ -85,10 +85,52 @@ if command_exists arduino-cli; then
   }
 fi
 
-# prepend local path to PATH
-export PATH="$__path:$PATH"
+# Preserve binaries from the standalone Bun installation below mise-managed tools.
+if [ -d "$HOME/.bun/bin" ]; then
+  __path="$HOME/.bun/bin:$__path"
+fi
+
+# Prepend language-specific user binary directories.
+if [ -n "$__path" ]; then
+  export PATH="${__path%:}:$PATH"
+fi
 
 # Runtime and tool version management
 if command_exists mise; then
   eval "$(mise activate zsh)"
 fi
+
+# mise rewrites PATH from its precmd hook. Normalize after that hook every time
+# so repository bins retain precedence and Nix remains the final bucket.
+_normalize_path_order() {
+  local path_entry
+  local -a host_path mise_path language_path system_path nix_path
+  for path_entry in $path; do
+    [[ -n "$path_entry" ]] || continue
+    case "$path_entry" in
+      "$HOME/.dotfiles/bin/hosts/"*) host_path+=("$path_entry") ;;
+      "$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
+      "$HOME/.local/share/mise/shims") ;; # session/GUI only; activation needs no shim
+      "$HOME/.local/share/mise/"*) mise_path+=("$path_entry") ;;
+      "$HOME/.bun/bin"|"$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.pub-cache/bin"|"$HOME/.local/share/gem/"*/bin) language_path+=("$path_entry") ;;
+      "$HOME/.nix-profile/bin"|/etc/profiles/per-user/*/bin|/nix/var/nix/profiles/default/bin|/run/current-system/sw/bin) nix_path+=("$path_entry") ;;
+      *) system_path+=("$path_entry") ;;
+    esac
+  done
+  path=(
+    ${CMUX_BUNDLED_CLI_PATH:+${CMUX_BUNDLED_CLI_PATH:h}}
+    $host_path
+    "$HOME/.dotfiles/bin/shared"
+    "$HOME/.local/bin"
+    $mise_path
+    $language_path
+    $system_path
+    /usr/NX/bin
+    $nix_path
+  )
+  typeset -gU path PATH
+}
+
+_normalize_path_order
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _normalize_path_order
