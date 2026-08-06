@@ -6,7 +6,7 @@ host-specific and versioned (`HOST-harmonia-VERSION`), with each version set by
 that host's `cacheKeyVersion` inventory field. The private file is generated on
 the host at `/var/lib/harmonia-keys/HOST-harmonia-VERSION.secret` (root, mode 0400); it
 must never be copied off the host. The corresponding `.public` file is mode 0444.
-Null keys in `modules/cluster/inventory.nix` deliberately disable that peer as a
+Null keys in `nix/inventory.nix` deliberately disable that peer as a
 substituter while allowing every host to evaluate and start its own cache.
 
 ## Two-phase bootstrap and Hades-first rollout
@@ -28,7 +28,7 @@ ssh hades 'cat /var/lib/harmonia-keys/hades-harmonia-v1.public'
 ```
 
 Put that exact output in Hades's `cachePublicKey` in
-`modules/cluster/inventory.nix`, review and deploy Hades again, then deploy
+`nix/inventory.nix`, review and deploy Hades again, then deploy
 Poseidon and Zeus phase one. Collect each public key with:
 
 ```sh

@@ -7,15 +7,18 @@ fit best as tracked dotfiles.
 
 ## Layout
 
-- `flake.nix`: top-level flake entrypoint and inputs.
-- `hosts/darwin/<hostname>`: host-specific nix-darwin configuration.
-- `home/chant`: Home Manager user configuration.
-- `modules/shared`: shared modules for packages and shell tooling.
-- `modules/darwin`: macOS-specific modules such as defaults, Homebrew, and
+- `flake.nix`: thin flake entrypoint and inputs; `nix/default.nix` constructs outputs from `nix/inventory.nix`.
+- `nix/hosts/{darwin,nixos}/<hostname>`: host-specific nix-darwin configuration.
+- `nix/home/chant`: Home Manager user configuration.
+- `nix/modules/shared`: shared modules for packages and shell tooling.
+- `nix/modules/darwin`: macOS-specific modules such as defaults, Homebrew, and
   input tooling.
 - `stow`: application configs that are linked into place during Home Manager
   activation.
 - `bin`: shared and host-specific helper scripts.
+- `scripts`: repository maintenance entrypoints for building, cleaning, and updating.
+- `docs`: operational notes for lab hosts, strategy, and peer caching.
+- `tests`: shell-based regression tests for repository scripts.
 
 ## What This Config Manages
 

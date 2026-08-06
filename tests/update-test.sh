@@ -4,7 +4,8 @@ set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 t=$(mktemp -d); trap 'rm -rf "$t"' EXIT
 mkdir -p "$t/bin" "$t/repo"
-cp "$root/update.sh" "$t/repo/"
+mkdir -p "$t/repo/scripts"
+cp "$root/scripts/update.sh" "$t/repo/scripts/"
 real_jq=$(command -v jq)
 cat >"$t/base" <<'JSON'
 {"version":7,"root":"root","nodes":{"root":{"inputs":{"dep":"dep"}},"dep":{"inputs":{"nested":"nested"},"original":{"type":"github","owner":"o","repo":"direct","ref":"main"},"locked":{"type":"github","owner":"o","repo":"direct","rev":"1111111111111111111111111111111111111111","narHash":"a"}},"nested":{"original":{"type":"github","owner":"o","repo":"nested","ref":"old"},"locked":{"type":"github","owner":"o","repo":"nested","rev":"3333333333333333333333333333333333333333","narHash":"c"}}}}
@@ -52,13 +53,13 @@ if [[ ${FAIL_CHANGED_JQ:-} == 1 && " $* " == *keys_unsorted* ]]; then exit 7; fi
 exec "$REAL_JQ" "$@"
 EOF
 chmod +x "$t/bin/"*
-cat >"$t/repo/build.sh" <<'EOF'
+cat >"$t/repo/scripts/build.sh" <<'EOF'
 #!/usr/bin/env bash
 echo built >>"$MARKER"
 EOF
-chmod +x "$t/repo/build.sh"
+chmod +x "$t/repo/scripts/build.sh"
 reset() { cp "$t/base" "$t/repo/flake.lock"; rm -f "$t/build" "$t/curl.log"; }
-run() { (cd "$t/repo" && env PATH="$t/bin:$PATH" REAL_JQ="$real_jq" MOCK_CANDIDATE="$MOCK_CANDIDATE" CURL_LOG="$t/curl.log" MARKER="$t/build" "$@" ./update.sh "${ARGS[@]}"); }
+run() { (cd "$t/repo" && env PATH="$t/bin:$PATH" REAL_JQ="$real_jq" MOCK_CANDIDATE="$MOCK_CANDIDATE" CURL_LOG="$t/curl.log" MARKER="$t/build" "$@" ./scripts/update.sh "${ARGS[@]}"); }
 reject() { if run "$@" >"$t/out" 2>&1; then echo "expected rejection: $*" >&2; exit 1; fi; cmp "$t/base" "$t/repo/flake.lock"; }
 MOCK_CANDIDATE=$t/good
 

@@ -14,10 +14,10 @@ This repository is a new port of the dotfiles setup. Treat it as the source of t
 ## Repo Shape
 
 - `flake.nix` and `flake.lock`: flake entrypoint and pinned inputs.
-- `hosts/darwin/nyx/default.nix`: host-specific darwin configuration.
-- `home/chant/default.nix`: Home Manager user configuration.
-- `modules/shared/*.nix`: shared tool and package modules.
-- `modules/darwin/defaults.nix`: darwin-specific defaults.
+- `nix/hosts/darwin/nyx/default.nix`: host-specific darwin configuration.
+- `nix/home/chant/default.nix`: Home Manager user configuration.
+- `nix/modules/shared/*.nix`: shared tool and package modules.
+- `nix/modules/darwin/defaults.nix`: darwin-specific defaults.
 
 ## Change Approach
 

@@ -1,10 +1,10 @@
 # Lab Machine Management Strategy
 
-Status: proposed
+Status: current direction
 
 ## Goal
 
-Manage all four computers from this flake while keeping workload placement flexible. This document does not replace the router, NAS, switch, or other existing infrastructure.
+Manage the lab computers from this flake while keeping workload placement flexible. This document does not replace the router, NAS, switch, or other existing infrastructure.
 
 ## Recommended operating model
 
@@ -18,16 +18,11 @@ Manage all four computers from this flake while keeping workload placement flexi
 Use one flake with per-host platform metadata. Share policy through modules, but keep hardware and enabled workloads in each host directory.
 
 ```text
-hosts/
-  darwin/eris/
-  nixos/zeus/
-  nixos/poseidon/
-  nixos/hades/
-modules/
-  shared/
-  darwin/
-  linux/
-  services/
+nix/
+  inventory.nix
+  hosts/{darwin,nixos}/
+  home/
+  modules/{darwin,nixos,home,shared}/
 ```
 
 Nix can run on Ubuntu, but it cannot declaratively own the entire Ubuntu system. During transition, use Nix and Home Manager for packages and user configuration. Keep existing root-level Ubuntu configuration explicit. Migrate to NixOS when ready to have the flake own users, systemd services, containers, firewall rules, and upgrades.
@@ -103,8 +98,8 @@ Do not make every host automatically follow the repository head. Use reviewed, e
 ## Migration plan
 
 1. Inventory CPU, RAM, disks, accelerators, and current workloads on all hosts.
-2. Refactor the flake from one hardcoded `aarch64-darwin` system to per-host systems.
-3. Add standalone Home Manager outputs for all three Ubuntu hosts.
+2. Maintain the per-host system and profile metadata in `nix/inventory.nix`.
+3. Use the existing standalone Home Manager outputs during any Ubuntu transition.
 4. Package or containerize Forgejo, Hermes, and worker runtimes.
 5. Migrate the least critical Ubuntu host to NixOS first.
 6. Prove remote deployment, rollback, secret provisioning, and restore.

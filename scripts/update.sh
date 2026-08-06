@@ -4,13 +4,17 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: ./update.sh [--dry-run] [--urgent-security-bypass] [--no-build]
+Usage: scripts/update.sh [--dry-run] [--urgent-security-bypass] [--no-build]
 
 By default, only commits at least 72 hours old are selected. The urgent security
 bypass selects current commits and disables the age gate for ALL direct inputs
 and every changed transitive GitHub node.
 EOF
 }
+
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(cd -- "$script_dir/.." && pwd)
+cd "$repo_root"
 
 dry_run=false; urgent=false; no_build=false
 while (($#)); do
@@ -152,4 +156,4 @@ if $dry_run; then
   exit 0
 fi
 mv "$candidate" flake.lock
-if ! $no_build; then ./build.sh; fi
+if ! $no_build; then "$script_dir/build.sh"; fi
