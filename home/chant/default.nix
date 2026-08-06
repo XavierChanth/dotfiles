@@ -23,8 +23,6 @@ in {
       "${config.home.homeDirectory}/.dotfiles/bin/shared"
       "${config.home.homeDirectory}/.local/bin"
       "${config.home.homeDirectory}/.local/share/mise/shims"
-      "${config.home.homeDirectory}/.cargo/bin"
-      "${config.home.homeDirectory}/go/bin"
     ];
     sessionVariables.EDITOR = "nvim";
     file.".config/spaceship-prompt".source = "${pkgs.spaceship-prompt}/lib/spaceship-prompt";

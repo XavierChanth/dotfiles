@@ -1,43 +1,79 @@
 #!/bin/zsh
 
-command_exists() {
-  command -v "$1" >/dev/null 2>&1
-}
+# Rebuild PATH once.  Home Manager and login programs can both add entries, so
+# keep configured buckets deterministic and retain everything else at the end.
+typeset -a _path_inherited _path_local _path_nix _path_brew _path_darwin_d
+typeset -a _path_darwin _path_misc _path_base
+_path_inherited=( $path )
+_path_local=(
+  ${CMUX_BUNDLED_CLI_PATH:+${CMUX_BUNDLED_CLI_PATH:h}}
+  "$HOME/.dotfiles/bin/hosts/${HOST%%.*}"
+  "$HOME/.dotfiles/bin/shared"
+  "$HOME/.local/bin"
+  ${ANDROID_HOME:+"$ANDROID_HOME/cmdline-tools/latest/bin"}
+)
 
-__path=""
+for _path_entry in $_path_inherited; do
+  [[ -n $_path_entry ]] || continue
+  if [[ ( -n $CMUX_BUNDLED_CLI_PATH && $_path_entry == ${CMUX_BUNDLED_CLI_PATH:h} ) ||
+        ( -n $ANDROID_HOME && $_path_entry == "$ANDROID_HOME/cmdline-tools/latest/bin" ) ]]; then
+    continue
+  fi
+  case $_path_entry in
+    "$HOME/.dotfiles/bin/hosts/"*|"$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
+    "$HOME/.local/share/mise/shims"|"$HOME/.local/share/mise/"*) ;; # rebuilt below; never inherit stale mise state
+    "$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.bun/bin"|"$HOME/.pub-cache/bin"|"$HOME/.local/dev/flutter/"*|"$HOME/.local/share/gem/"*/bin) ;;
+    "$HOME/.nix-profile/bin"|/etc/profiles/per-user/*/bin|/nix/var/nix/profiles/default/bin|/run/current-system/sw/bin) _path_nix+=( "$_path_entry" ) ;;
+    /opt/homebrew/bin|/opt/homebrew/sbin|/home/linuxbrew/.linuxbrew/bin|/home/linuxbrew/.linuxbrew/sbin) _path_brew+=( "$_path_entry" ) ;;
+    *) _path_misc+=( "$_path_entry" ) ;;
+  esac
+done
 
-# flutter
-export FLUTTER_ROOT="$HOME/.local/dev/flutter"
-if [ -d $FLUTTER_ROOT ]; then
-  export PUB_CACHE="$HOME/.pub-cache"
-  __path="$PUB_CACHE/bin:$FLUTTER_ROOT/bin:$FLUTTER_ROOT/bin/cache/dart-sdk/bin:$__path"
-  # dart completions
-  [[ -f $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh ]] && . $XDG_CONFIG_HOME/.dart-cli-completion/zsh-config.zsh || true
-  alias pub='dart pub'
-  # pub() {
-  #   local bin="flutter"
-  #   local subcommand="$1"
-  #   shift 1
-  #   local extra_args=""
-  #   case "$subcommand" in
-  #   get)
-  #     extra_args="$extra_args --no-example"
-  #     ;;
-  #   bump | unpack | workspace)
-  #     bin="dart"
-  #     ;;
-  #   esac
-  #   "$bin" pub "$subcommand" $extra_args "$@"
-  # }
-  alias melos='dart run melos'
+if [[ $OSTYPE == darwin* ]]; then
+  for _path_file in /etc/paths.d/*(N); do
+    while IFS= read -r _path_entry; do
+      [[ -n $_path_entry ]] && _path_darwin_d+=( "$_path_entry" )
+    done < "$_path_file"
+  done
+  if [[ -r /etc/paths ]]; then
+    while IFS= read -r _path_entry; do
+      [[ -n $_path_entry ]] && _path_darwin+=( "$_path_entry" )
+    done < /etc/paths
+  fi
 fi
 
-# android
-export ANDROID_HOME="/Users/chant/Library/Android/sdk"
-__path="$ANDROID_HOME/cmdline-tools/latest/bin:$__path"
+# mise receives a stable path without local prefixes.  Consequently every
+# hook-env result can be fixed up by prepending a small, constant-size array.
+_path_base=(
+  "$HOME/.local/share/mise/shims"
+  $_path_nix
+  $_path_brew
+  $_path_darwin_d
+  $_path_darwin
+  $_path_misc
+)
+typeset -gU path PATH
+path=( $_path_base )
+unset MANPATH
+
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+
+  # Drop mise's per-prompt refresh.  Keep directory refreshes, followed by the
+  # configured local prefix (config edits take effect after cd or a new shell).
+  autoload -Uz add-zsh-hook
+  add-zsh-hook -d precmd _mise_hook_precmd 2>/dev/null
+  add-zsh-hook -d chpwd _mise_hook_chpwd 2>/dev/null
+  _dotfiles_mise_chpwd() {
+    _mise_hook_chpwd
+    path=( $_path_local $path )
+  }
+  add-zsh-hook chpwd _dotfiles_mise_chpwd
+fi
+path=( $_path_local $path )
 
 # clang
-export CPATH="/usr/local/include:$CPATH"
+export CPATH="/usr/local/include${CPATH:+:$CPATH}"
 
 # cmake
 alias cmbs='cmake -G Ninja -B build -S . -DCMAKE_INSTALL_PREFIX="$HOME/.local/" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-std=c99 -Wno-error"'
@@ -47,90 +83,18 @@ alias cmcc='ln -s build/compile_commands.json .; [ -d "./tests" ] && ln -s build
 alias ctb='ctest --test-dir build --output-on-failure'
 alias ccc='cmbs; cmbb; cmcc'
 
-# golang
-if command_exists go; then
-  __path="$HOME/go/bin:$__path"
-fi
-
-# rust / cargo
-if command_exists cargo || command_exists rustup; then
-  __path="$HOME/.cargo/bin:$__path"
-fi
-
-# dotnet
-if command_exists dotnet; then
-  __path="$HOME/.dotnet/tools:$__path"
-fi
-
-# ruby
-if command_exists gem; then
-  export GEM_HOME="$(gem env user_gemhome)"
-  __path="$GEM_HOME/bin:$__path"
-fi
-
-if command_exists arduino-cli; then
+if (( $+commands[arduino-cli] )); then
   alias ard='arduino-cli'
   function ard-upload() {
-    p="$1"
-    if [ -z "$p" ]; then
+    local p="$1"
+    if [[ -z "$p" ]]; then
       echo "Usage: ard-upload <path>"
       return 1
     fi
-    selected="$(arduino-cli board list | tail -n +2 | fzf)"
-    if [ -z "$selected" ]; then
-      echo Nothing selected
-      return 0
-    fi
+    local selected="$(arduino-cli board list | tail -n +2 | fzf)"
+    [[ -n "$selected" ]] || { echo Nothing selected; return 0; }
     arduino-cli upload "$p" -b "$(echo $selected | rev | cut -w -f2 | rev)" -p "$(echo $selected | cut -w -f1)"
   }
 fi
 
-# Preserve binaries from the standalone Bun installation below mise-managed tools.
-if [ -d "$HOME/.bun/bin" ]; then
-  __path="$HOME/.bun/bin:$__path"
-fi
-
-# Prepend language-specific user binary directories.
-if [ -n "$__path" ]; then
-  export PATH="${__path%:}:$PATH"
-fi
-
-# Runtime and tool version management
-if command_exists mise; then
-  eval "$(mise activate zsh)"
-fi
-
-# mise rewrites PATH from its precmd hook. Normalize after that hook every time
-# so repository bins retain precedence and Nix remains the final bucket.
-_normalize_path_order() {
-  local path_entry
-  local -a host_path mise_path language_path system_path nix_path
-  for path_entry in $path; do
-    [[ -n "$path_entry" ]] || continue
-    case "$path_entry" in
-      "$HOME/.dotfiles/bin/hosts/"*) host_path+=("$path_entry") ;;
-      "$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
-      "$HOME/.local/share/mise/shims") ;; # session/GUI only; activation needs no shim
-      "$HOME/.local/share/mise/"*) mise_path+=("$path_entry") ;;
-      "$HOME/.bun/bin"|"$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.pub-cache/bin"|"$HOME/.local/share/gem/"*/bin) language_path+=("$path_entry") ;;
-      "$HOME/.nix-profile/bin"|/etc/profiles/per-user/*/bin|/nix/var/nix/profiles/default/bin|/run/current-system/sw/bin) nix_path+=("$path_entry") ;;
-      *) system_path+=("$path_entry") ;;
-    esac
-  done
-  path=(
-    ${CMUX_BUNDLED_CLI_PATH:+${CMUX_BUNDLED_CLI_PATH:h}}
-    $host_path
-    "$HOME/.dotfiles/bin/shared"
-    "$HOME/.local/bin"
-    $mise_path
-    $language_path
-    $system_path
-    /usr/NX/bin
-    $nix_path
-  )
-  typeset -gU path PATH
-}
-
-_normalize_path_order
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd _normalize_path_order
+unset _path_inherited _path_nix _path_brew _path_darwin_d _path_darwin _path_misc _path_base _path_entry _path_file
