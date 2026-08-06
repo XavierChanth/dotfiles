@@ -6,7 +6,6 @@
   ...
 }: {
   imports = [
-    ../cluster
     ./harmonia-peer-cache.nix
   ];
 

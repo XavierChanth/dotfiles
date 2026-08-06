@@ -1,5 +1,5 @@
-{config, hostname, lib, pkgs, ...}: let
-  hosts = config.cluster.hosts;
+{config, hostname, inventory, lib, pkgs, ...}: let
+  hosts = lib.filterAttrs (_: host: host ? cacheAddress) inventory;
   keyDirectory = "/var/lib/harmonia-keys";
   localHost = hosts.${hostname};
   keyVersion = localHost.cacheKeyVersion;
