@@ -6,8 +6,7 @@ typeset -a _path_inherited _path_local _path_nix _path_brew _path_darwin_d
 typeset -a _path_darwin _path_misc _path_base
 _path_inherited=( $path )
 _path_local=(
-  ${CMUX_BUNDLED_CLI_PATH:+${CMUX_BUNDLED_CLI_PATH:h}}
-  "$HOME/.dotfiles/bin/hosts/${HOST%%.*}"
+  ${DOTFILES_HOST_BIN:+"$DOTFILES_HOST_BIN"}
   "$HOME/.dotfiles/bin/shared"
   "$HOME/.local/bin"
   ${ANDROID_HOME:+"$ANDROID_HOME/cmdline-tools/latest/bin"}
@@ -15,8 +14,7 @@ _path_local=(
 
 for _path_entry in $_path_inherited; do
   [[ -n $_path_entry ]] || continue
-  if [[ ( -n $CMUX_BUNDLED_CLI_PATH && $_path_entry == ${CMUX_BUNDLED_CLI_PATH:h} ) ||
-        ( -n $ANDROID_HOME && $_path_entry == "$ANDROID_HOME/cmdline-tools/latest/bin" ) ]]; then
+  if [[ -n $ANDROID_HOME && $_path_entry == "$ANDROID_HOME/cmdline-tools/latest/bin" ]]; then
     continue
   fi
   case $_path_entry in
