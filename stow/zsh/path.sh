@@ -2,7 +2,7 @@
 
 # Rebuild PATH once.  Home Manager and login programs can both add entries, so
 # keep configured buckets deterministic and retain everything else at the end.
-typeset -a _path_inherited _path_local _path_nix _path_brew _path_darwin_d
+typeset -a _path_inherited _path_local _path_wrappers _path_nix _path_brew _path_darwin_d
 typeset -a _path_darwin _path_misc _path_base
 _path_inherited=( $path )
 _path_local=(
@@ -21,6 +21,7 @@ for _path_entry in $_path_inherited; do
     "$HOME/.dotfiles/bin/hosts/"*|"$HOME/.dotfiles/bin/shared"|"$HOME/.local/bin") ;;
     "$HOME/.local/share/mise/shims"|"$HOME/.local/share/mise/"*) ;; # rebuilt below; never inherit stale mise state
     "$HOME/.cargo/bin"|"$HOME/go/bin"|"$HOME/.dotnet/tools"|"$HOME/.bun/bin"|"$HOME/.pub-cache/bin"|"$HOME/.local/dev/flutter/"*|"$HOME/.local/share/gem/"*/bin) ;;
+    /run/wrappers/bin) _path_wrappers+=( "$_path_entry" ) ;;
     "$HOME/.nix-profile/bin"|/etc/profiles/per-user/*/bin|/nix/var/nix/profiles/default/bin|/run/current-system/sw/bin) _path_nix+=( "$_path_entry" ) ;;
     /opt/homebrew/bin|/opt/homebrew/sbin|/home/linuxbrew/.linuxbrew/bin|/home/linuxbrew/.linuxbrew/sbin) _path_brew+=( "$_path_entry" ) ;;
     *) _path_misc+=( "$_path_entry" ) ;;
@@ -29,12 +30,12 @@ done
 
 if [[ $OSTYPE == darwin* ]]; then
   for _path_file in /etc/paths.d/*(N); do
-    while IFS= read -r _path_entry; do
+    while IFS= read -r _path_entry || [[ -n $_path_entry ]]; do
       [[ -n $_path_entry ]] && _path_darwin_d+=( "$_path_entry" )
     done < "$_path_file"
   done
   if [[ -r /etc/paths ]]; then
-    while IFS= read -r _path_entry; do
+    while IFS= read -r _path_entry || [[ -n $_path_entry ]]; do
       [[ -n $_path_entry ]] && _path_darwin+=( "$_path_entry" )
     done < /etc/paths
   fi
@@ -44,6 +45,7 @@ fi
 # hook-env result can be fixed up by prepending a small, constant-size array.
 _path_base=(
   "$HOME/.local/share/mise/shims"
+  $_path_wrappers
   $_path_nix
   $_path_brew
   $_path_darwin_d
@@ -54,6 +56,10 @@ typeset -gU path PATH
 path=( $_path_base )
 unset MANPATH
 
+# Do not let activation inherited from an outer shell restore its old PATH.
+unset MISE_SHELL __MISE_DIFF __MISE_SESSION __MISE_ORIG_PATH \
+  __MISE_ZSH_PRECMD_RUN __MISE_ZSH_CHPWD_RAN
+
 if (( $+commands[mise] )); then
   eval "$(mise activate zsh)"
 
@@ -63,7 +69,7 @@ if (( $+commands[mise] )); then
   add-zsh-hook -d precmd _mise_hook_precmd 2>/dev/null
   add-zsh-hook -d chpwd _mise_hook_chpwd 2>/dev/null
   _dotfiles_mise_chpwd() {
-    _mise_hook_chpwd
+    (( $+functions[_mise_hook_chpwd] )) && _mise_hook_chpwd
     path=( $_path_local $path )
   }
   add-zsh-hook chpwd _dotfiles_mise_chpwd
@@ -95,4 +101,4 @@ if (( $+commands[arduino-cli] )); then
   }
 fi
 
-unset _path_inherited _path_nix _path_brew _path_darwin_d _path_darwin _path_misc _path_base _path_entry _path_file
+unset _path_inherited _path_wrappers _path_nix _path_brew _path_darwin_d _path_darwin _path_misc _path_base _path_entry _path_file
