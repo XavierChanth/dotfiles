@@ -61,9 +61,9 @@ let
   brews = map (descriptor: ensure ((descriptor.brew or null) == null || builtins.elem "darwin" descriptor.platforms)
     "${descriptor.name}.brew requires Darwin support" (validateBrew descriptor)) descriptors;
   brew = {
-    taps = lib.concatMap (x: x.taps) brews;
-    brews = lib.concatMap (x: x.brews) brews;
-    casks = lib.concatMap (x: x.casks) brews;
+    taps = lib.unique (lib.concatMap (x: x.taps) brews);
+    brews = lib.unique (lib.concatMap (x: x.brews) brews);
+    casks = lib.unique (lib.concatMap (x: x.casks) brews);
   };
   result = {
     inherit stow brew;

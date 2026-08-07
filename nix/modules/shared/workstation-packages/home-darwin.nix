@@ -1,10 +1,8 @@
 {config, lib, pkgs, ...}: {
   imports = [
-    ./darwin-applications.nix
-    ../shared/claude.nix
-    ../shared/cliproxy.nix
-    ../shared/ghostty.nix
-    ../shared/packages.nix
+    ../../home/darwin-applications.nix
+    ../claude.nix
+    ../packages.nix
   ];
 
   # Android Studio owns this SDK; unlike developer runtimes it is not managed

@@ -1,5 +1,5 @@
 {lib, ...}: let
-  selection = builtins.fromJSON (builtins.readFile ../../../themes/selection.json);
+  selection = builtins.fromJSON (builtins.readFile ../../../../themes/selection.json);
 in {
   programs.ghostty = {
     enable = true;

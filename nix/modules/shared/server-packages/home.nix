@@ -1,6 +1,6 @@
 {config, lib, pkgs, ...}: {
   imports = [
-    ../shared/server-packages.nix
+    ./packages.nix
   ];
 
   # Workstation activation created these links imperatively. Remove only links

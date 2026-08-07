@@ -1,3 +1,1 @@
-{...}: {
-  imports = [../../../modules/nixos/common.nix];
-}
+{ groups = [ "gnome-desktop" ]; modules = [ ./platform.nix ]; }

@@ -1,0 +1,1 @@
+{ name = "editor-core"; platforms = [ "darwin" "nixos" ]; home = [ ./git.nix ./identities.nix ]; stow = [ { name="jj"; order=30; target=".config/jj"; prepare=[".config/jj"]; } { name="nvim"; order=70; target=".config/nvim"; prepare=[".config/nvim"]; } ]; }

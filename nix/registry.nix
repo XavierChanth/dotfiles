@@ -1,47 +1,25 @@
-# Explicit group registry. Descriptors are plain data; module evaluation happens later.
 {
-  editor-core = {
-    name = "editor-core"; platforms = [ "darwin" "nixos" ];
-    home = [ ./modules/shared/git.nix ./modules/shared/identities.nix ];
-    stow = [
-      { name = "jj"; order = 30; target = ".config/jj"; prepare = [ ".config/jj" ]; }
-      { name = "nvim"; order = 70; target = ".config/nvim"; prepare = [ ".config/nvim" ]; }
-    ];
-  };
-  terminal-core = {
-    name = "terminal-core"; platforms = [ "darwin" "nixos" ];
-    home = [ ./modules/shared/shell.nix ./modules/shared/tmux.nix ];
-    stow = [
-      { name = "zsh"; order = 50; target = ".config/zsh"; prepare = [ ".config/zsh" ]; }
-      { name = "tmux"; order = 60; target = ".config/tmux"; prepare = [ ".config/tmux" ]; }
-    ];
-  };
-  ssh = { name = "ssh"; platforms = [ "darwin" "nixos" ]; home = [ ./modules/shared/ssh.nix ]; };
-  ai-applications = {
-    name = "ai-applications"; platforms = [ "darwin" "nixos" ];
-    # Implementations remain imported by the existing workstation module.
-    stow = [
-      { name = "agents"; order = 10; target = ".agents"; prepare = [ ".agents" ]; }
-      { name = "codex"; order = 20; target = ".codex"; prepare = [ ".codex/rules" ]; }
-      { name = "grok"; order = 40; target = ".grok"; prepare = [ ".grok" ]; }
-      { name = "opencode"; order = 80; target = ".config/opencode"; prepare = [ ".config/opencode" ]; }
-    ];
-  };
-  ghostty = { name = "ghostty"; platforms = [ "darwin" "nixos" ]; stow = [ { name = "ghostty-themes"; target = ".config/ghostty/themes"; prepare = [ ".config/ghostty/themes" ]; special = true; } ]; };
-  mise-workstation = {
-    name = "mise-workstation"; platforms = [ "darwin" "nixos" ];
-    home = [ ./modules/home/mise.nix ];
-    stow = [ { name = "mise"; order = 100; target = ".config/mise"; prepare = [ ".config/mise" ]; } ];
-  };
-  workstation-packages = {
-    name = "workstation-packages"; platforms = [ "darwin" "nixos" ];
-    requires = [ "mise-workstation" ];
-    darwinHome = [ ./modules/home/workstation.nix ];
-    nixosHome = [ ./modules/home/linux-workstation.nix ];
-    stow = [
-      { name = "cmux"; order = 90; target = ".config/cmux"; prepare = [ ".config/cmux" ]; }
-      { name = "zed"; order = 110; target = ".config/zed"; prepare = [ ".config/zed" ]; }
-    ];
-  };
-  server-packages = { name = "server-packages"; platforms = [ "darwin" "nixos" ]; home = [ ./modules/home/server.nix ]; };
+  editor-core = import ./modules/shared/editor-core;
+  terminal-core = import ./modules/shared/terminal-core;
+  ssh = import ./modules/shared/ssh;
+  ai-applications = import ./modules/shared/ai-applications;
+  ghostty = import ./modules/shared/ghostty;
+  cliproxy = import ./modules/shared/cliproxy;
+  mise-workstation = import ./modules/shared/mise-workstation;
+  workstation-packages = import ./modules/shared/workstation-packages;
+  server-packages = import ./modules/shared/server-packages;
+  nixos-base = import ./modules/nixos/base;
+  ssh-server = import ./modules/nixos/ssh-server;
+  tailscale = import ./modules/nixos/tailscale;
+  gnome-desktop = import ./modules/nixos/gnome-desktop;
+  server-power = import ./modules/nixos/server-power;
+  maintenance = import ./modules/nixos/maintenance;
+  harmonia-cache = import ./modules/nixos/harmonia-cache;
+  darwin-rosetta = import ./modules/darwin/rosetta;
+  darwin-base = import ./modules/darwin/base;
+  darwin-defaults = import ./modules/darwin/defaults;
+  darwin-raycast = import ./modules/darwin/raycast;
+  darwin-server-power = import ./modules/darwin/server-power;
+  darwin-desktop-apps = import ./modules/darwin/desktop-apps;
+  darwin-server-brew = import ./modules/darwin/homebrew;
 }

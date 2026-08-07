@@ -1,3 +1,1 @@
-{...}: {
-  imports = [../../../modules/darwin/server.nix];
-}
+{ groups = []; modules = []; }

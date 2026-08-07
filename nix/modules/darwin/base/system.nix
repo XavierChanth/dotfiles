@@ -1,6 +1,6 @@
 {hostname, username, ...}: {
   imports = [
-    ../shared/nix.nix
+    ../../shared/nix.nix
   ];
 
   networking.hostName = hostname;

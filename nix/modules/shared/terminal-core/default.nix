@@ -1,0 +1,1 @@
+{ name="terminal-core"; platforms=["darwin" "nixos"]; home=[./shell.nix ./tmux.nix]; stow=[ {name="zsh";order=50;target=".config/zsh";prepare=[".config/zsh"]; } {name="tmux";order=60;target=".config/tmux";prepare=[".config/tmux"]; } ]; }

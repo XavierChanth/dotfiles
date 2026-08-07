@@ -12,12 +12,21 @@
     linux-workstation = { kind = "nixos"; legacy = "workstation"; };
     linux-server = { kind = "nixos"; legacy = "server"; };
   };
+  declarationFor = kind: hostname: let
+    path = if kind == "darwin" then ./hosts/darwin/${hostname} else if kind == "nixos" then ./hosts/nixos/${hostname}
+      else throw "no host declaration dispatch for `${kind}`";
+    value = import path;
+    valid = builtins.isAttrs value
+      && value ? groups && builtins.isList value.groups && lib.all builtins.isString value.groups
+      && value ? modules && builtins.isList value.modules && lib.all (module: builtins.isPath module) value.modules;
+  in if valid then value else throw "host declaration `${hostname}` must be an attribute set with string-list `groups` and path-list `modules`";
   contextFor = hostname: let
     host = inventory.${hostname};
     mapping = profileKinds.${host.profile} or (throw "unknown profile `${host.profile}` for ${hostname}");
     _compatible = if mapping.kind == host.kind then true else throw "profile `${host.profile}` does not support ${host.kind}";
     profileGroups = profiles.${host.profile} or (throw "unknown profile `${host.profile}` for ${hostname}");
-    groupNames = profileGroups ++ (host.groups or []);
+    declaration = declarationFor host.kind hostname;
+    groupNames = profileGroups ++ (host.groups or []) ++ declaration.groups;
   in builtins.seq _compatible {
     inherit inputs username hostname inventory;
     hostProfile = host // { profileName = host.profile; profile = mapping.legacy; };
@@ -31,8 +40,7 @@
   darwinHosts = hostsOfKind "darwin";
   nixosHosts = hostsOfKind "nixos";
   hostModules = kind: hostname:
-    [ (if kind == "darwin" then ./hosts/darwin/${hostname} else if kind == "nixos" then ./hosts/nixos/${hostname}
-       else throw "no host module dispatch for `${kind}`") ] ++ (inventory.${hostname}.extraModules or []);
+    (declarationFor kind hostname).modules ++ (inventory.${hostname}.extraModules or []);
   pkgsFor = system: import nixpkgs { inherit system; config.allowUnfree = true; };
   hmModule = context: { home-manager.useGlobalPkgs = true; home-manager.useUserPackages = true;
     home-manager.extraSpecialArgs = context;

@@ -1,0 +1,1 @@
+{ name="ghostty"; platforms=["darwin" "nixos"]; home=[./home.nix]; brew=import ./brew-ghostty.nix; stow=[{name="ghostty-themes";target=".config/ghostty/themes";prepare=[".config/ghostty/themes"];special=true;}]; }
