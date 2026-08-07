@@ -28,7 +28,11 @@
     ];
   };
   ghostty = { name = "ghostty"; platforms = [ "darwin" "nixos" ]; stow = [ { name = "ghostty-themes"; target = ".config/ghostty/themes"; prepare = [ ".config/ghostty/themes" ]; special = true; } ]; };
-  mise-workstation = { name = "mise-workstation"; platforms = [ "darwin" "nixos" ]; stow = [ { name = "mise"; order = 100; target = ".config/mise"; prepare = [ ".config/mise" ]; } ]; };
+  mise-workstation = {
+    name = "mise-workstation"; platforms = [ "darwin" "nixos" ];
+    home = [ ./modules/home/mise.nix ];
+    stow = [ { name = "mise"; order = 100; target = ".config/mise"; prepare = [ ".config/mise" ]; } ];
+  };
   workstation-packages = {
     name = "workstation-packages"; platforms = [ "darwin" "nixos" ];
     requires = [ "mise-workstation" ];

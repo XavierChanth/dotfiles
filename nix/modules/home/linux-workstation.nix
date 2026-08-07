@@ -2,8 +2,10 @@
 { ... }: {
   imports = [
     ../shared/claude.nix
-    ../shared/cliproxy.nix
     ../shared/ghostty.nix
     ../shared/packages.nix
   ];
+
+  # Ghostty is configured but not installed by Home Manager.
+  programs.ghostty.systemd.enable = false;
 }

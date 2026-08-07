@@ -56,12 +56,27 @@
   profileTests = lib.all (name: let mapping = profileKinds.${name}; in
     (resolve { inherit registry; kind = mapping.kind; groups = profiles.${name}; }) ? homeModules)
     (builtins.attrNames profileKinds);
+  linuxWorkstation = resolve {
+    inherit registry;
+    kind = "nixos";
+    groups = profiles.linux-workstation;
+  };
+  linuxWorkstationHome = home-manager.lib.homeManagerConfiguration {
+    pkgs = pkgsFor "x86_64-linux";
+    modules = linuxWorkstation.homeModules ++ [{
+      home.username = "foundation-test";
+      home.homeDirectory = "/home/foundation-test";
+      home.stateVersion = "26.05";
+    }];
+  };
   checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; true);
 in builtins.seq checked {
   darwinConfigurations = attrs (builtins.attrNames darwinHosts) mkDarwin;
   nixosConfigurations = attrs (builtins.attrNames nixosHosts) mkNixos;
   homeConfigurations = builtins.listToAttrs (map (hostname: { name = "${username}@${hostname}"; value = mkHome hostname; }) (builtins.attrNames supportedHomeHosts));
-  checks = lib.genAttrs [ "aarch64-darwin" "x86_64-linux" ] (system: {
-    resolver = (pkgsFor system).runCommand "resolver-tests" {} "touch $out";
-  });
+  checks = lib.recursiveUpdate
+    (lib.genAttrs [ "aarch64-darwin" "x86_64-linux" ] (system: {
+      resolver = (pkgsFor system).runCommand "resolver-tests" {} "touch $out";
+    }))
+    { x86_64-linux.linux-workstation-home = linuxWorkstationHome.activationPackage; };
 }
