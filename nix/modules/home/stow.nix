@@ -1,6 +1,6 @@
 {config, hostProfile, lib, pkgs, resolvedGroups, ...}: let
   home = config.home.homeDirectory;
-  isWorkstation = hostProfile.profile == "workstation";
+  selected = name: lib.any (item: item.name == name) resolvedGroups.stow;
   commands = import ../../lib/stow.nix { inherit lib pkgs; } {
     inherit home;
     declarations = resolvedGroups.stow;
@@ -20,7 +20,7 @@ in {
       esac
     fi
 
-    ${lib.optionalString isWorkstation ''
+    ${lib.optionalString (selected "ghostty-themes") ''
       # Ordered migration: old Home Manager Ghostty theme links must be removed
       # before Stow can own the same paths.
       ghostty_theme_dir="${home}/.config/ghostty/themes"
@@ -35,7 +35,7 @@ in {
       ${pkgs.stow}/bin/stow --dir="$STOW_DIR" --target="$ghostty_theme_dir" --restow ghostty-themes
     ''}
 
-    ${lib.optionalString (!isWorkstation) ''
+    ${lib.optionalString (lib.any (name: !(selected name)) [ "cmux" "mise" "zed" "ghostty-themes" ]) ''
       cleanup_stow_links() {
         package_name="$1"
         target_dir="$2"
@@ -49,10 +49,10 @@ in {
         done
       }
 
-      cleanup_stow_links cmux "${home}/.config/cmux"
-      cleanup_stow_links mise "${home}/.config/mise"
-      cleanup_stow_links zed "${home}/.config/zed"
-      cleanup_stow_links ghostty-themes "${home}/.config/ghostty/themes"
+      ${lib.optionalString (!(selected "cmux")) ''cleanup_stow_links cmux "${home}/.config/cmux"''}
+      ${lib.optionalString (!(selected "mise")) ''cleanup_stow_links mise "${home}/.config/mise"''}
+      ${lib.optionalString (!(selected "zed")) ''cleanup_stow_links zed "${home}/.config/zed"''}
+      ${lib.optionalString (!(selected "ghostty-themes")) ''cleanup_stow_links ghostty-themes "${home}/.config/ghostty/themes"''}
     ''}
 
     ${stowCommands}

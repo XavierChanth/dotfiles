@@ -21,7 +21,7 @@ zeus	192.168.8.4	nixos
 hades	192.168.8.2	nixos
 eris	192.168.8.202	darwin
 EOF
-export PATH="$T/bin:/usr/bin:/bin" DEPLOY_FLAKE=/source DEPLOY_INVENTORY="$T/inventory" DEPLOY_RS="$T/bin/deploy-rs" LAB_UPDATE="$T/bin/lab-update"
+export PATH="$T/bin:$PATH" DEPLOY_FLAKE=/source DEPLOY_INVENTORY="$T/inventory" DEPLOY_RS="$T/bin/deploy-rs" LAB_UPDATE="$T/bin/lab-update"
 run() { : >"$LOG"; "$TEST_BASH" "$S" "$@"; }
 expect_failure() { if "$@"; then echo "expected failure: $*" >&2; return 1; fi; }
 run --help; [[ ! -s $LOG ]]

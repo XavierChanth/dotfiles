@@ -80,6 +80,19 @@
       home.stateVersion = "26.05";
     }];
   };
+  codingValidation = let
+    home = name: (mkHome name).config;
+    packageNames = name: map lib.getName (home name).home.packages;
+    has = package: name: builtins.elem package (packageNames name);
+    hasCompiler = name: lib.any (p: lib.hasPrefix "gcc" p || lib.hasPrefix "clang" p) (packageNames name);
+    activation = name: (home name).home.activation;
+    stowText = name: (activation name).stowDotfiles.data;
+  in assert lib.all (name: has "mise" name && hasCompiler name) [ "poseidon" "zeus" ];
+     assert has "mise" "nyx" && !(hasCompiler "nyx");
+     assert !(has "mise" "hades") && !(hasCompiler "hades") && !(activation "hades" ? installMiseTools);
+     assert lib.all (name: (activation name).installMiseTools.after == [ "stowDotfiles" ]) [ "poseidon" "zeus" ];
+     assert lib.all (name: !(lib.hasInfix ''cleanup_stow_links mise '' (stowText name))) [ "poseidon" "zeus" ];
+     assert lib.hasInfix ''cleanup_stow_links mise '' (stowText "hades"); true;
   inventoryValidation = let
     charon = inventory.charon;
     deployed = lab.deploymentOrder;
@@ -87,7 +100,7 @@
      assert openwrtProfiles ? ${charon.profile};
      assert openwrtProfiles.${charon.profile}.managesPrivateDns && openwrtProfiles.${charon.profile}.attendedOnly;
      assert lib.all (name: inventory.${name}.lab.deploy or false) deployed; true;
-  checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; assert inventoryValidation; true);
+  checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; assert codingValidation; assert inventoryValidation; true);
   systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
   deployNames = lab.deploymentOrder;
   deployNodes = attrs deployNames (name: let host = inventory.${name}; in {
@@ -154,16 +167,39 @@ in builtins.seq checked (builtins.seq deployValidation {
         touch $out
       '';
     } // lib.optionalAttrs (builtins.elem system [ "aarch64-darwin" "x86_64-linux" ]) {
-      resolver = pkgs.runCommand "resolver-tests" {} "touch $out";
+      resolver-evaluation = assert resolverTests; pkgs.runCommand "resolver-evaluation" {} ''
+        echo 'resolver eval assertions passed' > $out
+      '';
+      openwrt-safety = pkgs.runCommand "openwrt-safety-tests" {
+        nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused pkgs.gawk pkgs.shellcheck ];
+        TEST_ROOT = flakeSource;
+        CHARON_RENDER = allPackages.${system}.openwrt-charon-uci;
+        CHARON_APP = "${allPackages.${system}.openwrt-apply-charon}/bin/openwrt-apply-charon";
+        SKIP_FLAKE_EVAL = 1;
+      } ''
+        bash ${../tests/openwrt.sh}
+        touch $out
+      '';
+      lab-update-safety = let
+        manifest = name: (mkNixos name).config.environment.etc."lab-update/required-units".text;
+      in pkgs.runCommand "lab-update-safety-tests" {
+        nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep ];
+        TEST_ROOT = flakeSource;
+        LAB_UPDATE_BIN = "${allPackages.${system}.lab-update}/bin/lab-update";
+        HADES_MANIFEST = manifest "hades";
+        POSEIDON_MANIFEST = manifest "poseidon";
+      } ''
+        bash ${../tests/lab-update-test.sh}
+        touch $out
+      '';
+    } // lib.optionalAttrs (pkgs ? uci && lib.hasSuffix "-linux" system) {
+      openwrt-libuci = pkgs.runCommand "openwrt-libuci-semantic" {
+        nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused pkgs.uci ];
+        CHARON_RENDER = allPackages.${system}.openwrt-charon-uci;
+      } ''
+        bash ${../tests/openwrt-libuci.sh}
+        touch $out
+      '';
     }))
-    { x86_64-linux = {
-        linux-workstation-home = linuxWorkstationHome.activationPackage;
-        openwrt-libuci = let pkgs = pkgsFor "x86_64-linux"; in pkgs.runCommand "openwrt-libuci-semantic" {
-          nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused pkgs.uci ];
-          CHARON_RENDER = allPackages.x86_64-linux.openwrt-charon-uci;
-        } ''
-          bash ${../tests/openwrt-libuci.sh}
-          touch $out
-        '';
-      }; };
+    { x86_64-linux.linux-workstation-home = linuxWorkstationHome.activationPackage; };
 })

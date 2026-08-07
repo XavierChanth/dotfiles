@@ -2,15 +2,17 @@
 # Negated probes below are assertions; SC2251 is intentional under errexit.
 # shellcheck disable=SC2251
 set -euo pipefail
-root=$(cd "$(dirname "$0")/.." && pwd); tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
-render=$(nix build --no-link --print-out-paths --no-write-lock-file "$root#openwrt-charon-uci")
-app=$(nix build --no-link --print-out-paths --no-write-lock-file "$root#openwrt-apply-charon")/bin/openwrt-apply-charon
+root=${TEST_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}; tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+render=${CHARON_RENDER:-$(nix build --no-link --print-out-paths --no-write-lock-file "$root#openwrt-charon-uci")}
+app=${CHARON_APP:-$(nix build --no-link --print-out-paths --no-write-lock-file "$root#openwrt-apply-charon")/bin/openwrt-apply-charon}
 [[ $(grep -c '^set dhcp.dotfiles_lab_.*=hostrecord' "$render") == 4 ]]
 grep -q 'dotfiles_lab_metadata=dotfiles' "$render"; ! grep -qi eris "$render"
 # OpenWrt must not accidentally enter any system/home output set.
-! nix eval --json "$root#nixosConfigurations" --apply builtins.attrNames | grep -q 'charon'
-! nix eval --json "$root#darwinConfigurations" --apply builtins.attrNames | grep -q 'charon'
-! nix eval --json "$root#homeConfigurations" --apply builtins.attrNames | grep -q 'charon'
+if [[ ${SKIP_FLAKE_EVAL:-0} == 0 ]]; then
+  ! nix eval --json "$root#nixosConfigurations" --apply builtins.attrNames | grep -q 'charon'
+  ! nix eval --json "$root#darwinConfigurations" --apply builtins.attrNames | grep -q 'charon'
+  ! nix eval --json "$root#homeConfigurations" --apply builtins.attrNames | grep -q 'charon'
+fi
 # BusyBox nslookup answer parser accepts both layouts, but only an exact answer field.
 dns_answer_is() { awk -v expected="$1" '$1 ~ /^Address(:|$)/ { for (i = 2; i <= NF; i++) if ($i == expected) found = 1 } END { exit !found }'; }
 printf 'Server: 127.0.0.1\nAddress:\t192.168.8.1\n' | dns_answer_is 192.168.8.1

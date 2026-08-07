@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
+# Negated probes are assertions under errexit.
+# shellcheck disable=SC2251
 set -Eeuo pipefail
-root=$(cd "$(dirname "$0")/.." && pwd)
-out=$("$root/bin/shared/lab-update" --dry-run hades)
+root=${TEST_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}
+lab_update=${LAB_UPDATE_BIN:-$root/bin/shared/lab-update}
+out=$("$lab_update" --dry-run hades)
 grep -Fq 'no SSH or network calls' <<<"$out"
 # Evaluate rendered contracts without building or contacting a network.
 for host in hades poseidon; do
-  manifest=$(nix eval --offline --no-write-lock-file --raw "$root#nixosConfigurations.$host.config.environment.etc.\"lab-update/required-units\".text")
+  var="${host^^}_MANIFEST"
+  manifest=${!var:-$(nix eval --offline --no-write-lock-file --raw "$root#nixosConfigurations.$host.config.environment.etc.\"lab-update/required-units\".text")}
   [[ -n $manifest ]]
   ! grep -q '^$' <<<"${manifest%$'\n'}"
   grep -Fqx NetworkManager.service <<<"$manifest"

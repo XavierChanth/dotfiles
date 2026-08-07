@@ -12,6 +12,7 @@ update *args:
 
 check:
   nix flake check --all-systems --no-build --no-write-lock-file
+  nix flake check --no-write-lock-file
 
 deploy *args:
   nix run .#deploy -- {{args}}
