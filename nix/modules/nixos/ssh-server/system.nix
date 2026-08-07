@@ -1,1 +1,1 @@
-{ ... }: { services.openssh = { enable = true; openFirewall = true; settings = { KbdInteractiveAuthentication = false; PasswordAuthentication = false; PermitRootLogin = "no"; }; }; }
+{ ... }: { dotfiles.labUpdate.requiredUnits = [ "sshd.service" ]; services.openssh = { enable = true; openFirewall = true; settings = { KbdInteractiveAuthentication = false; PasswordAuthentication = false; PermitRootLogin = "no"; }; }; }

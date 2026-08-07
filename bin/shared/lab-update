@@ -56,6 +56,15 @@ finish() {
 trap finish EXIT
 trap 'exit 143' TERM HUP
 trap 'exit 130' INT
+manifest_link="$closure/etc/lab-update/required-units"
+manifest=$($B/readlink -f -- "$manifest_link") || exit 65
+[[ $manifest =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+=-]+(/[^/]+)*$ && -f $manifest && -r $manifest ]] || exit 65
+units=()
+while IFS= read -r u || [[ -n $u ]]; do
+  [[ -n $u && $u =~ ^[A-Za-z0-9@_.:-]+\.service$ ]] || exit 65
+  units+=("$u")
+done < "$manifest"
+(( ${#units[@]} > 0 )) || exit 65
 $B/systemctl stop lab-update-inhibit.service 2>/dev/null || true
 $B/systemctl reset-failed lab-update-inhibit.service 2>/dev/null || true
 $B/systemd-run --unit=lab-update-inhibit --collect "$B/systemd-inhibit" --what=sleep --why=lab-update --mode=block "$B/sleep" 1200
@@ -67,7 +76,9 @@ now=$({ $B/systemctl --failed --no-legend --plain || true; } | $B/awk '{print $1
 $B/getent ahosts cache.nixos.org >/dev/null
 $B/findmnt / >/dev/null
 if $B/grep -Eq '[[:space:]]/boot[[:space:]]' "$closure/etc/fstab"; then $B/findmnt /boot >/dev/null; fi
-for u in sshd.service tailscaled.service NetworkManager.service display-manager.service; do $B/systemctl is-active --quiet "$u"; done
+for u in "${units[@]}"; do
+  $B/systemctl is-active --quiet "$u"
+done
 for u in sleep.target suspend.target hibernate.target hybrid-sleep.target; do [[ $($B/systemctl is-enabled "$u" 2>/dev/null) == masked ]]; done
 $B/shutdown -r +15 'lab-update commit dead-man reboot'
 mutated=1
@@ -116,7 +127,7 @@ REMOTE_SHA=$("${SSH[@]}" "$HOST" "sha256sum $REMOTE_DIR/rollout-driver" | awk '{
 BUILD=$("${SSH[@]}" "$HOST" "nix build --no-link --no-write-lock-file --print-out-paths --builders '' $REMOTE_DIR#nixosConfigurations.$HOST.config.system.build.toplevel") || die 'build failed'
 mapfile -t paths < <(grep '^/nix/store/' <<<"$BUILD"); [[ ${#paths[@]} == 1 ]] || die 'expected one closure'; CLOSURE=${paths[0]}
 [[ $CLOSURE =~ ^/nix/store/[a-z0-9]{32}-[A-Za-z0-9._+=-]+$ ]] || die 'unsafe closure path'
-"${SSH[@]}" "$HOST" "nix path-info $CLOSURE >/dev/null && test -x $CLOSURE/bin/switch-to-configuration && test -x $CLOSURE/sw/bin/sshd && nix store diff-closures \$(readlink -f /run/current-system) $CLOSURE && test -r $CLOSURE/etc/ssh/sshd_config && test -r $CLOSURE/etc/fstab && findmnt --verify --tab-file $CLOSURE/etc/fstab && awk '\$2==\"/\"{ok=1} END{exit !ok}' $CLOSURE/etc/fstab && ! findmnt -nro OPTIONS /boot 2>/dev/null | grep -Eq '(^|,)ro(,|$)'" || die 'closure inspection failed (check fstab, root entry, and /boot mount options)'
+"${SSH[@]}" "$HOST" "nix path-info $CLOSURE >/dev/null && test -x $CLOSURE/bin/switch-to-configuration && test -x $CLOSURE/sw/bin/sshd && nix store diff-closures \$(readlink -f /run/current-system) $CLOSURE && test -r $CLOSURE/etc/ssh/sshd_config && test -r $CLOSURE/etc/fstab && test -r $CLOSURE/etc/lab-update/required-units && grep -Fqx sshd.service $CLOSURE/etc/lab-update/required-units && grep -Fqx tailscaled.service $CLOSURE/etc/lab-update/required-units && grep -Fqx NetworkManager.service $CLOSURE/etc/lab-update/required-units && findmnt --verify --tab-file $CLOSURE/etc/fstab && awk '\$2==\"/\"{ok=1} END{exit !ok}' $CLOSURE/etc/fstab && ! findmnt -nro OPTIONS /boot 2>/dev/null | grep -Eq '(^|,)ro(,|$)'" || die 'closure inspection failed (check required files and units, fstab root entry, and /boot mount options)'
 read -r -p "Type 'activate $HOST' to start the rollback-protected rollout: " a; [[ $a == "activate $HOST" ]] || die 'activation not confirmed'
 [[ -t 0 ]] || die 'the attended privileged phase requires a local stdin TTY'
 # Exactly one data-free attended connection. sudo reads the password directly from its TTY.
@@ -135,6 +146,7 @@ while (( SECONDS < deadline )); do
   load=${state[LoadState]}; active=${state[ActiveState]}; sub=${state[SubState]}; result=${state[Result]}; status=${state[ExecMainStatus]}; current=${state[CURRENT]}; profile=${state[PROFILE]}
   [[ $load == loaded ]] || die 'rollout unit is unknown or collected; dead-man may remain armed'
   if [[ $status == 64 ]]; then die 'rollout rejected an unsafe closure before reboot was armed'; fi
+  if [[ $status == 65 ]]; then die 'rollout rejected an invalid required-unit manifest before reboot was armed'; fi
   if [[ $status == 69 || $status == 70 ]]; then die 'rollout interpreter/environment failed before reboot was armed'; fi
   [[ $status != 72 ]] || die 'new closure is active, but dead-man cancellation failed; reboot remains armed'
   [[ $status != 71 ]] || die 'rollout failed after mutation and rollback was attempted; dead-man remains armed'

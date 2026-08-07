@@ -8,6 +8,7 @@
   mise-workstation = import ./modules/shared/mise-workstation;
   workstation-packages = import ./modules/shared/workstation-packages;
   server-packages = import ./modules/shared/server-packages;
+  lab-update-contract = import ./modules/nixos/lab-update-contract;
   nixos-base = import ./modules/nixos/base;
   ssh-server = import ./modules/nixos/ssh-server;
   tailscale = import ./modules/nixos/tailscale;

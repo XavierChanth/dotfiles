@@ -1,4 +1,5 @@
 { hostname, pkgs, username, ... }: {
+  dotfiles.labUpdate.requiredUnits = [ "NetworkManager.service" ];
   networking = { hostName = hostname; networkmanager.enable = true; firewall.enable = true; };
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
