@@ -31,7 +31,9 @@
   mise-workstation = { name = "mise-workstation"; platforms = [ "darwin" "nixos" ]; stow = [ { name = "mise"; order = 100; target = ".config/mise"; prepare = [ ".config/mise" ]; } ]; };
   workstation-packages = {
     name = "workstation-packages"; platforms = [ "darwin" "nixos" ];
-    home = [ ./modules/home/workstation.nix ];
+    requires = [ "mise-workstation" ];
+    darwinHome = [ ./modules/home/workstation.nix ];
+    nixosHome = [ ./modules/home/linux-workstation.nix ];
     stow = [
       { name = "cmux"; order = 90; target = ".config/cmux"; prepare = [ ".config/cmux" ]; }
       { name = "zed"; order = 110; target = ".config/zed"; prepare = [ ".config/zed" ]; }

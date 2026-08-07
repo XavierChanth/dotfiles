@@ -15,6 +15,8 @@ This repository is a new port of the dotfiles setup. Treat it as the source of t
 
 - `flake.nix` and `flake.lock`: thin flake entrypoint and pinned inputs.
 - `nix/default.nix` and `nix/inventory.nix`: flake outputs and canonical host inventory.
+- `nix/profiles.nix` and `nix/registry.nix`: explicit profile composition and typed group descriptors.
+- `nix/lib/*`: pure group resolution and Stow helpers.
 - `nix/hosts/{darwin,nixos}/*`: host-specific system configuration.
 - `nix/home/chant/default.nix`: Home Manager user configuration.
 - `nix/modules/{shared,home,darwin,nixos}/*`: reusable platform and user modules.
