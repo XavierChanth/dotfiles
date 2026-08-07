@@ -8,6 +8,7 @@ fit best as tracked dotfiles.
 ## Layout
 
 - `flake.nix`: thin flake entrypoint and inputs; `nix/default.nix` constructs outputs from `nix/inventory.nix`.
+- `justfile`: discoverable front doors that delegate to packaged apps and existing scripts.
 - `nix/hosts/{darwin,nixos}/<hostname>`: host-specific system configuration.
 - `nix/home/chant`: Home Manager user configuration.
 - `nix/modules/shared`: shared modules for packages and shell tooling.
@@ -44,12 +45,15 @@ alongside the first switch:
 softwareupdate --install-rosetta --agree-to-license
 ```
 
-Deploy a NixOS lab host from the repository root with:
+Routine lab deployment has one portable entrypoint:
 
 ```bash
-scripts/deploy-lab.sh hades build
-scripts/deploy-lab.sh hades switch
+nix run .#deploy -- hades
+nix run .#deploy -- lab
+# or: just deploy-host hades
 ```
+
+See [`docs/lab/deploy.md`](docs/lab/deploy.md) before deployment. The assured Hades path and attended OpenWrt path intentionally remain separate.
 
 If you only want to evaluate the Home Manager profile, this flake also exposes:
 

@@ -15,3 +15,7 @@ For each host:
 - Isolate and resource-limit agent workloads.
 - Record CPU, RAM, disks, accelerators, and existing workloads before assigning stable-service or disposable-worker duties.
 - Build and deploy independently so one host's failure does not block the others.
+
+## Deployment
+
+The deploy-rs lab set is Eris, Hades, Poseidon, and Zeus, addressed by canonical IP. Charon is OpenWrt and Nyx is only a client. The canonical sequential order is Poseidon, Zeus, Hades, Eris; see [deploy.md](deploy.md).

@@ -1,5 +1,5 @@
 {inputs}: let
-  inherit (inputs) nixpkgs nix-darwin home-manager;
+  inherit (inputs) nixpkgs nix-darwin home-manager deploy-rs;
   lib = nixpkgs.lib;
   username = "chant";
   inventory = import ./inventory.nix;
@@ -89,31 +89,81 @@
      assert lib.all (name: inventory.${name}.lab.deploy or false) deployed; true;
   checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; assert inventoryValidation; true);
   systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
-  openwrtPackages = lib.genAttrs systems (system: let pkgs = pkgsFor system; in {
+  deployNames = lab.deploymentOrder;
+  deployNodes = attrs deployNames (name: let host = inventory.${name}; in {
+    hostname = host.lab.address;
+    sshUser = username;
+    groups = [ "lab" ];
+    remoteBuild = true;
+    interactiveSudo = true;
+    autoRollback = true;
+    magicRollback = host.kind == "nixos"; # deploy-rs' inotify rollback is not portable to Darwin.
+    sshOpts = [ "-o" "ControlMaster=no" "-o" "ControlPath=none" "-o" "ServerAliveInterval=5" "-o" "ServerAliveCountMax=3" "-o" "ConnectTimeout=10" ];
+    activationTimeout = 600;
+    confirmTimeout = 60;
+    profiles.system = {
+      user = "root";
+      path = if host.kind == "nixos"
+        then deploy-rs.lib.${host.system}.activate.nixos (mkNixos name)
+        else deploy-rs.lib.${host.system}.activate.darwin (mkDarwin name);
+    };
+  });
+  deployValidation = assert builtins.attrNames deployNodes == lib.sort builtins.lessThan [ "eris" "hades" "poseidon" "zeus" ];
+    assert builtins.length deployNames == 4 && builtins.length (lib.unique deployNames) == 4;
+    assert lib.all (n: deployNodes.${n}.groups == [ "lab" ] && deployNodes.${n}.hostname == inventory.${n}.lab.address) deployNames; true;
+  deployConfig = { nodes = deployNodes; };
+  deployInventory = builtins.concatStringsSep "" (map (name:
+    "${name}\t${inventory.${name}.lab.address}\t${inventory.${name}.kind}\n") deployNames);
+  flakeSource = inputs.self.outPath;
+  allPackages = lib.genAttrs systems (system: let pkgs = pkgsFor system; in rec {
     openwrt-charon-uci = pkgs.writeText "charon-uci" openwrtRender;
     openwrt-apply-charon = pkgs.writeShellApplication { name = "openwrt-apply-charon"; runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.openssh pkgs.nix ]; text = ''
-      export CHARON_RENDER="${openwrtPackages.${system}.openwrt-charon-uci}"
+      export CHARON_RENDER="${openwrt-charon-uci}"
       ${builtins.readFile ../scripts/openwrt-apply-charon}
     ''; };
+    deploy-inventory = pkgs.writeText "deploy-inventory.tsv" deployInventory;
+    lab-update = pkgs.writeShellApplication { name = "lab-update"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.gawk pkgs.perl pkgs.openssh pkgs.jujutsu pkgs.gnutar pkgs.nix ]; excludeShellChecks = [ "SC2016" ]; text = builtins.readFile ../bin/shared/lab-update; };
+    deploy = pkgs.writeShellApplication { name = "deploy"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.openssh pkgs.nix pkgs.jujutsu ]; text = ''
+      export DEPLOY_FLAKE=${lib.escapeShellArg (toString flakeSource)}
+      export DEPLOY_INVENTORY=${lib.escapeShellArg (toString deploy-inventory)}
+      export DEPLOY_RS=${lib.escapeShellArg "${deploy-rs.packages.${system}.default}/bin/deploy"}
+      export LAB_UPDATE=${lib.escapeShellArg "${lab-update}/bin/lab-update"}
+      ${builtins.readFile ../scripts/deploy}
+    ''; };
   });
-in builtins.seq checked {
-  packages = openwrtPackages;
-  apps = lib.genAttrs systems (system: { openwrt-apply-charon = { type = "app"; program = "${openwrtPackages.${system}.openwrt-apply-charon}/bin/openwrt-apply-charon"; }; });
+in builtins.seq checked (builtins.seq deployValidation {
+  packages = allPackages;
+  apps = lib.genAttrs systems (system: {
+    deploy = { type = "app"; program = "${allPackages.${system}.deploy}/bin/deploy"; };
+    openwrt-apply-charon = { type = "app"; program = "${allPackages.${system}.openwrt-apply-charon}/bin/openwrt-apply-charon"; };
+  });
+  deploy = deployConfig;
   darwinConfigurations = attrs (builtins.attrNames darwinHosts) mkDarwin;
   nixosConfigurations = attrs (builtins.attrNames nixosHosts) mkNixos;
   homeConfigurations = builtins.listToAttrs (map (hostname: { name = "${username}@${hostname}"; value = mkHome hostname; }) (builtins.attrNames supportedHomeHosts));
   checks = lib.recursiveUpdate
-    (lib.genAttrs [ "aarch64-darwin" "x86_64-linux" ] (system: {
-      resolver = (pkgsFor system).runCommand "resolver-tests" {} "touch $out";
+    (lib.genAttrs systems (system: let pkgs = pkgsFor system; in {
+      deploy-invariants = pkgs.runCommand "deploy-invariant-tests" { nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused deploy-rs.packages.${system}.default ]; DEPLOY_SCRIPT = ../scripts/deploy; DEPLOY_RS_REAL = "${deploy-rs.packages.${system}.default}/bin/deploy"; } ''
+        TEST_BASH=${pkgs.bash}/bin/bash ${pkgs.bash}/bin/bash ${../tests/deploy.sh}
+        # Exercise every wrapper mode against the pinned parser. The invalid local
+        # flake fails before any SSH can be attempted.
+        for mode in dry-activate test boot; do
+          if "$DEPLOY_RS_REAL" "--$mode" --skip-checks --remote-build /nonexistent-deploy-parser-test#node >"parser-$mode.log" 2>&1; then exit 1; fi
+          ! grep -Eqi 'unexpected argument|unknown (argument|option)|unrecognized option' "parser-$mode.log"
+        done
+        touch $out
+      '';
+    } // lib.optionalAttrs (builtins.elem system [ "aarch64-darwin" "x86_64-linux" ]) {
+      resolver = pkgs.runCommand "resolver-tests" {} "touch $out";
     }))
     { x86_64-linux = {
         linux-workstation-home = linuxWorkstationHome.activationPackage;
         openwrt-libuci = let pkgs = pkgsFor "x86_64-linux"; in pkgs.runCommand "openwrt-libuci-semantic" {
           nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused pkgs.uci ];
-          CHARON_RENDER = openwrtPackages.x86_64-linux.openwrt-charon-uci;
+          CHARON_RENDER = allPackages.x86_64-linux.openwrt-charon-uci;
         } ''
           bash ${../tests/openwrt-libuci.sh}
           touch $out
         '';
       }; };
-}
+})

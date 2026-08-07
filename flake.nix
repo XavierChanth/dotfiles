@@ -8,6 +8,7 @@
     homebrew-cask = { url = "github:homebrew/homebrew-cask"; flake = false; };
     homebrew-rwx = { url = "github:rwx-cloud/homebrew-tap"; flake = false; };
     home-manager = { url = "github:nix-community/home-manager/release-26.05"; inputs.nixpkgs.follows = "nixpkgs"; };
+    deploy-rs = { url = "github:serokell/deploy-rs"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
   outputs = inputs: import ./nix { inherit inputs; };
 }

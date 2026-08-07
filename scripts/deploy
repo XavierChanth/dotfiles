@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+usage() {
+  cat <<'EOF'
+usage: deploy [--dry-activate|--test|--boot] <HOST|lab>
+       deploy probe HOST
+       deploy --assure hades
+
+Switch is the default. Lab deployment is sequential and fail-fast.
+Darwin targets refuse --test and --boot; lab refuses either mode before contacting any host.
+`--assure hades` is the attended, jj-checkout-only lab-update path.
+`probe HOST` confirms before testing remote-build transfer/build prerequisites; it never activates.
+EOF
+}
+die() { echo "deploy: $*" >&2; exit 64; }
+[[ -r ${DEPLOY_INVENTORY:?} ]] || die 'packaged inventory is unavailable'
+declare -a DEPLOY_NAMES=()
+declare -A ADDRESS=() KIND=()
+while IFS=$'\t' read -r name address kind; do
+  [[ $name && $address && $kind ]] || die 'invalid packaged inventory'
+  DEPLOY_NAMES+=("$name"); ADDRESS[$name]=$address; KIND[$name]=$kind
+done <"$DEPLOY_INVENTORY"
+is_node() { [[ -v ADDRESS[$1] ]]; }
+local_name=$(uname -n); local_name=${local_name%%.*}; local_name=${local_name,,}
+mode=switch
+case ${1:-} in
+  --dry-activate) mode=dry-activate; shift;;
+  --test) mode='test'; shift;;
+  --boot) mode=boot; shift;;
+esac
+routine() {
+  local host=$1 flag=()
+  is_node "$host" || die "unknown deploy node: $host"
+  [[ ${KIND[$host]} != darwin || ($mode != test && $mode != boot) ]] || die "refusing --$mode for Darwin target $host: pinned deploy-rs repoints its system profile without activation; use switch or --dry-activate"
+  [[ $local_name != "$host" ]] || die "refusing SSH deployment to the current host ($host); run locally or deploy it from another Nix client"
+  # Deep evaluation catches assertions and malformed profile data before checks are skipped.
+  nix eval --json --no-write-lock-file "$DEPLOY_FLAKE#deploy.nodes.$host" >/dev/null
+  [[ $mode == switch ]] || flag=("--$mode")
+  "$DEPLOY_RS" "${flag[@]}" --skip-checks --remote-build "$DEPLOY_FLAKE#$host"
+}
+[[ $# -gt 0 ]] || { usage; exit 64; }
+case $1 in
+  -h|--help) [[ $# == 1 ]] || die 'help takes no arguments'; usage;;
+  lab)
+    [[ $# == 1 ]] || die 'lab takes no additional arguments'
+    [[ $mode != test && $mode != boot ]] || die "refusing --$mode for lab before deployment: the fleet contains Darwin targets whose system profile would be repointed without activation; use switch or --dry-activate"
+    for host in "${DEPLOY_NAMES[@]}"; do [[ $local_name != "$host" ]] || die "refusing whole-lab rollout from member $host; use a non-lab Nix client"; done
+    for host in "${DEPLOY_NAMES[@]}"; do routine "$host"; done;;
+  --assure)
+    [[ $mode == switch && $# == 2 ]] || die 'usage: deploy --assure hades'
+    [[ $2 == hades && ${KIND[$2]-} == nixos ]] || die 'the assured path supports only the NixOS host hades'
+    jj root >/dev/null 2>&1 || die 'assured updates require a jj checkout'
+    "$LAB_UPDATE" --dry-run hades >/dev/null || die 'packaged lab-update preflight failed'
+    exec "$LAB_UPDATE" hades;;
+  probe)
+    [[ $mode == switch && $# == 2 ]] || die 'usage: deploy probe HOST'
+    is_node "$2" || die "unknown deploy node: $2"
+    [[ $local_name != "$2" ]] || die 'refusing to probe the current host through SSH'
+    [[ -t 0 ]] || die 'probe requires an interactive terminal and explicit confirmation'
+    read -r -p "Test remote-build derivation transfer/build prerequisites at chant@${ADDRESS[$2]} (network/SSH, no activation)? Type probe $2: " answer
+    [[ $answer == "probe $2" ]] || die 'not confirmed'
+    # $out is intentionally expanded by the Nix derivation builder, not this shell.
+    # shellcheck disable=SC2016
+    drv=$(nix-instantiate --expr 'derivation { name="deploy-remote-build-probe"; system=builtins.currentSystem; builder="/bin/sh"; args=["-c" "echo probe > $out"]; }')
+    nix copy --to "ssh-ng://chant@${ADDRESS[$2]}" "$drv";;
+  *) [[ $# == 1 ]] || die 'unexpected arguments'; routine "$1";;
+esac

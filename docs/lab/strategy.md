@@ -112,3 +112,7 @@ Do not make every host automatically follow the repository head. Use reviewed, e
 - [Forgejo Actions overview and runner model](https://forgejo.org/docs/latest/user/actions/overview/)
 - [Forgejo runner isolation and configuration](https://forgejo.org/docs/latest/admin/actions/configuration/)
 - [Hermes Agent security and trust model](https://github.com/NousResearch/hermes-agent/security)
+
+## Deployment front doors
+
+Routine deploy-rs, assured Hades rollout, and attended Charon application have intentionally different guarantees. See [deploy.md](deploy.md); do not substitute one for another.

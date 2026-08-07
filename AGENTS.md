@@ -14,13 +14,14 @@ This repository is a new port of the dotfiles setup. Treat it as the source of t
 ## Repo Shape
 
 - `flake.nix` and `flake.lock`: thin flake entrypoint and pinned inputs.
+- `justfile`: root operator shortcuts; recipes delegate to canonical flake apps/scripts.
 - `nix/default.nix` and `nix/inventory.nix`: flake outputs and canonical host inventory.
 - `nix/profiles.nix` and `nix/registry.nix`: explicit profile composition and typed group descriptors.
 - `nix/lib/*`: pure group resolution and Stow helpers.
 - `nix/hosts/{darwin,nixos}/*`: host-specific system configuration.
 - `nix/home/chant/default.nix`: Home Manager user configuration.
 - `nix/modules/{shared,home,darwin,nixos}/*`: reusable platform and user modules.
-- `scripts/*.sh`: repository-local maintenance and lab deployment entrypoints.
+- `scripts/*.sh` and `scripts/deploy`: repository-local maintenance and the packaged deploy-rs wrapper.
 - `bin/shared` and `bin/hosts/*`: commands intended for the configured user PATH.
 - `docs/lab/*`: lab architecture and operational runbooks.
 - `tests/*`: repository script regression tests.
