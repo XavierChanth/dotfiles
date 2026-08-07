@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -euo pipefail
+usage() { echo 'usage: openwrt-apply-charon --dry-run | --apply'; }
+[[ $# == 1 ]] || { usage >&2; exit 2; }
+case $1 in --help) usage; exit 0;; --dry-run) mode=dry;; --apply) mode=apply;; *) usage >&2; exit 2;; esac
+root=$(cd "$(dirname "$0")/.." && pwd)
+target=${CHARON_TARGET:-root@192.168.8.1}
+[[ $target == root@192.168.8.1 ]] || { echo 'wrong device: target must be root@192.168.8.1' >&2; exit 2; }
+render=${CHARON_RENDER:-}
+if [[ -z $render ]]; then render=$(nix build --no-link --print-out-paths --no-write-lock-file "$root#openwrt-charon-uci"); fi
+[[ $render == /* && $render != *$'\n'* && -f $render && -s $render ]] || { echo 'render artifact must be a nonempty absolute regular file' >&2; exit 1; }
+# Treat the canonical render as the sole verifier inventory, and reject command injection
+# or accidental writes to any UCI package other than dhcp.
+if grep -Ev "^(add_list|set) dhcp\.[^ =]+=('[-A-Za-z0-9_.,:/]+'|[-A-Za-z0-9_.,:/]+)$" "$render" | grep -q .; then
+  echo 'render validation failed: only simple dhcp set/add_list commands are allowed' >&2; exit 1
+fi
+if [[ $mode == dry ]]; then cat "$render"; exit 0; fi
+if [[ ${CHARON_HERMETIC_TEST:-0} != 1 ]]; then
+  [[ -z ${CHARON_SSH_BIN:-}${CHARON_SCP_BIN:-}${CHARON_TTY_PATH:-}${CHARON_TTY_OUTPUT:-} ]] || { echo 'test seams require CHARON_HERMETIC_TEST=1' >&2; exit 2; }
+  [[ -t 0 ]] || { echo 'production apply requires an attended controlling TTY' >&2; exit 2; }
+fi
+ssh_bin=${CHARON_SSH_BIN:-ssh}; scp_bin=${CHARON_SCP_BIN:-scp}
+ssh_opts=(-n -o ControlMaster=no -o BatchMode=yes -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3)
+rsh() { "$ssh_bin" "${ssh_opts[@]}" "$target" "$@"; }
+rscp() { "$scp_bin" -O -o ControlMaster=no -o BatchMode=yes -o ConnectTimeout=10 "$@"; }
+value() { sed -n "s/^set $1='\\([^']*\\)'$/\\1/p" "$render"; }
+owner=$(value dhcp.dotfiles_lab_metadata.dotfiles_owner); server=$(value dhcp.dotfiles_lab_metadata.server); search=$(value dhcp.dotfiles_lab_metadata.search)
+records=$(sed -n "s/^set dhcp\.\(dotfiles_lab_[^.]*\)\.name='\([^']*\)'$/\1 \2/p" "$render")
+[[ -n $owner && -n $server && -n $search && -n $records ]] || { echo 'render validation failed: incomplete verifier inventory' >&2; exit 1; }
+# Build verification solely from the validated canonical render.
+verify_cmd="set -eu; owner='$owner'; server='$server'; search='$search';
+[ \"\$(uci -q get dhcp.dotfiles_lab_metadata)\" = dotfiles ]; [ \"\$(uci -q get dhcp.dotfiles_lab_metadata.dotfiles_owner)\" = \"\$owner\" ];
+[ \"\$(uci -q get dhcp.dotfiles_lab_metadata.server)\" = \"\$server\" ]; [ \"\$(uci -q get dhcp.dotfiles_lab_metadata.search)\" = \"\$search\" ];
+[ \"\$(uci -q show dhcp.dotfiles_lab_metadata | wc -l | tr -d ' ')\" = 4 ];
+[ \"\$(uci -q get dhcp.@dnsmasq[0].server | tr ' ' '\n' | grep -Fxc \"\$server\")\" = 1 ];
+[ \"\$(uci -q get dhcp.lan.dhcp_option | tr ' ' '\n' | grep -Fxc \"\$search\")\" = 1 ]; seen=;
+while read -r s name ip; do [ \"\$(uci -q get dhcp.\$s)\" = hostrecord ]; [ \"\$(uci -q get dhcp.\$s.name)\" = \"\$name\" ]; [ \"\$(uci -q get dhcp.\$s.ip)\" = \"\$ip\" ]; [ \"\$(uci -q get dhcp.\$s.dotfiles_owner)\" = \"\$owner\" ]; [ \"\$(uci -q show dhcp.\$s | wc -l | tr -d ' ')\" = 4 ]; seen=\"\$seen \$s\"; done <<'EOF'
+$(while read -r s name; do printf '%s %s %s\n' "$s" "$name" "$(value "dhcp.$s.ip")"; done <<<"$records")
+EOF
+for s in \$(uci -q show dhcp | sed -n 's/^dhcp\.\(dotfiles_lab_[A-Za-z0-9_]*\)=hostrecord$/\1/p'); do [ \"\$(uci -q get dhcp.\$s.dotfiles_owner)\" != \"\$owner\" ] || case \" \$seen \" in *\" \$s \"*) :;; *) exit 1;; esac; done"
+backup_dir=${CHARON_BACKUP_DIR:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/dotfiles/openwrt/charon}
+umask 077; mkdir -p "$backup_dir"; chmod 700 "$backup_dir"
+testfile=$backup_dir/.write-test.$$; : >"$testfile" || { echo "preflight: backup directory is not writable: $backup_dir" >&2; exit 1; }; rm -f "$testfile"
+stamp=$(date -u +%Y%m%dT%H%M%SZ)-$$; lock=/tmp/dotfiles-openwrt-charon.lock
+remote_dir=/root/dotfiles-openwrt/backups; remote_backup=$remote_dir/dhcp.$stamp
+remote_archive=$remote_dir/sysupgrade.$stamp.tar.gz; remote_batch=/tmp/dotfiles-charon.$stamp.uci
+state=unlocked
+cleanup() {
+  rc=$?; trap - EXIT INT TERM; set +e
+  [[ $state != staged ]] || rsh 'uci revert dhcp' || echo 'WARNING: staged UCI revert failed' >&2
+  if [[ $state == committed ]]; then
+    echo "Failure after commit; restoring. Persistent router backup: $remote_backup; local backups: $backup_dir" >&2
+    rsh "cp '$remote_backup' /etc/config/dhcp && /etc/init.d/dnsmasq reload && /etc/init.d/odhcpd reload" || echo "ROLLBACK FAILED. Recover with router backup $remote_backup or local backup $backup_dir/dhcp.$stamp" >&2
+  fi
+  [[ $state == unlocked ]] || rsh "rm -f '$remote_batch' '$lock/created'; rmdir '$lock'" || echo "WARNING: lock cleanup failed; inspect stale lock $lock/created" >&2
+  exit "$rc"
+}
+if ! rsh "test \"\$(uci -q get network.lan.ipaddr)\" = 192.168.8.1 && uci -q show dhcp.lan >/dev/null && uci -q show 'dhcp.@dnsmasq[0]' >/dev/null"; then echo 'preflight failed: wrong device or required UCI sections missing' >&2; exit 1; fi
+if [[ -n $(rsh 'uci changes dhcp') ]]; then echo 'preflight failed: pending DHCP UCI changes exist; commit or revert them first' >&2; exit 1; fi
+if ! rsh "mkdir '$lock' && date -u +%Y-%m-%dT%H:%M:%SZ >'$lock/created'"; then
+  echo "preflight failed: apply lock exists or connection dropped: $lock" >&2
+  echo "Inspect $lock/created on Charon; after confirming no apply is active, remove the stale lock manually." >&2; exit 1
+fi
+state=locked; trap cleanup EXIT INT TERM
+if rsh "$verify_cmd"; then echo 'Already converged; nothing to do.'; exit 0; fi
+rsh "umask 077; mkdir -p '$remote_dir'; chmod 700 '$remote_dir'; cp /etc/config/dhcp '$remote_backup'; sysupgrade -b '$remote_archive'; test -s '$remote_backup' -a -s '$remote_archive'" || { echo "backup failed; inspect $remote_dir" >&2; exit 1; }
+rscp "$target:$remote_backup" "$backup_dir/dhcp.$stamp"; rscp "$target:$remote_archive" "$backup_dir/sysupgrade.$stamp.tar.gz"
+[[ -s $backup_dir/dhcp.$stamp && -s $backup_dir/sysupgrade.$stamp.tar.gz ]] || { echo 'backup copy verification failed' >&2; exit 1; }
+rscp "$render" "$target:$remote_batch"; state=staged
+# Remove values recorded by the previous owned metadata, then recreate all owned state.
+stage_cmd="old_server=\$(uci -q get dhcp.dotfiles_lab_metadata.server || :); old_search=\$(uci -q get dhcp.dotfiles_lab_metadata.search || :); [ -z \"\$old_server\" ] || uci -q del_list dhcp.@dnsmasq[0].server=\"\$old_server\"; [ -z \"\$old_search\" ] || uci -q del_list dhcp.lan.dhcp_option=\"\$old_search\"; uci -q del_list dhcp.@dnsmasq[0].server='$server' || :; uci -q del_list dhcp.lan.dhcp_option='$search' || :; for s in \$(uci -q show dhcp | sed -n 's/^dhcp\.\(dotfiles_lab_[A-Za-z0-9_]*\)=hostrecord$/\1/p'); do [ \"\$(uci -q get dhcp.\$s.dotfiles_owner)\" != '$owner' ] || uci -q delete dhcp.\$s; done; uci -q delete dhcp.dotfiles_lab_metadata || :; uci batch < '$remote_batch'"
+rsh "$stage_cmd" || { echo 'uci batch/staging failed; diagnostics are above; refusing partial state' >&2; exit 1; }
+rsh "$verify_cmd" || { echo 'staged UCI verification failed; refusing partial or malformed state' >&2; exit 1; }
+changes=$(rsh 'uci changes dhcp'); [[ -n $changes ]] || { echo 'staged verifier passed but changeset is empty; refusing commit' >&2; exit 1; }
+tty=${CHARON_TTY_PATH:-/dev/tty}; tty_output=${CHARON_TTY_OUTPUT:-$tty}
+printf '%s\nType exactly "apply charon" to commit: ' "$changes" >"$tty_output"
+IFS= read -r answer <"$tty" || answer=; [[ $answer == 'apply charon' ]] || { echo 'Refused; staged changes will be reverted.' >&2; exit 1; }
+# The connection may fail after the router committed but before SSH reports success.
+state=committed; rsh 'uci commit dhcp' || { echo 'UCI commit failed or completion is ambiguous; restoring backup' >&2; exit 1; }
+rsh '/etc/init.d/dnsmasq reload && /etc/init.d/odhcpd reload' || { echo 'service reload failed; restoring backup' >&2; exit 1; }
+while read -r _section name ip; do
+  ok=0; for _ in 1 2 3 4 5; do
+    rsh "nslookup '$name' 127.0.0.1 | awk -v expected='$ip' '\$1 ~ /^Address(:|\$)/ { for (i = 2; i <= NF; i++) if (\$i == expected) found = 1 } END { exit !found }'" && { ok=1; break; }; sleep 1
+  done
+  [[ $ok == 1 ]] || { echo "DNS validation failed after retries: $name did not resolve exactly to $ip" >&2; exit 1; }
+done <<<"$(while read -r s name; do printf '%s %s %s\n' "$s" "$name" "$(value "dhcp.$s.ip")"; done <<<"$records")"
+rsh "$verify_cmd" || { echo 'post-commit managed UCI/list validation failed' >&2; exit 1; }
+state=locked; rsh "rm -f '$remote_batch' '$lock/created'; rmdir '$lock'"; state=unlocked; trap - EXIT INT TERM
+echo "Charon DNS validated. Backups retained at $backup_dir and $remote_dir."

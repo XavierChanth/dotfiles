@@ -1,18 +1,19 @@
-{
+let lab = import ./lab.nix; in {
   nyx = { system = "aarch64-darwin"; kind = "darwin"; profile = "darwin-workstation"; };
-  eris = { system = "aarch64-darwin"; kind = "darwin"; profile = "darwin-server"; };
+  eris = { system = "aarch64-darwin"; kind = "darwin"; profile = "darwin-server"; lab = lab.hosts.eris; };
+  charon = { kind = "openwrt"; profile = "openwrt-router"; lab = lab.hosts.charon; };
   hades = {
-    system = "x86_64-linux"; kind = "nixos"; profile = "linux-server";
+    system = "x86_64-linux"; kind = "nixos"; profile = "linux-server"; lab = lab.hosts.hades;
     cacheAddress = "hades.xavierchanth.local"; cacheInterface = "enp1s0";
     cacheKeyVersion = "v1"; cachePublicKey = null;
   };
   poseidon = {
-    system = "x86_64-linux"; kind = "nixos"; profile = "linux-server";
+    system = "x86_64-linux"; kind = "nixos"; profile = "linux-server"; lab = lab.hosts.poseidon;
     cacheAddress = "poseidon.xavierchanth.local"; cacheInterface = "enp1s0";
     cacheKeyVersion = "v1"; cachePublicKey = null;
   };
   zeus = {
-    system = "x86_64-linux"; kind = "nixos"; profile = "linux-server";
+    system = "x86_64-linux"; kind = "nixos"; profile = "linux-server"; lab = lab.hosts.zeus;
     cacheAddress = "zeus.xavierchanth.local"; cacheInterface = "enp1s0";
     cacheKeyVersion = "v1"; cachePublicKey = null;
   };

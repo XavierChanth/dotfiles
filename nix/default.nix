@@ -4,6 +4,9 @@
   username = "chant";
   inventory = import ./inventory.nix;
   profiles = import ./profiles.nix;
+  openwrtProfiles = import ./openwrt/profiles.nix;
+  lab = import ./lab.nix;
+  openwrtRender = import ./openwrt/render.nix { inherit lab; };
   registry = import ./registry.nix;
   resolve = import ./lib/groups.nix { inherit lib; };
   profileKinds = {
@@ -77,8 +80,25 @@
       home.stateVersion = "26.05";
     }];
   };
-  checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; true);
+  inventoryValidation = let
+    charon = inventory.charon;
+    deployed = lab.deploymentOrder;
+  in assert charon.kind == "openwrt" && charon.profile == "openwrt-router" && !(charon ? system);
+     assert openwrtProfiles ? ${charon.profile};
+     assert openwrtProfiles.${charon.profile}.managesPrivateDns && openwrtProfiles.${charon.profile}.attendedOnly;
+     assert lib.all (name: inventory.${name}.lab.deploy or false) deployed; true;
+  checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; assert inventoryValidation; true);
+  systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
+  openwrtPackages = lib.genAttrs systems (system: let pkgs = pkgsFor system; in {
+    openwrt-charon-uci = pkgs.writeText "charon-uci" openwrtRender;
+    openwrt-apply-charon = pkgs.writeShellApplication { name = "openwrt-apply-charon"; runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.openssh pkgs.nix ]; text = ''
+      export CHARON_RENDER="${openwrtPackages.${system}.openwrt-charon-uci}"
+      ${builtins.readFile ../scripts/openwrt-apply-charon}
+    ''; };
+  });
 in builtins.seq checked {
+  packages = openwrtPackages;
+  apps = lib.genAttrs systems (system: { openwrt-apply-charon = { type = "app"; program = "${openwrtPackages.${system}.openwrt-apply-charon}/bin/openwrt-apply-charon"; }; });
   darwinConfigurations = attrs (builtins.attrNames darwinHosts) mkDarwin;
   nixosConfigurations = attrs (builtins.attrNames nixosHosts) mkNixos;
   homeConfigurations = builtins.listToAttrs (map (hostname: { name = "${username}@${hostname}"; value = mkHome hostname; }) (builtins.attrNames supportedHomeHosts));
@@ -86,5 +106,14 @@ in builtins.seq checked {
     (lib.genAttrs [ "aarch64-darwin" "x86_64-linux" ] (system: {
       resolver = (pkgsFor system).runCommand "resolver-tests" {} "touch $out";
     }))
-    { x86_64-linux.linux-workstation-home = linuxWorkstationHome.activationPackage; };
+    { x86_64-linux = {
+        linux-workstation-home = linuxWorkstationHome.activationPackage;
+        openwrt-libuci = let pkgs = pkgsFor "x86_64-linux"; in pkgs.runCommand "openwrt-libuci-semantic" {
+          nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused pkgs.uci ];
+          CHARON_RENDER = openwrtPackages.x86_64-linux.openwrt-charon-uci;
+        } ''
+          bash ${../tests/openwrt-libuci.sh}
+          touch $out
+        '';
+      }; };
 }
