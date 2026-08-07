@@ -1,1 +1,1 @@
-{ groups = [ "gnome-desktop" ]; modules = [ ./platform.nix ]; }
+{ groups = []; modules = [ ./platform.nix ]; }
