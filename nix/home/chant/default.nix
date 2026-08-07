@@ -1,18 +1,5 @@
-{config, hostname, hostProfile, lib, pkgs, username, ...}: let
-  isWorkstation = hostProfile.profile == "workstation";
-in {
-  imports = [
-    ../../modules/home/stow.nix
-    ../../modules/shared/git.nix
-    ../../modules/shared/identities.nix
-    ../../modules/shared/shell.nix
-    ../../modules/shared/ssh.nix
-    ../../modules/shared/tmux.nix
-  ] ++ lib.optionals isWorkstation [
-    ../../modules/home/workstation.nix
-  ] ++ lib.optionals (!isWorkstation) [
-    ../../modules/home/server.nix
-  ];
+{config, hostname, pkgs, username, ...}: {
+  imports = [ ../../modules/home/stow.nix ];
 
   home = {
     inherit username;

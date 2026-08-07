@@ -1,28 +1,11 @@
-{config, hostProfile, lib, pkgs, ...}: let
+{config, hostProfile, lib, pkgs, resolvedGroups, ...}: let
   home = config.home.homeDirectory;
   isWorkstation = hostProfile.profile == "workstation";
-  commonPackages = [
-    {name = "agents"; target = ".agents"; prepare = [".agents"];}
-    {name = "codex"; target = ".codex"; prepare = [".codex/rules"];}
-    {name = "jj"; target = ".config/jj"; prepare = [".config/jj"];}
-    {name = "grok"; target = ".grok"; prepare = [".grok"];}
-    {name = "zsh"; target = ".config/zsh"; prepare = [".config/zsh"];}
-    {name = "tmux"; target = ".config/tmux"; prepare = [".config/tmux"];}
-    {name = "nvim"; target = ".config/nvim"; prepare = [".config/nvim"];}
-    {name = "opencode"; target = ".config/opencode"; prepare = [".config/opencode"];}
-  ];
-  workstationPackages = [
-    {name = "cmux"; target = ".config/cmux"; prepare = [".config/cmux"];}
-    {name = "mise"; target = ".config/mise"; prepare = [".config/mise"];}
-    {name = "zed"; target = ".config/zed"; prepare = [".config/zed"];}
-  ];
-  packages = commonPackages ++ lib.optionals isWorkstation workstationPackages;
-  prepare = lib.unique (lib.concatMap (package: package.prepare) packages);
-  mkdirCommands = lib.concatMapStringsSep "\n" (path: ''mkdir -p "${home}/${path}"'') prepare;
-  stowCommand = package: ''
-    ${pkgs.stow}/bin/stow --dir="$STOW_DIR" --target="${home}/${package.target}" --restow ${lib.escapeShellArg package.name}
-  '';
-  stowCommands = lib.concatMapStringsSep "\n" stowCommand packages;
+  commands = import ../../lib/stow.nix { inherit lib pkgs; } {
+    inherit home;
+    declarations = resolvedGroups.stow;
+  };
+  inherit (commands) mkdirCommands stowCommands;
 in {
   home.activation.stowDotfiles = lib.hm.dag.entryAfter ["writeBoundary"] ''
     STOW_DIR="${home}/.dotfiles/stow"
