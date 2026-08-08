@@ -104,7 +104,7 @@
   systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
   deployNames = lab.deploymentOrder;
   deployNodes = attrs deployNames (name: let host = inventory.${name}; in {
-    hostname = host.lab.address;
+    hostname = name;
     sshUser = username;
     groups = [ "lab" ];
     remoteBuild = true;
@@ -123,10 +123,10 @@
   });
   deployValidation = assert builtins.attrNames deployNodes == lib.sort builtins.lessThan [ "eris" "hades" "poseidon" "zeus" ];
     assert builtins.length deployNames == 4 && builtins.length (lib.unique deployNames) == 4;
-    assert lib.all (n: deployNodes.${n}.groups == [ "lab" ] && deployNodes.${n}.hostname == inventory.${n}.lab.address) deployNames; true;
+    assert lib.all (n: deployNodes.${n}.groups == [ "lab" ] && deployNodes.${n}.hostname == n) deployNames; true;
   deployConfig = { nodes = deployNodes; };
   deployInventory = builtins.concatStringsSep "" (map (name:
-    "${name}\t${inventory.${name}.lab.address}\t${inventory.${name}.kind}\n") deployNames);
+    "${name}\t${inventory.${name}.kind}\t${inventory.${name}.system}\n") deployNames);
   flakeSource = inputs.self.outPath;
   allPackages = lib.genAttrs systems (system: let pkgs = pkgsFor system; in rec {
     openwrt-charon-uci = pkgs.writeText "charon-uci" openwrtRender;
@@ -136,7 +136,7 @@
     ''; };
     deploy-inventory = pkgs.writeText "deploy-inventory.tsv" deployInventory;
     lab-update = pkgs.writeShellApplication { name = "lab-update"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.gawk pkgs.perl pkgs.openssh pkgs.jujutsu pkgs.gnutar pkgs.nix ]; excludeShellChecks = [ "SC2016" ]; text = builtins.readFile ../bin/shared/lab-update; };
-    deploy = pkgs.writeShellApplication { name = "deploy"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.openssh pkgs.nix pkgs.jujutsu ]; text = ''
+    deploy-cli = pkgs.writeShellApplication { name = "deploy"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.openssh pkgs.nix pkgs.jujutsu ]; text = ''
       export DEPLOY_FLAKE=${lib.escapeShellArg (toString flakeSource)}
       export DEPLOY_INVENTORY=${lib.escapeShellArg (toString deploy-inventory)}
       export DEPLOY_RS=${lib.escapeShellArg "${deploy-rs.packages.${system}.default}/bin/deploy"}
@@ -147,7 +147,7 @@
 in builtins.seq checked (builtins.seq deployValidation {
   packages = allPackages;
   apps = lib.genAttrs systems (system: {
-    deploy = { type = "app"; program = "${allPackages.${system}.deploy}/bin/deploy"; };
+    deploy = { type = "app"; program = "${allPackages.${system}.deploy-cli}/bin/deploy"; };
     openwrt-apply-charon = { type = "app"; program = "${allPackages.${system}.openwrt-apply-charon}/bin/openwrt-apply-charon"; };
   });
   deploy = deployConfig;

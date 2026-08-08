@@ -15,12 +15,12 @@ EOF
 die() { echo "deploy: $*" >&2; exit 64; }
 [[ -r ${DEPLOY_INVENTORY:?} ]] || die 'packaged inventory is unavailable'
 declare -a DEPLOY_NAMES=()
-declare -A ADDRESS=() KIND=()
-while IFS=$'\t' read -r name address kind; do
-  [[ $name && $address && $kind ]] || die 'invalid packaged inventory'
-  DEPLOY_NAMES+=("$name"); ADDRESS[$name]=$address; KIND[$name]=$kind
+declare -A KIND=() SYSTEM=()
+while IFS=$'\t' read -r name kind system extra; do
+  [[ $name && $kind && $system && ! $extra ]] || die 'invalid packaged inventory'
+  DEPLOY_NAMES+=("$name"); KIND[$name]=$kind; SYSTEM[$name]=$system
 done <"$DEPLOY_INVENTORY"
-is_node() { [[ -v ADDRESS[$1] ]]; }
+is_node() { [[ -v KIND[$1] ]]; }
 local_name=$(uname -n); local_name=${local_name%%.*}; local_name=${local_name,,}
 mode=switch
 case ${1:-} in
@@ -56,12 +56,18 @@ case $1 in
     [[ $mode == switch && $# == 2 ]] || die 'usage: deploy probe HOST'
     is_node "$2" || die "unknown deploy node: $2"
     [[ $local_name != "$2" ]] || die 'refusing to probe the current host through SSH'
-    [[ -t 0 ]] || die 'probe requires an interactive terminal and explicit confirmation'
-    read -r -p "Test remote-build derivation transfer/build prerequisites at chant@${ADDRESS[$2]} (network/SSH, no activation)? Type probe $2: " answer
+    if [[ -v DEPLOY_TTY_PATH ]]; then tty_path=$DEPLOY_TTY_PATH; else [[ -t 0 ]] || die 'probe requires an interactive terminal and explicit confirmation'; tty_path=/dev/stdin; fi
+    read -r -p "Test remote-build derivation transfer/build prerequisites at chant@$2 (network/SSH, no activation)? Type probe $2: " answer <"$tty_path"
     [[ $answer == "probe $2" ]] || die 'not confirmed'
+    probe_root=$(mktemp -d); trap 'rm -rf "$probe_root"' EXIT
     # $out is intentionally expanded by the Nix derivation builder, not this shell.
     # shellcheck disable=SC2016
-    drv=$(nix-instantiate --expr 'derivation { name="deploy-remote-build-probe"; system=builtins.currentSystem; builder="/bin/sh"; args=["-c" "echo probe > $out"]; }')
-    nix copy --to "ssh-ng://chant@${ADDRESS[$2]}" "$drv";;
+    drv_root=$(DEPLOY_PROBE_SYSTEM=${SYSTEM[$2]} nix-instantiate --impure --add-root "$probe_root/probe.drv" --expr 'derivation { name="deploy-remote-build-probe"; system=builtins.getEnv "DEPLOY_PROBE_SYSTEM"; builder="/bin/sh"; args=["-c" "echo probe > $out"]; }')
+    drv=$(readlink "$drv_root"); [[ $drv == /nix/store/*.drv ]] || die 'probe derivation root is invalid'
+    store="ssh-ng://chant@$2"
+    nix copy --to "$store" "$drv"
+    out=$(nix-store --store "$store" --no-gc-warning --realise "$drv")
+    [[ $out ]] || die 'remote build returned no output path'
+    printf 'Remote-build probe succeeded for %s (%s).\n' "$2" "$out";;
   *) [[ $# == 1 ]] || die 'unexpected arguments'; routine "$1";;
 esac

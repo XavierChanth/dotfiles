@@ -11,7 +11,7 @@
     hades = { address = "192.168.8.2"; fqdn = "hades.lab.xavierchanth.xyz"; status = "stable"; deploy = true; };
     poseidon = { address = "192.168.8.3"; fqdn = "poseidon.lab.xavierchanth.xyz"; status = "stable"; deploy = true; };
     zeus = { address = "192.168.8.4"; fqdn = "zeus.lab.xavierchanth.xyz"; status = "stable"; deploy = true; };
-    # .202 is the current deploy address; FQDN publication and a possible move to .5 are pending.
+    # .202 is the current LAN address; FQDN publication and a possible move to .5 are pending.
     eris = { address = "192.168.8.202"; fqdn = null; status = "pending-address"; deploy = true; };
   };
 }

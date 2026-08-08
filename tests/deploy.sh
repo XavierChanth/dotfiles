@@ -3,10 +3,15 @@ set -Eeuo pipefail
 [[ ${TRACE_TESTS:-0} == 0 ]] || set -x
 S=${DEPLOY_SCRIPT:?}; TEST_BASH=${TEST_BASH:-bash}; T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
 mkdir "$T/bin"; LOG=$T/log; export LOG
-for c in nix deploy-rs lab-update jj; do cat >"$T/bin/$c" <<'MOCK'
+for c in nix nix-instantiate nix-store deploy-rs lab-update jj; do cat >"$T/bin/$c" <<'MOCK'
 #!/usr/bin/env bash
-echo "$(basename "$0") $*" >>"$LOG"
-[[ $(basename "$0") != deploy-rs || ${*: -1} != *"${FAIL_HOST:-__never__}"* ]]
+command=$(basename "$0")
+echo "$command $*${DEPLOY_PROBE_SYSTEM:+ system=$DEPLOY_PROBE_SYSTEM}" >>"$LOG"
+[[ $command != deploy-rs || ${*: -1} != *"${FAIL_HOST:-__never__}"* ]] || exit 1
+case $command in
+  nix-instantiate) ln -sf /nix/store/probe.drv "${3:?}"; echo "$3";;
+  nix-store) echo /nix/store/probe-output;;
+esac
 MOCK
 chmod +x "$T/bin/$c"; done
 cat >"$T/bin/uname" <<'MOCK'
@@ -16,10 +21,10 @@ echo "${MOCK_HOSTNAME:-client}"
 MOCK
 chmod +x "$T/bin/uname"
 cat >"$T/inventory" <<'EOF'
-poseidon	192.168.8.3	nixos
-zeus	192.168.8.4	nixos
-hades	192.168.8.2	nixos
-eris	192.168.8.202	darwin
+poseidon	nixos	x86_64-linux
+zeus	nixos	x86_64-linux
+hades	nixos	x86_64-linux
+eris	darwin	aarch64-darwin
 EOF
 export PATH="$T/bin:$PATH" DEPLOY_FLAKE=/source DEPLOY_INVENTORY="$T/inventory" DEPLOY_RS="$T/bin/deploy-rs" LAB_UPDATE="$T/bin/lab-update"
 run() { : >"$LOG"; "$TEST_BASH" "$S" "$@"; }
@@ -40,4 +45,11 @@ MOCK_HOSTNAME=hades; export MOCK_HOSTNAME; expect_failure run hades; [[ ! -s $LO
 run --assure hades; grep -Fq 'jj root' "$LOG"; grep -Fq 'lab-update --dry-run hades' "$LOG"; grep -Fq 'lab-update hades' "$LOG"
 expect_failure run --assure eris
 expect_failure run probe charon
+printf 'probe hades\n' >"$T/tty"; export DEPLOY_TTY_PATH="$T/tty"
+run probe hades
+grep -Fq 'nix-instantiate --impure --add-root ' "$LOG"
+grep -Fq 'system=x86_64-linux' "$LOG"
+grep -Fq 'nix copy --to ssh-ng://chant@hades /nix/store/probe.drv' "$LOG"
+grep -Fq 'nix-store --store ssh-ng://chant@hades --no-gc-warning --realise /nix/store/probe.drv' "$LOG"
+unset DEPLOY_TTY_PATH
 echo 'deploy hermetic tests: ok'
