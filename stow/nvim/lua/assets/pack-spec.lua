@@ -8,10 +8,6 @@ return {
       version = nil,
     },
     {
-      src = "https://github.com/MunifTanjim/nui.nvim",
-      version = any,
-    },
-    {
       src = "https://github.com/stevearc/oil.nvim",
       version = any,
       data = { config = "config/oil" },
@@ -25,13 +21,6 @@ return {
       version = any,
       data = {
         config = "config/snacks",
-      },
-    },
-    {
-      src = "https://github.com/folke/persistence.nvim",
-      version = any,
-      data = {
-        config = "config/persistence",
       },
     },
     {

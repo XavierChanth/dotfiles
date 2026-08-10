@@ -62,19 +62,17 @@ vim.keymap.set({ "n", "t", "i" }, "<c-j>", "<cmd>TmuxNavigateDown<cr>")
 vim.keymap.set({ "n", "t", "i" }, "<c-k>", "<cmd>TmuxNavigateUp<cr>")
 vim.keymap.set({ "n", "t", "i" }, "<c-l>", "<cmd>TmuxNavigateRight<cr>")
 
--- Persistence
 vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>")
-vim.keymap.set("n", "<leader>s", "<cmd>lua require('persistence').load()<cr>")
 
 -- Snacks
 vim.keymap.set("n", "<leader><space>", function()
-  local cwd = vim.lsp.client.root_dir
-  require("snacks.picker").smart({ cwd = cwd })
+  require("snacks.picker").files({ cwd = vim.fn.getcwd() })
 end)
 vim.keymap.set("n", "<leader>sf", function()
-  local cwd = require("oil").get_current_dir() or
-      vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-  require("snacks.picker").smart({ cwd = cwd })
+  require("snacks.picker").files({
+    cwd = vim.fn.getcwd(),
+    hidden = true,
+  })
 end)
 vim.keymap.set("n", "<leader>sg", function()
   require("snacks.picker").grep()

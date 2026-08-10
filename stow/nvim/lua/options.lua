@@ -35,7 +35,6 @@ vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 3
 vim.opt.completeopt = "menu,menuone,popup,noselect,noinsert"
-vim.opt.colorcolumn = { 81, 121 }
 vim.opt.expandtab = true
 vim.opt.linebreak = true
 vim.opt.shiftround = true
@@ -47,16 +46,6 @@ vim.opt.pumblend = 0
 vim.opt.pumheight = 10
 vim.opt.wildmenu = true
 vim.opt.wildmode = "noselect:longest:lastused,full" -- Command-line completion mode
-vim.opt.sessionoptions = {
-  "buffers",
-  "curdir",
-  "tabpages",
-  "winsize",
-  "help",
-  "globals",
-  "skiprtp",
-  "folds",
-}
 vim.opt.ignorecase = true
 vim.opt.jumpoptions = "clean,stack"
 vim.opt.shortmess = "ltToOcCFI"

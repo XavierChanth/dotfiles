@@ -76,11 +76,6 @@
       "src": "https://github.com/echasnovski/mini.icons",
       "version": ">=0.0.0"
     },
-    "nui.nvim": {
-      "rev": "f535005",
-      "src": "https://github.com/MunifTanjim/nui.nvim",
-      "version": ">=0.0.0"
-    },
     "nvim-lint": {
       "rev": "fe16081",
       "src": "https://github.com/mfussenegger/nvim-lint",
@@ -98,11 +93,6 @@
     "omnisharp-extended-lsp.nvim": {
       "rev": "51e407a46ddb15e49727139b5b1ae3650cd6a069",
       "src": "https://github.com/Hoffs/omnisharp-extended-lsp.nvim"
-    },
-    "persistence.nvim": {
-      "rev": "c45ff862b53ce07a853a753fb0b33e148dbb99d2",
-      "src": "https://github.com/folke/persistence.nvim",
-      "version": ">=0.0.0"
     },
     "pi.nvim": {
       "rev": "77c79e656bdec2b2ef7a1b7f69b74f6f8faf719b",
