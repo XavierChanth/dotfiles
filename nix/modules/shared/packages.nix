@@ -96,6 +96,7 @@
     ])
     ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
       # Mac only
+      docker-credential-helpers
       iproute2mac
     ])
     ++ lib.optionals (!pkgs.stdenv.isDarwin) (with pkgs; [
