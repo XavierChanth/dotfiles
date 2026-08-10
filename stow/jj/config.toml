@@ -8,7 +8,7 @@ conflict-marker-style = "snapshot"
 
 diff-formatter = "difft"
 diff-editor = ":builtin"
-merge-editor = "nvim"
+merge-editor = "meld"
 
 [merge-tools.delta]
 diff-args=[
@@ -31,12 +31,14 @@ merge-args = [
   "-c", "set modifiable",
   "-c", "set write",
   "-c", "set wrap",
-  "-c", "lua require('persistence').stop()",
 ]
 merge-tool-edits-conflict-markers = true
 
 [merge-tools.vimdiff]
 diff-invocation-mode = "file-by-file"
+
+[merge-tools.meld]
+edit-args = ["--newtab", "$left", "$right"]
 
 # [revsets]
 # short-prefixes = "(trunk..@)::"

@@ -76,6 +76,7 @@
       git
       difftastic
       jujutsu
+      meld
 
       # File-format based Utilities
       imagemagick
