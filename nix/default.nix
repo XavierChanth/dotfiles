@@ -80,7 +80,10 @@
       home.stateVersion = "26.05";
     }];
   };
-  codingHosts = [ "poseidon" "zeus" ];
+  deployNames = lab.deploymentOrder;
+  deployCredentialsFor = name: (contextFor name).resolvedGroups.deployCredentials;
+  credentialDeployNames = lib.filter (name: deployCredentialsFor name != []) deployNames;
+  codingHosts = credentialDeployNames;
   codingValidation = let
     home = name: (mkHome name).config;
     packageNames = name: map lib.getName (home name).home.packages;
@@ -107,7 +110,6 @@
      assert lib.all (name: inventory.${name}.lab.deploy or false) deployed; true;
   checked = builtins.deepSeq validKinds (assert resolverTests; assert profileTests; assert codingValidation; assert inventoryValidation; true);
   systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
-  deployNames = lab.deploymentOrder;
   deployNodes = attrs deployNames (name: let host = inventory.${name}; in {
     hostname = name;
     sshUser = username;
@@ -127,12 +129,14 @@
     };
   });
   deployValidation = assert builtins.attrNames deployNodes == lib.sort builtins.lessThan [ "eris" "hades" "poseidon" "zeus" ];
+    assert credentialDeployNames == [ "poseidon" "zeus" ];
+    assert lib.all (name: inventory.${name}.kind == "nixos") credentialDeployNames;
     assert builtins.length deployNames == 4 && builtins.length (lib.unique deployNames) == 4;
     assert lib.all (n: deployNodes.${n}.groups == [ "lab" ] && deployNodes.${n}.hostname == n) deployNames;
     assert lib.all (n: deployNodes.${n}.activationTimeout == 3900) codingHosts; true;
   deployConfig = { nodes = deployNodes; };
   deployInventory = builtins.concatStringsSep "" (map (name:
-    "${name}\t${inventory.${name}.kind}\t${inventory.${name}.system}\n") deployNames);
+    "${name}\t${inventory.${name}.kind}\t${inventory.${name}.system}\t${if deployCredentialsFor name == [] then "-" else lib.concatStringsSep "," (deployCredentialsFor name)}\n") deployNames);
   flakeSource = inputs.self.outPath;
   allPackages = lib.genAttrs systems (system: let pkgs = pkgsFor system; in rec {
     openwrt-charon-uci = pkgs.writeText "charon-uci" openwrtRender;
@@ -142,7 +146,7 @@
     ''; };
     deploy-inventory = pkgs.writeText "deploy-inventory.tsv" deployInventory;
     lab-update = pkgs.writeShellApplication { name = "lab-update"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.gawk pkgs.perl pkgs.openssh pkgs.jujutsu pkgs.gnutar pkgs.nix ]; excludeShellChecks = [ "SC2016" ]; text = builtins.readFile ../bin/shared/lab-update; };
-    deploy-cli = pkgs.writeShellApplication { name = "deploy"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.openssh pkgs.nix pkgs.jujutsu ]; text = ''
+    deploy-cli = pkgs.writeShellApplication { name = "deploy"; runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.openssh pkgs.nix pkgs.jujutsu pkgs.gh ]; text = ''
       export DEPLOY_FLAKE=${lib.escapeShellArg (toString flakeSource)}
       export DEPLOY_INVENTORY=${lib.escapeShellArg (toString deploy-inventory)}
       export DEPLOY_RS=${lib.escapeShellArg "${deploy-rs.packages.${system}.default}/bin/deploy"}
@@ -162,7 +166,7 @@ in builtins.seq checked (builtins.seq deployValidation {
   homeConfigurations = builtins.listToAttrs (map (hostname: { name = "${username}@${hostname}"; value = mkHome hostname; }) (builtins.attrNames supportedHomeHosts));
   checks = lib.recursiveUpdate
     (lib.genAttrs systems (system: let pkgs = pkgsFor system; in {
-      deploy-invariants = pkgs.runCommand "deploy-invariant-tests" { nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused deploy-rs.packages.${system}.default ]; DEPLOY_SCRIPT = ../scripts/deploy; DEPLOY_RS_REAL = "${deploy-rs.packages.${system}.default}/bin/deploy"; } ''
+      deploy-invariants = pkgs.runCommand "deploy-invariant-tests" { nativeBuildInputs = [ pkgs.bash pkgs.coreutils pkgs.gnugrep pkgs.gnused deploy-rs.packages.${system}.default ]; DEPLOY_SCRIPT = ../scripts/deploy; CONSUMER_SCRIPT = ../scripts/consume-deploy-credential; DEPLOY_RS_REAL = "${deploy-rs.packages.${system}.default}/bin/deploy"; } ''
         TEST_BASH=${pkgs.bash}/bin/bash ${pkgs.bash}/bin/bash ${../tests/deploy.sh}
         # Exercise every wrapper mode against the pinned parser. The invalid local
         # flake fails before any SSH can be attempted.

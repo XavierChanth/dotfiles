@@ -52,6 +52,12 @@ let
     (lib.filter (required: !(builtins.elem required _groups))
       (ensure (lib.all builtins.isString (listOrEmpty descriptor "requires")) "${descriptor.name}.requires must contain names" (listOrEmpty descriptor "requires")))) descriptors;
   _requires = ensure (unmet == []) (lib.concatStringsSep "; " unmet) true;
+  credentialAllowList = [ "github-api" ];
+  credentialLists = map (descriptor: let value = listOrEmpty descriptor "deployCredentials";
+    unknown = lib.filter (name: !(builtins.elem name credentialAllowList)) value;
+    in ensure (lib.all builtins.isString value && unknown == [])
+      "${descriptor.name}.deployCredentials contains unsupported names: ${lib.concatStringsSep ", " unknown}" value) descriptors;
+  deployCredentials = lib.unique (lib.concatLists credentialLists);
   unorderedStow = lib.concatMap (descriptor: map (validateStow descriptor.name) (listOrEmpty descriptor "stow")) descriptors;
   stow = builtins.sort (a: b: (a.order or 1000) < (b.order or 1000)) unorderedStow;
   duplicatePackages = duplicates (map (x: x.name) stow);
@@ -66,7 +72,7 @@ let
     casks = lib.unique (lib.concatMap (x: x.casks) brews);
   };
   result = {
-    inherit stow brew;
+    inherit stow brew deployCredentials;
     systemModules = lib.concatMap (descriptor: listOrEmpty descriptor kind) descriptors;
     homeModules = lib.concatMap (descriptor: listOrEmpty descriptor "home" ++ listOrEmpty descriptor "${kind}Home") descriptors;
   };

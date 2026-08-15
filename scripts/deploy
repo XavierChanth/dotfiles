@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+# Strip the explicit secret override from the inherited environment before any
+# helper command can observe it; this shell keeps only a non-exported copy.
+deploy_github_token_override=${DEPLOY_GITHUB_TOKEN-}
+unset DEPLOY_GITHUB_TOKEN
 usage() {
   cat <<'EOF'
 usage: deploy [--dry-activate|--test|--boot] <HOST|lab>
@@ -14,15 +18,74 @@ EOF
 }
 die() { echo "deploy: $*" >&2; exit 64; }
 [[ -r ${DEPLOY_INVENTORY:?} ]] || die 'packaged inventory is unavailable'
-declare -a DEPLOY_NAMES=()
-declare -A KIND=() SYSTEM=()
-while IFS=$'\t' read -r name kind system extra; do
-  [[ $name && $kind && $system && ! $extra ]] || die 'invalid packaged inventory'
-  DEPLOY_NAMES+=("$name"); KIND[$name]=$kind; SYSTEM[$name]=$system
+declare -a DEPLOY_NAMES=() STAGED=()
+declare -A KIND=() SYSTEM=() CREDENTIALS=()
+while IFS=$'\t' read -r name kind system credentials extra; do
+  [[ $name =~ ^[a-z][a-z0-9-]*$ && $kind =~ ^(nixos|darwin)$ && $system =~ ^[a-z0-9_+-]+$ && ! $extra ]] || die 'invalid packaged inventory'
+  [[ -z ${KIND[$name]+x} ]] || die 'duplicate packaged inventory node'
+  [[ $credentials == - || $credentials == github-api ]] || die 'invalid packaged credential capability'
+  DEPLOY_NAMES+=("$name"); KIND[$name]=$kind; SYSTEM[$name]=$system; CREDENTIALS[$name]=$credentials
 done <"$DEPLOY_INVENTORY"
 is_node() { [[ -v KIND[$1] ]]; }
 local_name=$(uname -n); local_name=${local_name%%.*}; local_name=${local_name,,}
 mode=switch
+github_token=
+dry_warned=0
+cleanup() {
+  local status=$? host
+  trap - EXIT INT TERM
+  for host in "${STAGED[@]}"; do
+    ssh -o BatchMode=yes -o ControlMaster=no -o ControlPath=none -o ConnectTimeout=10 "chant@$host" \
+      'for d in "/run/dotfiles-deploy/$(id -un)" "${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-deploy"; do [ ! -L "$d" ] && [ -d "$d" ] && [ "$(stat -c %u "$d" 2>/dev/null)" = "$(id -u)" ] && rm -f -- "$d/github-api"; done' </dev/null >/dev/null 2>&1 || :
+  done
+  unset github_token
+  exit "$status"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+read -r -d '' STAGE_COMMAND <<'REMOTE' || :
+set -Eeuo pipefail
+umask 077
+uid=$(id -u); run=/run/dotfiles-deploy/$(id -un); state=${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-deploy
+if [ ! -L "$run" ] && [ -d "$run" ] && [ "$(stat -c %u "$run")" = "$uid" ] && [ "$(stat -c %a "$run")" = 700 ]; then d=$run
+else mkdir -p -- "$state"; [ ! -L "$state" ] && [ "$(stat -c %u "$state")" = "$uid" ] && chmod 700 "$state"; d=$state; fi
+[ ! -L "$d" ] && [ "$(stat -c %u "$d")" = "$uid" ] && [ "$(stat -c %a "$d")" = 700 ] || exit 1
+lock=$d/.stage-lock; i=0
+until mkdir "$lock" 2>/dev/null; do i=$((i+1)); [ $i -lt 50 ] || exit 1; sleep .1; done
+tmp=; trap 'rm -rf "$lock"; [ -z "$tmp" ] || rm -f "$tmp"' EXIT
+tmp=$(mktemp "$d/.github-api.XXXXXX"); cat >"$tmp"; chmod 600 "$tmp"
+[ "$(stat -c %s "$tmp")" -ge 20 ] && [ "$(stat -c %s "$tmp")" -le 513 ] || exit 1
+mv -fT -- "$tmp" "$d/github-api"; tmp=
+REMOTE
+needs_credential() { [[ ${CREDENTIALS[$1]} == github-api ]]; }
+valid_token() { [[ ${#1} -ge 20 && ${#1} -le 512 && $1 != *[$'\t\r\n ']* && $1 =~ ^[A-Za-z0-9_][A-Za-z0-9_.-]+$ ]]; }
+acquire() {
+  [[ -z $github_token ]] || return 0
+  set +x
+  if [[ -n $deploy_github_token_override ]]; then github_token=$deploy_github_token_override
+  else github_token=$(timeout 5s gh auth token 2>/dev/null || true); fi
+  valid_token "$github_token" || die 'a valid local GitHub token is required'
+}
+unstage() {
+  local host=$1 kept=() item
+  if ssh -o BatchMode=yes -o ControlMaster=no -o ControlPath=none -o ConnectTimeout=10 "chant@$host" \
+    'for d in "/run/dotfiles-deploy/$(id -un)" "${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-deploy"; do [ ! -L "$d" ] && [ -d "$d" ] && [ "$(stat -c %u "$d" 2>/dev/null)" = "$(id -u)" ] && rm -f -- "$d/github-api"; done' </dev/null >/dev/null 2>&1; then
+    for item in "${STAGED[@]}"; do [[ $item == "$host" ]] || kept+=("$item"); done
+    STAGED=("${kept[@]}")
+  fi
+}
+stage() {
+  local host=$1 encoded launcher remote_command
+  set +x
+  STAGED+=("$host")
+  encoded=$(printf %s "$STAGE_COMMAND" | base64 | tr -d '\n')
+  # Expanded by the remote shell, not by this client.
+  # shellcheck disable=SC2016
+  launcher='decoded=$(printf %s "$1" | base64 -d) || exit; exec bash -c "$decoded"'
+  printf -v remote_command 'bash -c %q _ %q' "$launcher" "$encoded"
+  printf '%s\n' "$github_token" | ssh -o BatchMode=yes -o ControlMaster=no -o ControlPath=none -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ConnectTimeout=10 "chant@$host" "$remote_command" || die "failed to stage GitHub credential for $host"
+}
 case ${1:-} in
   --dry-activate) mode=dry-activate; shift;;
   --test) mode='test'; shift;;
@@ -33,10 +96,22 @@ routine() {
   is_node "$host" || die "unknown deploy node: $host"
   [[ ${KIND[$host]} != darwin || ($mode != test && $mode != boot) ]] || die "refusing --$mode for Darwin target $host: pinned deploy-rs repoints its system profile without activation; use switch or --dry-activate"
   [[ $local_name != "$host" ]] || die "refusing SSH deployment to the current host ($host); run locally or deploy it from another Nix client"
-  # Deep evaluation catches assertions and malformed profile data before checks are skipped.
+  if [[ $mode == switch || $mode == test ]]; then needs_credential "$host" && acquire
+  elif [[ $mode == dry-activate && $dry_warned == 0 ]] && needs_credential "$host"; then
+    if valid_token "$deploy_github_token_override"; then :
+    elif ! timeout 5s gh auth token >/dev/null 2>&1; then
+      echo 'deploy: warning: GitHub authentication unavailable; dry activation continues without staging' >&2; dry_warned=1
+    fi
+  fi
+  # Authentication preflight precedes evaluation, but staging follows it.
   nix eval --json --no-write-lock-file "$DEPLOY_FLAKE#deploy.nodes.$host" >/dev/null
+  if [[ $mode == switch || $mode == test ]]; then needs_credential "$host" && stage "$host"; fi
   [[ $mode == switch ]] || flag=("--$mode")
-  "$DEPLOY_RS" "${flag[@]}" --skip-checks --remote-build "$DEPLOY_FLAKE#$host"
+  if "$DEPLOY_RS" "${flag[@]}" --skip-checks --remote-build "$DEPLOY_FLAKE#$host"; then
+    if [[ $mode == switch || $mode == test ]] && needs_credential "$host"; then unstage "$host"; fi
+  else
+    status=$?; if [[ $mode == switch || $mode == test ]] && needs_credential "$host"; then unstage "$host"; fi; return "$status"
+  fi
 }
 [[ $# -gt 0 ]] || { usage; exit 64; }
 case $1 in
@@ -45,10 +120,12 @@ case $1 in
     [[ $# == 1 ]] || die 'lab takes no additional arguments'
     [[ $mode != test && $mode != boot ]] || die "refusing --$mode for lab before deployment: the fleet contains Darwin targets whose system profile would be repointed without activation; use switch or --dry-activate"
     for host in "${DEPLOY_NAMES[@]}"; do [[ $local_name != "$host" ]] || die "refusing whole-lab rollout from member $host; use a non-lab Nix client"; done
+    if [[ $mode == switch ]]; then for host in "${DEPLOY_NAMES[@]}"; do needs_credential "$host" && { acquire; break; }; done; fi
     for host in "${DEPLOY_NAMES[@]}"; do routine "$host"; done;;
   --assure)
     [[ $mode == switch && $# == 2 ]] || die 'usage: deploy --assure hades'
     [[ $2 == hades && ${KIND[$2]-} == nixos ]] || die 'the assured path supports only the NixOS host hades'
+    ! needs_credential "$2" || die 'assured deploy does not support credential-requiring hosts'
     jj root >/dev/null 2>&1 || die 'assured updates require a jj checkout'
     "$LAB_UPDATE" --dry-run hades >/dev/null || die 'packaged lab-update preflight failed'
     exec "$LAB_UPDATE" hades;;
