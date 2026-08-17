@@ -39,10 +39,8 @@
     remoteControlAtStartup = false;
     env = {
       CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY = "1";
-      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
       CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS = "1";
       DISABLE_ERROR_REPORTING = "1";
-      DISABLE_TELEMETRY = "1";
     };
     sandbox = {
       enabled = true;
@@ -92,8 +90,11 @@ in {
 
     # Recursive merge, managed keys winning, so editing this module takes effect
     # while preserving keys Claude wrote for itself (model, effortLevel, tui, ...).
+    # Remove settings that this module previously managed but intentionally retired.
     tmp="$(mktemp "$settings.XXXXXX")"
-    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" ${managedSettingsFile} >"$tmp"; then
+    if ${pkgs.jq}/bin/jq -s \
+      '(.[0] | del(.env.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC, .env.DISABLE_TELEMETRY)) * .[1]' \
+      "$settings" ${managedSettingsFile} >"$tmp"; then
       mv "$tmp" "$settings"
     else
       rm -f "$tmp"
